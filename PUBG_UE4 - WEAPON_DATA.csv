@@ -1,0 +1,7 @@
+,Type,Mesh_path,Audio_path,Bullet_mesh_path,Mag_mesh_path,Collider_size,Collider_pos,Current_ammunition_count,Max_bullet_count,Damage
+0,AR4,AR4/SK_AR4,M16_Single_Shot,9mm,SM_AR4_Mag_Empty,"(x=10, y=50, z=15)","(x=0, y=15, z=5)",250,50,
+1,KA_Val,KA_Val/SK_KA_Val_Y,AR_Single_Shot_big,9x18,SM_KA_Val_Mag_Y,"(x=10, y=50, z=15)","(x=0, y=15, z=5)",200,40,
+2,Ka47,Ka47/SK_KA47,AR_Single_Shot_small,762x39,SM_KA47_Mag_Empty,"(x=10, y=45, z=17.5)","(x=0, y=20, z=2)",150,30,
+3,KA74U,KA74U/SK_KA74U_Y,AKM_Single_Shot,545x39,SM_KA74U_Mag_Empty_Y,"(x=10, y=40, z=17.5)","(x=0, y=10, z=0)",100,20,
+4,SMG11,SMG11/SK_SMG11_Y,SMG_Single_Shot,45ap,SM_SMG11_Mag_Empty_Y,"(x=10, y=18, z=20)","(x=2, y=1.5, z=0)",50,10,
+5,G67_Grenade,G67_Grenade/SK_G67_X,Explosion_grenade,,,,,,,100
