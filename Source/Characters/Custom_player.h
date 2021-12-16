@@ -83,7 +83,7 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Oxygen)
         float current_oxygen = 1.f;
 
-    e_player_state current_state = e_player_state::IDLE;
+    e_player_state current_state;
     bool           is_detected_collision = false;
     bool           is_animation_playing = false;
     bool           is_aiming = false;
