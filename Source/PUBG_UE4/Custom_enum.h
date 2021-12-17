@@ -45,6 +45,16 @@ enum class e_weapon_type
     G67_Grenade
 };
 
+enum class e_vehicle_type
+{
+    Hatchback,
+    Pickup,
+    SportsCar,
+    SUV,
+    Truck,
+    Truck_Chassis
+};
+
 UCLASS()
 class PUBG_UE4_API ACustom_enum : public AActor
 {

@@ -3,3 +3,7 @@
 
 #include "Hatchback.h"
 
+AHatchback::AHatchback()
+{
+    Init(e_vehicle_type::Hatchback);
+}

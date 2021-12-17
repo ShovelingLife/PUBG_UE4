@@ -14,4 +14,6 @@ class CHARACTERS_API APickup : public ACore_vehicle
 {
 	GENERATED_BODY()
 	
+public:
+	APickup();
 };

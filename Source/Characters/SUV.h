@@ -14,4 +14,6 @@ class CHARACTERS_API ASUV : public ACore_vehicle
 {
 	GENERATED_BODY()
 	
+public:
+	ASUV();
 };

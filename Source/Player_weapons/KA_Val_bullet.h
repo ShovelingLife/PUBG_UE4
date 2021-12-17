@@ -14,4 +14,6 @@ class PLAYER_WEAPONS_API AKA_Val_bullet : public ACore_bullet
 {
 	GENERATED_BODY()
 	
+public:
+	AKA_Val_bullet();
 };

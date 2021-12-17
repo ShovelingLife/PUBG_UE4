@@ -1,0 +1,7 @@
+,Type,Mesh_path,Audio_path,Collider_size,Collider_pos,Interaction_collider_size,Interaction_collider_pos,Camera_location,Camera_rotation,Spring_arm_length,Max_seater,Durability,Speed
+0,Hatchback,SK_Hatchback,,"(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=0, y=0, z=0)","(x=0, y=0, z=0)",,4,60,80
+1,Pickup,SK_Pickup,,"(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=0, y=0, z=0)","(x=0, y=0, z=0)",,2,70,80
+2,SportsCar,SK_SportsCar,,"(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=0, y=0, z=0)","(x=0, y=0, z=0)",,2,50,100
+3,SUV,SK_SUV,,"(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=0, y=0, z=0)","(x=0, y=0, z=0)",,4,80,70
+4,Truck,SK_Truck_Box,,"(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=0, y=0, z=0)","(x=0, y=0, z=0)",,2,100,60
+5,Truck_Chassis,SK_Truck_Chassis,,"(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=1, y=1, z=1)","(x=0, y=0, z=0)","(x=0, y=0, z=0)","(x=0, y=0, z=0)",,2,100,60

@@ -14,4 +14,6 @@ class CHARACTERS_API ATruck_chassis : public ACore_vehicle
 {
 	GENERATED_BODY()
 	
+public:
+	ATruck_chassis();
 };

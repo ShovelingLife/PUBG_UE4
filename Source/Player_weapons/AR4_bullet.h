@@ -14,4 +14,6 @@ class PLAYER_WEAPONS_API AAR4_bullet : public ACore_bullet
 {
 	GENERATED_BODY()
 	
+public:
+	AAR4_bullet();
 };

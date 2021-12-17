@@ -13,5 +13,7 @@ UCLASS()
 class CHARACTERS_API AHatchback : public ACore_vehicle
 {
 	GENERATED_BODY()
-	
+
+public:
+	AHatchback();
 };

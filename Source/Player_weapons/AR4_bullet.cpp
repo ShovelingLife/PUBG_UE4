@@ -3,3 +3,7 @@
 
 #include "AR4_bullet.h"
 
+AAR4_bullet::AAR4_bullet()
+{
+    Init(e_weapon_type::AR4);
+}

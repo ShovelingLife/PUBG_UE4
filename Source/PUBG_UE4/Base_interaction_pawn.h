@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Data_table_manager.h"
+#include "Custom_enum.h"
 #include "Base_interaction_pawn.generated.h"
 
 UCLASS()
@@ -21,9 +23,9 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Collider)
         class UBoxComponent* m_box_collider = nullptr;
 
-    const FString				mk_vehicle_mesh_path = "/Game/Characters/Vehicle_variaty_pack/Skeletons/SK_";
-
+    FString m_mesh_path = "";
     class ACharacter* m_player;
+
 public:
 
     UPROPERTY(VisibleAnywhere, Category = Mesh)
@@ -36,13 +38,13 @@ public:
     UPROPERTY(VisibleAnywhere, Category = UI)
         class UWidgetComponent* p_widget_component;
 
-protected:
-    // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
-
 public:
     // Sets default values for this pawn's properties
     ABase_interaction_pawn();
+
+protected:
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
 
 public:
     // Called every frame
@@ -58,7 +60,11 @@ public:
 protected:
     void Set_UI_widget_text(FText);
 
-    void Init_skeletal_mesh(FString, FName);
+    void Load_from_csv_vehicle(e_vehicle_type, Fs_vehicle_data&);
+
+    void Init_default_components();
+
+    void Init_skeletal_mesh(FString _name);
 
 
     void Begin_interact() { m_is_interacting = true; }

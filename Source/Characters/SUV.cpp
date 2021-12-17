@@ -3,3 +3,7 @@
 
 #include "SUV.h"
 
+ASUV::ASUV()
+{
+    Init(e_vehicle_type::SUV);
+}

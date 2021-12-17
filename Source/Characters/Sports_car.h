@@ -14,4 +14,6 @@ class CHARACTERS_API ASports_car : public ACore_vehicle
 {
 	GENERATED_BODY()
 	
+public:
+	ASports_car();
 };

@@ -14,4 +14,6 @@ class PLAYER_WEAPONS_API ASMG11_bullet : public ACore_bullet
 {
 	GENERATED_BODY()
 	
+public:
+	ASMG11_bullet();
 };

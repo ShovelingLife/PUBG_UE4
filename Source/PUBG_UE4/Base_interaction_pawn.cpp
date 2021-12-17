@@ -10,15 +10,8 @@ ABase_interaction_pawn::ABase_interaction_pawn()
 {
     // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
-
-    m_box_collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
-
-    // 위젯 컴포넌트 초기화
-    p_widget_component = CreateDefaultSubobject<UWidgetComponent>(TEXT("UI"));
-    auto bp_class = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("/Game/Blueprints/UI/BP_UI_interact_obj"));
-    widget_bp_class = bp_class.Class;
-
     AutoPossessPlayer = EAutoReceiveInput::Disabled;
+    Init_default_components();
 }
 
 // Called when the game starts or when spawned
@@ -62,7 +55,6 @@ void ABase_interaction_pawn::Tick(float _delta_time)
             current_controller->Possess(Cast< APawn>(m_player));
         }
     }
-
 }
 
 // Called to bind functionality to input
@@ -93,26 +85,42 @@ void ABase_interaction_pawn::NotifyActorEndOverlap(AActor* _collided_actor)
     p_widget_component->SetVisibility(false);
 }
 
-
 void ABase_interaction_pawn::Set_UI_widget_text(FText _text)
 {
     p_widget->Title_txt->SetText(_text);
 }
 
-void ABase_interaction_pawn::Init_skeletal_mesh(FString _path, FName _name)
+void ABase_interaction_pawn::Init_default_components()
+{
+    m_box_collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
+    RootComponent = m_box_collider;
+
+    // 위젯 컴포넌트 초기화
+    p_widget_component = CreateDefaultSubobject<UWidgetComponent>(TEXT("UI"));
+    auto bp_class = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("/Game/Blueprints/UI/BP_Interaction_UI"));
+    widget_bp_class = bp_class.Class;
+}
+
+void ABase_interaction_pawn::Load_from_csv_vehicle(e_vehicle_type _index, Fs_vehicle_data& _vehicle_data)
+{
+    ConstructorHelpers::FClassFinder<AActor> DATA_TABLE_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Data_table_manager.BP_Data_table_manager_C'"));
+    AData_table_manager* p_data_table_manager = nullptr;
+
+    if (DATA_TABLE_MANAGER.Succeeded())
+        p_data_table_manager = Cast<AData_table_manager>(DATA_TABLE_MANAGER.Class->GetDefaultObject());
+
+    if (!p_data_table_manager)
+        return;
+
+    _vehicle_data = p_data_table_manager->Get_vehicle_data((int)_index);
+}
+
+void ABase_interaction_pawn::Init_skeletal_mesh(FString _name)
 {
     // 메시 생성
-    skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(_name);
-    RootComponent = skeletal_mesh;
-    m_box_collider->AttachToComponent(skeletal_mesh, FAttachmentTransformRules::KeepRelativeTransform);
-
-    // 경로로부터 메시 생성
-    ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*_path);
-
-    if (MESH.Succeeded())
-        skeletal_mesh->SetSkeletalMesh(MESH.Object);
-
-    p_widget_component->AttachToComponent(skeletal_mesh, FAttachmentTransformRules::KeepRelativeTransform);
+    skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(*_name);
+    skeletal_mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    p_widget_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ABase_interaction_pawn::Move_up_down(float _value)
