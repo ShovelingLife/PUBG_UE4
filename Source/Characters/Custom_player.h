@@ -8,6 +8,7 @@ class UMy_anim_instance;
 class ACore_weapon;
 class ACore_vehicle;
 class UPlayer_UI;
+class AInventory_manager;
 
 enum class e_equipped_weapon_type
 {
@@ -38,13 +39,16 @@ private:
     USoundBase* mp_gun_swap_sound;
 
     // 파티클 관련
-
     UPROPERTY(VisibleAnywhere, Category = Particle)
         class UParticleSystemComponent* mp_particle;
 
     // UI 관련
-    TSubclassOf<UUserWidget> m_user_widget;
+    TSubclassOf<UUserWidget>  m_user_widget;
     UPlayer_UI* mp_user_ui;
+
+    // 인벤토리 관련
+    TSubclassOf<AInventory_manager>  m_inventory_manager_subclass;
+    AInventory_manager* mp_inventory_manager;
 
     // 이동 관련
     FVector     m_direction_up_down{ 0.f };
@@ -85,9 +89,9 @@ public:
 
     e_player_state current_state;
     bool           is_detected_collision = false;
-    bool           is_animation_playing = false;
-    bool           is_aiming = false;
-    bool           is_weapon_equipped = false;
+    bool           is_animation_playing  = false;
+    bool           is_aiming             = false;
+    bool           is_weapon_equipped    = false;
 
 public:
     // Sets default values for this character's properties
@@ -193,6 +197,8 @@ private:
     void Update_bullet_count_UI();
 
     void Change_shoot_mode();
+
+    void Open_inventory();
 
     // ------- 무기 관련 -------
 

@@ -1,5 +1,6 @@
 ﻿#include "Custom_player.h"
 #include "Core_vehicle.h"
+#include "Inventory_manager.h"
 #include "Player_weapons/Core_weapon.h"
 #include "Player_weapons/Core_bullet.h"
 #include "UI_PUBG/Player_UI.h"
@@ -47,9 +48,16 @@ void ACustom_player::BeginPlay()
 {
     Super::BeginPlay();
 
-    /*UUserWidget* p_user_widget = CreateWidget(GetWorld(), m_user_widget);
-    p_user_widget->AddToViewport();
-    mp_user_ui = Cast<UPlayer_UI>(p_user_widget);*/
+    UUserWidget* p_user_widget = CreateWidget(GetWorld(), m_user_widget);
+    p_user_widget->AddToViewport(0);
+    mp_user_ui = Cast<UPlayer_UI>(p_user_widget);
+
+    // 인벤토리 설정
+    if (m_inventory_manager_subclass)
+    {
+        mp_inventory_manager = Cast<AInventory_manager>(GetWorld()->SpawnActor(m_inventory_manager_subclass, &GetActorTransform()));
+        mp_inventory_manager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+    }
 }
 
 void ACustom_player::Tick(float _delta_time)
@@ -96,6 +104,7 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     InputComponent->BindAction(FName(TEXT("Interact")), IE_Pressed, this, &ACustom_player::Begin_interact);
     InputComponent->BindAction(FName(TEXT("Interact")), IE_Released, this, &ACustom_player::End_interact);
     InputComponent->BindAction(FName(TEXT("Swap_weapon")), IE_Pressed, this, &ACustom_player::Swap_weapon);
+    InputComponent->BindAction(FName(TEXT("Inventory")), IE_Pressed, this, &ACustom_player::Open_inventory);
 }
 
 void ACustom_player::Init_player_settings()
@@ -108,6 +117,11 @@ void ACustom_player::Init_player_settings()
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
     GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACustom_player::OnOverlapBegin);
     GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACustom_player::OnOverlapEnd);
+
+    ConstructorHelpers::FClassFinder<AActor> INVENTORY_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Inventory_manager.BP_Inventory_manager_C'"));
+
+    if (INVENTORY_MANAGER.Succeeded())
+        m_inventory_manager_subclass = INVENTORY_MANAGER.Class;
 }
 
 void ACustom_player::Init_audio()
@@ -169,7 +183,7 @@ void ACustom_player::Init_animation_settings()
 void ACustom_player::Init_UI()
 {
     // UI 초기화
-    auto tmp_ui_widget_class = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("Blueprint'/Game/Blueprints/UI/BP_Player_UI.BP_Player_UI_C'"));
+    auto tmp_ui_widget_class = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Player_UI.BP_Player_UI_C'"));
 
     if (tmp_ui_widget_class.Succeeded())
         m_user_widget = tmp_ui_widget_class.Class;
@@ -926,5 +940,17 @@ void ACustom_player::Change_shoot_mode()
 
         if (mp_user_ui)
             mp_user_ui->Shoot_type_txt->SetText(FText::FromString(FString::Printf(TEXT("모드:점사"), *FString(""))));
+    }
+}
+
+void ACustom_player::Open_inventory()
+{
+    if (mp_inventory_manager)
+    {
+        if (mp_inventory_manager->is_opened)
+            mp_inventory_manager->is_opened = false;
+
+        else
+            mp_inventory_manager->is_opened = true;
     }
 }

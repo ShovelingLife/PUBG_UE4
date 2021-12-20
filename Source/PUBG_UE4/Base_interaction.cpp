@@ -24,7 +24,7 @@
 
      // À§Á¬ ÄÄÆ÷³ÍÆ® ÃÊ±âÈ­
      p_widget_component = CreateDefaultSubobject<UWidgetComponent>(TEXT("UI"));
-     p_widget_component->AttachToComponent(m_box_collider, FAttachmentTransformRules::KeepRelativeTransform);
+     p_widget_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
      auto bp_class      = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("/Game/Blueprints/UI/BP_Interaction_UI"));
      widget_bp_class    = bp_class.Class;
 

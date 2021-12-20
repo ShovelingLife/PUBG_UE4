@@ -57,7 +57,7 @@ void ACore_weapon::Init(e_weapon_type _index)
 
     weapon_data = p_data_table_manager->Get_weapon_data((int)_index);
 
-    Init_collider();
+    Update_collider();
     Init_mesh();
     Init_audio();
 
@@ -77,11 +77,10 @@ void ACore_weapon::Init_mesh()
     skeletal_mesh->SetRelativeLocation(FVector::ZeroVector);
 }
 
-void ACore_weapon::Init_collider()
+void ACore_weapon::Update_collider()
 {
     m_box_collider->AddLocalOffset(weapon_data.collider_pos);
     m_box_collider->SetBoxExtent(weapon_data.collider_size);
-    RootComponent = m_box_collider;
 }
 
 void ACore_weapon::Init_bullet()

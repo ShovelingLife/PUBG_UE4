@@ -25,7 +25,6 @@ protected:
     class UCameraComponent* mp_camera = nullptr;
 
     Fs_vehicle_data m_vehicle_data;
-    FString         m_vehicle_type;
 
 public:
     // Sets default values for this actor's properties

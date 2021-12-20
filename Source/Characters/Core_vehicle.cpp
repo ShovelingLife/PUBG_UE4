@@ -18,7 +18,7 @@ void ACore_vehicle::BeginPlay()
 {
     Super::BeginPlay();
 
-    FString str = FString::Printf(TEXT("%s 열기"), *m_vehicle_type);
+    FString str = FString::Printf(TEXT("%s 열기"), *m_vehicle_data.type);
     ABase_interaction_pawn::Set_UI_widget_text(FText::FromString(str));
     p_widget_component->SetVisibility(false);
 }

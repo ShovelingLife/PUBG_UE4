@@ -63,7 +63,7 @@ protected:
     void Init_mesh();
 
     // 충돌박스 ?�정
-    void Init_collider();
+    void Update_collider();
 
     // 총알 ?�정
     void Init_bullet();

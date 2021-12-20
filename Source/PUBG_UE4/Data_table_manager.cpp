@@ -82,6 +82,7 @@ void AData_table_manager::Init_vehicle_data()
             break;
 
         Fs_vehicle_data data                = *p_row;
+        m_vehicle_data_arr[i].type          = data.type;
         m_vehicle_data_arr[i].audio_path    = data.audio_path;
         m_vehicle_data_arr[i].mesh_path     = mk_vehicle_mesh_path + data.mesh_path;
         m_vehicle_data_arr[i].collider_pos  = data.collider_pos;
