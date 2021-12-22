@@ -9,6 +9,6 @@ public class Characters : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
  
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
-        PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore", "PUBG_UE4", "AI_PUBG", "UI_PUBG", "Player_weapons" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore", "ChaosVehicles", "PUBG_UE4", "AI_PUBG", "UI_PUBG", "Player_weapons" });
     }
 }

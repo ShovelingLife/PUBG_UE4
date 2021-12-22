@@ -2,6 +2,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "UI_PUBG/Inventory_UI.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AInventory_manager::AInventory_manager()
@@ -24,13 +25,18 @@ void AInventory_manager::BeginPlay()
 // Called every frame
 void AInventory_manager::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
+    auto player_controller		= UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	ESlateVisibility visibility = ESlateVisibility::Hidden;
+	bool show_mouse_cursor		= false;
 
 	if (is_opened)
-		mp_inventory_ui->SetVisibility(ESlateVisibility::Visible);
-
-	else
-		mp_inventory_ui->SetVisibility(ESlateVisibility::Hidden);
+	{
+		visibility		  = ESlateVisibility::Visible;
+        show_mouse_cursor = true;
+	}
+    mp_inventory_ui->SetVisibility(visibility);
+	player_controller->SetShowMouseCursor(show_mouse_cursor);
 }
 
 void AInventory_manager::Init()

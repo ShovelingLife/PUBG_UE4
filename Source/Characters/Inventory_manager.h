@@ -23,7 +23,6 @@ public:
 	bool is_opened = false;
 
 public:	
-	// Sets default values for this actor's properties
 	AInventory_manager();
 
 protected:
@@ -36,4 +35,7 @@ public:
 
 private:
 	void Init();
+
+public:
+	UInventory_UI* Get_UI() { return mp_inventory_ui; }
 };

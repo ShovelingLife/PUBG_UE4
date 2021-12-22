@@ -25,9 +25,9 @@ class CHARACTERS_API ACustom_player : public ACharacter
 
 private:
     // 현재 쓰여지는 오브젝트들
-    ACore_weapon* m_collided_weapon = nullptr;
-    ACore_weapon* m_first_weapon = nullptr;
-    ACore_weapon* m_second_weapon = nullptr;
+    ACore_weapon*  m_collided_weapon = nullptr;
+    ACore_weapon*  m_first_weapon    = nullptr;
+    ACore_weapon*  m_second_weapon   = nullptr;
     ACore_vehicle* m_current_vehicle = nullptr;
 
     // 오디오 관련

@@ -27,7 +27,8 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
-				"PUBG_UE4"
+				"PUBG_UE4",
+				"PhysXVehicles"
 			]
 		},
 		{
@@ -71,6 +72,12 @@
 			"AdditionalDependencies": [
 				"Engine"
 			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ChaosVehiclesPlugin",
+			"Enabled": true
 		}
 	]
 }

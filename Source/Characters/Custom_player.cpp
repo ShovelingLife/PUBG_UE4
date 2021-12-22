@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Framework/Application/SlateApplication.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -244,16 +245,15 @@ void ACustom_player::Check_if_moving()
                     m_is_sprinting = true;
                     current_state = e_player_state::SPRINT_JUMP;
                 }
-
-                else // 嫄룸뒗 以?
+                else // 점프함
                     current_state = e_player_state::JUMP;
             }
-            else // 吏硫댁뿉 ?우쓬
+            else // 지면에 닿고있음
             {
                 if (current_state == e_player_state::SPRINT_JUMP)
                     current_state = e_player_state::SPRINT;
 
-                // ?곕뒗以? ?띾룄 ?쒖뼱
+                // 뛰고있음
                 else if (current_state == e_player_state::SPRINT)
                 {
                     if (current_oxygen > 0)
@@ -275,8 +275,7 @@ void ACustom_player::Check_if_moving()
                         GetCharacterMovement()->MaxWalkSpeed *= m_sprint_multiplier;
                     }
                 }
-                // ?먰봽 ???뺤씤
-                // 嫄룸뒗 以묒씠硫?
+                // 
                 else if (current_state == e_player_state::IDLE ||
                     current_state == e_player_state::JUMP)
                     current_state = e_player_state::WALK;
@@ -665,7 +664,9 @@ void ACustom_player::Try_to_get_collided_component()
             auto controller = UGameplayStatics::GetPlayerController(this, 0);
             controller->UnPossess();
             //AttachToComponent(m_current_vehicle->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-            controller->Possess(Cast<APawn>(m_current_vehicle));
+
+            if (m_current_vehicle->Check_if_seat_available(this))
+                controller->Possess(Cast<APawn>(m_current_vehicle));
 
             //m_current_vehicle->p_character = this;
             //m_current_vehicle->p_widget_component->SetVisibility(false);
@@ -850,7 +851,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
 
     switch (_type)
     {
-    case e_equipped_weapon_type::FIRST: // 泥ル쾲吏?臾닿린
+    case e_equipped_weapon_type::FIRST: // 첫번째 무기 착용
 
         if (!m_first_weapon)
             return;
@@ -863,7 +864,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
         m_first_weapon->p_widget_component->SetVisibility(false);
         break;
 
-    case e_equipped_weapon_type::SECOND: // ?먮쾲吏?臾닿린
+    case e_equipped_weapon_type::SECOND: // 두번째 무기 착용
 
         if (!m_second_weapon)
             return;
@@ -874,7 +875,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
         m_second_weapon->p_widget_component->SetVisibility(false);
         break;
 
-    case e_equipped_weapon_type::SWAP: // 臾닿린 援먯껜
+    case e_equipped_weapon_type::SWAP: // 교체
 
         tmp_weapon = m_second_weapon;
         m_second_weapon = m_collided_weapon;
@@ -945,12 +946,23 @@ void ACustom_player::Change_shoot_mode()
 
 void ACustom_player::Open_inventory()
 {
+    bool is_opened = false;
     if (mp_inventory_manager)
     {
-        if (mp_inventory_manager->is_opened)
-            mp_inventory_manager->is_opened = false;
+        is_opened = mp_inventory_manager->is_opened;
 
-        else
-            mp_inventory_manager->is_opened = true;
+        // 인벤토리를 닫음
+        if (is_opened)
+        {
+            is_opened = false;
+            //GEngine->GameViewport->Viewport->SetUserFocus(true);
+            FSlateApplication::Get().SetUserFocusToGameViewport(0);
+        }
+        else // 인벤토리를 열음
+            is_opened = true;
+
+        mp_inventory_manager->is_opened       = is_opened;
+        p_spring_arm->bUsePawnControlRotation = !is_opened;
+        bUseControllerRotationYaw             = !is_opened;
     }
 }
