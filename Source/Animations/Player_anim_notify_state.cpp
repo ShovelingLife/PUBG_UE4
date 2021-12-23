@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Player_anim_notify_state.h"
 #include "Characters/Custom_player.h"
 

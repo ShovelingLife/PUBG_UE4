@@ -4,10 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Custom_enum.generated.h"
+#include "My_enum.generated.h"
 
-UENUM(BlueprintType)
-enum class e_player_state : uint8
+enum class e_player_state
 {
     IDLE,
     WALK,
@@ -56,20 +55,20 @@ enum class e_vehicle_type
 };
 
 UCLASS()
-class PUBG_UE4_API ACustom_enum : public AActor
+class PUBG_UE4_API AMy_enum : public AActor
 {
-    GENERATED_BODY()
-
-public:
-    // Sets default values for this actor's properties
-    ACustom_enum();
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	AMy_enum();
 
 protected:
-    // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
-public:
-    // Called every frame
-    virtual void Tick(float DeltaTime) override;
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 };

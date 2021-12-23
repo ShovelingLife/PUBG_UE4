@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PUBG_UE4/Custom_enum.h"
 #include "Animation/AnimInstance.h"
 #include "Player_anim_instance.generated.h"
 
@@ -29,14 +28,11 @@ enum class e_player_animation_state : uint8
     TEST UMETA(DisplayName = "TEST")
 };
 
-/**
- * 
- */
 UCLASS()
 class ANIMATIONS_API UPlayer_anim_instance : public UAnimInstance
 {
 	GENERATED_BODY()
-
+	
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint")
         float speed = 0.f;

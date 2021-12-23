@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PUBG_UE4/Custom_enum.h"
+#include "PUBG_UE4/My_enum.h"
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 class UMy_anim_instance;

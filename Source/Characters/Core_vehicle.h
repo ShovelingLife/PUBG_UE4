@@ -3,28 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WheeledVehicle.h"
+#include "WheeledVehiclePawn.h"
+#include "PUBG_UE4/My_enum.h"
 #include "PUBG_UE4/Data_table_manager.h"
-#include "PUBG_UE4/Custom_enum.h"
 #include "Core_vehicle.generated.h"
 class ACustom_player;
+class APawn;
 
 UCLASS()
-class CHARACTERS_API ACore_vehicle : public AWheeledVehicle
+class CHARACTERS_API ACore_vehicle : public AWheeledVehiclePawn
 {
     GENERATED_BODY()
 
-private:
-    FVector m_move_pos;
-    float   m_move_speed = 500.f;
-
 protected:
-    UPROPERTY(VisibleAnywhere, Category = Collider)
-        class UBoxComponent* m_box_collider = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Collider)
-        class UBoxComponent* mp_interation_collider = nullptr;
-
     UPROPERTY(VisibleAnywhere, Category = Camera)
         class USpringArmComponent* mp_spring_arm = nullptr;
 
@@ -32,14 +23,11 @@ protected:
         class UCameraComponent* mp_camera = nullptr;
 
     FString               m_mesh_path = "";
-    ACustom_player*       m_player;
+    ACustom_player* m_player;
     Fs_vehicle_data       m_vehicle_data;
     int                   m_current_player_count = 0;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Mesh)
-        class    USkeletalMeshComponent* skeletal_mesh = nullptr;
-
     // ����
     TSubclassOf< UUserWidget>	widget_bp_class;
 
@@ -58,34 +46,32 @@ protected:
 
     virtual void NotifyActorEndOverlap(AActor*) override;
 
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent*) override;
 
 public:
     // Called every frame
     virtual void Tick(float) override;
 
 protected:
-    void Init(e_vehicle_type);
-
-    void Init_camera();
-
-    void Update_mesh();
-
-    void Init_interaction_collider();
-
     void Load_from_csv_vehicle(e_vehicle_type, Fs_vehicle_data&);
 
-    void Init_default_components();
+    void Init(e_vehicle_type);
+
+    void Init_UI();
+
+    void Init_camera();
 
     void Init_skeletal_mesh(FString);
 
     void Player_exit();
 
     // 
-    void Move_up_down(float);
+    void Accelerate(float);
+
+    void Brake(float);
 
     // 
-    void Move_left_right(float);
+    void Handling(float);
 
 public:
     // 탑승 가능 여부 확인

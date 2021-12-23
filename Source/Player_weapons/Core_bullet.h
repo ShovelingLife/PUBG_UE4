@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PUBG_UE4/Data_table_manager.h"
-#include "PUBG_UE4/Custom_enum.h"
+#include "PUBG_UE4/My_enum.h"
 #include "Core_bullet.generated.h"
 
 UCLASS()

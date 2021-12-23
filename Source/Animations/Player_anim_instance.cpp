@@ -1,13 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Player_anim_instance.h"
 #include "Characters/Custom_player.h"
-#include "GameFramework/CharacterMovementComponent.h"
 
 UPlayer_anim_instance::UPlayer_anim_instance()
 {
-
 
 }
 
@@ -22,10 +17,10 @@ void UPlayer_anim_instance::NativeUpdateAnimation(float _delta_seconds)
     // 캐릭터가 널이 아닐 시
     if (player)
     {
-        // 값 적용Set values
-        player_state = (e_player_animation_state)player->current_state;
-        speed = player->GetCharacterMovement()->MaxWalkSpeed + player->GetInputAxisValue(TEXT("Up_down"));
-        is_weapon_equipped = player->is_weapon_equipped;
+        //// 값 적용Set values
+        //player_state = (e_player_animation_state)player->current_state;
+        //speed = player->GetCharacterMovement()->MaxWalkSpeed + player->GetInputAxisValue(TEXT("Up_down"));
+        //is_weapon_equipped = player->is_weapon_equipped;
     }
     //// AI가 널이 아닐 시
     //else if (ai)

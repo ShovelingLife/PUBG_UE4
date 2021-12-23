@@ -10,6 +10,5 @@ public class PUBG_UE4 : ModuleRules
 		
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "UI_PUBG" });
-        PrivateIncludePaths.AddRange(new string[] { "UI_PUBG" });
     }
 }

@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/Base_interaction.h"
-#include "PUBG_UE4/Custom_enum.h"
+#include "PUBG_UE4/My_enum.h"
 #include "PUBG_UE4/Data_table_manager.h"
 #include "Core_weapon.generated.h"
 
