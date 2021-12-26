@@ -49,12 +49,11 @@ protected:
 
     virtual void NotifyActorEndOverlap(AActor*) override;
 
-public:
-    // Sets default values for this actor's properties
-    ACore_weapon();
-
     // Called every frame
     virtual void Tick(float DeltaTime) override;
+
+public:
+    ACore_weapon();
 
 protected:
     void Init(e_weapon_type);

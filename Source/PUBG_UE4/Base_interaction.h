@@ -12,6 +12,7 @@ class PUBG_UE4_API ABase_interaction : public AActor
 	GENERATED_BODY()
 	
 protected:
+
     UPROPERTY(VisibleAnywhere, Category = Mesh)
     class UStaticMeshComponent* m_static_mesh = nullptr;
 
@@ -22,8 +23,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Mesh)
     class USkeletalMeshComponent* skeletal_mesh = nullptr;
 
-    TSubclassOf< UUserWidget>	widget_bp_class;
-    class UInteraction_UI* p_widget;
+    TSubclassOf< UUserWidget> widget_bp_class;
+    class UInteraction_UI*    p_widget;
 
     UPROPERTY(VisibleAnywhere, Category = UI)
     class UWidgetComponent* p_widget_component;
@@ -43,7 +44,7 @@ protected:
     void Init_skeletal_mesh(FString, FName);
 
     // Called every frame
-    virtual void Tick(float DeltaTime) override;
+    virtual void Tick(float) override;
 
 public:
     virtual void NotifyActorBeginOverlap(AActor*) override;

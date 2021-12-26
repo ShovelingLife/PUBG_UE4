@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PUBG_UE4/Base_interaction.h"
-#include "Core_farmable_item.generated.h"
+#include "GameFramework/Actor.h"
+#include "Item_data.generated.h"
 
 UCLASS()
-class FARMABLE_ITEMS_API ACore_farmable_item : public ABase_interaction
+class PUBG_UE4_API AItem_data : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ACore_farmable_item();
+	AItem_data();
 
 protected:
 	// Called when the game starts or when spawned

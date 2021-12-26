@@ -23,6 +23,10 @@
 #### 6. MCO Mocap Basics
 #### 7. Animation Starter Pack
 #### 8. Defect Ultimate Props Bundle Vol.1
+#### 9. M5 VFX Vol2. Fire and Frames
+#### 10. Infinity Blade: Effects
+#### 11. KC-135R Air Tanker (West)
+
 </br>
 
 ## 에셋 경로 )
@@ -33,4 +37,4 @@
 #### 5. Items) 총기 메쉬, 셰이더 등
 #### 6. SFX) 사운드
 #### 7. UI) 이미지 UI (렌더타깃)
-
+#### 8. VFX) 이펙트 

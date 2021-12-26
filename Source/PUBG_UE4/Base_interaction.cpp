@@ -80,8 +80,7 @@
  {
      // 메시 생성
      m_static_mesh = CreateDefaultSubobject<UStaticMeshComponent>(_name);
-     RootComponent = m_static_mesh;
-     m_box_collider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     m_static_mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
      // 경로로부터 메시 생성
      ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*_path);
