@@ -21,6 +21,8 @@ struct Fs_vehicle_data : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_path)
         FString mesh_path = "";
 
+    FString anim_instance_path = "";
+
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_path)
         FString audio_path = "";
 

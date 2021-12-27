@@ -22,9 +22,10 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Camera)
         class UCameraComponent* mp_camera = nullptr;
 
-    FString               m_mesh_path = "";
-    ACustom_player* m_player;
+    ACustom_player*       m_player;
     Fs_vehicle_data       m_vehicle_data;
+    const FString         mk_wheel_path = "/Game/Blueprints/Vehicles/Wheel/";
+    FString               m_mesh_path = "";
     int                   m_current_player_count = 0;
 
 public:
@@ -42,15 +43,14 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
+    // Called every frame
+    virtual void Tick(float) override;
+
     virtual void NotifyActorBeginOverlap(AActor*) override;
 
     virtual void NotifyActorEndOverlap(AActor*) override;
 
     virtual void SetupPlayerInputComponent(class UInputComponent*) override;
-
-public:
-    // Called every frame
-    virtual void Tick(float) override;
 
 protected:
     void Load_from_csv_vehicle(e_vehicle_type, Fs_vehicle_data&);
@@ -62,6 +62,8 @@ protected:
     void Init_camera();
 
     void Init_skeletal_mesh(FString);
+
+    void Init_wheeled_component();
 
     void Player_exit();
 

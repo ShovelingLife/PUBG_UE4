@@ -85,6 +85,7 @@ void AData_table_manager::Init_vehicle_data()
         m_arr_vehicle_data[i].type          = data.type;
         m_arr_vehicle_data[i].audio_path    = data.audio_path;
         m_arr_vehicle_data[i].mesh_path     = mk_vehicle_mesh_path + data.mesh_path;
+        m_arr_vehicle_data[i].anim_instance_path = mk_anim_instance_path + data.type + "/BP_AnimInst_" + data.type;
         m_arr_vehicle_data[i].collider_pos  = data.collider_pos;
         m_arr_vehicle_data[i].collider_size = data.collider_size;
         m_arr_vehicle_data[i].durability    = data.durability;

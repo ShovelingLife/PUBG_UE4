@@ -28,7 +28,7 @@ private:
     ACore_weapon*  m_collided_weapon = nullptr;
     ACore_weapon*  m_first_weapon    = nullptr;
     ACore_weapon*  m_second_weapon   = nullptr;
-    ACore_vehicle* m_current_vehicle = nullptr;
+    ACore_vehicle* m_collided_vehicle = nullptr;
 
     // 오디오 관련
     UPROPERTY(VisibleAnywhere, Category = Audio)

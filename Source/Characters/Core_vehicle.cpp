@@ -7,8 +7,12 @@
 #include "GameFramework/PlayerInput.h"
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ChaosVehicleMovementComponent.h"
+#include "ChaosWheeledVehicleMovementComponent.h"
+#include "Animation/AnimInstance.h"
+#include "UObject/ConstructorHelpers.h"
 
 // Sets default values
 ACore_vehicle::ACore_vehicle()
@@ -45,9 +49,8 @@ void ACore_vehicle::Tick(float _delta_time)
 void ACore_vehicle::NotifyActorBeginOverlap(AActor* _collided_actor)
 {
     Super::NotifyActorBeginOverlap(_collided_actor);
-    auto player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-    if (player == Cast<ACharacter>(_collided_actor))
+    if (_collided_actor->IsA(ACustom_player::StaticClass()))
         p_widget_component->SetVisibility(true);
 }
 
@@ -89,6 +92,7 @@ void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
     Init_skeletal_mesh("Vehicles");
     Init_UI();
     Init_camera();
+    Init_wheeled_component();
 }
 
 void ACore_vehicle::Init_camera()
@@ -118,14 +122,51 @@ void ACore_vehicle::Init_UI()
 
 void ACore_vehicle::Init_skeletal_mesh(FString _name)
 {
-    // 메시 생성
-    m_mesh_path = m_vehicle_data.mesh_path;
-
     // 경로로부터 메시 생성
-    ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*m_mesh_path);
+    ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*m_vehicle_data.mesh_path);
 
     if (MESH.Succeeded())
         GetMesh()->SetSkeletalMesh(MESH.Object);
+
+    GetMesh()->SetSimulatePhysics(true);
+
+    // 애님 인스턴스 초기화
+    auto anim_instance = ConstructorHelpers::FClassFinder<UAnimInstance>(*m_vehicle_data.anim_instance_path);
+
+    if (anim_instance.Succeeded())
+        GetMesh()->SetAnimInstanceClass(anim_instance.Class);
+}
+
+void ACore_vehicle::Init_wheeled_component()
+{
+    UChaosWheeledVehicleMovementComponent* vehicle_move_comp = CastChecked<UChaosWheeledVehicleMovementComponent>(GetVehicleMovement());
+     
+    // 바퀴 설정
+    auto front_wheel_bp = ConstructorHelpers::FClassFinder<UChaosVehicleWheel>(*(mk_wheel_path + "BP_Front_wheel"));
+    auto rear_wheel_bp  = ConstructorHelpers::FClassFinder<UChaosVehicleWheel>(*(mk_wheel_path + "BP_Rear_wheel"));
+    auto float_curve    = ConstructorHelpers::FObjectFinder<UCurveFloat>(*(mk_wheel_path + "VehicleMovementComp_ExternalCurve"));
+    
+    // 예외처리
+    if (!front_wheel_bp.Succeeded() ||
+        !rear_wheel_bp.Succeeded() ||
+        !float_curve.Succeeded())
+        return;
+
+    FChaosWheelSetup arr_car_wheels[4]{ FChaosWheelSetup() };
+    arr_car_wheels[0].WheelClass = front_wheel_bp.Class;
+    arr_car_wheels[1].WheelClass = front_wheel_bp.Class;
+    arr_car_wheels[2].WheelClass = rear_wheel_bp.Class;
+    arr_car_wheels[3].WheelClass = rear_wheel_bp.Class;
+
+    arr_car_wheels[0].BoneName = "Wheel_Front_Left";
+    arr_car_wheels[1].BoneName = "Wheel_Front_Right";
+    arr_car_wheels[2].BoneName = "Wheel_Rear_Left";
+    arr_car_wheels[3].BoneName = "Wheel_Rear_Right";
+
+    for (int i = 0; i < 4; i++)
+        vehicle_move_comp->WheelSetups.Add(arr_car_wheels[i]);
+    
+    vehicle_move_comp->EngineSetup.TorqueCurve.ExternalCurve = float_curve.Object;
 }
 
 void ACore_vehicle::Player_exit()
@@ -134,10 +175,13 @@ void ACore_vehicle::Player_exit()
         return;
 
     // 차량 > 플레이어 전환
-    auto current_controller = UGameplayStatics::GetPlayerController(this, 0);
-    current_controller->UnPossess();
-    current_controller->Possess(m_player);
+    auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
+    auto player_capsule_component = m_player->GetCapsuleComponent();
+    player_controller->UnPossess();
     m_player->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    player_capsule_component->SetMobility(EComponentMobility::Movable);
+    player_capsule_component->SetCollisionProfileName("Pawn");
+    player_controller->Possess(m_player);
     m_current_player_count--;
 }
 
@@ -164,7 +208,6 @@ bool ACore_vehicle::Check_if_seat_available(ACustom_player* _player)
         auto player_seatpos = m_vehicle_data.arr_player_seat_pos[m_current_player_count++];
         _player->SetActorRelativeLocation(player_seatpos.first);
         _player->p_spring_arm->SetRelativeLocation(player_seatpos.second);
-        _player->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
         m_player = _player;
         return true;
     }

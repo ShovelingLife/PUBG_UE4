@@ -35,8 +35,8 @@ ACustom_player::ACustom_player()
 
 void ACustom_player::OnOverlapBegin(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index, bool _is_from_sweep, const FHitResult& _sweep_result)
 {
-    m_collided_weapon = Cast<ACore_weapon>(_other_actor);
-    m_current_vehicle = Cast<ACore_vehicle>(_other_actor);
+    m_collided_weapon     = Cast<ACore_weapon>(_other_actor);
+    m_collided_vehicle    = Cast<ACore_vehicle>(_other_actor);
     is_detected_collision = true;
 }
 
@@ -658,20 +658,21 @@ void ACustom_player::Try_to_get_collided_component()
             }
         }
         // 
-        else if (m_current_vehicle)
+        else if (m_collided_vehicle)
         {
             // 차량일 시 소유권 및 카메라 이전
-            auto controller = UGameplayStatics::GetPlayerController(this, 0);
-            controller->UnPossess();
-            //AttachToComponent(m_current_vehicle->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+            auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
 
-            if (m_current_vehicle->Check_if_seat_available(this))
-                controller->Possess(Cast<APawn>(m_current_vehicle));
-
-            //m_current_vehicle->p_character = this;
-            //m_current_vehicle->p_widget_component->SetVisibility(false);
-            //m_current_vehicle->p_spring_arm->SetRelativeTransform(p_spring_arm->GetRelativeTransform());
-            //m_current_vehicle->p_camera->SetRelativeTransform(p_camera->GetRelativeTransform());
+            //  차량 탑승 상태
+            if (m_collided_vehicle->Check_if_seat_available(this))
+            {
+                player_controller->UnPossess();
+                AttachToActor(m_collided_vehicle, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+                GetCapsuleComponent()->SetMobility(EComponentMobility::Static);
+                player_controller->Possess(Cast<APawn>(m_collided_vehicle));
+                GetCapsuleComponent()->SetCollisionProfileName("OverlapAll");
+            }
+            m_collided_vehicle = nullptr;
         }
     }
 }

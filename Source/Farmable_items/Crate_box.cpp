@@ -35,11 +35,6 @@ void ACrate_box::Tick(float _delta_time)
                 m_is_particle_ended = true;
             }
         }
-        else // 파티클 끝난 후 시간 경과 시 파괴
-        {
-            if (m_current_time > mk_max_spawn_time)
-                Destroy();
-        }
     }
 }
 
@@ -89,7 +84,6 @@ void ACrate_box::Turn_off_after_landing(UPrimitiveComponent* HitComp, AActor* Ot
 {
     FString actor_name = "";
     OtherActor->GetName(actor_name);
-    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Cyan, actor_name);
 
     // 지면이랑 닿았을 시
     if (actor_name == "Floor")
