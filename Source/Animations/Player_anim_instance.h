@@ -16,6 +16,7 @@ enum class e_player_animation_state : uint8
     CROUCH UMETA(DisplayName = "CROUCH"),
     PRONING UMETA(DisplayName = "PRONING"),
     AIM UMETA(DisplayName = "AIM"),
+    THROW UMETA(DisplayName = "THROW"),
     SWIM UMETA(DisplayName = "SWIM"),
     INJURED UMETA(DisplayName = "INJURED"),
     DEAD UMETA(DisplayName = "DEAD"),

@@ -175,7 +175,7 @@ void ACustom_player::Init_mesh_settings()
 void ACustom_player::Init_animation_settings()
 {
     // 애니메이션 초기화
-    static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/Animations/BP_Anim_instance"));
+    static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/Blueprints/Animations/BP_Player_anim_instance"));
 
     if (BP_ANIM.Succeeded())
         GetMesh()->SetAnimInstanceClass(BP_ANIM.Class);
@@ -664,7 +664,7 @@ void ACustom_player::Try_to_get_collided_component()
             auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
 
             //  차량 탑승 상태
-            if (m_collided_vehicle->Check_if_seat_available(this))
+            if (m_collided_vehicle->Check_available_seat(this))
             {
                 player_controller->UnPossess();
                 AttachToActor(m_collided_vehicle, FAttachmentTransformRules::SnapToTargetNotIncludingScale);

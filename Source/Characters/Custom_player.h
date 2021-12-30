@@ -58,17 +58,17 @@ private:
     float       m_sprint_multiplier = 1.f;
     bool        m_is_moving = false;
 
-    // ?ÅÌò∏?ëÏö© Í¥Ä??
-    const float mk_reload_time = 2.f;
-    FString     m_gun_type_str = "";
-    float       m_current_reload_time = 0.f;
-    float       m_shoot_time = 0.25f;
-    float       m_current_shoot_time = 0.f;
-    bool        m_is_reloading = false;
-    bool        m_is_sprinting = false;
-    bool        m_is_interacting = false;
+    // π´±‚ ∞¸∑√
+    const float mk_reload_time          = 2.f;
+    FString     m_gun_type_str          = "";
+    float       m_current_reload_time   = 0.f;
+    float       m_shoot_time            = 0.25f;
+    float       m_current_shoot_time    = 0.f;
+    bool        m_is_reloading          = false;
+    bool        m_is_sprinting          = false;
+    bool        m_is_interacting        = false;
     bool        m_is_changed_shoot_type = true;
-    bool        m_is_shooting = false;
+    bool        m_is_shooting           = false;
 
     // Í∏∞Ì? Î≥Ä??
 public:
@@ -92,6 +92,8 @@ public:
     bool           is_animation_playing  = false;
     bool           is_aiming             = false;
     bool           is_weapon_equipped    = false;
+
+    e_seat_type current_seat_pos = e_seat_type::NONE;
 
 public:
     // Sets default values for this character's properties

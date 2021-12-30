@@ -7,8 +7,8 @@ void UPlayer_anim_notify_state::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 
     ACustom_player* player = Cast<ACustom_player>(MeshComp->GetOwner());
 
-    /*if (player)
-        player->is_animation_playing = true;*/
+    if (player)
+        player->is_animation_playing = true;
 }
 
 void UPlayer_anim_notify_state::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -17,6 +17,6 @@ void UPlayer_anim_notify_state::NotifyEnd(USkeletalMeshComponent* MeshComp, UAni
 
     ACustom_player* player = Cast<ACustom_player>(MeshComp->GetOwner());
 
-    /*if (player)
-        player->is_animation_playing = false;*/
+    if (player)
+        player->is_animation_playing = false;
 }

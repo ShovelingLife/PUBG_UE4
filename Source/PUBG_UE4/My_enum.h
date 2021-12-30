@@ -15,6 +15,7 @@ enum class e_player_state
     CROUCH,
     PRONING,
     AIM,
+    THROW,
     SWIM,
     INJURED,
     DEAD,
@@ -52,6 +53,16 @@ enum class e_vehicle_type
     SUV,
     Truck,
     Truck_Chassis
+};
+
+UENUM()
+enum class e_seat_type
+{
+    FIRST,
+    SECOND,
+    THIRD,
+    FOURTH,
+    NONE
 };
 
 UCLASS()

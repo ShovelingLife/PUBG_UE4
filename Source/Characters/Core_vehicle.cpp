@@ -1,17 +1,18 @@
 ﻿#include "Core_vehicle.h"
 #include "Custom_player.h"
 #include "UI_PUBG/Interaction_UI.h"
+#include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/PlayerInput.h"
+#include "ChaosVehicleMovementComponent.h"
+#include "ChaosWheeledVehicleMovementComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerInput.h"
 #include "Kismet/GameplayStatics.h"
-#include "ChaosVehicleMovementComponent.h"
-#include "ChaosWheeledVehicleMovementComponent.h"
-#include "Animation/AnimInstance.h"
 #include "UObject/ConstructorHelpers.h"
 
 // Sets default values
@@ -25,19 +26,8 @@ ACore_vehicle::ACore_vehicle()
 void ACore_vehicle::BeginPlay()
 {
     Super::BeginPlay();
-
-    FString str = FString::Printf(TEXT("%s 열기"), *m_vehicle_data.type);
-
-    // 위젯 설정
-    if (widget_bp_class)
-    {
-        p_widget_component->SetWidgetClass(widget_bp_class);
-        p_widget_component->SetRelativeLocation(FVector::ZeroVector);
-        p_widget_component->SetWidgetSpace(EWidgetSpace::Screen);
-
-        auto p_interaction_ui = Cast<UInteraction_UI>(p_widget_component->GetWidget());
-        p_interaction_ui->Title_txt->SetText(FText::FromString(str));
-    }
+    Update_widget_component();
+    Init_car_pos_data();
 }
 
 // Called every frame
@@ -66,10 +56,26 @@ void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_com
 
     // F키
     _player_input_component->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Player_exit);
+    _player_input_component->BindAction(TEXT("Change_to_first_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_first_seat);
+    _player_input_component->BindAction(TEXT("Change_to_second_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_second_seat);
+    _player_input_component->BindAction(TEXT("Change_to_third_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_third_seat);
+    _player_input_component->BindAction(TEXT("Change_to_fourth_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_fourth_seat);
+    _player_input_component->BindAction(TEXT("Change_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Check_empty_seat);
+
     // 이동
     _player_input_component->BindAxis(TEXT("Set_throttle"), this, &ACore_vehicle::Accelerate);
     _player_input_component->BindAxis(TEXT("Set_brake"), this, &ACore_vehicle::Brake);
     _player_input_component->BindAxis(TEXT("Set_steering"), this, &ACore_vehicle::Handling);
+}
+
+void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
+{
+    Load_from_csv_vehicle(_vehicle_type_index, m_vehicle_data);
+    Init_skeletal_mesh("Vehicles");
+    Init_UI();
+    Init_camera();
+    Init_wheeled_component();
+    Init_car_pos_component();
 }
 
 void ACore_vehicle::Load_from_csv_vehicle(e_vehicle_type _index, Fs_vehicle_data& _vehicle_data)
@@ -86,13 +92,42 @@ void ACore_vehicle::Load_from_csv_vehicle(e_vehicle_type _index, Fs_vehicle_data
     _vehicle_data = p_data_table_manager->Get_vehicle_data((int)_index);
 }
 
-void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
+void ACore_vehicle::Init_car_pos_component()
 {
-    Load_from_csv_vehicle(_vehicle_type_index, m_vehicle_data);
-    Init_skeletal_mesh("Vehicles");
-    Init_UI();
-    Init_camera();
-    Init_wheeled_component();
+    // 문짝 오브젝트 초기화
+    first_door_pos = CreateDefaultSubobject<USceneComponent>(TEXT("First_Door_pos"));
+    first_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    second_door_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Second_Door_pos"));
+    second_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    third_door_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Third_Door_pos"));
+    third_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    fourth_door_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Fourth_Door_pos"));
+    fourth_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+
+    // 좌석 오브젝트 초기화
+    first_seat_pos = CreateDefaultSubobject<USceneComponent>(TEXT("First_Seat_pos"));
+    first_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    second_seat_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Second_Seat_pos"));
+    second_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    third_seat_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Third_Seat_pos"));
+    third_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    fourth_seat_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Fourth_Seat_pos"));
+    fourth_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+}
+
+void ACore_vehicle::Init_car_pos_data()
+{
+    // 문짝 위치 초기화
+    m_map_door_pos.Add(e_seat_type::FIRST, first_door_pos->GetComponentLocation());
+    m_map_door_pos.Add(e_seat_type::SECOND, second_door_pos->GetComponentLocation());
+    m_map_door_pos.Add(e_seat_type::THIRD, third_door_pos->GetComponentLocation());
+    m_map_door_pos.Add(e_seat_type::FOURTH, fourth_door_pos->GetComponentLocation());
+
+    // 좌석 위치 초기화
+    m_map_seat_pos.Add(e_seat_type::FIRST, first_seat_pos->GetComponentLocation());
+    m_map_seat_pos.Add(e_seat_type::SECOND, second_seat_pos->GetComponentLocation());
+    m_map_seat_pos.Add(e_seat_type::THIRD, third_seat_pos->GetComponentLocation());
+    m_map_seat_pos.Add(e_seat_type::FOURTH, fourth_seat_pos->GetComponentLocation());
 }
 
 void ACore_vehicle::Init_camera()
@@ -120,6 +155,22 @@ void ACore_vehicle::Init_UI()
     widget_bp_class = bp_class.Class;
 }
 
+void ACore_vehicle::Update_widget_component()
+{
+    FString str = FString::Printf(TEXT("%s 열기"), *m_vehicle_data.type);
+
+    // 위젯 설정
+    if (widget_bp_class)
+    {
+        p_widget_component->SetWidgetClass(widget_bp_class);
+        p_widget_component->SetRelativeLocation(FVector::ZeroVector);
+        p_widget_component->SetWidgetSpace(EWidgetSpace::Screen);
+
+        auto p_interaction_ui = Cast<UInteraction_UI>(p_widget_component->GetWidget());
+        p_interaction_ui->Title_txt->SetText(FText::FromString(str));
+    }
+}
+
 void ACore_vehicle::Init_skeletal_mesh(FString _name)
 {
     // 경로로부터 메시 생성
@@ -129,6 +180,7 @@ void ACore_vehicle::Init_skeletal_mesh(FString _name)
         GetMesh()->SetSkeletalMesh(MESH.Object);
 
     GetMesh()->SetSimulatePhysics(true);
+    RootComponent = GetMesh();
 
     // 애님 인스턴스 초기화
     auto anim_instance = ConstructorHelpers::FClassFinder<UAnimInstance>(*m_vehicle_data.anim_instance_path);
@@ -175,23 +227,32 @@ void ACore_vehicle::Player_exit()
         return;
 
     // 차량 > 플레이어 전환
-    auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
+    auto player_controller        = UGameplayStatics::GetPlayerController(this, 0);
     auto player_capsule_component = m_player->GetCapsuleComponent();
     player_controller->UnPossess();
     m_player->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     player_capsule_component->SetMobility(EComponentMobility::Movable);
     player_capsule_component->SetCollisionProfileName("Pawn");
     player_controller->Possess(m_player);
+    m_map_empty_seat[m_player->current_seat_pos] = false;
+    m_player->current_seat_pos = e_seat_type::NONE;
+    Update_player_location();
     m_current_player_count--;
 }
 
 void ACore_vehicle::Accelerate(float _value)
 {
+    if (!Is_player_in_first_seat())
+        return;
+
     GetVehicleMovementComponent()->SetThrottleInput(_value);
 }
 
 void ACore_vehicle::Brake(float _value)
 {
+    if (!Is_player_in_first_seat())
+        return;
+
     GetVehicleMovementComponent()->SetBrakeInput(_value);
 }
 
@@ -200,16 +261,111 @@ void ACore_vehicle::Handling(float _value)
     GetVehicleMovementComponent()->SetSteeringInput(_value);
 }
 
-bool ACore_vehicle::Check_if_seat_available(ACustom_player* _player)
+void ACore_vehicle::Check_for_door_pos()
 {
+    float arr_vec_distance[4]{ 0.f };
+    bool is_not_near_door = false;
+
+    for (int i = 0; i < 4; i++)
+         arr_vec_distance[i] = FVector::Distance(m_player->GetActorLocation(), m_map_door_pos[(e_seat_type)i]);
+    
+    // 앞 또는 뒤 랜덤 부여
+    for (int i = 0; i < 4; i++)
+    {
+        if (arr_vec_distance[i] >= 300.f)
+        {
+            is_not_near_door = true;
+            break;
+        }
+    }
+    if(is_not_near_door)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            e_seat_type seat_type = (e_seat_type)i;
+
+            if (!m_map_empty_seat[seat_type])
+            {
+                m_map_empty_seat[seat_type] = true;
+                m_seat_type                  = seat_type;
+                return;
+            }
+        }
+        m_seat_type = e_seat_type::NONE;
+        return;
+    }
+    // 왼쪽 첫번째 좌석
+    if (arr_vec_distance[0] > arr_vec_distance[1] &&
+        arr_vec_distance[0] > arr_vec_distance[2] &&
+        arr_vec_distance[0] > arr_vec_distance[3])
+        m_seat_type = e_seat_type::FIRST;
+
+    // 왼쪽 두번째 좌석
+    else if (arr_vec_distance[1] > arr_vec_distance[0] &&
+             arr_vec_distance[1] > arr_vec_distance[2] &&
+             arr_vec_distance[1] > arr_vec_distance[3])
+             m_seat_type = e_seat_type::SECOND;
+
+    // 오른쪽 첫번째 좌석
+    else if (arr_vec_distance[2] > arr_vec_distance[3] &&
+             arr_vec_distance[2] > arr_vec_distance[0] &&
+             arr_vec_distance[2] > arr_vec_distance[1])
+             m_seat_type = e_seat_type::THIRD;
+
+    // 오른쪽 첫번째 좌석
+    else if(arr_vec_distance[3] > arr_vec_distance[0] &&
+            arr_vec_distance[3] > arr_vec_distance[1] &&
+            arr_vec_distance[3] > arr_vec_distance[2])
+            m_seat_type = e_seat_type::FOURTH;
+
+    m_map_empty_seat[m_seat_type] = true;
+}
+
+void ACore_vehicle::Check_empty_seat()
+{
+    if (!m_map_empty_seat[m_seat_type])
+        return;
+
+    Update_player_location();
+}
+
+void ACore_vehicle::Update_player_location()
+{
+    m_player->current_seat_pos = m_seat_type;
+    auto player_seatpos        = m_vehicle_data.arr_player_seat_pos[(int)m_seat_type];
+    m_player->SetActorRelativeLocation(player_seatpos.first);
+    m_player->p_spring_arm->SetRelativeLocation(player_seatpos.second);
+    m_seat_type = e_seat_type::NONE;
+}
+
+bool ACore_vehicle::Check_available_seat(ACustom_player* _player)
+{
+    if (!_player)
+        return false;
+
     if (m_current_player_count < m_vehicle_data.max_seater - 1)
     {
+        // 빈 좌석 확인 후 위치 가져오기
+        Check_for_door_pos();
+
+        if (m_seat_type == e_seat_type::NONE ||
+            !m_map_empty_seat[m_seat_type])
+            return false;
+
         // 1. 플레이어 위치 / 2. 카메라 위치
-        auto player_seatpos = m_vehicle_data.arr_player_seat_pos[m_current_player_count++];
-        _player->SetActorRelativeLocation(player_seatpos.first);
-        _player->p_spring_arm->SetRelativeLocation(player_seatpos.second);
+        Update_player_location();
+        m_current_player_count++;
         m_player = _player;
         return true;
     }
     return false;
+}
+
+bool ACore_vehicle::Is_player_in_first_seat()
+{
+    if (!m_player) 
+        return false; 
+    
+    else 
+        return m_player->current_seat_pos == e_seat_type::FIRST;
 }
