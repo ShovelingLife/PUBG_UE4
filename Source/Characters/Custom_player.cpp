@@ -5,6 +5,7 @@
 #include "Player_weapons/Core_bullet.h"
 #include "UI_PUBG/Player_UI.h"
 #include "AI_PUBG/AI_character.h"
+#include "PUBG_UE4/Global.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -36,7 +37,6 @@ ACustom_player::ACustom_player()
 void ACustom_player::OnOverlapBegin(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index, bool _is_from_sweep, const FHitResult& _sweep_result)
 {
     m_collided_weapon     = Cast<ACore_weapon>(_other_actor);
-    m_collided_vehicle    = Cast<ACore_vehicle>(_other_actor);
     is_detected_collision = true;
 }
 
@@ -66,6 +66,7 @@ void ACustom_player::Tick(float _delta_time)
     Super::Tick(_delta_time);
     Check_if_moving();
     Check_if_reloading(_delta_time);
+    Check_if_is_vehicle_near();
     //Play_walk_sound();
     Update_weapon_pos();
     Update_UI(_delta_time);
@@ -75,15 +76,11 @@ void ACustom_player::Tick(float _delta_time)
 
     if (is_detected_collision)
         Try_to_get_collided_component();
-
-    //auto player_controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-    //auto player_rotation_vec = player_controller->GetR
-    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Cyan, (player_rotation_vec).ToString());
 }
 
 void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-    Super::SetupPlayerInputComponent(PlayerInputComponent);
+    Super::SetupPlayerInputComponent(InputComponent);
 
     InputComponent->BindAxis(FName(TEXT("Up_down")), this, &ACustom_player::Move_up_down);
     InputComponent->BindAxis(FName(TEXT("Left_right")), this, &ACustom_player::Move_left_right);
@@ -111,8 +108,8 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ACustom_player::Init_player_settings()
 {
     RootComponent = GetCapsuleComponent();
-    // ?숈씪 ???덉쓬
     GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
+    //GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 
     // ?띾룄 ?쒗븳
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
@@ -146,18 +143,18 @@ void ACustom_player::Init_audio()
 
 void ACustom_player::Init_camera_settings()
 {
-    // ?ㅽ봽留??붿씠??移대찓??珥덇린?? 
+    // 카메라 컴포넌트 초기화
     p_spring_arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring_arm"));
-    p_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+    p_camera     = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
-    // ?ㅽ봽留??붿씠??移대찓???ㅼ젙
+    // 카메라를 부모 컴포넌트에 부착
     p_spring_arm->SetupAttachment(reinterpret_cast<USceneComponent*>(GetCapsuleComponent()));
     p_camera->SetupAttachment(p_spring_arm);
 
-    // Transform 移대찓???ㅼ젙
-    p_spring_arm->TargetArmLength = 150.f;
-    p_spring_arm->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
-    p_spring_arm->SetWorldLocation(FVector(0.f, 0.f, 80.f));
+    // 카메라 설정
+    p_spring_arm->TargetArmLength = AGlobal::player_spring_arm_length;
+    p_spring_arm->SetRelativeRotation(AGlobal::player_spring_arm_rotation);
+    p_spring_arm->SetWorldLocation(AGlobal::player_spring_arm_location);
     p_spring_arm->bUsePawnControlRotation = true;
 }
 
@@ -282,6 +279,42 @@ void ACustom_player::Check_if_moving()
             }
         }
         m_is_moving = true;
+    }
+}
+
+void ACustom_player::Check_if_is_vehicle_near()
+{
+    if (is_in_vehicle)
+        return;
+
+    APlayerCameraManager* camera_manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
+    FVector               begin_pos      = GetActorLocation();
+    FVector               forward_vec    = GetActorForwardVector() * 50;
+    FHitResult            hit_result;
+    FVector               end_pos        = begin_pos + forward_vec;
+    auto                  p_world        = GetWorld();
+    p_world->LineTraceSingleByObjectType(hit_result, begin_pos, end_pos, FCollisionObjectQueryParams(ECC_Vehicle));
+    //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
+
+    // 차량을 감지
+    AActor* hitted_actor = hit_result.GetActor();
+
+    if (!hitted_actor)
+    {
+        if (m_collided_vehicle)
+            m_collided_vehicle->is_player_near = false;
+
+        is_detected_collision = false;
+        return;
+    }
+    if(hitted_actor->IsA(ACore_vehicle::StaticClass()))
+    {
+        m_collided_vehicle = Cast<ACore_vehicle>(hitted_actor);
+        
+        if (m_collided_vehicle)
+            m_collided_vehicle->is_player_near = true;
+
+        is_detected_collision = true;
     }
 }
 
@@ -469,13 +502,14 @@ void ACustom_player::Shoot()
 
         // 레이캐스트 적용
         APlayerCameraManager* camera_manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-        FVector               begin_pos = tmp_weapon->skeletal_mesh->GetSocketLocation("Muzzle_socket");
-        FVector               forward_vec = camera_manager->GetActorForwardVector() * 500;
+        FVector               begin_pos      = tmp_weapon->skeletal_mesh->GetSocketLocation("Muzzle_socket");
+        FVector               forward_vec    = camera_manager->GetActorForwardVector() * 500;
         FHitResult            hit_result;
         FVector               end_pos = begin_pos + forward_vec;
-        DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
         p_world->LineTraceSingleByObjectType(hit_result, begin_pos, end_pos, FCollisionObjectQueryParams(ECC_Pawn));
+        //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
         FRotator bullet_rotation = UKismetMathLibrary::FindLookAtRotation(begin_pos, end_pos);
+        //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
         //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Cyan, bullet_rotation.ToString());
         AActor* bullet = nullptr;
 
@@ -660,17 +694,11 @@ void ACustom_player::Try_to_get_collided_component()
         // 
         else if (m_collided_vehicle)
         {
-            // 차량일 시 소유권 및 카메라 이전
-            auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
-
             //  차량 탑승 상태
             if (m_collided_vehicle->Check_available_seat(this))
             {
-                player_controller->UnPossess();
-                AttachToActor(m_collided_vehicle, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-                GetCapsuleComponent()->SetMobility(EComponentMobility::Static);
-                player_controller->Possess(Cast<APawn>(m_collided_vehicle));
-                GetCapsuleComponent()->SetCollisionProfileName("OverlapAll");
+                m_collided_vehicle->is_player_near = false;
+                is_in_vehicle                      = true;
             }
             m_collided_vehicle = nullptr;
         }
@@ -919,6 +947,22 @@ void ACustom_player::Equip_second_weapon()
             Play_swap_sound();
         }
     }
+}
+
+void ACustom_player::Exit_from_vehicle(FVector _exit_location)
+{
+    // 플레이어 충돌체 관련
+    auto capsule_component = GetCapsuleComponent();
+    capsule_component->SetMobility(EComponentMobility::Movable);
+    capsule_component->SetCollisionProfileName("Pawn");
+    capsule_component->SetEnableGravity(true);
+
+    // 플레이어 위치 및 카메라 위치
+    current_seat_type = e_seat_type::NONE;
+    is_in_vehicle     = false;
+    SetActorLocation(_exit_location);
+    p_spring_arm->SetRelativeLocation(AGlobal::player_spring_arm_location);
+    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 
 void ACustom_player::Change_shoot_mode()

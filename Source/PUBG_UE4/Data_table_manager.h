@@ -28,7 +28,7 @@ private:
     class UDataTable* mp_vehicle_data_table;
 
     Fs_vehicle_data   m_arr_vehicle_data[MAX_VEHICLE_COUNT];
-    const FString     mk_vehicle_mesh_path = "/Game/VehicleVarietyPack/Skeletons/";
+    const FString     mk_vehicle_mesh_path = "/Game/Characters/Vehicles/Skeletons/";
     const FString     mk_anim_instance_path = "/Game/Blueprints/Vehicles/";
     const FString     mk_vehicle_sound_path   = "";
     int               m_current_vehicle_count = 0;

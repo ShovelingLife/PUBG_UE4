@@ -14,6 +14,6 @@ class CHARACTERS_API ACustom_player_controller : public APlayerController
 {
 	GENERATED_BODY()
 
-//protected:
-//	virtual void OnUnPossess() override;
+protected:
+	virtual void OnUnPossess() override;
 };

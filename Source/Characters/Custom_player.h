@@ -92,8 +92,10 @@ public:
     bool           is_animation_playing  = false;
     bool           is_aiming             = false;
     bool           is_weapon_equipped    = false;
+    bool           is_in_vehicle         = false;
 
-    e_seat_type current_seat_pos = e_seat_type::NONE;
+    UPROPERTY(VisibleAnywhere, Category = Seat_type)
+    e_seat_type current_seat_type = e_seat_type::NONE;
 
 public:
     // Sets default values for this character's properties
@@ -108,6 +110,9 @@ private:
     // Ï∂©Îèå ??
     UFUNCTION()
         void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+    //UFUNCTION()
+    //void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
@@ -140,8 +145,6 @@ private:
 
     void Play_swap_sound();
 
-    // ?¥Îèô Í¥Ä???®Ïàò
-private:
     void Begin_interact() { m_is_interacting = true; }
 
     void End_interact() { m_is_interacting = false; }
@@ -158,6 +161,9 @@ private:
 
     // 
     void Check_if_moving();
+
+    // ¬˜∑Æ ∞®¡ˆ«œ¥¬ «‘ºˆ
+    void Check_if_is_vehicle_near();
 
     void Play_walk_sound();
 
@@ -225,4 +231,7 @@ private:
     void Equip_first_weapon();
 
     void Equip_second_weapon();
+
+public:
+    void Exit_from_vehicle(FVector);
 };
