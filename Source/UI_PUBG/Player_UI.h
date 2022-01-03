@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
+#include "Member_State_UI.h"
+#include "Player_State_UI.h"
+#include "KillLog_Box_UI.h"
+#include "MiniMap_UI.h"
+#include "Current_Weapon_UI.h"
 #include "Player_UI.generated.h"
 
 /**
@@ -18,37 +20,25 @@ class UI_PUBG_API UPlayer_UI : public UUserWidget
 	GENERATED_BODY()
 
 public:
-    // 체력 관련
+    // 플레이어 파티창 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UProgressBar* Health_bar;
+    UMember_State_UI* Member_state_UI; 
 
+    // 현재 플레이어 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UProgressBar* Energy_bar;
+    UPlayer_State_UI* Player_state_UI;
 
+    // 킬로그 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UProgressBar* Oxygen_bar;
+    UKillLog_Box_UI* Kill_log_box_UI;
 
-    // 총알 관련
+    // 미니맵 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Ammo_txt;
+    UMiniMap_UI* Minimap_UI;
 
-    // 총알 관련
+    // 현재 무기 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Shoot_type_txt;
-
-    // 무기 관련
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* First_weapon_img;
-
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Second_weapon_img;
-
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Weapon_select_img;
-
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Reticle_img;
-
+    UCurrent_Weapon_UI* Current_weapon_UI;
 
 protected:
     void NativeConstruct() override;

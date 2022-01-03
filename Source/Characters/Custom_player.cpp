@@ -1,11 +1,12 @@
 ﻿#include "Custom_player.h"
 #include "Core_vehicle.h"
-#include "Inventory_manager.h"
 #include "Player_weapons/Core_weapon.h"
 #include "Player_weapons/Core_bullet.h"
-#include "UI_PUBG/Player_UI.h"
 #include "AI_PUBG/AI_character.h"
 #include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/UI_manager.h"
+#include "PUBG_UE4/Sound_manager.h" 
+#include "UI_PUBG/Inventory_manager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -26,12 +27,11 @@ ACustom_player::ACustom_player()
     PrimaryActorTick.bCanEverTick = true;
 
     Init_player_settings();
-    Init_audio();
     Init_camera_settings();
     Init_mesh_settings();
     Init_animation_settings();
-    Init_UI();
     Init_particle_system();
+    Init_managers();
 }
 
 void ACustom_player::OnOverlapBegin(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index, bool _is_from_sweep, const FHitResult& _sweep_result)
@@ -48,17 +48,7 @@ void ACustom_player::OnOverlapEnd(class UPrimitiveComponent* _overlapped_comp, c
 void ACustom_player::BeginPlay()
 {
     Super::BeginPlay();
-
-    UUserWidget* p_user_widget = CreateWidget(GetWorld(), m_user_widget);
-    p_user_widget->AddToViewport(0);
-    mp_user_ui = Cast<UPlayer_UI>(p_user_widget);
-
-    // 인벤토리 설정
-    if (m_inventory_manager_subclass)
-    {
-        mp_inventory_manager = Cast<AInventory_manager>(GetWorld()->SpawnActor(m_inventory_manager_subclass, &GetActorTransform()));
-        mp_inventory_manager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-    }
+    mp_UI_manager = GetWorld()->SpawnActor<AUI_manager>(AUI_manager::StaticClass(), FTransform::Identity);
 }
 
 void ACustom_player::Tick(float _delta_time)
@@ -69,7 +59,6 @@ void ACustom_player::Tick(float _delta_time)
     Check_if_is_vehicle_near();
     //Play_walk_sound();
     Update_weapon_pos();
-    Update_UI(_delta_time);
 
     if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::LeftMouseButton))
         Check_continously_shooting(_delta_time);
@@ -115,30 +104,6 @@ void ACustom_player::Init_player_settings()
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
     GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACustom_player::OnOverlapBegin);
     GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACustom_player::OnOverlapEnd);
-
-    ConstructorHelpers::FClassFinder<AActor> INVENTORY_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Inventory_manager.BP_Inventory_manager_C'"));
-
-    if (INVENTORY_MANAGER.Succeeded())
-        m_inventory_manager_subclass = INVENTORY_MANAGER.Class;
-}
-
-void ACustom_player::Init_audio()
-{
-    // Audio initialization
-    mp_audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-    mp_audio->AttachTo(GetCapsuleComponent());
-    static ConstructorHelpers::FObjectFinder<USoundBase> WALK_SOUND(TEXT("/Game/SFX/Footstep_sound/Concrete/Concrete_footstep_1"));
-    static ConstructorHelpers::FObjectFinder<USoundBase> GUN_FARMING_SOUND(TEXT("/Game/SFX/Gun_sounds/Gun_pickup"));
-    static ConstructorHelpers::FObjectFinder<USoundBase> GUN_SWAPPING_SOUND(TEXT("/Game/SFX/Gun_sounds/Gun_swap"));
-
-    if (GUN_FARMING_SOUND.Succeeded())
-        mp_gun_farm_sound = GUN_FARMING_SOUND.Object;
-
-    if (GUN_SWAPPING_SOUND.Succeeded())
-        mp_gun_swap_sound = GUN_SWAPPING_SOUND.Object;
-
-    if (WALK_SOUND.Succeeded())
-        mp_walk_sound = WALK_SOUND.Object;
 }
 
 void ACustom_player::Init_camera_settings()
@@ -178,18 +143,17 @@ void ACustom_player::Init_animation_settings()
         GetMesh()->SetAnimInstanceClass(BP_ANIM.Class);
 }
 
-void ACustom_player::Init_UI()
-{
-    // UI 초기화
-    auto tmp_ui_widget_class = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Player_UI.BP_Player_UI_C'"));
-
-    if (tmp_ui_widget_class.Succeeded())
-        m_user_widget = tmp_ui_widget_class.Class;
-}
-
 void ACustom_player::Init_particle_system()
 {
 
+}
+
+void ACustom_player::Init_managers()
+{
+    auto BP_sound_manager = ConstructorHelpers::FClassFinder<AActor>(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Sound_manager.BP_Sound_manager_C'"));
+
+    if (BP_sound_manager.Succeeded())
+        mp_sound_manager = Cast<ASound_manager>(BP_sound_manager.Class->GetDefaultObject());
 }
 
 void ACustom_player::Check_if_moving()
@@ -315,20 +279,6 @@ void ACustom_player::Check_if_is_vehicle_near()
             m_collided_vehicle->is_player_near = true;
 
         is_detected_collision = true;
-    }
-}
-
-void ACustom_player::Play_walk_sound()
-{
-    APlayerController* player_controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-
-    if (player_controller->GetInputKeyTimeDown(EKeys::W) > 0 ||
-        player_controller->GetInputKeyTimeDown(EKeys::A) > 0 ||
-        player_controller->GetInputKeyTimeDown(EKeys::S) > 0 ||
-        player_controller->GetInputKeyTimeDown(EKeys::D) > 0)
-    {
-        mp_audio->SetSound(mp_walk_sound);
-        mp_audio->Play(0.f);
     }
 }
 
@@ -661,12 +611,6 @@ void ACustom_player::Try_to_get_collided_component()
         // 臾닿린硫?
         if (m_collided_weapon)
         {
-            // ?쒕엻 ?ъ슫??
-            if (mp_gun_farm_sound)
-            {
-                mp_audio->SetSound(mp_gun_farm_sound);
-                mp_audio->Play();
-            }
             // ?꾩옱 ?μ갑?섎뒗 臾닿린媛 ?놁쑝硫?
             if (!m_first_weapon)
             {
@@ -705,15 +649,6 @@ void ACustom_player::Try_to_get_collided_component()
     }
 }
 
-void ACustom_player::Play_swap_sound()
-{
-    if (mp_gun_swap_sound)
-    {
-        mp_audio->SetSound(mp_gun_swap_sound);
-        mp_audio->Play();
-    }
-}
-
 void ACustom_player::Update_weapon_pos()
 {
     switch (current_state)
@@ -733,136 +668,26 @@ void ACustom_player::Update_weapon_pos()
         break;
     }
     // ?꾩옱 臾닿린媛 泥ル쾲吏?臾닿린媛 ?꾨땶 寃쎌슦
-    if (m_first_weapon &&
-        !m_first_weapon->is_equipped)
+    if (Is_first_weapon_equipped())
         m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("first_back_weapon_sock"));
 
     // ?꾩옱 臾닿린媛 ?먮쾲吏?臾닿린媛 ?꾨땶 寃쎌슦
-    if (m_second_weapon &&
-        !m_second_weapon->is_equipped)
+    if (Is_second_weapon_equipped())
         m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("second_back_weapon_sock"));
-}
-
-void ACustom_player::Update_UI(float _delta_time)
-{
-    if (mp_user_ui)
-    {
-        Update_weapon_slot_UI();
-        Update_oxygen_bar_UI(_delta_time);
-        Update_aim_UI();
-        Update_bullet_count_UI();
-    }
-}
-
-void ACustom_player::Update_oxygen_bar_UI(float _delta_time)
-{
-    // ?곗냼諛?泥댄겕
-    if (!m_is_sprinting &&
-        current_oxygen < 1.f)
-        current_oxygen += (0.03f * _delta_time);
-
-    mp_user_ui->Oxygen_bar->SetPercent(current_oxygen);
-}
-
-void ACustom_player::Update_weapon_slot_UI()
-{
-    FSlateBrush      slate_brush;
-    FWidgetTransform select_img_trans;
-    slate_brush.SetImageSize(FVector2D(350.f, 75.f));
-
-    // 착용한 무기가 없을 시
-    if (!m_first_weapon)
-        mp_user_ui->Weapon_select_img->SetVisibility(ESlateVisibility::Hidden);
-
-    else
-    {
-        mp_user_ui->Weapon_select_img->SetVisibility(ESlateVisibility::Visible);
-        slate_brush.SetResourceObject(m_first_weapon->p_render_target_ui_mesh);
-        mp_user_ui->First_weapon_img->SetBrush(slate_brush);
-
-        // 첫번째 무기 착용 했을 시
-        if (m_first_weapon->is_equipped)
-        {
-            select_img_trans.Translation.Set(0.f, -150.f);
-            mp_user_ui->Weapon_select_img->SetRenderTransform(select_img_trans);
-        }
-    }
-    if (m_second_weapon)
-    {
-        slate_brush.SetResourceObject(m_second_weapon->p_render_target_ui_mesh);
-        mp_user_ui->Second_weapon_img->SetBrush(slate_brush);
-
-        // 두번째 무기 착용 했을 시
-        if (m_second_weapon->is_equipped)
-        {
-            select_img_trans.Translation.Set(0.f, -75.f);
-            mp_user_ui->Weapon_select_img->SetRenderTransform(select_img_trans);
-        }
-    }
-}
-
-void ACustom_player::Update_aim_UI()
-{
-    // ?먯엫
-    if (is_aiming)
-    {
-        FWidgetTransform reticle_img_trans;
-        float mouse_posX = 0.f, mouse_posY = 0.f;
-        mp_user_ui->Reticle_img->SetVisibility(ESlateVisibility::Visible);
-        reticle_img_trans.Translation.Set(mouse_posX, mouse_posY);
-        UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouse_posX, mouse_posY);
-        mp_user_ui->Reticle_img->SetRenderTransform(reticle_img_trans);
-    }
-    else
-        mp_user_ui->Reticle_img->SetVisibility(ESlateVisibility::Hidden);
-}
-
-void ACustom_player::Update_bullet_count_UI()
-{
-    bool is_first_equipped = false;
-    bool is_second_equipped = false;
-
-    Verify_equipped_weapon(is_first_equipped, is_second_equipped);
-
-    if (is_first_equipped)
-    {
-        FString str = FString::FromInt(m_first_weapon->weapon_data.current_bullet_count) + "/" + FString::FromInt(m_first_weapon->weapon_data.current_ammunition_count);
-        mp_user_ui->Ammo_txt->SetText(FText::FromString(str));
-    }
-    else
-    {
-        if (is_second_equipped)
-        {
-            FString str = FString::FromInt(m_second_weapon->weapon_data.current_bullet_count) + "/" + FString::FromInt(m_second_weapon->weapon_data.current_ammunition_count);
-            mp_user_ui->Ammo_txt->SetText(FText::FromString(str));
-        }
-        else
-            mp_user_ui->Ammo_txt->SetText(FText::FromString(""));
-    }
 }
 
 void ACustom_player::Swap_weapon()
 {
-    //  첫번쨰 무기가 있을 시 교체
-    if (m_first_weapon)
-    {
-        if (!m_first_weapon->is_equipped)
-        {
-            Select_weapon(e_equipped_weapon_type::FIRST);
-            Play_swap_sound();
-        }
-        else // 두번쨰 무기가 있을 시 교체
-        {
-            if (m_second_weapon)
-            {
-                if (!m_second_weapon->is_equipped)
-                {
-                    Select_weapon(e_equipped_weapon_type::SECOND);
-                    Play_swap_sound();
-                }
-            }
-        }
-    }
+    if (Is_first_weapon_equipped())
+        Select_weapon(e_equipped_weapon_type::FIRST);
+    
+    // 두번쨰 무기가 있을 시 교체
+    if (Is_second_weapon_equipped())
+        Select_weapon(e_equipped_weapon_type::SECOND);
+}
+
+void ACustom_player::Change_shoot_mode()
+{
 }
 
 void ACustom_player::Verify_equipped_weapon(bool& _first_weapon, bool& _second_weapon)
@@ -888,9 +713,8 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
         if (m_second_weapon)
             m_second_weapon->is_equipped = false;
 
+        tmp_weapon = m_first_weapon;
         m_first_weapon->is_equipped = true;
-        m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("front_weapon_sock"));
-        m_first_weapon->p_widget_component->SetVisibility(false);
         break;
 
     case e_equipped_weapon_type::SECOND: // 두번째 무기 착용
@@ -898,55 +722,50 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
         if (!m_second_weapon)
             return;
 
+        tmp_weapon = m_second_weapon;
+
         m_first_weapon->is_equipped = false;
         m_second_weapon->is_equipped = true;
-        m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("front_weapon_sock"));
-        m_second_weapon->p_widget_component->SetVisibility(false);
         break;
 
     case e_equipped_weapon_type::SWAP: // 교체
 
-        tmp_weapon = m_second_weapon;
-        m_second_weapon = m_collided_weapon;
+        if (!m_second_weapon)
+            return;
 
-        // ?먮쾲吏?臾닿린 ?댁젣 諛??붾뱶???뚰솚
-        tmp_weapon->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
-        tmp_weapon->SetActorTransform(m_second_weapon->GetTransform());
-        tmp_weapon->p_widget_component->SetVisibility(true);
+        tmp_weapon = m_collided_weapon;
 
-        // 援먯껜
-        m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("front_weapon_sock"));
-        m_second_weapon->p_widget_component->SetVisibility(false);
-        Play_swap_sound();
+        // 맵에 배치된 무기랑 교체
+        m_second_weapon->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
+        m_second_weapon->SetActorTransform(m_second_weapon->GetTransform());
+        m_second_weapon->p_widget_component->SetVisibility(true);
+        m_second_weapon = nullptr;
         break;
 
     case e_equipped_weapon_type::NONE: break;
     }
+    // 장착
+    if (tmp_weapon)
+    {
+        tmp_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("front_weapon_sock"));
+        tmp_weapon->p_widget_component->SetVisibility(false);
+    }
+    //Play_swap_sound();
     m_collided_weapon = nullptr;
 }
 
 void ACustom_player::Equip_first_weapon()
 {
-    if (m_first_weapon)
-    {
-        if (!m_first_weapon->is_equipped)
-        {
-            Select_weapon(e_equipped_weapon_type::FIRST);
-            Play_swap_sound();
-        }
-    }
+    if (m_first_weapon &&
+        !m_first_weapon->is_equipped)
+        Select_weapon(e_equipped_weapon_type::FIRST);
 }
 
 void ACustom_player::Equip_second_weapon()
 {
-    if (m_second_weapon)
-    {
-        if (!m_second_weapon->is_equipped)
-        {
-            Select_weapon(e_equipped_weapon_type::SECOND);
-            Play_swap_sound();
-        }
-    }
+    if (m_second_weapon &&
+        !m_second_weapon->is_equipped)
+        Select_weapon(e_equipped_weapon_type::SECOND);
 }
 
 void ACustom_player::Exit_from_vehicle(FVector _exit_location)
@@ -965,49 +784,18 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 
-void ACustom_player::Change_shoot_mode()
-{
-    if (!m_first_weapon &&
-        !m_second_weapon)
-        return;
-
-    if (!m_is_changed_shoot_type)
-    {
-        m_is_changed_shoot_type = true;
-        m_shoot_time = 0.25f;
-
-        if (mp_user_ui)
-            mp_user_ui->Shoot_type_txt->SetText(FText::FromString(FString::Printf(TEXT("모드:연사"), *FString(""))));
-    }
-    else
-    {
-        m_is_changed_shoot_type = false;
-        m_shoot_time = 0.1f;
-
-        if (mp_user_ui)
-            mp_user_ui->Shoot_type_txt->SetText(FText::FromString(FString::Printf(TEXT("모드:점사"), *FString(""))));
-    }
-}
-
 void ACustom_player::Open_inventory()
 {
-    bool is_opened = false;
-    if (mp_inventory_manager)
-    {
-        is_opened = mp_inventory_manager->is_opened;
+    bool is_opened_inventory = mp_UI_manager->p_inventory_manager->is_opened;
+    mp_UI_manager->p_inventory_manager->is_opened = (is_opened_inventory == true) ? false : true;
+}
 
-        // 인벤토리를 닫음
-        if (is_opened)
-        {
-            is_opened = false;
-            //GEngine->GameViewport->Viewport->SetUserFocus(true);
-            FSlateApplication::Get().SetUserFocusToGameViewport(0);
-        }
-        else // 인벤토리를 열음
-            is_opened = true;
+bool ACustom_player::Is_first_weapon_equipped()
+{
+    return (m_first_weapon && !m_first_weapon->is_equipped); 
+}
 
-        mp_inventory_manager->is_opened       = is_opened;
-        p_spring_arm->bUsePawnControlRotation = !is_opened;
-        bUseControllerRotationYaw             = !is_opened;
-    }
+bool ACustom_player::Is_second_weapon_equipped()
+{
+    return (m_second_weapon && !m_second_weapon->is_equipped);
 }

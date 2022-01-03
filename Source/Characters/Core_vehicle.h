@@ -63,7 +63,7 @@ protected:
         { e_seat_type::SECOND,false },
         { e_seat_type::THIRD, false },
         { e_seat_type::FOURTH,false },
-        { e_seat_type::NONE,false }
+        { e_seat_type::NONE,  false }
     };
     ACustom_player*       m_player;
     Fs_vehicle_data       m_vehicle_data;

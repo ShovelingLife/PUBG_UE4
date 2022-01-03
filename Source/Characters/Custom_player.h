@@ -7,8 +7,7 @@
 class UMy_anim_instance;
 class ACore_weapon;
 class ACore_vehicle;
-class UPlayer_UI;
-class AInventory_manager;
+class AUI_manager;
 
 enum class e_equipped_weapon_type
 {
@@ -24,6 +23,15 @@ class CHARACTERS_API ACustom_player : public ACharacter
     GENERATED_BODY()
 
 private:
+    // ¸Å´ÏÀú ¿ÀºêÁ§Æ®µé
+    TSubclassOf<AUI_manager> UI_manager_actor;
+
+    UPROPERTY(VisibleAnywhere, Category = Manager)
+    AUI_manager*    mp_UI_manager;
+
+    UPROPERTY(VisibleAnywhere, Category = Manager)
+    class ASound_manager* mp_sound_manager;
+
     // ÇöÀç ¾²¿©Áö´Â ¿ÀºêÁ§Æ®µé
     ACore_weapon*  m_collided_weapon = nullptr;
     ACore_weapon*  m_first_weapon    = nullptr;
@@ -34,21 +42,9 @@ private:
     UPROPERTY(VisibleAnywhere, Category = Audio)
         class UAudioComponent* mp_audio;
 
-    USoundBase* mp_walk_sound;
-    USoundBase* mp_gun_farm_sound;
-    USoundBase* mp_gun_swap_sound;
-
     // ÆÄÆ¼Å¬ °ü·Ã
     UPROPERTY(VisibleAnywhere, Category = Particle)
         class UParticleSystemComponent* mp_particle;
-
-    // UI °ü·Ã
-    TSubclassOf<UUserWidget>  m_user_widget;
-    UPlayer_UI* mp_user_ui;
-
-    // ÀÎº¥Åä¸® °ü·Ã
-    TSubclassOf<AInventory_manager>  m_inventory_manager_subclass;
-    AInventory_manager* mp_inventory_manager;
 
     // ÀÌµ¿ °ü·Ã
     FVector     m_direction_up_down{ 0.f };
@@ -70,7 +66,7 @@ private:
     bool        m_is_changed_shoot_type = true;
     bool        m_is_shooting           = false;
 
-    // ê¸°í? ë³€??
+ // ÇÃ·¹ÀÌ¾î ÄÄÆ÷³ÍÆ® ¹× »óÅÂ º¯¼ö
 public:
     UPROPERTY(VisibleAnywhere, Category = Camera)
         class USpringArmComponent* p_spring_arm = nullptr;
@@ -92,10 +88,10 @@ public:
     bool           is_animation_playing  = false;
     bool           is_aiming             = false;
     bool           is_weapon_equipped    = false;
-    bool           is_in_vehicle         = false;
-
-    UPROPERTY(VisibleAnywhere, Category = Seat_type)
+    
+    // Â÷·® °ü·Ã º¯¼ö
     e_seat_type current_seat_type = e_seat_type::NONE;
+    bool        is_in_vehicle     = false;
 
 public:
     // Sets default values for this character's properties
@@ -127,23 +123,19 @@ private:
 private:
     void Init_player_settings();
 
-    void Init_audio();
-
     void Init_camera_settings();
 
     void Init_mesh_settings();
 
     void Init_animation_settings();
 
-    void Init_UI();
-
     void Init_particle_system();
+
+    void Init_managers();
 
 private:
 
     void Try_to_get_collided_component();
-
-    void Play_swap_sound();
 
     void Begin_interact() { m_is_interacting = true; }
 
@@ -165,7 +157,7 @@ private:
     // Â÷·® °¨ÁöÇÏ´Â ÇÔ¼ö
     void Check_if_is_vehicle_near();
 
-    void Play_walk_sound();
+    
 
     void Check_continously_shooting(float);
 
@@ -193,23 +185,9 @@ private:
     // ?ì„ ë§ì¶”ê¸?
 
     // ------- UI °ü·Ã -------
-
-    void Update_UI(float);
-
-    void Update_oxygen_bar_UI(float);
-
-    void Update_weapon_slot_UI();
-
-    void Update_aim_UI();
-
-    void Update_bullet_count_UI();
-
-    void Change_shoot_mode();
-
     void Open_inventory();
 
     // ------- ¹«±â °ü·Ã -------
-
     void Aim();
 
     void Shoot();
@@ -224,6 +202,8 @@ private:
 
     void Swap_weapon();
 
+    void Change_shoot_mode();
+
     void Verify_equipped_weapon(bool&, bool&);
 
     void Select_weapon(e_equipped_weapon_type);
@@ -231,6 +211,12 @@ private:
     void Equip_first_weapon();
 
     void Equip_second_weapon();
+
+    // Ã¹¹øÂ° ¹«±â°¡ ÀåÂø µÇ¾îÀÖÀ½
+    bool Is_first_weapon_equipped();
+
+    // µÎ¹øÂ° ¹«±â°¡ ÀåÂø µÇ¾îÀÖÀ½
+    bool Is_second_weapon_equipped();
 
 public:
     void Exit_from_vehicle(FVector);

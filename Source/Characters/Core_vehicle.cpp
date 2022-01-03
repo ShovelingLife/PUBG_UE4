@@ -54,14 +54,15 @@ void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_com
 
     // 운전석
     InputComponent->BindAxis(TEXT("Set_throttle"), this, &ACore_vehicle::Accelerate);
-    InputComponent->BindAxis(TEXT("Set_brake"), this, &ACore_vehicle::Brake);
+    InputComponent->BindAxis(TEXT("Set_brake"),    this, &ACore_vehicle::Brake);
     InputComponent->BindAxis(TEXT("Set_steering"), this, &ACore_vehicle::Handling);
-    InputComponent->BindAxis(TEXT("Look_up"), this, &ACore_vehicle::Look_up);
-    InputComponent->BindAxis(TEXT("Turn"), this, &ACore_vehicle::Turn);
-    InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Player_exit);
-    InputComponent->BindAction(TEXT("Change_to_first_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_first_seat);
+    InputComponent->BindAxis(TEXT("Look_up"),      this, &ACore_vehicle::Look_up);
+    InputComponent->BindAxis(TEXT("Turn"),         this, &ACore_vehicle::Turn);
+
+    InputComponent->BindAction(TEXT("Interact"),              EInputEvent::IE_Pressed, this, &ACore_vehicle::Player_exit);
+    InputComponent->BindAction(TEXT("Change_to_first_seat"),  EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_first_seat);
     InputComponent->BindAction(TEXT("Change_to_second_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_second_seat);
-    InputComponent->BindAction(TEXT("Change_to_third_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_third_seat);
+    InputComponent->BindAction(TEXT("Change_to_third_seat"),  EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_third_seat);
     InputComponent->BindAction(TEXT("Change_to_fourth_seat"), EInputEvent::IE_Pressed, this, &ACore_vehicle::Change_to_fourth_seat);
 }
 
@@ -242,7 +243,7 @@ void ACore_vehicle::Init_wheeled_component()
 
 void ACore_vehicle::Player_exit()
 {
-    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Cyan, "Player_exited");
+    //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Cyan, "Player_exited");
     // 플레이어 초기세팅으로
     auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
     player_controller->Possess(m_player);
