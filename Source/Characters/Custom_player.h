@@ -2,12 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/My_enum.h"
+#include "PUBG_UE4/Global.h"
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 class UMy_anim_instance;
 class ACore_weapon;
 class ACore_vehicle;
-class AUI_manager;
 
 enum class e_equipped_weapon_type
 {
@@ -23,15 +23,6 @@ class CHARACTERS_API ACustom_player : public ACharacter
     GENERATED_BODY()
 
 private:
-    // 매니저 오브젝트들
-    TSubclassOf<AUI_manager> UI_manager_actor;
-
-    UPROPERTY(VisibleAnywhere, Category = Manager)
-    AUI_manager*    mp_UI_manager;
-
-    UPROPERTY(VisibleAnywhere, Category = Manager)
-    class ASound_manager* mp_sound_manager;
-
     // 현재 쓰여지는 오브젝트들
     ACore_weapon*  m_collided_weapon = nullptr;
     ACore_weapon*  m_first_weapon    = nullptr;
@@ -45,6 +36,9 @@ private:
     // 파티클 관련
     UPROPERTY(VisibleAnywhere, Category = Particle)
         class UParticleSystemComponent* mp_particle;
+    
+    // 플레이어 현재 상태
+    Fs_player_data m_player_data;
 
     // 이동 관련
     FVector     m_direction_up_down{ 0.f };
@@ -61,10 +55,10 @@ private:
     float       m_shoot_time            = 0.25f;
     float       m_current_shoot_time    = 0.f;
     bool        m_is_reloading          = false;
-    bool        m_is_sprinting          = false;
     bool        m_is_interacting        = false;
     bool        m_is_changed_shoot_type = true;
     bool        m_is_shooting           = false;
+    bool        m_is_inventory_opened   = false;
 
  // 플레이어 컴포넌트 및 상태 변수
 public:
@@ -79,9 +73,6 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
         float current_health = 100;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Oxygen)
-        float current_oxygen = 1.f;
 
     e_player_state current_state;
     bool           is_detected_collision = false;
@@ -130,8 +121,6 @@ private:
     void Init_animation_settings();
 
     void Init_particle_system();
-
-    void Init_managers();
 
 private:
 

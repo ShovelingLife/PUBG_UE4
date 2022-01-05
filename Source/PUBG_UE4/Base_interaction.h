@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -19,15 +17,17 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Collider)
     class UBoxComponent* m_box_collider = nullptr;
 
+    // 상호작용 관련 변수
+    UPROPERTY(VisibleAnywhere, Category = Widget_component)
+    class UWidgetComponent* mp_interaction_widget_comp;
+    FString                 m_object_type;
+
 public:
+
     UPROPERTY(VisibleAnywhere, Category = Mesh)
     class USkeletalMeshComponent* skeletal_mesh = nullptr;
 
-    TSubclassOf< UUserWidget> widget_bp_class;
-    class UInteraction_UI*    p_widget;
-
-    UPROPERTY(VisibleAnywhere, Category = UI)
-    class UWidgetComponent* p_widget_component;
+    bool is_player_near = false;
 
 public:
     // Sets default values for this actor's properties
@@ -37,13 +37,6 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    void Set_UI_widget_text(FText);
-
-    void Init_static_mesh(FString, FName);
-
-    void Init_skeletal_mesh(FString, FName);
-
-    // Called every frame
     virtual void Tick(float) override;
 
 public:
@@ -51,6 +44,14 @@ public:
 
     virtual void NotifyActorEndOverlap(AActor*) override;
 
-    // Function which interacts
+protected:
+    void Init_static_mesh(FString, FName);
+
+    void Init_skeletal_mesh(FString, FName);
+
+    void Init_interaction_UI();
+
+public:
+    // 상호작용 함수
     virtual void Interact() { };
 };

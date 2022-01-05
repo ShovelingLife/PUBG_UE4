@@ -1,12 +1,12 @@
 ﻿#include "Custom_player.h"
 #include "Core_vehicle.h"
+#include "PUBG_gamemode.h"
 #include "Player_weapons/Core_weapon.h"
 #include "Player_weapons/Core_bullet.h"
 #include "AI_PUBG/AI_character.h"
-#include "PUBG_UE4/Global.h"
-#include "PUBG_UE4/UI_manager.h"
-#include "PUBG_UE4/Sound_manager.h" 
-#include "UI_PUBG/Inventory_manager.h"
+#include "PUBG_UE4/Global.h" 
+#include "PUBG_UE4/Custom_game_instance.h" 
+#include "PUBG_UE4/UI_manager.h" 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -31,7 +31,6 @@ ACustom_player::ACustom_player()
     Init_mesh_settings();
     Init_animation_settings();
     Init_particle_system();
-    Init_managers();
 }
 
 void ACustom_player::OnOverlapBegin(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index, bool _is_from_sweep, const FHitResult& _sweep_result)
@@ -48,12 +47,12 @@ void ACustom_player::OnOverlapEnd(class UPrimitiveComponent* _overlapped_comp, c
 void ACustom_player::BeginPlay()
 {
     Super::BeginPlay();
-    mp_UI_manager = GetWorld()->SpawnActor<AUI_manager>(AUI_manager::StaticClass(), FTransform::Identity);
 }
 
 void ACustom_player::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
+    AGlobal::Get()->player_data = m_player_data;
     Check_if_moving();
     Check_if_reloading(_delta_time);
     Check_if_is_vehicle_near();
@@ -117,9 +116,10 @@ void ACustom_player::Init_camera_settings()
     p_camera->SetupAttachment(p_spring_arm);
 
     // 카메라 설정
-    p_spring_arm->TargetArmLength = AGlobal::player_spring_arm_length;
-    p_spring_arm->SetRelativeRotation(AGlobal::player_spring_arm_rotation);
-    p_spring_arm->SetWorldLocation(AGlobal::player_spring_arm_location);
+    AGlobal* p_global = AGlobal::Get();
+    p_spring_arm->TargetArmLength = p_global->player_spring_arm_length;
+    p_spring_arm->SetRelativeRotation(p_global->player_spring_arm_rotation);
+    p_spring_arm->SetWorldLocation(p_global->player_spring_arm_location);
     p_spring_arm->bUsePawnControlRotation = true;
 }
 
@@ -148,14 +148,6 @@ void ACustom_player::Init_particle_system()
 
 }
 
-void ACustom_player::Init_managers()
-{
-    auto BP_sound_manager = ConstructorHelpers::FClassFinder<AActor>(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Sound_manager.BP_Sound_manager_C'"));
-
-    if (BP_sound_manager.Succeeded())
-        mp_sound_manager = Cast<ASound_manager>(BP_sound_manager.Class->GetDefaultObject());
-}
-
 void ACustom_player::Check_if_moving()
 {
     // ?湲?以?
@@ -175,8 +167,8 @@ void ACustom_player::Check_if_moving()
             else
                 current_state = e_player_state::IDLE;
         }
-        m_is_moving = false;
-        m_is_sprinting = false;
+        m_is_moving              = false;
+        m_player_data.is_sprinting = false;
     }
     else
     {
@@ -200,10 +192,10 @@ void ACustom_player::Check_if_moving()
                 // ?곕뒗 以?
                 if (m_sprint_multiplier > 1.f)
                 {
-                    if (current_oxygen > 0)
-                        current_oxygen -= 0.001f;
+                    if (m_player_data.current_oxygen > 0)
+                        m_player_data.current_oxygen -= 0.001f;
 
-                    m_is_sprinting = true;
+                    m_player_data.is_sprinting = true;
                     current_state = e_player_state::SPRINT_JUMP;
                 }
                 else // 점프함
@@ -217,18 +209,18 @@ void ACustom_player::Check_if_moving()
                 // 뛰고있음
                 else if (current_state == e_player_state::SPRINT)
                 {
-                    if (current_oxygen > 0)
-                        current_oxygen -= 0.001f;
+                    if (m_player_data.current_oxygen > 0)
+                        m_player_data.current_oxygen -= 0.001f;
 
                     else
                     {
                         current_state = e_player_state::IDLE;
                         m_sprint_multiplier = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
-                        m_is_sprinting = false;
+                        m_player_data.is_sprinting = false;
                         return;
                     }
-                    m_is_sprinting = true;
+                    m_player_data.is_sprinting = true;
 
                     if (m_sprint_multiplier < 1.75f)
                     {
@@ -266,7 +258,7 @@ void ACustom_player::Check_if_is_vehicle_near()
     if (!hitted_actor)
     {
         if (m_collided_vehicle)
-            m_collided_vehicle->is_player_near = false;
+            m_collided_vehicle->is_collided = false;
 
         is_detected_collision = false;
         return;
@@ -276,7 +268,7 @@ void ACustom_player::Check_if_is_vehicle_near()
         m_collided_vehicle = Cast<ACore_vehicle>(hitted_actor);
         
         if (m_collided_vehicle)
-            m_collided_vehicle->is_player_near = true;
+            m_collided_vehicle->is_collided = true;
 
         is_detected_collision = true;
     }
@@ -641,7 +633,7 @@ void ACustom_player::Try_to_get_collided_component()
             //  차량 탑승 상태
             if (m_collided_vehicle->Check_available_seat(this))
             {
-                m_collided_vehicle->is_player_near = false;
+                m_collided_vehicle->is_collided = false;
                 is_in_vehicle                      = true;
             }
             m_collided_vehicle = nullptr;
@@ -738,7 +730,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
         // 맵에 배치된 무기랑 교체
         m_second_weapon->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
         m_second_weapon->SetActorTransform(m_second_weapon->GetTransform());
-        m_second_weapon->p_widget_component->SetVisibility(true);
+        m_second_weapon->is_player_near = false;
         m_second_weapon = nullptr;
         break;
 
@@ -748,7 +740,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
     if (tmp_weapon)
     {
         tmp_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("front_weapon_sock"));
-        tmp_weapon->p_widget_component->SetVisibility(false);
+        tmp_weapon->is_player_near = false;
     }
     //Play_swap_sound();
     m_collided_weapon = nullptr;
@@ -780,14 +772,15 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
     current_seat_type = e_seat_type::NONE;
     is_in_vehicle     = false;
     SetActorLocation(_exit_location);
-    p_spring_arm->SetRelativeLocation(AGlobal::player_spring_arm_location);
+    p_spring_arm->SetRelativeLocation(AGlobal::Get()->player_spring_arm_location);
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 
 void ACustom_player::Open_inventory()
 {
-    bool is_opened_inventory = mp_UI_manager->p_inventory_manager->is_opened;
-    mp_UI_manager->p_inventory_manager->is_opened = (is_opened_inventory == true) ? false : true;
+    AUI_manager* p_UI_manager = AGlobal::Get_UI_manager();
+    m_is_inventory_opened = m_is_inventory_opened ? false : true;
+    p_UI_manager->Open_or_close_inventory(m_is_inventory_opened);
 }
 
 bool ACustom_player::Is_first_weapon_equipped()

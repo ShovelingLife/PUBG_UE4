@@ -1,8 +1,8 @@
-﻿
-// Fill out your copyright notice in the Description page of Project Settings.
-
-#include "Core_weapon.h"
+﻿#include "Core_weapon.h"
 #include "Core_bullet.h"
+#include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Data_table_manager.h"
+#include "PUBG_UE4/Custom_game_instance.h"
 #include "Components/AudioComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"
@@ -21,9 +21,6 @@ ACore_weapon::ACore_weapon()
 void ACore_weapon::BeginPlay()
 {
     Super::BeginPlay();
-    FString str = FString::Printf(TEXT("%s 줍기"), *weapon_data.type);
-    Set_UI_widget_text(FText::FromString(str));
-    p_widget_component->SetVisibility(false);
     Update_particle_system();
 }
 
@@ -44,18 +41,10 @@ void ACore_weapon::Tick(float DeltaTime)
 }
 
 void ACore_weapon::Init(e_weapon_type _index)
-{
+{    
+    weapon_data = AGlobal::Get_data_table_manager()->Get_weapon_data((int)_index);
     m_weapon_type = _index;
-    ConstructorHelpers::FClassFinder<AActor> DATA_TABLE_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Data_table_manager.BP_Data_table_manager_C'"));
-    AData_table_manager* p_data_table_manager = nullptr;
-
-    if (DATA_TABLE_MANAGER.Succeeded())
-        p_data_table_manager = Cast<AData_table_manager>(DATA_TABLE_MANAGER.Class->GetDefaultObject());
-
-    if (!p_data_table_manager)
-        return;
-
-    weapon_data = p_data_table_manager->Get_weapon_data((int)_index);
+    m_object_type = weapon_data.type;
 
     Update_collider();
     Init_mesh();

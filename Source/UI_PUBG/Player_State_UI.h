@@ -67,4 +67,19 @@ protected:
 	void NativeConstruct() override;
 
 	void NativeTick(const FGeometry&, float) override;
+
+public:
+    // 무기 슬롯 갱신
+    void Update_weapon_slot_UI();
+
+    // 조준선 갱신
+    void Update_aim_UI();
+
+    // 총알 개수 갱신
+    void Update_bullet_count_UI();
+
+    // 산소 바 갱신
+    void Update_oxygen_bar_UI(float, float&, bool);
+
+    void Change_shoot_mode();
 };

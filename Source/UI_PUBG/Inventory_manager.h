@@ -1,11 +1,10 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Inventory_manager.generated.h"
-
-class UUserWidget;
-class UInventory_UI;
 
 UCLASS()
 class UI_PUBG_API AInventory_manager : public AActor
@@ -15,7 +14,7 @@ class UI_PUBG_API AInventory_manager : public AActor
 private:
     // UI 관련
     TSubclassOf<UUserWidget> m_inventory_actor;
-    UInventory_UI*           mp_inventory_ui;
+    class UInventory_UI* mp_inventory_ui;
 
 public:
     bool is_opened = false;
@@ -31,13 +30,13 @@ public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-// 초기화 함수 모음
+    // 초기화 함수 모음
 private:
 
     // 인벤토리 위젯 초기화
     void Init_inventory_widget();
 
-// 기타 함수 모음
+    // 기타 함수 모음
 private:
     // 인벤토리 상태를 업데이트
     void Check_inventory_state();

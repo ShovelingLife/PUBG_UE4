@@ -36,7 +36,7 @@ void AInventory_manager::Init_inventory_widget()
 
 void AInventory_manager::Check_inventory_state()
 {
-    auto player_controller      = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    auto player_controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     ESlateVisibility visibility = ESlateVisibility::Hidden;
 
     if (is_opened)

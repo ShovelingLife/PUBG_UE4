@@ -1,8 +1,9 @@
 ﻿#include "Core_vehicle.h"
 #include "Custom_player.h"
-#include "UI_PUBG/Interaction_UI.h"
 #include "Animation/AnimInstance.h"
 #include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Custom_game_instance.h"
+#include "PUBG_UE4/UI_manager.h"
 #include "Camera/CameraComponent.h"
 #include "ChaosVehicleMovementComponent.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
@@ -27,23 +28,23 @@ ACore_vehicle::ACore_vehicle()
 void ACore_vehicle::BeginPlay()
 {
     Super::BeginPlay();
-    Update_widget_component();
+    Init_interaction_UI();
 }
 
 // Called every frame
 void ACore_vehicle::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
-    p_widget_component->SetVisibility(is_player_near);
+    mp_interaction_widget_comp->SetVisibility(is_collided);
     Update_car_pos_data();
 
     if(m_player)
     {
         if (m_player->current_seat_type == e_seat_type::FIRST)
-            is_player_in_first_seat = true;
+            m_is_player_in_first_seat = true;
 
         else
-            is_player_in_first_seat = false;
+            m_is_player_in_first_seat = false;
     }
 }
 
@@ -68,27 +69,22 @@ void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_com
 
 void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
 {
-    Load_from_csv_vehicle(_vehicle_type_index, m_vehicle_data);
+    Load_from_csv_vehicle(_vehicle_type_index);
     Init_skeletal_mesh("Vehicles");
-    Init_UI();
     Init_camera();
     Init_wheeled_component();
     Init_car_pos_component();
     Init_car_pos_data();
+
+    AUI_manager* p_ui_manager = AGlobal::Get_UI_manager();
 }
 
-void ACore_vehicle::Load_from_csv_vehicle(e_vehicle_type _index, Fs_vehicle_data& _vehicle_data)
+void ACore_vehicle::Load_from_csv_vehicle(e_vehicle_type _index)
 {
-    ConstructorHelpers::FClassFinder<AActor> DATA_TABLE_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Data_table_manager.BP_Data_table_manager_C'"));
-    AData_table_manager* p_data_table_manager = nullptr;
+    auto p_data_table_manager = AGlobal::Get_data_table_manager();
 
-    if (DATA_TABLE_MANAGER.Succeeded())
-        p_data_table_manager = Cast<AData_table_manager>(DATA_TABLE_MANAGER.Class->GetDefaultObject());
-
-    if (!p_data_table_manager)
-        return;
-
-    _vehicle_data = p_data_table_manager->Get_vehicle_data((int)_index);
+    if (p_data_table_manager)
+        m_vehicle_data = p_data_table_manager->Get_vehicle_data((int)_index);
 }
 
 void ACore_vehicle::Init_car_pos_component()
@@ -133,6 +129,12 @@ void ACore_vehicle::Init_car_pos_data()
     }
 }
 
+void ACore_vehicle::Init_interaction_UI()
+{
+    if (mp_ui_manager)
+        mp_ui_manager->Update_interaction_UI(mp_interaction_widget_comp, m_vehicle_data.type);
+}
+
 void ACore_vehicle::Update_car_pos_data()
 {
     // 좌석 및 문짝 위치 업데이트
@@ -165,32 +167,6 @@ void ACore_vehicle::Init_camera()
     mp_camera->SetWorldLocation(m_vehicle_data.camera_location);
 }
 
-void ACore_vehicle::Init_UI()
-{
-    // 위젯 컴포넌트 초기화
-    p_widget_component = CreateDefaultSubobject<UWidgetComponent>(TEXT("UI"));
-    p_widget_component->SetVisibility(false);
-    p_widget_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-    auto bp_class = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("/Game/Blueprints/UI/BP_Interaction_UI"));
-    widget_bp_class = bp_class.Class;
-}
-
-void ACore_vehicle::Update_widget_component()
-{
-    FString str = FString::Printf(TEXT("%s 열기"), *m_vehicle_data.type);
-
-    // 위젯 설정
-    if (widget_bp_class)
-    {
-        p_widget_component->SetWidgetClass(widget_bp_class);
-        p_widget_component->SetRelativeLocation(FVector::ZeroVector);
-        p_widget_component->SetWidgetSpace(EWidgetSpace::Screen);
-
-        auto p_interaction_ui = Cast<UInteraction_UI>(p_widget_component->GetWidget());
-        p_interaction_ui->Title_txt->SetText(FText::FromString(str));
-    }
-}
-
 void ACore_vehicle::Init_skeletal_mesh(FString _name)
 {
     // 경로로부터 메시 생성
@@ -207,6 +183,10 @@ void ACore_vehicle::Init_skeletal_mesh(FString _name)
 
     if (anim_instance.Succeeded())
         GetMesh()->SetAnimInstanceClass(anim_instance.Class);
+
+    // 위젯 컴포넌트 초기화
+    mp_interaction_widget_comp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interaction_widget"));
+    mp_interaction_widget_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ACore_vehicle::Init_wheeled_component()
@@ -254,19 +234,19 @@ void ACore_vehicle::Player_exit()
 
 void ACore_vehicle::Accelerate(float _value)
 {
-    if (is_player_in_first_seat)
+    if (m_is_player_in_first_seat)
         GetVehicleMovementComponent()->SetThrottleInput(_value);
 }
 
 void ACore_vehicle::Brake(float _value)
 {
-    if (is_player_in_first_seat)
+    if (m_is_player_in_first_seat)
         GetVehicleMovementComponent()->SetBrakeInput(_value);
 }
 
 void ACore_vehicle::Handling(float _value)
 {
-    if (is_player_in_first_seat)
+    if (m_is_player_in_first_seat)
         GetVehicleMovementComponent()->SetSteeringInput(_value);
 }
 

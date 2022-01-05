@@ -65,22 +65,19 @@ protected:
         { e_seat_type::FOURTH,false },
         { e_seat_type::NONE,  false }
     };
-    ACustom_player*       m_player;
-    Fs_vehicle_data       m_vehicle_data;
-
-    const FString         mk_wheel_path = "/Game/Blueprints/Vehicles/Wheel/";
-    FString               m_mesh_path = "";
-    int                   m_current_player_count = 0;
-    bool                  is_player_in_first_seat = false;
+    class AUI_manager* mp_ui_manager;
+    ACustom_player*    m_player;
+    Fs_vehicle_data    m_vehicle_data;
+                       
+    const FString      mk_wheel_path = "/Game/Blueprints/Vehicles/Wheel/";
+    FString            m_mesh_path = "";
+    int                m_current_player_count = 0;
+    bool               m_is_player_in_first_seat = false;
 
 public:
-    // ����
-    TSubclassOf< UUserWidget>	widget_bp_class;
-
-    UPROPERTY(VisibleAnywhere, Category = UI)
-        class UWidgetComponent* p_widget_component;
-
-    bool is_player_near = false;
+    UPROPERTY(VisibleAnywhere, Category = Widget_component)
+    class UWidgetComponent* mp_interaction_widget_comp;
+    bool is_collided = false;
 
 public:
     // Sets default values for this actor's properties
@@ -96,13 +93,11 @@ protected:
     virtual void SetupPlayerInputComponent(class UInputComponent*) override;
 
 protected:
-    void Load_from_csv_vehicle(e_vehicle_type, Fs_vehicle_data&);
+    void Load_from_csv_vehicle(e_vehicle_type);
 
     void Init_car_pos_component();
 
     void Init(e_vehicle_type);
-
-    void Init_UI();
 
     void Init_camera();
 
@@ -112,7 +107,7 @@ protected:
 
     void Init_car_pos_data();
 
-    void Update_widget_component();
+    void Init_interaction_UI();
 
 // 차량 속성 관련 함수
 protected:
@@ -145,6 +140,7 @@ protected:
     void Update_player_seat_location(e_seat_type);
 
     void Update_car_pos_data();
+
 
 public:
     // 탑승 가능 여부 확인

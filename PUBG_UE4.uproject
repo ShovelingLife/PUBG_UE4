@@ -7,71 +7,45 @@
 		{
 			"Name": "PUBG_UE4",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine",
-				"UMG"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "Animations",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "Characters",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine",
-				"PUBG_UE4",
-				"PhysXVehicles"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "Farmable_items",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "Player_weapons",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine",
-				"PUBG_UE4"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "AI_PUBG",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "UI_PUBG",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"UMG",
 				"Engine"
 			]
 		},
 		{
 			"Name": "Server_PUBG",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [

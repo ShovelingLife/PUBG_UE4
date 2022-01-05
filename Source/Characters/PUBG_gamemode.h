@@ -16,4 +16,6 @@ class CHARACTERS_API APUBG_gamemode : public AGameModeBase
 
 public:
 	APUBG_gamemode();
+
+	virtual void StartPlay() override;
 };

@@ -1,20 +1,81 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Global.generated.h"
 
+class AData_table_manager;
+class AUI_manager;
+class ASound_manager;
+class UCustom_game_instance;
+
+USTRUCT()
+struct Fs_player_data
+{
+    GENERATED_BODY()
+
+    float current_oxygen = 1.f;
+    bool  is_sprinting = false;
+};
+
 // 전역 변수 / 함수 클래스
 UCLASS()
 class PUBG_UE4_API AGlobal : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// 플레이어 스프링암 관련
-	static float	player_spring_arm_length;
-	static FRotator player_spring_arm_rotation;
-	static FVector  player_spring_arm_location;
+		
+private:
+    static AGlobal* mp_global;
+
+    // 플레이어 스프링암 관련
+    UPROPERTY(VisibleAnywhere, Category = Manager)
+        AData_table_manager* mp_data_table_manager;
+
+    // UI 매니저
+    UPROPERTY(VisibleAnywhere, Category = Manager)
+        AUI_manager* mp_UI_manager;
+
+    // 사운드 매니저
+    UPROPERTY(VisibleAnywhere, Category = Manager)
+        ASound_manager* mp_sound_manager;
+
+    UPROPERTY(VisibleAnywhere, Category = Game_instance)
+        UCustom_game_instance* mp_game_instance;
+
+public:
+	Fs_player_data player_data;
+	FRotator player_spring_arm_rotation;
+	FVector  player_spring_arm_location;
+	float	 player_spring_arm_length;
+
+protected:
+    virtual void BeginPlay() override;
+
+public:
+    AGlobal();
+
+// 초기화 함수들
+private:
+	void Init();
+
+	void Init_data_table_manager();
+
+    void Init_game_instance();
+
+    void Init_UI_manager();
+
+    void Init_sound_manager();
+
+    void Spawn_managers();
+
+public:
+	static AGlobal* Get() { return mp_global; }
+
+	static AData_table_manager* Get_data_table_manager();
+
+	static UCustom_game_instance* Get_custom_game_inst();
+
+    static AUI_manager* Get_UI_manager();
+
+    static ASound_manager* Get_sound_manager();
 };
