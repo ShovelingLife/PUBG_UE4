@@ -14,7 +14,10 @@ struct Fs_player_data
 {
     GENERATED_BODY()
 
-    float current_oxygen = 1.f;
+    UPROPERTY(EditAnywhere, Category = Player_data)
+        float current_oxygen = 1.f;
+
+    UPROPERTY(EditAnywhere, Category = Player_data)
     bool  is_sprinting = false;
 };
 
@@ -43,16 +46,20 @@ private:
         UCustom_game_instance* mp_game_instance;
 
 public:
+    UPROPERTY(EditAnywhere, Category = Player_data)
 	Fs_player_data player_data;
+
 	FRotator player_spring_arm_rotation;
 	FVector  player_spring_arm_location;
 	float	 player_spring_arm_length;
 
+public:
+    AGlobal();
+
 protected:
     virtual void BeginPlay() override;
 
-public:
-    AGlobal();
+    virtual void Tick(float) override;
 
 // 초기화 함수들
 private:
@@ -69,6 +76,8 @@ private:
     void Spawn_managers();
 
 public:
+    static void Set(AGlobal* _p_global) { if (_p_global) mp_global = _p_global; }
+
 	static AGlobal* Get() { return mp_global; }
 
 	static AData_table_manager* Get_data_table_manager();

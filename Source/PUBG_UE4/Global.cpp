@@ -8,6 +8,7 @@ AGlobal* AGlobal::mp_global;
 
 AGlobal::AGlobal()
 {
+    PrimaryActorTick.bCanEverTick = true;
     Init();
     Init_game_instance();
     Init_data_table_manager();
@@ -21,13 +22,18 @@ void AGlobal::BeginPlay()
     Spawn_managers();
 }
 
+void AGlobal::Tick(float _delta_time)
+{
+    Super::Tick(_delta_time);
+}
+
 void AGlobal::Spawn_managers()
 {
     // UI 매니저
-    GetWorld()->SpawnActor<AUI_manager>(AUI_manager::StaticClass(), FTransform::Identity);
+    mp_UI_manager = GetWorld()->SpawnActor<AUI_manager>(AUI_manager::StaticClass(), FTransform::Identity);
 
     // 사운드 매니저
-    GetWorld()->SpawnActor<ASound_manager>(ASound_manager::StaticClass(), FTransform::Identity);
+    mp_sound_manager = GetWorld()->SpawnActor<ASound_manager>(ASound_manager::StaticClass(), FTransform::Identity);
 }
 
 void AGlobal::Init()

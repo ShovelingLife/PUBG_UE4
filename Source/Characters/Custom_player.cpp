@@ -52,7 +52,6 @@ void ACustom_player::BeginPlay()
 void ACustom_player::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
-    AGlobal::Get()->player_data = m_player_data;
     Check_if_moving();
     Check_if_reloading(_delta_time);
     Check_if_is_vehicle_near();
@@ -150,6 +149,8 @@ void ACustom_player::Init_particle_system()
 
 void ACustom_player::Check_if_moving()
 {
+    AGlobal* p_global = AGlobal::Get();
+
     // ?湲?以?
     if (GetVelocity().IsZero())
     {
@@ -168,7 +169,7 @@ void ACustom_player::Check_if_moving()
                 current_state = e_player_state::IDLE;
         }
         m_is_moving              = false;
-        m_player_data.is_sprinting = false;
+        p_global->player_data.is_sprinting = false;
     }
     else
     {
@@ -192,10 +193,7 @@ void ACustom_player::Check_if_moving()
                 // ?곕뒗 以?
                 if (m_sprint_multiplier > 1.f)
                 {
-                    if (m_player_data.current_oxygen > 0)
-                        m_player_data.current_oxygen -= 0.001f;
-
-                    m_player_data.is_sprinting = true;
+                    p_global->player_data.is_sprinting = true;
                     current_state = e_player_state::SPRINT_JUMP;
                 }
                 else // 점프함
@@ -209,18 +207,15 @@ void ACustom_player::Check_if_moving()
                 // 뛰고있음
                 else if (current_state == e_player_state::SPRINT)
                 {
-                    if (m_player_data.current_oxygen > 0)
-                        m_player_data.current_oxygen -= 0.001f;
-
-                    else
+                    if (p_global->player_data.current_oxygen < 0)
                     {
                         current_state = e_player_state::IDLE;
                         m_sprint_multiplier = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
-                        m_player_data.is_sprinting = false;
+                        p_global->player_data.is_sprinting = false;
                         return;
                     }
-                    m_player_data.is_sprinting = true;
+                    p_global->player_data.is_sprinting = true;
 
                     if (m_sprint_multiplier < 1.75f)
                     {

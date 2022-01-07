@@ -14,6 +14,8 @@ class PUBG_UE4_API AUI_manager : public AActor
 private:
 	// ------- 현재 쓰이고있는 변수들 -------
 
+	class AGlobal* mp_global =nullptr;
+
 	// 최상위 UI 모든걸 포함
 	UPlayer_UI*				mp_player_UI;	
 	TSubclassOf<UPlayer_UI> m_bp_player_UI;
@@ -23,7 +25,7 @@ private:
 
     // 상호작용 UI 관련
 	UPROPERTY(VisibleAnywhere, Category = Widget_bp)
-    TSubclassOf<UUserWidget> m_bp_widget;
+    TSubclassOf<UUserWidget> m_interaction_widget_bp;
 
 public:
 	class AInventory_manager* p_inventory_manager;

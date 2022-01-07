@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Global_UI.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
@@ -63,6 +64,10 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
         UImage* Reticle_img;
 
+    float delta_time = 0.f;
+    float current_oxygen = 1.f;
+    bool  is_sprinting   = false;
+
 protected:
 	void NativeConstruct() override;
 
@@ -79,7 +84,7 @@ public:
     void Update_bullet_count_UI();
 
     // 산소 바 갱신
-    void Update_oxygen_bar_UI(float, float&, bool);
+    float Update_oxygen_bar_UI(float, bool);
 
     void Change_shoot_mode();
 };

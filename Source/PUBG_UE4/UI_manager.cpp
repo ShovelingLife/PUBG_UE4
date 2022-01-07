@@ -10,7 +10,7 @@
 
 AUI_manager::AUI_manager()
 {
-	PrimaryActorTick.bCanEverTick = true;
+    PrimaryActorTick.bCanEverTick = true;    
     Init_player_UI();
 	Init_interaction_UI();
 }
@@ -18,7 +18,8 @@ AUI_manager::AUI_manager()
 // Called when the game starts or when spawned
 void AUI_manager::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
+    mp_global = AGlobal::Get();
 	Set_player_UI();
 	Set_player_inventory();
 }
@@ -26,7 +27,7 @@ void AUI_manager::BeginPlay()
 // Called every frame
 void AUI_manager::Tick(float _delta_time)
 {
-	Super::Tick(_delta_time);
+    Super::Tick(_delta_time);
 	Update_player_UI(_delta_time);
 }
 
@@ -53,13 +54,11 @@ void AUI_manager::Set_player_inventory()
 
 void AUI_manager::Update_player_UI(float _delta_time)
 {
-	auto p_player_state_UI = mp_player_UI->Player_state_UI;
-    AGlobal* p_global = AGlobal::Get();
-
-	p_player_state_UI->Update_weapon_slot_UI();
-	p_player_state_UI->Update_oxygen_bar_UI(_delta_time, p_global->player_data.current_oxygen, p_global->player_data.is_sprinting);
-	p_player_state_UI->Update_aim_UI();
-	p_player_state_UI->Update_bullet_count_UI();
+    auto p_player_state_UI = mp_player_UI->Player_state_UI;
+    auto player_data       = mp_global->player_data;
+    
+    // 산소 관련
+    mp_global->player_data.current_oxygen = p_player_state_UI->Update_oxygen_bar_UI(_delta_time, player_data.is_sprinting);
 }
 
 void AUI_manager::Open_or_close_inventory(bool _is_opened)
@@ -71,22 +70,19 @@ void AUI_manager::Init_interaction_UI()
 {
     // 위젯 컴포넌트 블루프린트 초기화
     auto widget_bp = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C'"));
-    m_bp_widget = widget_bp.Class;
+    m_interaction_widget_bp = widget_bp.Class;
 }
 
 void AUI_manager::Update_interaction_UI(UWidgetComponent* _widget_comp, FString _type)
 {
+    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Cyan, "Interaction UI init");
     // 위젯 설정
-    if (m_bp_widget)
-    {
-        // 위젯 컴포넌트 초기화
-        _widget_comp->SetWidgetClass(m_bp_widget);
-        _widget_comp->SetRelativeLocation(FVector::ZeroVector);
-        _widget_comp->SetWidgetSpace(EWidgetSpace::Screen);
+    _widget_comp->SetWidgetSpace(EWidgetSpace::Screen);
+    _widget_comp->SetRelativeLocation(FVector::ZeroVector);
+    _widget_comp->SetWidgetClass(m_interaction_widget_bp);
 
-        auto p_interaction_ui = Cast<UInteraction_UI>(_widget_comp->GetWidget());
+    auto p_interaction_ui = Cast<UInteraction_UI>(_widget_comp->GetWidget());
 
-        if (p_interaction_ui)
-            p_interaction_ui->Title_txt->SetText(FText::FromString(_type));
-    }
+    if (p_interaction_ui)
+        p_interaction_ui->Title_txt->SetText(FText::FromString(_type));
 }

@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/My_enum.h"
-#include "PUBG_UE4/Global.h"
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 class UMy_anim_instance;
@@ -36,9 +35,6 @@ private:
     // 파티클 관련
     UPROPERTY(VisibleAnywhere, Category = Particle)
         class UParticleSystemComponent* mp_particle;
-    
-    // 플레이어 현재 상태
-    Fs_player_data m_player_data;
 
     // 이동 관련
     FVector     m_direction_up_down{ 0.f };

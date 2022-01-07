@@ -3,13 +3,16 @@
 void UPlayer_State_UI::NativeConstruct()
 {
     Super::NativeConstruct();
-
 }
 
 void UPlayer_State_UI::NativeTick(const FGeometry& _my_geometry, float _delta_time)
 {
     Super::NativeTick(_my_geometry, _delta_time);
-    
+    delta_time = _delta_time;
+    //Update_oxygen_bar_UI(_delta_time);
+    Update_weapon_slot_UI();
+    Update_aim_UI();
+    Update_bullet_count_UI();
 }
 
 void UPlayer_State_UI::Update_weapon_slot_UI()
@@ -89,13 +92,19 @@ void UPlayer_State_UI::Update_bullet_count_UI()
     }*/
 }
 
-void UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time, float& _current_oxygen, bool _is_sprinting)
+float UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time, bool _is_sprinting)
 {
-    if (!_is_sprinting &&
-        _current_oxygen < 1.f)
-        _current_oxygen += (0.03f * _delta_time);
+    // 현재 뛰고있음
+    if      (_is_sprinting &&
+             current_oxygen > 0.f)
+             current_oxygen -= 0.001f;
 
-    Oxygen_bar->SetPercent(_current_oxygen);
+    else if (!_is_sprinting &&
+             current_oxygen < 1.f)
+             current_oxygen += (_delta_time * 0.03);
+
+    Oxygen_bar->SetPercent(current_oxygen);
+    return current_oxygen;
 }
 
 void UPlayer_State_UI::Change_shoot_mode()

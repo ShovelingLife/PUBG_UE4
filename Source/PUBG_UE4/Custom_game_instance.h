@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "Custom_game_instance.generated.h"
+class AGlobal;
 
 UCLASS()
 class PUBG_UE4_API UCustom_game_instance : public UGameInstance
