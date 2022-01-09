@@ -26,6 +26,7 @@ ACustom_player::ACustom_player()
 {
     PrimaryActorTick.bCanEverTick = true;
 
+    Init_collider_settings();
     Init_player_settings();
     Init_camera_settings();
     Init_mesh_settings();
@@ -92,16 +93,20 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     InputComponent->BindAction(FName(TEXT("Inventory")), IE_Pressed, this, &ACustom_player::Open_inventory);
 }
 
-void ACustom_player::Init_player_settings()
+void ACustom_player::Init_collider_settings()
 {
+    // 콜라이더 설정
     RootComponent = GetCapsuleComponent();
-    GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
     //GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
-
-    // ?띾룄 ?쒗븳
-    GetCharacterMovement()->MaxWalkSpeed = 350.f;
     GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACustom_player::OnOverlapBegin);
     GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACustom_player::OnOverlapEnd);
+}
+
+void ACustom_player::Init_player_settings()
+{
+    // 플레이어 설정
+    GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
+    GetCharacterMovement()->MaxWalkSpeed = 350.f;
 }
 
 void ACustom_player::Init_camera_settings()
@@ -151,50 +156,50 @@ void ACustom_player::Check_if_moving()
 {
     AGlobal* p_global = AGlobal::Get();
 
-    // ?湲?以?
+    // 움직이고 있지 않음
     if (GetVelocity().IsZero())
     {
         if (m_is_moving)
         {
-            if (current_state == e_player_state::CROUCH_WALK)
-                current_state = e_player_state::CROUCH;
+            if      (current_state == e_player_state::CROUCH_WALK)
+                     current_state = e_player_state::CROUCH;
 
             else if (current_state == e_player_state::PRONING_WALK)
-                current_state = e_player_state::PRONING;
+                     current_state = e_player_state::PRONING;
 
             else if (current_state == e_player_state::AIM_WALK)
-                current_state = e_player_state::AIM;
+                     current_state = e_player_state::AIM;
 
             else
-                current_state = e_player_state::IDLE;
+                     current_state = e_player_state::IDLE;
         }
-        m_is_moving              = false;
+        m_is_moving                        = false;
         p_global->player_data.is_sprinting = false;
     }
     else
     {
-        // ?숈씤 梨?嫄룰린
-        if (current_state == e_player_state::CROUCH ||
-            current_state == e_player_state::CROUCH_AIM)
-            current_state = e_player_state::CROUCH_WALK;
+        // 숙이고 있음
+        if      (current_state == e_player_state::CROUCH ||
+                 current_state == e_player_state::CROUCH_AIM)
+                 current_state = e_player_state::CROUCH_WALK;
 
-        // ?롫뱶由?梨?媛湲?
+        // 엎드리고 있음
         else if (current_state == e_player_state::PRONING)
-            current_state = e_player_state::PRONING_WALK;
+                 current_state = e_player_state::PRONING_WALK;
 
         else if (current_state == e_player_state::AIM)
-            current_state = e_player_state::AIM_WALK;
+                 current_state = e_player_state::AIM_WALK;
 
         else
         {
-            // ?먰봽 以?
+            // 떨어지고 있음
             if (GetCharacterMovement()->IsFalling())
             {
-                // ?곕뒗 以?
+                // 뛰면서 점프후 착지
                 if (m_sprint_multiplier > 1.f)
                 {
                     p_global->player_data.is_sprinting = true;
-                    current_state = e_player_state::SPRINT_JUMP;
+                    current_state                      = e_player_state::SPRINT_JUMP;
                 }
                 else // 점프함
                     current_state = e_player_state::JUMP;
@@ -209,24 +214,24 @@ void ACustom_player::Check_if_moving()
                 {
                     if (p_global->player_data.current_oxygen < 0)
                     {
-                        current_state = e_player_state::IDLE;
-                        m_sprint_multiplier = 1;
+                        current_state                        = e_player_state::IDLE;
+                        m_sprint_multiplier                  = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
-                        p_global->player_data.is_sprinting = false;
+                        p_global->player_data.is_sprinting   = false;
                         return;
                     }
                     p_global->player_data.is_sprinting = true;
 
                     if (m_sprint_multiplier < 1.75f)
                     {
-                        m_sprint_multiplier += 0.25f;
+                        m_sprint_multiplier                  += 0.25f;
                         GetCharacterMovement()->MaxWalkSpeed *= m_sprint_multiplier;
                     }
                 }
                 // 
                 else if (current_state == e_player_state::IDLE ||
-                    current_state == e_player_state::JUMP)
-                    current_state = e_player_state::WALK;
+                         current_state == e_player_state::JUMP)
+                         current_state = e_player_state::WALK;
             }
         }
         m_is_moving = true;
@@ -253,8 +258,10 @@ void ACustom_player::Check_if_is_vehicle_near()
     if (!hitted_actor)
     {
         if (m_collided_vehicle)
+        {
             m_collided_vehicle->is_collided = false;
-
+            m_collided_vehicle              = nullptr;
+        }
         is_detected_collision = false;
         return;
     }
@@ -282,7 +289,7 @@ void ACustom_player::Check_continously_shooting(float _delta_time)
         {
             Shoot();
             m_current_shoot_time = 0.f;
-            m_is_shooting = m_is_changed_shoot_type;
+            m_is_shooting        = m_is_changed_shoot_type;
         }
     }
 }
@@ -330,7 +337,7 @@ void ACustom_player::Custom_crouch()
 
     p_spring_arm->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
 
-    // ?숈씤 媛믪쓣 媛?몄????좊떦
+    // 숙이고 있음
     if (GetCharacterMovement()->IsCrouching())
     {
         if (current_state == e_player_state::CROUCH_AIM)
@@ -364,32 +371,32 @@ void ACustom_player::Begin_sprint()
 
 void ACustom_player::End_sprint()
 {
-    current_state = e_player_state::IDLE;
-    m_sprint_multiplier = 1;
+    current_state                        = e_player_state::IDLE;
+    m_sprint_multiplier                  = 1;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
 }
 
 void ACustom_player::Aim()
 {
-    bool is_first_equipped = false;
+    bool is_first_equipped  = false;
     bool is_second_equipped = false;
-    int code = 0;
+    int  code               = 0;
 
     Verify_equipped_weapon(is_first_equipped, is_second_equipped);
 
-    // 李⑹슜?섍퀬 ?덈뒗 臾닿린媛 ?놁쓣 ??
+    // 무기 장착하고 있지 않은 상태
     if (!is_first_equipped &&
         !is_second_equipped)
         return;
 
     switch (current_state)
     {
-        // 기본자세 > 에임
+    // 기본자세 > 에임
     case e_player_state::IDLE:        current_state = e_player_state::AIM;          code = 1; break;
     case e_player_state::CROUCH:      current_state = e_player_state::CROUCH_AIM;   code = 1; break;
     case e_player_state::PRONING:     current_state = e_player_state::PRONING_AIM;  code = 1; break;
 
-        // 에임 > 기본 자세
+    // 에임 > 기본 자세
     case e_player_state::AIM:         current_state = e_player_state::IDLE;         code = 0; break;
     case e_player_state::CROUCH_AIM:  current_state = e_player_state::CROUCH;       code = 0; break;
     case e_player_state::PRONING_AIM: current_state = e_player_state::PRONING;      code = 0; break;
@@ -400,9 +407,9 @@ void ACustom_player::Aim()
 
 void ACustom_player::Shoot()
 {
-    ACore_weapon* tmp_weapon = nullptr;
-    UWorld* p_world = GetWorld();
-    bool          is_first_equipped = false;
+    ACore_weapon* tmp_weapon         = nullptr;
+    UWorld*       p_world            = GetWorld();
+    bool          is_first_equipped  = false;
     bool          is_second_equipped = false;
 
     if (!is_aiming ||
@@ -442,7 +449,7 @@ void ACustom_player::Shoot()
         FVector               begin_pos      = tmp_weapon->skeletal_mesh->GetSocketLocation("Muzzle_socket");
         FVector               forward_vec    = camera_manager->GetActorForwardVector() * 500;
         FHitResult            hit_result;
-        FVector               end_pos = begin_pos + forward_vec;
+        FVector               end_pos        = begin_pos + forward_vec;
         p_world->LineTraceSingleByObjectType(hit_result, begin_pos, end_pos, FCollisionObjectQueryParams(ECC_Pawn));
         //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
         FRotator bullet_rotation = UKismetMathLibrary::FindLookAtRotation(begin_pos, end_pos);
@@ -455,7 +462,7 @@ void ACustom_player::Shoot()
             // 총알 회전값 수정 요망
             auto test_rotation = FRotator::MakeFromEuler(FVector(end_pos.X, bullet_rotation.Pitch, bullet_rotation.Yaw));
             test_rotation.Yaw += 100.f;
-            bullet = p_world->SpawnActor(tmp_weapon->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
+            bullet             = p_world->SpawnActor(tmp_weapon->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
             //GEngine->AddOnScreenDebugMessage(0, 5.f, FColor::Cyan, test_rotation.ToString());
             /*ACore_bullet* core_bullet = Cast<ACore_bullet>(bullet);
 
@@ -471,9 +478,9 @@ void ACustom_player::Shoot()
 
 void ACustom_player::Reload()
 {
-    ACore_weapon* tmp_weapon = nullptr;
-    int           result = 0;
-    bool          is_first_equipped = false;
+    ACore_weapon* tmp_weapon         = nullptr;
+    int           result             = 0;
+    bool          is_first_equipped  = false;
     bool          is_second_equipped = false;
 
     Verify_equipped_weapon(is_first_equipped, is_second_equipped);
@@ -491,21 +498,21 @@ void ACustom_player::Reload()
         auto weapon_data = tmp_weapon->weapon_data;
 
         // 허용 총알 개수가 똑같을 시
-        if (weapon_data.current_bullet_count == weapon_data.max_bullet_count)
-            return;
+        if      (weapon_data.current_bullet_count == weapon_data.max_bullet_count)
+                 return;
 
         // 중간에 장전
         else if (weapon_data.current_bullet_count > 0)
-            result = weapon_data.max_bullet_count - weapon_data.current_bullet_count;
+                 result = weapon_data.max_bullet_count - weapon_data.current_bullet_count;
 
         // 전체 총알 소모 후 장전
         else
-            result = tmp_weapon->weapon_data.max_bullet_count;
+                 result = tmp_weapon->weapon_data.max_bullet_count;
 
         weapon_data.current_ammunition_count -= result;
-        weapon_data.current_bullet_count += result;
+        weapon_data.current_bullet_count     += result;
+        m_is_reloading                        = true;
         tmp_weapon->Play_sound(e_weapon_sound_type::RELOAD_SOUND);
-        m_is_reloading = true;
     }
 }
 
@@ -519,45 +526,41 @@ void ACustom_player::Check_if_reloading(float _delta_time)
         if (m_current_reload_time > mk_reload_time)
         {
             m_current_reload_time = 0.f;
-            m_is_reloading = false;
+            m_is_reloading        = false;
         }
     }
 }
 
 void ACustom_player::Changing_aim_pose(int _type)
 {
-    bool is_first_equipped = false;
+    bool is_first_equipped  = false;
     bool is_second_equipped = false;
 
     Verify_equipped_weapon(is_first_equipped, is_second_equipped);
 
-    // ?쒖엳???곹깭?먯꽌 ?먯엫
+    // 에임 상태 > 원래 상태
     if (_type == 1)
     {
-        // ?꾩옱 李⑹슜??臾닿린 ?뺤씤
-        if (m_first_weapon &&
-            is_first_equipped)
-            m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("hand_weapon_sock"));
+        // 첫번째 무기가 부착 되어있을 시
+        if (is_first_equipped)
+            Attach_first_weapon("hand_weapon_sock");
 
         else
         {
-            if (m_second_weapon &&
-                is_second_equipped)
-                m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("hand_weapon_sock"));
+            if (is_second_equipped)
+                Attach_second_weapon("hand_weapon_sock");
         }
     }
-    // ?먯엫 ?곹깭?먯꽌 ?쒖엳??
+    // 원래 상태 > 에임 상태
     else if (_type == 0)
     {
-        // ?꾩옱 李⑹슜??臾닿린 ?뺤씤
-        if (m_first_weapon &&
-            is_first_equipped)
+        // 첫번째 무기가 부착 되어있을 시
+        if (is_first_equipped)
             Select_weapon(e_equipped_weapon_type::FIRST);
 
         else
         {
-            if (m_second_weapon &&
-                is_second_equipped)
+            if (is_second_equipped)
                 Select_weapon(e_equipped_weapon_type::SECOND);
         }
     }
@@ -595,30 +598,29 @@ void ACustom_player::Try_to_get_collided_component()
 {
     if (m_is_interacting)
     {
-        // 臾닿린硫?
+        // 무기랑 충돌 시
         if (m_collided_weapon)
         {
-            // ?꾩옱 ?μ갑?섎뒗 臾닿린媛 ?놁쑝硫?
+            GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, "Weapon_collided");
+            // 첫번째 무기가 없을 시
             if (!m_first_weapon)
             {
                 m_first_weapon = m_collided_weapon;
                 Select_weapon(e_equipped_weapon_type::FIRST);
                 Change_shoot_mode();
             }
-            // 理쒖냼 臾닿린 1媛??μ갑 以?
+            // 첫번째 무기가 있을 시
             else
             {
-                // ?먮쾲吏?臾닿린媛 ?놁쓣 ??
+                // 두번째 무기가 없을 시
                 if (!m_second_weapon)
                 {
-                    // 泥ル쾲吏?臾닿린
-                    m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("first_back_weapon_sock"));
+                    // 첫번째 무기 위치랑 교체 후 장착
+                    Attach_first_weapon("first_back_weapon_sock");
                     m_second_weapon = m_collided_weapon;
-
-                    // ?먮쾲吏?臾닿린
                     Select_weapon(e_equipped_weapon_type::SECOND);
                 }
-                else // 援먯껜
+                else // 두번째 무기가 있을 시
                     Select_weapon(e_equipped_weapon_type::SWAP);
             }
         }
@@ -629,7 +631,7 @@ void ACustom_player::Try_to_get_collided_component()
             if (m_collided_vehicle->Check_available_seat(this))
             {
                 m_collided_vehicle->is_collided = false;
-                is_in_vehicle                      = true;
+                is_in_vehicle                   = true; 
             }
             m_collided_vehicle = nullptr;
         }
@@ -645,22 +647,18 @@ void ACustom_player::Update_weapon_pos()
     case e_player_state::JUMP:
     case e_player_state::PRONING:
 
-        // ?먯씠 ?꾨땺 ???ㅼ젙
-        if (m_first_weapon)
-            m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("first_back_weapon_sock"));
-
-        if (m_second_weapon)
-            m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("second_back_weapon_sock"));
-
+        // 무기를 등 뒤에다 부착
+        Attach_first_weapon("first_back_weapon_sock");
+        Attach_second_weapon("second_back_weapon_sock");
         break;
     }
-    // ?꾩옱 臾닿린媛 泥ル쾲吏?臾닿린媛 ?꾨땶 寃쎌슦
+    // 첫번째 무기 장착
     if (Is_first_weapon_equipped())
-        m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("first_back_weapon_sock"));
+        Attach_first_weapon("first_back_weapon_sock");
 
-    // ?꾩옱 臾닿린媛 ?먮쾲吏?臾닿린媛 ?꾨땶 寃쎌슦
+    // 두번째 무기 장착
     if (Is_second_weapon_equipped())
-        m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("second_back_weapon_sock"));
+        Attach_second_weapon("first_back_weapon_sock");
 }
 
 void ACustom_player::Swap_weapon()
@@ -680,7 +678,7 @@ void ACustom_player::Change_shoot_mode()
 void ACustom_player::Verify_equipped_weapon(bool& _first_weapon, bool& _second_weapon)
 {
     if (m_first_weapon)
-        _first_weapon = m_first_weapon->is_equipped;
+        _first_weapon  = m_first_weapon->is_equipped;
 
     if (m_second_weapon)
         _second_weapon = m_second_weapon->is_equipped;
@@ -700,7 +698,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
         if (m_second_weapon)
             m_second_weapon->is_equipped = false;
 
-        tmp_weapon = m_first_weapon;
+        tmp_weapon                  = m_first_weapon;
         m_first_weapon->is_equipped = true;
         break;
 
@@ -711,7 +709,7 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
 
         tmp_weapon = m_second_weapon;
 
-        m_first_weapon->is_equipped = false;
+        m_first_weapon->is_equipped  = false;
         m_second_weapon->is_equipped = true;
         break;
 
@@ -743,15 +741,13 @@ void ACustom_player::Select_weapon(e_equipped_weapon_type _type)
 
 void ACustom_player::Equip_first_weapon()
 {
-    if (m_first_weapon &&
-        !m_first_weapon->is_equipped)
+    if (Is_first_weapon_equipped())
         Select_weapon(e_equipped_weapon_type::FIRST);
 }
 
 void ACustom_player::Equip_second_weapon()
 {
-    if (m_second_weapon &&
-        !m_second_weapon->is_equipped)
+    if (Is_second_weapon_equipped())
         Select_weapon(e_equipped_weapon_type::SECOND);
 }
 
@@ -774,7 +770,7 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
 void ACustom_player::Open_inventory()
 {
     AUI_manager* p_UI_manager = AGlobal::Get_UI_manager();
-    m_is_inventory_opened = m_is_inventory_opened ? false : true;
+    m_is_inventory_opened     = m_is_inventory_opened ? false : true;
     p_UI_manager->Open_or_close_inventory(m_is_inventory_opened);
 }
 
@@ -786,4 +782,16 @@ bool ACustom_player::Is_first_weapon_equipped()
 bool ACustom_player::Is_second_weapon_equipped()
 {
     return (m_second_weapon && !m_second_weapon->is_equipped);
+}
+
+void ACustom_player::Attach_first_weapon(FString _socket_name)
+{
+    if (m_first_weapon)
+        m_first_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), *_socket_name);
+}
+
+void ACustom_player::Attach_second_weapon(FString _socket_name)
+{
+    if (m_second_weapon)
+        m_second_weapon->skeletal_mesh->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), *_socket_name);
 }

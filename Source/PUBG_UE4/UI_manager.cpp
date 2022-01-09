@@ -1,4 +1,4 @@
-#include "UI_manager.h"
+ï»¿#include "UI_manager.h"
 #include "Global.h"
 #include "UI_PUBG/Interaction_UI.h"
 #include "UI_PUBG/Inventory_manager.h"
@@ -57,8 +57,8 @@ void AUI_manager::Update_player_UI(float _delta_time)
     auto p_player_state_UI = mp_player_UI->Player_state_UI;
     auto player_data       = mp_global->player_data;
     
-    // »ê¼Ò °ü·Ã
-    mp_global->player_data.current_oxygen = p_player_state_UI->Update_oxygen_bar_UI(_delta_time, player_data.is_sprinting);
+    // ì‚°ì†Œ ê´€ë ¨
+    p_player_state_UI->Update_oxygen_bar_UI(_delta_time, mp_global->player_data.current_oxygen, player_data.is_sprinting);
 }
 
 void AUI_manager::Open_or_close_inventory(bool _is_opened)
@@ -68,15 +68,14 @@ void AUI_manager::Open_or_close_inventory(bool _is_opened)
 
 void AUI_manager::Init_interaction_UI()
 {
-    // À§Á¬ ÄÄÆ÷³ÍÆ® ºí·çÇÁ¸°Æ® ÃÊ±âÈ­
+    // ìœ„ì ¯ ì»´í¬ë„ŒíŠ¸ ë¸”ë£¨í”„ë¦°íŠ¸ ì´ˆê¸°í™”
     auto widget_bp = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C'"));
     m_interaction_widget_bp = widget_bp.Class;
 }
 
 void AUI_manager::Update_interaction_UI(UWidgetComponent* _widget_comp, FString _type)
 {
-    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Cyan, "Interaction UI init");
-    // À§Á¬ ¼³Á¤
+    // ìœ„ì ¯ ì„¤ì •
     _widget_comp->SetWidgetSpace(EWidgetSpace::Screen);
     _widget_comp->SetRelativeLocation(FVector::ZeroVector);
     _widget_comp->SetWidgetClass(m_interaction_widget_bp);

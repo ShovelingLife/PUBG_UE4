@@ -3,17 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_weapon.h"
-#include "G67_Grenade.generated.h"
+#include "Core_throwable_weapon.h"
+#include "Grenade_smoke_red.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AG67_Grenade : public ACore_weapon
+class PLAYER_WEAPONS_API AGrenade_smoke_red : public ACore_throwable_weapon
 {
 	GENERATED_BODY()
 	
-public:
-	AG67_Grenade();
 };

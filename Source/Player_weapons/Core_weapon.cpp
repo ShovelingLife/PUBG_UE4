@@ -1,7 +1,8 @@
 ﻿#include "Core_weapon.h"
 #include "Core_bullet.h"
-#include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Data_table_manager.h"
+#include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Sound_manager.h"
 #include "PUBG_UE4/Custom_game_instance.h"
 #include "Components/AudioComponent.h"
 #include "Components/WidgetComponent.h"
@@ -42,7 +43,7 @@ void ACore_weapon::Tick(float DeltaTime)
 
 void ACore_weapon::Init(e_weapon_type _index)
 {    
-    weapon_data = AGlobal::Get_data_table_manager()->Get_weapon_data((int)_index);
+    weapon_data   = AGlobal::Get_data_table_manager()->Get_weapon_data((int)_index);
     m_weapon_type = _index;
     m_object_type = weapon_data.type;
 
@@ -79,7 +80,7 @@ void ACore_weapon::Init_bullet()
     if (BP_BULLET.Succeeded())
     {
         auto p_bp_bullet = BP_BULLET.Class;
-        p_bullet = p_bp_bullet->GetDefaultObject<ACore_bullet>();
+        p_bullet         = p_bp_bullet->GetDefaultObject<ACore_bullet>();
     }
 }
 
@@ -122,20 +123,17 @@ void ACore_weapon::Update_particle_system()
     p_gun_particle->AddWorldRotation(FQuat::MakeFromEuler(FVector(0.f, 90.f, 0.f)));
 }
 
-void ACore_weapon::Interact()
-{
-}
-
 void ACore_weapon::Play_sound(e_weapon_sound_type _sound_type)
 {
-    /*USoundBase*          tmp_sound            = nullptr;
+    USoundBase* tmp_sound = nullptr;
+    auto p_sound_manager  = AGlobal::Get_sound_manager();
 
     switch (_sound_type)
     {
-    case e_weapon_sound_type::EMPTY_AMMO:   tmp_sound = p_data_table_manager->p_empty_ammo_sound;               break;
-    case e_weapon_sound_type::BULLET_SOUND: tmp_sound = p_data_table_manager->p_shot_sound_arr[(int)m_weapon_type]; break;
-    case e_weapon_sound_type::RELOAD_SOUND: tmp_sound = p_data_table_manager->p_reload_sound;                   break;
+    case e_weapon_sound_type::EMPTY_AMMO:   tmp_sound = p_sound_manager->p_empty_ammo_sound;                   break;
+    case e_weapon_sound_type::BULLET_SOUND: tmp_sound = p_sound_manager->p_shot_sound_arr[(int)m_weapon_type]; break;
+    case e_weapon_sound_type::RELOAD_SOUND: tmp_sound = p_sound_manager->p_reload_sound;                       break;
     }
     mp_audio->SetSound(tmp_sound);
-    mp_audio->Play();*/
+    mp_audio->Play();
 }

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Global_UI.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
@@ -84,7 +83,7 @@ public:
     void Update_bullet_count_UI();
 
     // 산소 바 갱신
-    float Update_oxygen_bar_UI(float, bool);
+    void Update_oxygen_bar_UI(float, float&, bool);
 
     void Change_shoot_mode();
 };

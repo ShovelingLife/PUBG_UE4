@@ -92,19 +92,19 @@ void UPlayer_State_UI::Update_bullet_count_UI()
     }*/
 }
 
-float UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time, bool _is_sprinting)
+void UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time, float& _current_oxygen, bool _is_sprinting)
 {
     // 현재 뛰고있음
     if      (_is_sprinting &&
-             current_oxygen > 0.f)
-             current_oxygen -= 0.001f;
+             _current_oxygen > 0.f)
+             _current_oxygen -= 0.001f;
 
     else if (!_is_sprinting &&
-             current_oxygen < 1.f)
-             current_oxygen += (_delta_time * 0.03);
+             _current_oxygen < 1.f)
+             _current_oxygen += (_delta_time * 0.03);
 
-    Oxygen_bar->SetPercent(current_oxygen);
-    return current_oxygen;
+    Oxygen_bar->SetPercent(_current_oxygen);
+    //return current_oxygen;
 }
 
 void UPlayer_State_UI::Change_shoot_mode()

@@ -38,7 +38,7 @@ public:
         UMaterial* p_render_target_ui_mesh = nullptr;
 
     Fs_weapon_data weapon_data;
-    bool		  is_equipped = false;
+    bool		   is_equipped = false;
 
 
 protected:
@@ -78,8 +78,5 @@ protected:
     void Update_particle_system();
 
 public:
-    // ��ȣ �ۿ�
-    virtual void Interact() override;
-
     void Play_sound(e_weapon_sound_type);
 };

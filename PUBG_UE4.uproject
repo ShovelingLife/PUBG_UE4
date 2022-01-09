@@ -22,12 +22,18 @@
 		{
 			"Name": "Farmable_items",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"PUBG_UE4"
+			]
 		},
 		{
 			"Name": "Player_weapons",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"PUBG_UE4"
+			]
 		},
 		{
 			"Name": "AI_PUBG",

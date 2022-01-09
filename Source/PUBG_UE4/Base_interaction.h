@@ -50,8 +50,4 @@ protected:
     void Init_skeletal_mesh(FString, FName);
 
     void Init_interaction_UI();
-
-public:
-    // 상호작용 함수
-    virtual void Interact() { };
 };

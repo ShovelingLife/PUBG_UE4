@@ -131,8 +131,10 @@ void ACore_vehicle::Init_car_pos_data()
 
 void ACore_vehicle::Init_interaction_UI()
 {
+    mp_ui_manager = AGlobal::Get_UI_manager();
+
     if (mp_ui_manager)
-        mp_ui_manager->Update_interaction_UI(mp_interaction_widget_comp, m_vehicle_data.type);
+        mp_ui_manager->Update_interaction_UI(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
 }
 
 void ACore_vehicle::Update_car_pos_data()

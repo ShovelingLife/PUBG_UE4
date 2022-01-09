@@ -35,14 +35,53 @@ enum class e_weapon_sound_type
     RELOAD_SOUND
 };
 
-enum class e_weapon_type
+// 총기류
+enum class e_weapon_type : uint8
 {
     AR4,
     KA_Val,
     Ka47,
     KA74U,
     SMG11,
-    G67_Grenade
+    MAX
+};
+
+// 던지는 무기
+enum class e_throwable_weapon_type : uint8
+{
+    FRAGMENTATION1 = (uint8)e_weapon_type::MAX,
+    FRAGMENTATION2,
+    ILLUMINATION,
+    SMOKE_RED,
+    SMOKE_GRAY,
+    STICK,
+    MAX
+};
+
+// 근접 무기
+enum class e_melee_weapon_type : uint8
+{
+    KNIFE = (uint8)e_throwable_weapon_type::MAX,
+    PAN,
+    MAX
+};
+
+// 섭취 아이템
+enum class e_consumable_type : uint8
+{
+
+};
+
+// 방어구
+enum class e_equipment_type : uint8
+{
+
+};
+
+// 부속품
+enum class e_attachment_type : uint8
+{
+
 };
 
 enum class e_vehicle_type
@@ -52,7 +91,8 @@ enum class e_vehicle_type
     SportsCar,
     SUV,
     Truck,
-    Truck_Chassis
+    Truck_Chassis,
+    MAX
 };
 
 UENUM()

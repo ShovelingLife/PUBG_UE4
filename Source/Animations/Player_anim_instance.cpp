@@ -17,8 +17,13 @@ void UPlayer_anim_instance::NativeUpdateAnimation(float _delta_seconds)
     // 캐릭터가 널이 아닐 시
     if (player)
     {
-        // 값 적용Set values
-        player_state = (e_player_animation_state)player->current_state;
+        // 값 적용
+        if (player->is_in_vehicle)
+            player_state = e_player_animation_state::IDLE;
+
+        else
+            player_state = (e_player_animation_state)player->current_state;
+        
         speed = player->GetCharacterMovement()->MaxWalkSpeed + player->GetInputAxisValue(TEXT("Up_down"));
         is_weapon_equipped = player->is_weapon_equipped;
     }
