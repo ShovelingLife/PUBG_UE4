@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,12 +7,14 @@
 UCLASS()
 class UI_PUBG_API AInventory_manager : public AActor
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
 private:
     // UI ฐüทร
     TSubclassOf<UUserWidget> m_inventory_actor;
     class UInventory_UI* mp_inventory_ui;
+
+    class ACustom_player* mp_custom_player;
 
 public:
     bool is_opened = false;

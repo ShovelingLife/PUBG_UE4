@@ -16,6 +16,7 @@ private:
     const FString     mk_sound_path = "/Game/SFX/Gun_sounds/";
 
 public:
+    // 무기 관련 사운드
     UPROPERTY(VisibleAnywhere, Category = Sound)
         USoundBase* p_shot_sound_arr[MAX_WEAPON_COUNT];
 
@@ -26,7 +27,7 @@ public:
         USoundBase* p_reload_sound = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Sound)
-        USoundBase* p_swap_sound = nullptr;
+        USoundBase* p_equip_sound = nullptr;
 
 private:
     void Init_weapon_audio();

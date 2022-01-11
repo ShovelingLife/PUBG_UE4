@@ -9,6 +9,7 @@ UCustom_game_instance::UCustom_game_instance()
 
 void UCustom_game_instance::OnStart()
 {
-    auto p_global_actor = GetWorld()->SpawnActor<AGlobal>(AGlobal::StaticClass(), FTransform::Identity);
-    AGlobal::Set(p_global_actor);
+    auto p_global = GetWorld()->SpawnActor<AGlobal>(AGlobal::StaticClass(), FTransform::Identity);
+    AGlobal::Set(p_global);
+
 }

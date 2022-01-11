@@ -1,7 +1,6 @@
 #include "Global.h"
 #include "Custom_game_instance.h"
 #include "Data_table_manager.h"
-#include "UI_manager.h"
 #include "Sound_manager.h"
 
 AGlobal* AGlobal::mp_global;
@@ -12,7 +11,7 @@ AGlobal::AGlobal()
     Init();
     Init_game_instance();
     Init_data_table_manager();
-    Init_UI_manager();
+    //Init_UI_manager();
     Init_sound_manager();
 }
 
@@ -30,7 +29,7 @@ void AGlobal::Tick(float _delta_time)
 void AGlobal::Spawn_managers()
 {
     // UI 매니저
-    mp_UI_manager = GetWorld()->SpawnActor<AUI_manager>(AUI_manager::StaticClass(), FTransform::Identity);
+    //mp_UI_manager = GetWorld()->SpawnActor<AUI_manager>(AUI_manager::StaticClass(), FTransform::Identity);
 
     // 사운드 매니저
     mp_sound_manager = GetWorld()->SpawnActor<ASound_manager>(ASound_manager::StaticClass(), FTransform::Identity);
@@ -60,11 +59,11 @@ void AGlobal::Init_data_table_manager()
 
 void AGlobal::Init_UI_manager()
 {
-    // UI 매니저 초기화
-    ConstructorHelpers::FClassFinder<AActor> UI_MANAGER_BP(TEXT("Blueprint'/Game/Blueprints/Managers/BP_UI_manager.BP_UI_manager_C'"));
+    //// UI 매니저 초기화
+    //ConstructorHelpers::FClassFinder<AActor> UI_MANAGER_BP(TEXT("Blueprint'/Game/Blueprints/Managers/BP_UI_manager.BP_UI_manager_C'"));
 
-    if (UI_MANAGER_BP.Succeeded())
-        mp_UI_manager = Cast<AUI_manager>(UI_MANAGER_BP.Class->GetDefaultObject());
+    //if (UI_MANAGER_BP.Succeeded())
+    //    mp_UI_manager = Cast<AUI_manager>(UI_MANAGER_BP.Class->GetDefaultObject());
 }
 
 void AGlobal::Init_sound_manager()
@@ -103,14 +102,14 @@ UCustom_game_instance* AGlobal::Get_custom_game_inst()
     return mp_global->mp_game_instance;
 }
 
-AUI_manager* AGlobal::Get_UI_manager()
-{
-    if (mp_global &&
-        !mp_global->mp_UI_manager)
-        mp_global->Init_UI_manager();
-
-    return mp_global->mp_UI_manager;
-}
+//AUI_manager* AGlobal::Get_UI_manager()
+//{
+//    if (mp_global &&
+//        !mp_global->mp_UI_manager)
+//        mp_global->Init_UI_manager();
+//
+//    return mp_global->mp_UI_manager;
+//}
 
 ASound_manager* AGlobal::Get_sound_manager()
 {

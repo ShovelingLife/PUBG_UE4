@@ -9,14 +9,6 @@ class UMy_anim_instance;
 class ACore_weapon;
 class ACore_vehicle;
 
-enum class e_equipped_weapon_type
-{
-    FIRST,
-    SECOND,
-    SWAP,
-    NONE
-};
-
 UCLASS()
 class CHARACTERS_API ACustom_player : public ACharacter
 {
@@ -24,6 +16,7 @@ class CHARACTERS_API ACustom_player : public ACharacter
 
 private:
     // 현재 쓰여지는 오브젝트들
+    class AWeapon_manager* mp_weapon_manager;
     ACore_weapon*  m_collided_weapon  = nullptr;
     ACore_weapon*  m_first_weapon     = nullptr;
     ACore_weapon*  m_second_weapon    = nullptr;
@@ -38,24 +31,13 @@ private:
         class UParticleSystemComponent* mp_particle;
 
     // 이동 관련
-    FVector     m_direction_up_down     = FVector::ZeroVector;
-    FVector     m_direction_left_right  = FVector::ZeroVector;
-    float       m_sprint_time           = 0.f;
-    float       m_max_sprint_time       = 0.5f;
-    float       m_sprint_multiplier     = 1.f;
-    bool        m_is_moving             = false;
-
-    // 무기 관련
-    const float mk_reload_time          = 2.f;
-    FString     m_gun_type_str          = "";
-    float       m_current_reload_time   = 0.f;
-    float       m_shoot_time            = 0.25f;
-    float       m_current_shoot_time    = 0.f;
-    bool        m_is_reloading          = false;
-    bool        m_is_interacting        = false;
-    bool        m_is_changed_shoot_type = true;
-    bool        m_is_shooting           = false;
-    bool        m_is_inventory_opened   = false;
+    FVector     m_direction_up_down    = FVector::ZeroVector;
+    FVector     m_direction_left_right = FVector::ZeroVector;
+    float       m_sprint_time          = 0.f;
+    float       m_max_sprint_time      = 0.5f;
+    float       m_sprint_multiplier    = 1.f;
+    bool        m_is_moving            = false;
+    bool        m_is_interacting       = false;
 
  // 플레이어 컴포넌트 및 상태 변수
 public:
@@ -65,21 +47,26 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Camera)
         class UCameraComponent* p_camera = nullptr;
 
-    // Current HP
     const float k_max_health = 100.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
         float current_health = 100;
 
+    UPROPERTY(VisibleAnywhere, Category = Oxygen)
+        float current_oxygen = 1.f;
+
+    UPROPERTY(VisibleAnywhere, Category = State)
+        bool  is_sprinting = false;
+
     e_player_state current_state;
-    bool           is_detected_collision = false;
     bool           is_animation_playing  = false;
     bool           is_aiming             = false;
     bool           is_weapon_equipped    = false;
+    bool           is_inventory_opened   = false;
     
     // 차량 관련 변수
-    e_seat_type current_seat_type = e_seat_type::NONE;
-    bool        is_in_vehicle     = false;
+    e_seat_type    current_seat_type = e_seat_type::NONE;
+    bool           is_in_vehicle     = false;
 
 public:
     ACustom_player();
@@ -125,9 +112,9 @@ private:
 
     void End_interact()   { m_is_interacting = false; }
 
-    void Begin_shooting() { m_is_shooting = true; }
+    void Begin_shooting();
 
-    void End_shooting()   { if (m_is_changed_shoot_type) m_is_shooting = false; }
+    void End_shooting();
 
     // 
     void Move_up_down(float);
@@ -140,9 +127,7 @@ private:
 
     // 차량 감지하는 함수
     void Check_if_is_vehicle_near();
-   
-    void Check_continously_shooting(float);
-
+    
     // 위 아래 카메라 전환
     void Look_up(float);
 
@@ -171,42 +156,16 @@ private:
 
 
     // ------- 무기 관련 -------
+    
+    void Reload();
 
     void Aim();
 
-    void Shoot();
-
-    void Reload();
-
-    void Check_if_reloading(float);
-
-    void Changing_aim_pose(int);
-
-    void Update_weapon_pos();
+    void Change_shoot_mode();
 
     void Swap_weapon();
 
-    void Change_shoot_mode();
-
-    void Verify_equipped_weapon(bool&, bool&);
-
-    void Select_weapon(e_equipped_weapon_type);
-
-    void Equip_first_weapon();
-
-    void Equip_second_weapon();
-
-    // 첫번째 무기가 장착 되어있음
-    bool Is_first_weapon_equipped();
-
-    // 두번째 무기가 장착 되어있음
-    bool Is_second_weapon_equipped();
-
-    // 첫번째 무기를 부착
-    void Attach_first_weapon(FString);
-
-    // 두번째 무기를 부착
-    void Attach_second_weapon(FString);
+    void Update_weapon_pos();
 
 public:
     void Exit_from_vehicle(FVector);

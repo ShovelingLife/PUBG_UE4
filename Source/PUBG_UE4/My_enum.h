@@ -32,7 +32,8 @@ enum class e_weapon_sound_type
 {
     EMPTY_AMMO,
     BULLET_SOUND,
-    RELOAD_SOUND
+    RELOAD_SOUND,
+    EQUIP_SOUND
 };
 
 // ÃÑ±â·ù

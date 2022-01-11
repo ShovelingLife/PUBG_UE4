@@ -4,22 +4,13 @@
 #include "GameFramework/Actor.h"
 #include "Global.generated.h"
 
+class UWidgetComponent;
 class AData_table_manager;
-class AUI_manager;
 class ASound_manager;
 class UCustom_game_instance;
 
-USTRUCT()
-struct Fs_player_data
-{
-    GENERATED_BODY()
+DECLARE_DELEGATE_TwoParams(FDele_update_interaction_widget_comp, UWidgetComponent*,FString)
 
-    UPROPERTY(EditAnywhere, Category = Player_data)
-        float current_oxygen = 1.f;
-
-    UPROPERTY(EditAnywhere, Category = Player_data)
-    bool  is_sprinting = false;
-};
 
 // 전역 변수 / 함수 클래스
 UCLASS()
@@ -35,8 +26,8 @@ private:
         AData_table_manager* mp_data_table_manager;
 
     // UI 매니저
-    UPROPERTY(VisibleAnywhere, Category = Manager)
-        AUI_manager* mp_UI_manager;
+    //UPROPERTY(VisibleAnywhere, Category = Manager)
+    //    AUI_manager* mp_UI_manager;
 
     // 사운드 매니저
     UPROPERTY(VisibleAnywhere, Category = Manager)
@@ -46,9 +37,7 @@ private:
         UCustom_game_instance* mp_game_instance;
 
 public:
-    UPROPERTY(EditAnywhere, Category = Player_data)
-	Fs_player_data player_data;
-
+    FDele_update_interaction_widget_comp  dele_update_interaction_widget_comp;
 	FRotator player_spring_arm_rotation;
 	FVector  player_spring_arm_location;
 	float	 player_spring_arm_length;
@@ -84,7 +73,7 @@ public:
 
 	static UCustom_game_instance* Get_custom_game_inst();
 
-    static AUI_manager* Get_UI_manager();
+    //static AUI_manager* Get_UI_manager();
 
     static ASound_manager* Get_sound_manager();
 };

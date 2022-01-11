@@ -1,15 +1,17 @@
 #include "Player_State_UI.h"
+#include "Characters/Custom_player.h"
+#include "Kismet/GameplayStatics.h"
 
 void UPlayer_State_UI::NativeConstruct()
 {
     Super::NativeConstruct();
+    p_custom_player = Cast<ACustom_player>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
 void UPlayer_State_UI::NativeTick(const FGeometry& _my_geometry, float _delta_time)
 {
     Super::NativeTick(_my_geometry, _delta_time);
-    delta_time = _delta_time;
-    //Update_oxygen_bar_UI(_delta_time);
+    Update_oxygen_bar_UI(_delta_time);
     Update_weapon_slot_UI();
     Update_aim_UI();
     Update_bullet_count_UI();
@@ -92,19 +94,18 @@ void UPlayer_State_UI::Update_bullet_count_UI()
     }*/
 }
 
-void UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time, float& _current_oxygen, bool _is_sprinting)
+void UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time)
 {
     // 현재 뛰고있음
-    if      (_is_sprinting &&
-             _current_oxygen > 0.f)
-             _current_oxygen -= 0.001f;
+    if      (p_custom_player->is_sprinting &&
+             p_custom_player->current_oxygen > 0.f)
+             p_custom_player->current_oxygen -= 0.001f;
 
-    else if (!_is_sprinting &&
-             _current_oxygen < 1.f)
-             _current_oxygen += (_delta_time * 0.03);
+    else if (!p_custom_player->is_sprinting &&
+              p_custom_player->current_oxygen < 1.f)
+              p_custom_player->current_oxygen += (_delta_time * 0.03);
 
-    Oxygen_bar->SetPercent(_current_oxygen);
-    //return current_oxygen;
+    Oxygen_bar->SetPercent(p_custom_player->current_oxygen);
 }
 
 void UPlayer_State_UI::Change_shoot_mode()

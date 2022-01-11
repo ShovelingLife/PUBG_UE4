@@ -9,6 +9,6 @@ public class PUBG_UE4 : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
-		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "UI_PUBG" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "UMG" });
     }
 }

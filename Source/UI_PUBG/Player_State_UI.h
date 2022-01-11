@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,9 +7,6 @@
 #include "Components/Image.h"
 #include "Player_State_UI.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class UI_PUBG_API UPlayer_State_UI : public UUserWidget
 {
@@ -63,9 +58,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
         UImage* Reticle_img;
 
-    float delta_time = 0.f;
-    float current_oxygen = 1.f;
-    bool  is_sprinting   = false;
+    class ACustom_player* p_custom_player;
 
 protected:
 	void NativeConstruct() override;
@@ -83,7 +76,7 @@ public:
     void Update_bullet_count_UI();
 
     // 산소 바 갱신
-    void Update_oxygen_bar_UI(float, float&, bool);
+    void Update_oxygen_bar_UI(float);
 
     void Change_shoot_mode();
 };

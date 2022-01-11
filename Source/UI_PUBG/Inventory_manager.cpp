@@ -1,5 +1,6 @@
-#include "Inventory_manager.h"
+Ôªø#include "Inventory_manager.h"
 #include "Inventory_UI.h"
+#include "Characters/Custom_player.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,7 +9,7 @@ AInventory_manager::AInventory_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
 
-    // ∫Ì«¡∑Œ∫Œ≈Õ √ ±‚»≠
+    // Ïù∏Î≤§ÌÜ†Î¶¨ ÏúÑÏ†Ø Ï¥àÍ∏∞Ìôî
     auto BP_inventory_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_UI_Inventory.BP_UI_Inventory_C'"));
 
     if (BP_inventory_UI.Succeeded())
@@ -18,6 +19,7 @@ AInventory_manager::AInventory_manager()
 void AInventory_manager::BeginPlay()
 {
     Super::BeginPlay();
+    mp_custom_player = Cast<ACustom_player>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
     Init_inventory_widget();
 }
 
@@ -39,7 +41,7 @@ void AInventory_manager::Check_inventory_state()
     auto player_controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     ESlateVisibility visibility = ESlateVisibility::Hidden;
 
-    if (is_opened)
+    if (mp_custom_player->is_inventory_opened)
         visibility = ESlateVisibility::Visible;
 
     mp_inventory_ui->SetVisibility(visibility);

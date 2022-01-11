@@ -42,7 +42,7 @@ void ASound_manager::Init_weapon_audio()
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_SWAP_SOUND(*(mk_sound_path + "Gun_swap"));
 
     if (BP_SWAP_SOUND.Succeeded())
-        p_swap_sound = Cast<USoundBase>(BP_SWAP_SOUND.Object);
+        p_equip_sound = Cast<USoundBase>(BP_SWAP_SOUND.Object);
 
     // csv 매니저 초기화
     ConstructorHelpers::FClassFinder<AActor> DATA_TABLE_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Data_table_manager.BP_Data_table_manager_C'"));

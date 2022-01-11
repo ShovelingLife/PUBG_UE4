@@ -7,7 +7,10 @@
 		{
 			"Name": "PUBG_UE4",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		},
 		{
 			"Name": "Animations",
@@ -32,7 +35,8 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"PUBG_UE4"
+				"PUBG_UE4",
+				"Engine"
 			]
 		},
 		{

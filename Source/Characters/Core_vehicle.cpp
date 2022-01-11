@@ -2,8 +2,8 @@
 #include "Custom_player.h"
 #include "Animation/AnimInstance.h"
 #include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Data_table_manager.h"
 #include "PUBG_UE4/Custom_game_instance.h"
-#include "PUBG_UE4/UI_manager.h"
 #include "Camera/CameraComponent.h"
 #include "ChaosVehicleMovementComponent.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
@@ -75,8 +75,6 @@ void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
     Init_wheeled_component();
     Init_car_pos_component();
     Init_car_pos_data();
-
-    AUI_manager* p_ui_manager = AGlobal::Get_UI_manager();
 }
 
 void ACore_vehicle::Load_from_csv_vehicle(e_vehicle_type _index)
@@ -131,10 +129,7 @@ void ACore_vehicle::Init_car_pos_data()
 
 void ACore_vehicle::Init_interaction_UI()
 {
-    mp_ui_manager = AGlobal::Get_UI_manager();
-
-    if (mp_ui_manager)
-        mp_ui_manager->Update_interaction_UI(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
+    AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
 }
 
 void ACore_vehicle::Update_car_pos_data()
