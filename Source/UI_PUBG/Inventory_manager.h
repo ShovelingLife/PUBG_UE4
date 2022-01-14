@@ -32,6 +32,7 @@ public:
 
     // 초기화 함수 모음
 private:
+    void Init_inventory_UI();
 
     // 인벤토리 위젯 초기화
     void Init_inventory_widget();

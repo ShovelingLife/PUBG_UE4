@@ -93,8 +93,6 @@ protected:
     virtual void SetupPlayerInputComponent(class UInputComponent*) override;
 
 protected:
-    void Load_from_csv_vehicle(e_vehicle_type);
-
     void Init_car_pos_component();
 
     void Init(e_vehicle_type);

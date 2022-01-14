@@ -38,19 +38,20 @@ void AData_table_manager::Init_weapon_data()
             break;
 
         Fs_weapon_data data = *p_row;
-        m_arr_weapon_data[i].type                     = data.type;
-        m_arr_weapon_data[i].mesh_path                = mk_weapon_mesh_path + data.mesh_path;
-        m_arr_weapon_data[i].audio_path               = data.audio_path;
-        m_arr_weapon_data[i].mag_mesh_path            = mk_weapon_mesh_path + data.type + data.mag_mesh_path;
-        m_arr_weapon_data[i].bullet_mesh_path         = mk_weapon_mesh_path + "Ammunition/SM_Shell_" + data.bullet_mesh_path;
-        m_arr_weapon_data[i].collider_size            = data.collider_size;
-        m_arr_weapon_data[i].collider_pos             = data.collider_pos;
-        m_arr_weapon_data[i].current_ammunition_count = data.current_ammunition_count;
-        m_arr_weapon_data[i].max_bullet_count         = data.max_bullet_count;
-        m_arr_weapon_data[i].damage                   = data.damage;
-        m_arr_weapon_data[i].current_bullet_count     = data.max_bullet_count;
-        m_arr_weapon_data[i].UI_material_bp_path      = mk_rendertarget_mesh_path + data.type;
-        m_arr_weapon_data[i].bullet_bp_path           = mk_bullet_bp_path + data.type + "_bullet";
+        m_arr_weapon_data[i].type                  = data.type;
+        m_arr_weapon_data[i].mesh_path             = mk_weapon_mesh_path + data.weapon_group_type + "/SK_" + data.mesh_path;
+        m_arr_weapon_data[i].weapon_icon_path      = data.weapon_icon_path;
+        m_arr_weapon_data[i].weapon_slot_icon_path = data.weapon_slot_icon_path;
+        m_arr_weapon_data[i].mag_mesh_path         = mk_weapon_mesh_path + data.type + data.mag_mesh_path;
+        m_arr_weapon_data[i].bullet_mesh_path      = mk_weapon_mesh_path + "Ammunition/SM_Shell_" + data.bullet_mesh_path;
+        m_arr_weapon_data[i].weapon_group_type     = data.weapon_group_type;
+        m_arr_weapon_data[i].collider_size         = data.collider_size;
+        m_arr_weapon_data[i].collider_pos          = data.collider_pos;
+        m_arr_weapon_data[i].max_bullet_count      = data.max_bullet_count;
+        m_arr_weapon_data[i].damage                = data.damage;
+        m_arr_weapon_data[i].current_bullet_count  = data.max_bullet_count;
+        m_arr_weapon_data[i].UI_material_bp_path   = mk_rendertarget_mesh_path + data.type;
+        m_arr_weapon_data[i].bullet_bp_path        = mk_bullet_bp_path + data.type + "_bullet";
     }
 }
 

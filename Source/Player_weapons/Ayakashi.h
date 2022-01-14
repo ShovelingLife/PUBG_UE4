@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_bullet.h"
-#include "SMG11_bullet.generated.h"
+#include "Core_weapon.h"
+#include "Ayakashi.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API ASMG11_bullet : public ACore_bullet
+class PLAYER_WEAPONS_API AAyakashi : public ACore_weapon
 {
 	GENERATED_BODY()
 	
 public:
-	ASMG11_bullet();
+	AAyakashi();
 };

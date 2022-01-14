@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AR4_bullet.h"
+#include "LS80.h"
 
-AAR4_bullet::AAR4_bullet()
+ALS80::ALS80()
 {
-    Init(e_weapon_type::AR4);
+    Init(e_weapon_type::LS80);
 }

@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/Base_interaction.h"
-#include "PUBG_UE4/My_enum.h"
+#include "Weapon_enum.h"
 #include "PUBG_UE4/Data_table_manager.h"
 #include "Core_weapon.generated.h"
 
@@ -22,7 +22,6 @@ protected:
     UAudioComponent* mp_audio = nullptr;
 
     e_weapon_type m_weapon_type;
-    bool		  m_is_gun = true;
 
 public:
     // ÃÑ¾Ë °ü·Ã
@@ -58,20 +57,17 @@ public:
 protected:
     void Init(e_weapon_type);
 
-    // ë©”ì‹œ ?¤ì •
+    // ¸Ş½¬ ÃÊ±âÈ­
     void Init_mesh();
 
-    // ì¶©ëŒë°•ìŠ¤ ?¤ì •
+    // Äİ¶óÀÌ´õ Á¤º¸ °»½Å
     void Update_collider();
 
-    // ì´ì•Œ ?¤ì •
+    // Åº¾Ë ÃÊ±âÈ­
     void Init_bullet();
 
-    // ?¬ìš´???¤ì •
+    // »ç¿îµå ÃÊ±âÈ­
     void Init_audio();
-
-    // ?Œë” ?€ê¹?UI ?¤ì •
-    void Init_UI_material();
 
     void Init_particle_system();
 

@@ -29,7 +29,7 @@ void ASound_manager::Tick(float DeltaTime)
 void ASound_manager::Init_weapon_audio()
 {
     // 사운드 적용
-    static ConstructorHelpers::FObjectFinder<USoundWave> BP_EMPTY_AMMO_SOUND(*(mk_sound_path + "Empty_gun_shot"));
+    static ConstructorHelpers::FObjectFinder<USoundWave> BP_EMPTY_AMMO_SOUND(*(mk_sound_path + "Empty_shot"));
 
     if (BP_EMPTY_AMMO_SOUND.Succeeded())
         p_empty_ammo_sound = Cast<USoundBase>(BP_EMPTY_AMMO_SOUND.Object);
@@ -57,7 +57,7 @@ void ASound_manager::Init_weapon_audio()
     // CSV로부터 오디오 경로 가져오기
     for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
-        ConstructorHelpers::FObjectFinder<USoundWave> BP_SHOT_SOUND(*(mk_sound_path + p_data_table_manager->Get_weapon_data(i).audio_path));
+        ConstructorHelpers::FObjectFinder<USoundWave> BP_SHOT_SOUND(*(mk_sound_path + p_data_table_manager->Get_weapon_data(i).type + "_shot"));
 
         if (BP_SHOT_SOUND.Succeeded())
             p_shot_sound_arr[i] = Cast<USoundBase>(BP_SHOT_SOUND.Object);

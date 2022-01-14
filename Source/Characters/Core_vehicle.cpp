@@ -69,20 +69,12 @@ void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_com
 
 void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
 {
-    Load_from_csv_vehicle(_vehicle_type_index);
+    AGlobal::Get_data_table_manager()->Get_vehicle_data((int)_vehicle_type_index);
     Init_skeletal_mesh("Vehicles");
     Init_camera();
     Init_wheeled_component();
     Init_car_pos_component();
     Init_car_pos_data();
-}
-
-void ACore_vehicle::Load_from_csv_vehicle(e_vehicle_type _index)
-{
-    auto p_data_table_manager = AGlobal::Get_data_table_manager();
-
-    if (p_data_table_manager)
-        m_vehicle_data = p_data_table_manager->Get_vehicle_data((int)_index);
 }
 
 void ACore_vehicle::Init_car_pos_component()

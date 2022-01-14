@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Core_weapon.h"
-#include "Ka47.generated.h"
+#include "C7.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AKa47 : public ACore_weapon
+class PLAYER_WEAPONS_API AC7 : public ACore_weapon
 {
 	GENERATED_BODY()
 	
 public:
-	AKa47();
+	AC7();
 };

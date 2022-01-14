@@ -1,5 +1,6 @@
 #include "UI_manager.h"
 #include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Data_table_manager.h"
 #include "Interaction_UI.h"
 #include "Inventory_manager.h"
 #include "Player_UI.h"
@@ -13,6 +14,8 @@ AUI_manager::AUI_manager()
     PrimaryActorTick.bCanEverTick = true;
     Init_player_UI();
     Init_interaction_UI();
+    Init_inventory_weapon_UI();
+    Init_main_weapon_UI();
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +25,8 @@ void AUI_manager::BeginPlay()
     mp_global = AGlobal::Get();
     mp_global->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
     Set_player_UI();
-    Set_player_inventory();
+    Init_player_inventory();
+    Set_weapon_UI();
 }
 
 // Called every frame
@@ -46,10 +50,44 @@ void AUI_manager::Set_player_UI()
     mp_player_UI->AddToViewport(0);
 }
 
-void AUI_manager::Set_player_inventory()
+void AUI_manager::Init_player_inventory()
 {
-    p_inventory_manager = GetWorld()->SpawnActor<AInventory_manager>(AInventory_manager::StaticClass(), FTransform::Identity);
-    p_inventory_manager->AttachToActor(UGameplayStatics::GetPlayerPawn(GetWorld(),0), FAttachmentTransformRules::KeepRelativeTransform);
+    FActorSpawnParameters actor_spawn_parameters;
+    actor_spawn_parameters.Owner = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    p_inventory_manager = GetWorld()->SpawnActor<AInventory_manager>(AInventory_manager::StaticClass(), actor_spawn_parameters);
+}
+
+void AUI_manager::Init_inventory_weapon_UI()
+{
+    for (int i = 0; i < MAX_WEAPON_COUNT; i++)
+    {
+        // 리소스를 불러온 후 데이터 테이블에 대입
+        FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AGlobal::Get_data_table_manager()->Get_weapon_data(i).weapon_icon_path;
+        auto    weapon_ui_tex = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
+
+        if (weapon_ui_tex.Succeeded())
+            m_map_inventory_weapon_ui_tex.Add(i, weapon_ui_tex.Object);
+    }
+}
+
+void AUI_manager::Init_main_weapon_UI()
+{
+    for (int i = 0; i < MAX_WEAPON_COUNT; i++)
+    {
+        // 리소스를 불러온 후 데이터 테이블에 대입
+        FString weapon_ui_path = "/Game/UI/Military/" + AGlobal::Get_data_table_manager()->Get_weapon_data(i).weapon_slot_icon_path;
+        auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
+
+        if (weapon_ui_mat.Succeeded())
+            m_map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
+    }
+}
+
+void AUI_manager::Set_weapon_UI()
+{
+    /*for (int i = 0; i < MAX_WEAPON_COUNT; i++)
+    {
+    }*/
 }
 
 void AUI_manager::Init_interaction_UI()

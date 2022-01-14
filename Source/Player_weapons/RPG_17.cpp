@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Ka47_bullet.h"
+#include "RPG_17.h"
 
-AKa47_bullet::AKa47_bullet()
+ARPG_17::ARPG_17()
 {
-    Init(e_weapon_type::Ka47);
+    Init(e_weapon_type::RPG_17);
 }

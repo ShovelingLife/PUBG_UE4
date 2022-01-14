@@ -17,7 +17,7 @@ private:
     class UDataTable* mp_weapon_data_table;
 
     Fs_weapon_data    m_arr_weapon_data[MAX_WEAPON_COUNT];
-    const FString	  mk_weapon_mesh_path       = "/Game/Items/Weapons/Meshes/";
+    const FString	  mk_weapon_mesh_path       = "/Game/AdvanceWeaponPack/Mesh/Weapon/";
     const FString     mk_bullet_bp_path         = "/Game/Blueprints/Weapons/Ammo/BP_";
     const FString     mk_rendertarget_mesh_path = "/Game/Materials/Weapon_UI/UI_material_";
     const FString     mk_weapon_sound_path      = "/Game/SFX/Gun_sounds/";

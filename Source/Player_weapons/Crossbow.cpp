@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "KA_Val.h"
+#include "Crossbow.h"
 
-AKA_Val::AKA_Val()
+ACrossbow::ACrossbow()
 {
-    Init(e_weapon_type::KA_Val);
+    Init(e_weapon_type::Crossbow);
 }

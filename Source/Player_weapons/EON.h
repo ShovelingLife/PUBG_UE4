@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Core_weapon.h"
-#include "SMG11.generated.h"
+#include "EON.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API ASMG11 : public ACore_weapon
+class PLAYER_WEAPONS_API AEON : public ACore_weapon
 {
 	GENERATED_BODY()
 	
 public:
-	ASMG11();
+	AEON();
 };

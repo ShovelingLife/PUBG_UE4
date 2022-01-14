@@ -17,7 +17,7 @@ private:
     class AGlobal* mp_global = nullptr;
 
     // 최상위 UI 모든걸 포함
-    UPlayer_UI* mp_player_UI;
+    UPlayer_UI*             mp_player_UI;
     TSubclassOf<UPlayer_UI> m_bp_player_UI;
 
     // 인벤토리
@@ -26,6 +26,14 @@ private:
     // 상호작용 UI 관련
     UPROPERTY(VisibleAnywhere, Category = Widget_bp)
         TSubclassOf<UUserWidget> m_interaction_widget_bp;
+
+    // 메인 무기 UI
+    UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
+        TMap<int, UMaterial*> m_map_main_weapon_ui_mat;
+
+    // 인벤토리 무기 UI
+    UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
+        TMap<int, UTexture*> m_map_inventory_weapon_ui_tex;
 
 public:
     class AInventory_manager* p_inventory_manager;
@@ -52,7 +60,13 @@ private:
     void Set_player_UI();
 
     // 플레이어 인벤토리를 설정
-    void Set_player_inventory();
+    void Init_player_inventory();
+
+    void Init_inventory_weapon_UI();
+
+    void Init_main_weapon_UI();
+
+    void Set_weapon_UI();
 
 public:
     void Init_interaction_UI();

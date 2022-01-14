@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SMG11.h"
+#include "C7.h"
 
-ASMG11::ASMG11()
+AC7::AC7()
 {
-    Init(e_weapon_type::SMG11);
+    Init(e_weapon_type::C7);
 }

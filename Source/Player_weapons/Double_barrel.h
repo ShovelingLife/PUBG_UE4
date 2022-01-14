@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_bullet.h"
-#include "Ka47_bullet.generated.h"
+#include "Core_weapon.h"
+#include "Double_barrel.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AKa47_bullet : public ACore_bullet
+class PLAYER_WEAPONS_API ADouble_barrel : public ACore_weapon
 {
 	GENERATED_BODY()
 	
 public:
-	AKa47_bullet();
+	ADouble_barrel();
 };

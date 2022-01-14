@@ -49,8 +49,9 @@ void ACustom_player::BeginPlay()
     Super::BeginPlay();
 
     // 무기 매니저 생성
-    mp_weapon_manager = GetWorld()->SpawnActor<AWeapon_manager>(AWeapon_manager::StaticClass(), FTransform::Identity);
-    mp_weapon_manager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+    FActorSpawnParameters actor_spawn_parameters;
+    actor_spawn_parameters.Owner = this;
+    mp_weapon_manager = GetWorld()->SpawnActor<AWeapon_manager>(AWeapon_manager::StaticClass(), actor_spawn_parameters);
 }
 
 void ACustom_player::Tick(float _delta_time)

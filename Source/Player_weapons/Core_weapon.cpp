@@ -43,30 +43,22 @@ void ACore_weapon::Tick(float DeltaTime)
 
 void ACore_weapon::Init(e_weapon_type _index)
 {
-    if (!AGlobal::Get_data_table_manager())
-        return;
-
-    weapon_data   = AGlobal::Get_data_table_manager()->Get_weapon_data((int)_index);
+    weapon_data = AGlobal::Get_data_table_manager()->Get_weapon_data((int)_index);
     m_weapon_type = _index;
     m_object_type = weapon_data.type;
 
     Update_collider();
     Init_mesh();
     Init_audio();
-
-    if (m_is_gun)
-    {
-        Init_bullet();
-        Init_UI_material();
-        Init_particle_system();
-    }
+    Init_bullet();
+    Init_particle_system();
 }
 
 void ACore_weapon::Init_mesh()
 {
     FName name = TEXT("Weapon_mesh");
     ABase_interaction::Init_skeletal_mesh(weapon_data.mesh_path, name);
-    skeletal_mesh->SetRelativeRotation(FRotator(-90.f, 0.f, 0.f));
+    skeletal_mesh->SetRelativeRotation(FRotator::ZeroRotator);
     skeletal_mesh->SetRelativeLocation(FVector::ZeroVector);
 }
 
@@ -74,6 +66,7 @@ void ACore_weapon::Update_collider()
 {
     m_box_collider->AddLocalOffset(weapon_data.collider_pos);
     m_box_collider->SetBoxExtent(weapon_data.collider_size);
+    m_box_collider->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
 }
 
 void ACore_weapon::Init_bullet()
@@ -92,14 +85,6 @@ void ACore_weapon::Init_audio()
     // 오디오 포인터에 대한 생성
     mp_audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
     mp_audio->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-}
-
-void ACore_weapon::Init_UI_material()
-{
-    ConstructorHelpers::FObjectFinder< UMaterial> RENDERTARGET_MESH(*(weapon_data.UI_material_bp_path));
-
-    if (RENDERTARGET_MESH.Succeeded())
-        p_render_target_ui_mesh = RENDERTARGET_MESH.Object;
 }
 
 void ACore_weapon::Init_particle_system()

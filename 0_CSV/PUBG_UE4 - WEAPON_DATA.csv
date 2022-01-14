@@ -1,7 +1,14 @@
-,Type,Mesh_path,Audio_path,Bullet_mesh_path,Mag_mesh_path,Collider_size,Collider_pos,Current_ammunition_count,Max_bullet_count,Damage
-0,AR4,AR4/SK_AR4,M16_Single_Shot,9mm,SM_AR4_Mag_Empty,"(x=10, y=50, z=15)","(x=0, y=15, z=5)",250,50,
-1,KA_Val,KA_Val/SK_KA_Val_Y,AR_Single_Shot_big,9x18,SM_KA_Val_Mag_Y,"(x=10, y=50, z=15)","(x=0, y=15, z=5)",200,40,
-2,Ka47,Ka47/SK_KA47,AR_Single_Shot_small,762x39,SM_KA47_Mag_Empty,"(x=10, y=45, z=17.5)","(x=0, y=20, z=2)",150,30,
-3,KA74U,KA74U/SK_KA74U_Y,AKM_Single_Shot,545x39,SM_KA74U_Mag_Empty_Y,"(x=10, y=40, z=17.5)","(x=0, y=10, z=0)",100,20,
-4,SMG11,SMG11/SK_SMG11_Y,SMG_Single_Shot,45ap,SM_SMG11_Mag_Empty_Y,"(x=10, y=18, z=20)","(x=2, y=1.5, z=0)",50,10,
-5,G67_Grenade,G67_Grenade/SK_G67_X,Explosion_grenade,,,,,,,100
+,Type,Weapon_group_type,Mesh_path,Weapon_icon_path,Weapon_slot_icon_path,Bullet_mesh_path,Mag_mesh_path,Collider_size,Collider_pos,Max_bullet_count,Damage
+1,C7,Assault,C7_Assault_Xaxis,T_C7_Icon,T_Gun_03_c_Mat,,C7_Mag,"(x=0,y=0,z=0)","(x=0,y=0,z=0)",,
+2,LS80,Assault,LS80_Assault_Xaxis,T_LS80_Icon,T_Gun_02_c_Mat,,LS80_Mag,,,,
+3,M1,Assault,M1_Assault_Xaxis,T_M1_Icon,T_Gun_02_b_Mat,,M1_Mag,,,,
+4,Karos,Handgun,Karos_Handgun_Xaxis,T_Karos_Icon,T_Gun_06_b_Mat,,,,,,
+5,RogerLR220,Handgun,RogerLR220__Handgun_Xaxis,T_Roger_Icon,T_Gun_06_d_Mat,,RogerLR220__Mag,,,,
+6,Double_barrel,Shotgun,DoubleBarrel_Shotgun_Xaxis,T_DoubleBarrel_Icon,T_Gun_03_a_Mat,,,,,,
+7,SK12,Shotgun,SK12_Xaxis_Shotgun,T_SK12_Icon,T_Gun_03_b_Mat,,,,,,
+8,EON,SMG,EONConversion_Smg_Xaxis,T_EonConv_Icon,T_Gun_05_b_Mat,,EONConversion_Mag,,,,
+9,PX_70,SMG,PX-70_SMG_Xaxis,T_PX-70_Icon,T_Gun_05_c_Mat,,,,,,
+10,Ayakashi,Sniper,Ayakashi_Sniper_Xaxis,T_Ayakashi_Icon,T_Gun_01_b_Mat,,Ayakashi_Mag,,,,
+11,VSS,Sniper,VSS_Sniper_Xaxis,T_VSS_Icon,T_Gun_01_a_Mat,,VSS_Mag,,,,
+12,RPG_17,Special,RPG-17_Xaxis,T_RPG-17_Icon,T_Gun_07_a_Mat,RPG-17_Missile,,,,,
+13,Crossbow,Special,WickedSub-1_Crossbow_Xaxis,T_WickedSub-1_Icon,Crossbow_Mat,SM_WickedSub-1_Bolt,,,,,

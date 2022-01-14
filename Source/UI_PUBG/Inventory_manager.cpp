@@ -1,5 +1,7 @@
 ﻿#include "Inventory_manager.h"
 #include "Inventory_UI.h"
+#include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Data_table_manager.h"
 #include "Characters/Custom_player.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
@@ -8,12 +10,7 @@
 AInventory_manager::AInventory_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
-
-    // 인벤토리 위젯 초기화
-    auto BP_inventory_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_UI_Inventory.BP_UI_Inventory_C'"));
-
-    if (BP_inventory_UI.Succeeded())
-        m_inventory_actor = BP_inventory_UI.Class;
+    Init_inventory_UI();
 }
 
 void AInventory_manager::BeginPlay()
@@ -27,6 +24,15 @@ void AInventory_manager::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     Check_inventory_state();
+}
+
+void AInventory_manager::Init_inventory_UI()
+{
+    // 인벤토리 위젯 초기화
+    auto BP_inventory_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_UI_Inventory.BP_UI_Inventory_C'"));
+
+    if (BP_inventory_UI.Succeeded())
+        m_inventory_actor = BP_inventory_UI.Class;
 }
 
 void AInventory_manager::Init_inventory_widget()

@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_bullet.h"
-#include "AR4_bullet.generated.h"
+#include "Core_weapon.h"
+#include "Crossbow.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AAR4_bullet : public ACore_bullet
+class PLAYER_WEAPONS_API ACrossbow : public ACore_weapon
 {
 	GENERATED_BODY()
 	
 public:
-	AAR4_bullet();
+	ACrossbow();
 };

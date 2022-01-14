@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Core_weapon.h"
-#include "AR4.generated.h"
+#include "PX_70.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AAR4 : public ACore_weapon
+class PLAYER_WEAPONS_API APX_70 : public ACore_weapon
 {
 	GENERATED_BODY()
 	
 public:
-	AAR4();
+	APX_70();
 };
