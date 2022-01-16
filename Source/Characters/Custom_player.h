@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 
+class AWeapon_manager;
 class UMy_anim_instance;
 class ACore_weapon;
 class ACore_vehicle;
@@ -16,11 +17,9 @@ class CHARACTERS_API ACustom_player : public ACharacter
 
 private:
     // 현재 쓰여지는 오브젝트들
-    class AWeapon_manager* mp_weapon_manager;
-    ACore_weapon*  m_collided_weapon  = nullptr;
-    ACore_weapon*  m_first_weapon     = nullptr;
-    ACore_weapon*  m_second_weapon    = nullptr;
-    ACore_vehicle* m_collided_vehicle = nullptr;
+    AWeapon_manager* mp_weapon_manager;
+    AActor*          m_collided_weapon  = nullptr;
+    ACore_vehicle*   m_collided_vehicle = nullptr;
 
     // 오디오 관련
     UPROPERTY(VisibleAnywhere, Category = Audio)
@@ -167,6 +166,18 @@ private:
 
     void Update_weapon_pos();
 
+    void Equip_first_weapon();
+
+    void Equip_second_weapon();
+
+    void Equip_third_weapon();
+
+    void Equip_fourth_weapon();
+
+    void Equip_fifth_weapon();
+
 public:
     void Exit_from_vehicle(FVector);
+
+    AWeapon_manager* Get_weapon_manager() { return mp_weapon_manager; }
 };

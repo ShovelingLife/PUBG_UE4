@@ -15,7 +15,6 @@ class PLAYER_WEAPONS_API ACore_bullet : public AActor
 	
 protected:
     Fs_weapon_data m_weapon_data;
-    e_weapon_type  m_weapon_type;
     const float	   mk_bullet_speed = 2.f;
     const float	   mk_life_time = 3.f;
     float		   m_current_life_time = 0.f;
@@ -57,8 +56,6 @@ private:
     void Init_collider();
 
     void Init_projectile_movement_component();
-
-    void Load_csv();
 
 protected:
     void Init(e_weapon_type);

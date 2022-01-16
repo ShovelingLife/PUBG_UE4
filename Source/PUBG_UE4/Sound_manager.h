@@ -1,11 +1,13 @@
-    // Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Data_table_manager.h"
+#include "My_enum.h"
 #include "Sound_manager.generated.h"
+
+class USoundBase;
+class UAudioComponent;
 
 UCLASS()
 class PUBG_UE4_API ASound_manager : public AActor
@@ -38,10 +40,12 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
 
+public:
+    // 컴포넌트 / 사운드 파일 / 무기 종류
+    void Play_weapon_sound(UAudioComponent*, e_weapon_sound_type, int _weapon_index = 0);
 };

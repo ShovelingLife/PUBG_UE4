@@ -3,6 +3,7 @@
 #include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Data_table_manager.h"
 #include "Characters/Custom_player.h"
+#include "Components/SceneComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -10,6 +11,9 @@
 AInventory_manager::AInventory_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
+    mp_scene_comp = CreateDefaultSubobject<USceneComponent>(TEXT("Scene_comp"));
+    RootComponent = mp_scene_comp;
+
     Init_inventory_UI();
 }
 
@@ -17,6 +21,7 @@ void AInventory_manager::BeginPlay()
 {
     Super::BeginPlay();
     mp_custom_player = Cast<ACustom_player>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+    AttachToActor(mp_custom_player, FAttachmentTransformRules::KeepRelativeTransform);
     Init_inventory_widget();
 }
 

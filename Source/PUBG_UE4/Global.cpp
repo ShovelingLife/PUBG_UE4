@@ -119,3 +119,8 @@ ASound_manager* AGlobal::Get_sound_manager()
 
     return mp_global->mp_sound_manager;
 }
+
+void AGlobal::Print_log(int _index, float _time, FColor _color, FString _text)
+{
+    GEngine->AddOnScreenDebugMessage(_index, _time, _color, _text);
+}

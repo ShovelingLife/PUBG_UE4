@@ -69,7 +69,7 @@ void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_com
 
 void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
 {
-    AGlobal::Get_data_table_manager()->Get_vehicle_data((int)_vehicle_type_index);
+    AData_table_manager::arr_vehicle_data[(int)_vehicle_type_index];
     Init_skeletal_mesh("Vehicles");
     Init_camera();
     Init_wheeled_component();

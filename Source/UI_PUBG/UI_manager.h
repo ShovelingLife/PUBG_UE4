@@ -27,15 +27,15 @@ private:
     UPROPERTY(VisibleAnywhere, Category = Widget_bp)
         TSubclassOf<UUserWidget> m_interaction_widget_bp;
 
+public:
     // 메인 무기 UI
     UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
-        TMap<int, UMaterial*> m_map_main_weapon_ui_mat;
+        TMap<int, UMaterial*> map_main_weapon_ui_mat;
 
     // 인벤토리 무기 UI
     UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
-        TMap<int, UTexture*> m_map_inventory_weapon_ui_tex;
+        TMap<int, UTexture*> map_inventory_weapon_ui_tex;
 
-public:
     class AInventory_manager* p_inventory_manager;
 
 public:
@@ -56,6 +56,9 @@ private:
     // 최상위 플레이어 UI 초기화
     void Init_player_UI();
 
+    // 상호작용 UI 초기화
+    void Init_interaction_UI();
+
     // 플레이어 UI를 띄움
     void Set_player_UI();
 
@@ -69,8 +72,6 @@ private:
     void Set_weapon_UI();
 
 public:
-    void Init_interaction_UI();
-
     UFUNCTION()
     void Update_interaction_UI(class UWidgetComponent* _widget_comp, FString _title);
 };

@@ -10,6 +10,9 @@ class UI_PUBG_API AInventory_manager : public AActor
     GENERATED_BODY()
 
 private:
+    UPROPERTY(EditAnywhere, Category = Scene_comp)
+        class USceneComponent* mp_scene_comp = nullptr;
+
     // UI ฐüทร
     TSubclassOf<UUserWidget> m_inventory_actor;
     class UInventory_UI* mp_inventory_ui;

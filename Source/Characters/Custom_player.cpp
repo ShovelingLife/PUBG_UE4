@@ -2,6 +2,8 @@
 #include "Core_vehicle.h"
 #include "PUBG_gamemode.h"
 #include "Player_weapons/Core_weapon.h"
+#include "Player_weapons/Core_melee_weapon.h"
+#include "Player_weapons/Core_throwable_weapon.h"
 #include "Player_weapons/Core_bullet.h"
 #include "Player_weapons/Weapon_manager.h"
 #include "AI_PUBG/AI_character.h"
@@ -36,7 +38,11 @@ ACustom_player::ACustom_player()
 
 void ACustom_player::OnOverlapBegin(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index, bool _is_from_sweep, const FHitResult& _sweep_result)
 {
-    m_collided_weapon = Cast<ACore_weapon>(_other_actor);
+    // 총기, 근접 또는 던지는 무기일 시
+    if (_other_actor->IsA<ACore_weapon>() ||
+        _other_actor->IsA<ACore_melee_weapon>() ||
+        _other_actor->IsA<ACore_throwable_weapon>())
+        m_collided_weapon = _other_actor;
 }
 
 void ACustom_player::OnOverlapEnd(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index)
@@ -49,9 +55,8 @@ void ACustom_player::BeginPlay()
     Super::BeginPlay();
 
     // 무기 매니저 생성
-    FActorSpawnParameters actor_spawn_parameters;
-    actor_spawn_parameters.Owner = this;
-    mp_weapon_manager = GetWorld()->SpawnActor<AWeapon_manager>(AWeapon_manager::StaticClass(), actor_spawn_parameters);
+    mp_weapon_manager = GetWorld()->SpawnActor<AWeapon_manager>(AWeapon_manager::StaticClass());
+    mp_weapon_manager->GetRootComponent()->AttachTo(RootComponent);
 }
 
 void ACustom_player::Tick(float _delta_time)
@@ -81,11 +86,11 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     InputComponent->BindAction(FName(TEXT("Aim")), IE_Pressed, this, &ACustom_player::Aim);
 
     // 무기 관련
-    //InputComponent->BindAction(FName(TEXT("Equip_first_weapon")), IE_Pressed, this, &ACustom_player::Equip_first_weapon);
-    //InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed, this, &ACustom_player::Equip_second_weapon);
-    //InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed, this, &ACustom_player::Equip_second_weapon);
-    //InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed, this, &ACustom_player::Equip_second_weapon);
-    //InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed, this, &ACustom_player::Equip_second_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_first_weapon")), IE_Pressed, this,  &ACustom_player::Equip_first_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed, this, &ACustom_player::Equip_second_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_third_weapon")), IE_Pressed, this, &ACustom_player::Equip_third_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_fourth_weapon")), IE_Pressed, this, &ACustom_player::Equip_fourth_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_fifth_weapon")), IE_Pressed, this, &ACustom_player::Equip_fifth_weapon);
     InputComponent->BindAction(FName(TEXT("Change_shoot_mode")), IE_Pressed, this, &ACustom_player::Change_shoot_mode);
     InputComponent->BindAction(FName(TEXT("Swap_weapon")), IE_Pressed, this, &ACustom_player::Swap_weapon);
     InputComponent->BindAction(FName(TEXT("Shoot")), IE_Pressed, this, &ACustom_player::Begin_shooting);
@@ -439,32 +444,10 @@ void ACustom_player::Try_to_get_collided_component()
 {
     if (m_is_interacting)
     {
-        //// 무기랑 충돌 시
-        //if (m_collided_weapon)
-        //{
-        //    // 첫번째 무기가 없을 시
-        //    if (!m_first_weapon)
-        //    {
-        //        m_first_weapon = m_collided_weapon;
-        //        Select_weapon(e_equipped_weapon_type::FIRST);
-        //        Change_shoot_mode();
-        //    }
-        //    // 첫번째 무기가 있을 시
-        //    else
-        //    {
-        //        // 두번째 무기가 없을 시
-        //        if (!m_second_weapon)
-        //        {
-        //            // 첫번째 무기 위치랑 교체 후 장착
-        //            Attach_first_weapon("first_back_weapon_sock");
-        //            m_second_weapon = m_collided_weapon;
-        //            Select_weapon(e_equipped_weapon_type::SECOND);
-        //        }
-        //        else // 두번째 무기가 있을 시
-        //            Select_weapon(e_equipped_weapon_type::SWAP);
-        //    }
-        //}
-        // 
+        // 무기랑 충돌 시
+        if (m_collided_weapon)
+            mp_weapon_manager->Equip(m_collided_weapon);
+
         if (m_collided_vehicle)
         {
             //  차량 탑승 상태
@@ -492,6 +475,31 @@ void ACustom_player::Update_weapon_pos()
         //Attach_second_weapon("second_back_weapon_sock");
         break;
     }
+}
+
+void ACustom_player::Equip_first_weapon()
+{
+    mp_weapon_manager->current_weapon_type = e_current_weapon_type::FIRST;
+}
+
+void ACustom_player::Equip_second_weapon()
+{
+    mp_weapon_manager->current_weapon_type = e_current_weapon_type::SECOND;
+}
+
+void ACustom_player::Equip_third_weapon()
+{
+    mp_weapon_manager->current_weapon_type = e_current_weapon_type::PISTOL;
+}
+
+void ACustom_player::Equip_fourth_weapon()
+{
+    mp_weapon_manager->current_weapon_type = e_current_weapon_type::MELEE;
+}
+
+void ACustom_player::Equip_fifth_weapon()
+{
+    mp_weapon_manager->current_weapon_type = e_current_weapon_type::THROWABLE;
 }
 
 void ACustom_player::Exit_from_vehicle(FVector _exit_location)

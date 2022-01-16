@@ -41,8 +41,7 @@ void ACore_bullet::OnHit(UPrimitiveComponent* _my_comp, AActor* _other, UPrimiti
 
 void ACore_bullet::Init(e_weapon_type _index)
 {
-    m_weapon_type = _index;
-    Load_csv();
+    m_weapon_data = AData_table_manager::arr_weapon_data[(int)_index];
     Init_collider();
     Init_mesh();
     Init_projectile_movement_component();
@@ -84,18 +83,4 @@ void ACore_bullet::Init_projectile_movement_component()
     projectile_movement_component->bShouldBounce = true;
     projectile_movement_component->Bounciness = 0.3f;
     projectile_movement_component->ProjectileGravityScale = 0.f;
-}
-
-void ACore_bullet::Load_csv()
-{
-    ConstructorHelpers::FClassFinder<AActor> DATA_TABLE_MANAGER(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Data_table_manager.BP_Data_table_manager_C'"));
-    AData_table_manager* p_data_table_manager = nullptr;
-
-    if (DATA_TABLE_MANAGER.Succeeded())
-        p_data_table_manager = Cast<AData_table_manager>(DATA_TABLE_MANAGER.Class->GetDefaultObject());
-
-    if (!p_data_table_manager)
-        return;
-
-    m_weapon_data = p_data_table_manager->Get_weapon_data((int)m_weapon_type);
 }

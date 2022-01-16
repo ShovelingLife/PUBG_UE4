@@ -43,8 +43,8 @@ void ACore_weapon::Tick(float DeltaTime)
 
 void ACore_weapon::Init(e_weapon_type _index)
 {
-    weapon_data = AGlobal::Get_data_table_manager()->Get_weapon_data((int)_index);
-    m_weapon_type = _index;
+    weapon_data = AData_table_manager::arr_weapon_data[(int)_index];
+    weapon_type = _index;
     m_object_type = weapon_data.type;
 
     Update_collider();
@@ -83,8 +83,8 @@ void ACore_weapon::Init_bullet()
 void ACore_weapon::Init_audio()
 {
     // 오디오 포인터에 대한 생성
-    mp_audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-    mp_audio->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    p_audio_comp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+    p_audio_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ACore_weapon::Init_particle_system()
@@ -109,20 +109,4 @@ void ACore_weapon::Update_particle_system()
     p_gun_particle->SetWorldScale3D(scale_value);
     p_gun_particle->SetWorldLocation(start_pos);
     p_gun_particle->AddWorldRotation(FQuat::MakeFromEuler(FVector(0.f, 90.f, 0.f)));
-}
-
-void ACore_weapon::Play_sound(e_weapon_sound_type _sound_type)
-{
-    USoundBase* tmp_sound = nullptr;
-    auto p_sound_manager  = AGlobal::Get_sound_manager();
-
-    switch (_sound_type)
-    {
-    case e_weapon_sound_type::EMPTY_AMMO:   tmp_sound = p_sound_manager->p_empty_ammo_sound;                   break;
-    case e_weapon_sound_type::BULLET_SOUND: tmp_sound = p_sound_manager->p_shot_sound_arr[(int)m_weapon_type]; break;
-    case e_weapon_sound_type::RELOAD_SOUND: tmp_sound = p_sound_manager->p_reload_sound;                       break;
-    case e_weapon_sound_type::EQUIP_SOUND:  tmp_sound = p_sound_manager->p_equip_sound;                        break;
-    }
-    mp_audio->SetSound(tmp_sound);
-    mp_audio->Play();
 }

@@ -76,4 +76,7 @@ public:
     //static AUI_manager* Get_UI_manager();
 
     static ASound_manager* Get_sound_manager();
+
+    // (로그 띄우기) 인덱스 / 띄우는 시간 / 색상 / 로그 문자열
+    static void Print_log(int, float, FColor, FString);
 };

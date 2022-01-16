@@ -1,17 +1,17 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Weapon_enum.generated.h"
 
-enum class e_weapon_sound_type
+enum class e_current_weapon_type
 {
-    EMPTY_AMMO,
-    BULLET_SOUND,
-    RELOAD_SOUND,
-    EQUIP_SOUND
+    FIRST,
+    SECOND,
+    PISTOL,
+    MELEE,
+    THROWABLE,
+    NONE
 };
 
 // ºÎ¼ÓÇ°

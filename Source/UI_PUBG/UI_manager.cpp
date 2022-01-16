@@ -22,8 +22,11 @@ AUI_manager::AUI_manager()
 void AUI_manager::BeginPlay()
 {
     Super::BeginPlay();
+    
+    // 델리게이트 바인딩
     mp_global = AGlobal::Get();
     mp_global->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
+
     Set_player_UI();
     Init_player_inventory();
     Set_weapon_UI();
@@ -43,6 +46,13 @@ void AUI_manager::Init_player_UI()
         m_bp_player_UI = BP_player_UI.Class;
 }
 
+void AUI_manager::Init_interaction_UI()
+{
+    // 위젯 컴포넌트 블루프린트 초기화
+    auto widget_bp = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C'"));
+    m_interaction_widget_bp = widget_bp.Class;
+}
+
 void AUI_manager::Set_player_UI()
 {
     UUserWidget* p_widget = CreateWidget(GetWorld(), m_bp_player_UI);
@@ -52,9 +62,10 @@ void AUI_manager::Set_player_UI()
 
 void AUI_manager::Init_player_inventory()
 {
-    FActorSpawnParameters actor_spawn_parameters;
-    actor_spawn_parameters.Owner = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-    p_inventory_manager = GetWorld()->SpawnActor<AInventory_manager>(AInventory_manager::StaticClass(), actor_spawn_parameters);
+    //FActorSpawnParameters actor_spawn_parameters;
+    //actor_spawn_parameters.Owner = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    p_inventory_manager = GetWorld()->SpawnActor<AInventory_manager>(AInventory_manager::StaticClass());
+    p_inventory_manager->GetRootComponent()->AttachTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetRootComponent());
 }
 
 void AUI_manager::Init_inventory_weapon_UI()
@@ -62,11 +73,11 @@ void AUI_manager::Init_inventory_weapon_UI()
     for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AGlobal::Get_data_table_manager()->Get_weapon_data(i).weapon_icon_path;
+        FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_weapon_data[i].weapon_icon_path;
         auto    weapon_ui_tex = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
 
         if (weapon_ui_tex.Succeeded())
-            m_map_inventory_weapon_ui_tex.Add(i, weapon_ui_tex.Object);
+            map_inventory_weapon_ui_tex.Add(i, weapon_ui_tex.Object);
     }
 }
 
@@ -75,11 +86,11 @@ void AUI_manager::Init_main_weapon_UI()
     for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString weapon_ui_path = "/Game/UI/Military/" + AGlobal::Get_data_table_manager()->Get_weapon_data(i).weapon_slot_icon_path;
+        FString weapon_ui_path = "/Game/UI/Military/" + AData_table_manager::arr_weapon_data[i].weapon_slot_icon_path;
         auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
 
         if (weapon_ui_mat.Succeeded())
-            m_map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
+            map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
     }
 }
 
@@ -88,13 +99,6 @@ void AUI_manager::Set_weapon_UI()
     /*for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
     }*/
-}
-
-void AUI_manager::Init_interaction_UI()
-{
-    // 위젯 컴포넌트 블루프린트 초기화
-    auto widget_bp = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C'"));
-    m_interaction_widget_bp = widget_bp.Class;
 }
 
 void AUI_manager::Update_interaction_UI(UWidgetComponent* _widget_comp, FString _type)

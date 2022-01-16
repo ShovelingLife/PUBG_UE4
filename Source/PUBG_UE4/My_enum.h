@@ -61,6 +61,14 @@ enum class e_seat_type
     NONE
 };
 
+enum class e_weapon_sound_type
+{
+    EMPTY_AMMO,
+    SHOT_SOUND,
+    RELOAD_SOUND,
+    EQUIP_SOUND
+};
+
 UCLASS()
 class PUBG_UE4_API AMy_enum : public AActor
 {

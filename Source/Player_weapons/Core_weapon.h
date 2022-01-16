@@ -16,14 +16,10 @@ class PLAYER_WEAPONS_API ACore_weapon : public ABase_interaction
 {
 	GENERATED_BODY()
 	
-protected:
-    // ------- 사운드 관련 -------
-    UPROPERTY(VisibleAnywhere, Category = Sound)
-    UAudioComponent* mp_audio = nullptr;
-
-    e_weapon_type m_weapon_type;
-
 public:
+    UPROPERTY(VisibleAnywhere, Category = Sound)
+        UAudioComponent* p_audio_comp = nullptr;
+
     // 총알 관련
     UPROPERTY(VisibleAnywhere, Category = Bullet)
         ACore_bullet* p_bullet;
@@ -36,6 +32,7 @@ public:
     UPROPERTY(VisibleAnywhere, Category = UI)
         UMaterial* p_render_target_ui_mesh = nullptr;
 
+    e_weapon_type  weapon_type;
     Fs_weapon_data weapon_data;
     bool		   is_equipped = false;
 
@@ -72,7 +69,4 @@ protected:
     void Init_particle_system();
 
     void Update_particle_system();
-
-public:
-    void Play_sound(e_weapon_sound_type);
 };
