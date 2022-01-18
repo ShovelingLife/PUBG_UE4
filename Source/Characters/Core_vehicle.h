@@ -69,9 +69,9 @@ protected:
     ACustom_player*    m_player;
     Fs_vehicle_data    m_vehicle_data;
                        
-    const FString      mk_wheel_path = "/Game/Blueprints/Vehicles/Wheel/";
-    FString            m_mesh_path = "";
-    int                m_current_player_count = 0;
+    const FString      mk_wheel_path             = "/Game/Blueprints/Vehicles/Wheel/";
+    FString            m_mesh_path               = "";
+    int                m_current_player_count    = 0;
     bool               m_is_player_in_first_seat = false;
 
 public:
@@ -99,24 +99,24 @@ protected:
 
     void Init_camera();
 
-    void Init_skeletal_mesh(FString);
+    void Init_skeletal_mesh();
 
     void Init_wheeled_component();
 
     void Init_car_pos_data();
 
-    void Init_interaction_UI();
-
 // 차량 속성 관련 함수
 protected:
+    // 플레이어가 차량에서 나감
     void Player_exit();
 
-    // 
+    // 가속
     void Accelerate(float);
 
+    // 브레이크
     void Brake(float);
 
-    // 
+    // 회전
     void Handling(float);
 
     void Look_up(float);
@@ -138,7 +138,6 @@ protected:
     void Update_player_seat_location(e_seat_type);
 
     void Update_car_pos_data();
-
 
 public:
     // 탑승 가능 여부 확인

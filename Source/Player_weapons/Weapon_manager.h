@@ -6,6 +6,7 @@
 #include "Weapon_enum.h"
 #include "Weapon_manager.generated.h"
 
+class ABase_interaction;
 class ACore_weapon;
 class ACore_melee_weapon;
 class ACore_throwable_weapon;
@@ -35,11 +36,7 @@ public:
     ACore_melee_weapon*		p_melee				= nullptr;
     ACore_throwable_weapon* p_throwable			= nullptr;
     e_current_weapon_type	current_weapon_type = e_current_weapon_type::NONE;
-    bool					is_first_equipped	= false;
-    bool					is_second_equipped	= false;
-    bool					is_third_equipped	= false;
-    bool					is_fourth_equipped	= false;
-    bool					is_fifth_equipped	= false;
+	bool					arr_is_weapon_equipped[5]{ false };
 	bool					is_shooting			= false;
 
 public:	
@@ -55,10 +52,19 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+    void Check_for_equipped_weapon();
+
 	// 현재 장착 중인 무기
 	void Update_current_equipped_weapon();
 
     void Play_sound(e_weapon_sound_type);
+
+	// 배열 내에 원소 찾음 / 방향 / 시작 위치
+    e_current_weapon_type Find_weapon_index(FString, int);
+
+    void Attach_weapon(ABase_interaction*, FString);
+
+    void Reset_weapon_after_detaching(ABase_interaction*, FTransform);
 
 public:
 	// 장착
@@ -70,8 +76,11 @@ public:
 	// 장전
 	void Reload();
 
+	// 마우스 휠
+	void Scroll_select(int);
+
 	// 교체 현재 무기 / 맵 무기 / 소켓 이름
-	void Swap(AActor*, AActor*, FString);
+	void Swap(ABase_interaction*, AActor*, FString);
 
 	void Change_shoot_mode();
 
@@ -84,12 +93,6 @@ public:
 	void Check_continously_shooting(float);
 
 	// ------- 부착 관련 함수 -------
-
-	// 무기를 등 뒤에다 부착
-	void Attach_weapons_back();
-
-	// 총기를 소켓에다 부착
-	void Attach_weapon(AActor*, FString);
 
 	int Get_weapon_max_bullet_count(e_current_weapon_type);
 };

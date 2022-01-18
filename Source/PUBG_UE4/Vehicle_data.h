@@ -15,8 +15,8 @@ struct Fs_vehicle_data : public FTableRowBase
 {
     GENERATED_BODY()
 
-        UPROPERTY(BlueprintReadWrite, Category = Vehicle_name)
-        FString type = "";
+    UPROPERTY(BlueprintReadWrite, Category = Vehicle_name)
+    FString type = "";
 
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_path)
         FString mesh_path = "";

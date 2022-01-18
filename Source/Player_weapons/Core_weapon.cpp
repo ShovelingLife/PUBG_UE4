@@ -36,9 +36,9 @@ void ACore_weapon::NotifyActorEndOverlap(AActor* _collided_actor)
 }
 
 // Called every frame
-void ACore_weapon::Tick(float DeltaTime)
+void ACore_weapon::Tick(float _delta_time)
 {
-    Super::Tick(DeltaTime);
+    Super::Tick(_delta_time);
 }
 
 void ACore_weapon::Init(e_weapon_type _index)
@@ -58,8 +58,8 @@ void ACore_weapon::Init_mesh()
 {
     FName name = TEXT("Weapon_mesh");
     ABase_interaction::Init_skeletal_mesh(weapon_data.mesh_path, name);
-    skeletal_mesh->SetRelativeRotation(FRotator::ZeroRotator);
-    skeletal_mesh->SetRelativeLocation(FVector::ZeroVector);
+    p_skeletal_mesh_comp->SetRelativeRotation(FRotator::ZeroRotator);
+    p_skeletal_mesh_comp->SetRelativeLocation(FVector::ZeroVector);
 }
 
 void ACore_weapon::Update_collider()
@@ -103,7 +103,7 @@ void ACore_weapon::Update_particle_system()
     if (!p_gun_particle)
         return;
 
-    FVector start_pos = skeletal_mesh->GetSocketLocation(TEXT("Muzzle_socket"));
+    FVector start_pos = p_skeletal_mesh_comp->GetSocketLocation(TEXT("Muzzle_socket"));
     FVector scale_value{ 0.05f };
 
     p_gun_particle->SetWorldScale3D(scale_value);

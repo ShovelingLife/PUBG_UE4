@@ -9,7 +9,6 @@
 class UAudioComponent;
 class USoundBase;
 class ACore_bullet;
-class UMaterial;
 
 UCLASS()
 class PLAYER_WEAPONS_API ACore_weapon : public ABase_interaction
@@ -28,9 +27,6 @@ public:
 
     UPROPERTY(VisibleAnywhere, Category = Particle)
         class UParticleSystemComponent* p_gun_particle = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = UI)
-        UMaterial* p_render_target_ui_mesh = nullptr;
 
     e_weapon_type  weapon_type;
     Fs_weapon_data weapon_data;

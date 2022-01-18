@@ -26,8 +26,8 @@ private:
     UPROPERTY(VisibleAnywhere)
     class UDataTable* mp_vehicle_data_table;
 
-    const FString     mk_vehicle_mesh_path = "/Game/Characters/Vehicles/Skeletons/";
-    const FString     mk_anim_instance_path = "/Game/Blueprints/Vehicles/";
+    const FString     mk_vehicle_mesh_path    = "/Game/Characters/Vehicles/Skeletons/";
+    const FString     mk_anim_instance_path   = "/Game/Blueprints/Vehicles/";
     const FString     mk_vehicle_sound_path   = "";
     int               m_current_vehicle_count = 0;
 

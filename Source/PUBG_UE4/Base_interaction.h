@@ -4,16 +4,14 @@
 #include "GameFramework/Actor.h"
 #include "Base_interaction.generated.h"
 
+class USceneComponent;
+
 UCLASS()
 class PUBG_UE4_API ABase_interaction : public AActor
 {
 	GENERATED_BODY()
 	
 protected:
-
-    UPROPERTY(VisibleAnywhere, Category = Mesh)
-    class UStaticMeshComponent* m_static_mesh = nullptr;
-
     UPROPERTY(VisibleAnywhere, Category = Collider)
     class UBoxComponent* m_box_collider = nullptr;
 
@@ -23,9 +21,11 @@ protected:
     FString                 m_object_type;
 
 public:
+    UPROPERTY(VisibleAnywhere, Category = Mesh)
+        class UStaticMeshComponent* p_static_mesh_comp = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Mesh)
-    class USkeletalMeshComponent* skeletal_mesh = nullptr;
+    class USkeletalMeshComponent* p_skeletal_mesh_comp = nullptr;
 
     bool is_player_near = false;
 

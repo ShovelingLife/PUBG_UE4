@@ -28,7 +28,9 @@ ACore_vehicle::ACore_vehicle()
 void ACore_vehicle::BeginPlay()
 {
     Super::BeginPlay();
-    Init_interaction_UI();
+    
+    // 상호작용 UI 업데이트
+    AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
 }
 
 // Called every frame
@@ -49,8 +51,7 @@ void ACore_vehicle::Tick(float _delta_time)
 }
 
 void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_component)
-{
-    
+{    
     Super::SetupPlayerInputComponent(InputComponent);
 
     // 운전석
@@ -70,7 +71,7 @@ void ACore_vehicle::SetupPlayerInputComponent(UInputComponent* _player_input_com
 void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
 {
     AData_table_manager::arr_vehicle_data[(int)_vehicle_type_index];
-    Init_skeletal_mesh("Vehicles");
+    Init_skeletal_mesh();
     Init_camera();
     Init_wheeled_component();
     Init_car_pos_component();
@@ -119,11 +120,6 @@ void ACore_vehicle::Init_car_pos_data()
     }
 }
 
-void ACore_vehicle::Init_interaction_UI()
-{
-    AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
-}
-
 void ACore_vehicle::Update_car_pos_data()
 {
     // 좌석 및 문짝 위치 업데이트
@@ -156,7 +152,7 @@ void ACore_vehicle::Init_camera()
     mp_camera->SetWorldLocation(m_vehicle_data.camera_location);
 }
 
-void ACore_vehicle::Init_skeletal_mesh(FString _name)
+void ACore_vehicle::Init_skeletal_mesh()
 {
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*m_vehicle_data.mesh_path);
@@ -212,7 +208,6 @@ void ACore_vehicle::Init_wheeled_component()
 
 void ACore_vehicle::Player_exit()
 {
-    //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Cyan, "Player_exited");
     // 플레이어 초기세팅으로
     auto player_controller = UGameplayStatics::GetPlayerController(this, 0);
     player_controller->Possess(m_player);

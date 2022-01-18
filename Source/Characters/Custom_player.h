@@ -70,16 +70,7 @@ public:
 public:
     ACustom_player();
 
-private:    
-    UFUNCTION()
-    void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-    UFUNCTION()
-    void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-    //UFUNCTION()
-    //void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+private: 
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
@@ -91,8 +82,6 @@ private:
 
 // 초기화 함수들
 private:
-    void Init_collider_settings();
-
     void Init_player_settings();
 
     void Init_camera_settings();
@@ -104,6 +93,7 @@ private:
     void Init_particle_system();
 
 private:
+    void Check_for_object();
 
     void Try_to_get_collided_component();
 
@@ -162,7 +152,9 @@ private:
 
     void Change_shoot_mode();
 
-    void Swap_weapon();
+    void Swap_scrolling_up();
+
+    void Swap_scrolling_down();
 
     void Update_weapon_pos();
 

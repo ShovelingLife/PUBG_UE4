@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Core_throwable_weapon.h"
-#include "Grenade_smoke_red.generated.h"
+#include "Grenade_red_smoke.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AGrenade_smoke_red : public ACore_throwable_weapon
+class PLAYER_WEAPONS_API AGrenade_red_smoke : public ACore_throwable_weapon
 {
 	GENERATED_BODY()
 	

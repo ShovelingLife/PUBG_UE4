@@ -5,16 +5,24 @@
 #include "CoreMinimal.h"
 #include "PUBG_UE4/Base_interaction.h"
 #include "Weapon_enum.h"
+#include "PUBG_UE4/Other_weapon_data.h"
 #include "Core_throwable_weapon.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PLAYER_WEAPONS_API ACore_throwable_weapon : public ABase_interaction
 {
 	GENERATED_BODY()
 
 public:
+	Fs_other_weapon_data other_weapon_data;
+
 	e_throwable_weapon_type weapon_type;
+
+public:
+    ACore_throwable_weapon();
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float) override;
 };

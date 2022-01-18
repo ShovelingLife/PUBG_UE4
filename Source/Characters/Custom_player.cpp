@@ -27,27 +27,12 @@
 ACustom_player::ACustom_player()
 {
     PrimaryActorTick.bCanEverTick = true;
-
-    Init_collider_settings();
+    RootComponent = GetCapsuleComponent();
     Init_player_settings();
     Init_camera_settings();
     Init_mesh_settings();
     Init_animation_settings();
     Init_particle_system();
-}
-
-void ACustom_player::OnOverlapBegin(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index, bool _is_from_sweep, const FHitResult& _sweep_result)
-{
-    // 총기, 근접 또는 던지는 무기일 시
-    if (_other_actor->IsA<ACore_weapon>() ||
-        _other_actor->IsA<ACore_melee_weapon>() ||
-        _other_actor->IsA<ACore_throwable_weapon>())
-        m_collided_weapon = _other_actor;
-}
-
-void ACustom_player::OnOverlapEnd(class UPrimitiveComponent* _overlapped_comp, class AActor* _other_actor, class UPrimitiveComponent* _other_comp, int32 _other_body_index)
-{
-    m_collided_weapon = nullptr;
 }
 
 void ACustom_player::BeginPlay()
@@ -66,6 +51,7 @@ void ACustom_player::Tick(float _delta_time)
     Check_if_is_vehicle_near();
     //Play_walk_sound();
     Update_weapon_pos();
+    Check_for_object();
     Try_to_get_collided_component();
 }
 
@@ -92,7 +78,8 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     InputComponent->BindAction(FName(TEXT("Equip_fourth_weapon")), IE_Pressed, this, &ACustom_player::Equip_fourth_weapon);
     InputComponent->BindAction(FName(TEXT("Equip_fifth_weapon")), IE_Pressed, this, &ACustom_player::Equip_fifth_weapon);
     InputComponent->BindAction(FName(TEXT("Change_shoot_mode")), IE_Pressed, this, &ACustom_player::Change_shoot_mode);
-    InputComponent->BindAction(FName(TEXT("Swap_weapon")), IE_Pressed, this, &ACustom_player::Swap_weapon);
+    InputComponent->BindAction(FName(TEXT("Swap_scrolling_up")), IE_Pressed, this, &ACustom_player::Swap_scrolling_up);
+    InputComponent->BindAction(FName(TEXT("Swap_scrolling_down")), IE_Pressed, this, &ACustom_player::Swap_scrolling_down);
     InputComponent->BindAction(FName(TEXT("Shoot")), IE_Pressed, this, &ACustom_player::Begin_shooting);
     InputComponent->BindAction(FName(TEXT("Shoot")), IE_Released, this, &ACustom_player::End_shooting);
     InputComponent->BindAction(FName(TEXT("Reload")), IE_Pressed, this, &ACustom_player::Reload);
@@ -100,15 +87,6 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     InputComponent->BindAction(FName(TEXT("Interact")), IE_Pressed, this, &ACustom_player::Begin_interact);
     InputComponent->BindAction(FName(TEXT("Interact")), IE_Released, this, &ACustom_player::End_interact);
     InputComponent->BindAction(FName(TEXT("Inventory")), IE_Pressed, this, &ACustom_player::Open_inventory);
-}
-
-void ACustom_player::Init_collider_settings()
-{
-    // 콜라이더 설정
-    RootComponent = GetCapsuleComponent();
-    //GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
-    GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACustom_player::OnOverlapBegin);
-    GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ACustom_player::OnOverlapEnd);
 }
 
 void ACustom_player::Init_player_settings()
@@ -408,8 +386,14 @@ void ACustom_player::Change_shoot_mode()
 {
 }
 
-void ACustom_player::Swap_weapon()
+void ACustom_player::Swap_scrolling_up()
 {
+    mp_weapon_manager->Scroll_select(1);
+}
+
+void ACustom_player::Swap_scrolling_down()
+{
+    mp_weapon_manager->Scroll_select(-1);
 }
 
 void ACustom_player::Proning()
@@ -440,14 +424,46 @@ void ACustom_player::Proning()
     }
 }
 
+void ACustom_player::Check_for_object()
+{
+    FVector    direction = GetActorForwardVector() * 25;
+    FVector    begin_pos = GetMesh()->GetSocketLocation("detect_object_ray_sock");
+    FVector    end_pos   = begin_pos + direction;
+    FHitResult hit_result;
+    GetWorld()->LineTraceSingleByProfile(hit_result, begin_pos, end_pos, "Object");
+    DrawDebugLine(GetWorld(), begin_pos, end_pos, FColor::Red,false,1.f,0U,0.5f);
+
+    AActor* hitted_actor = hit_result.GetActor();
+
+    // 충돌한 오브젝트가 있을 시
+    if(hitted_actor)
+    {
+        // 충돌한 오브젝트가 무기일 시
+        if (hitted_actor->IsA<ACore_weapon>() ||
+            hitted_actor->IsA<ACore_throwable_weapon>() ||
+            hitted_actor->IsA<ACore_melee_weapon>())
+        {
+            AGlobal::Print_log(0, 2.f, FColor::Red, "Is a weapon");
+            m_collided_weapon = hitted_actor;
+        }
+    }
+    else
+    {
+        if (m_collided_weapon)
+            m_collided_weapon = nullptr;
+    }
+}
+
 void ACustom_player::Try_to_get_collided_component()
 {
     if (m_is_interacting)
     {
         // 무기랑 충돌 시
         if (m_collided_weapon)
+        {
             mp_weapon_manager->Equip(m_collided_weapon);
-
+            m_collided_weapon = nullptr;
+        }
         if (m_collided_vehicle)
         {
             //  차량 탑승 상태

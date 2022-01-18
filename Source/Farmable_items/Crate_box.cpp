@@ -57,7 +57,7 @@ void ACrate_box::Init_meshes()
 {
     // 보급 상자 메쉬 설정
     ABase_interaction::Init_static_mesh("StaticMesh'/Game/Meshes/PUBG_CRATE/Box_crate_mesh.Box_crate_mesh'","Box_crate");
-    m_static_mesh->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(-90.f, 0.f, 0.f)), FVector(0.f, 0.f, -70.f), FVector(0.1f)));
+    p_static_mesh_comp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(-90.f, 0.f, 0.f)), FVector(0.f, 0.f, -70.f), FVector(0.1f)));
 
     // 낙하산 메쉬 설정
     auto parachute_mesh_obj = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("StaticMesh'/Game/Meshes/PARACUTE_FREE/Parachute_mesh.Parachute_mesh'"));
@@ -67,7 +67,7 @@ void ACrate_box::Init_meshes()
         mp_parachute_mesh->SetStaticMesh(parachute_mesh_obj.Object);
 
     mp_parachute_mesh->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(0.f, 800.f, 0.f)), FVector::ZeroVector, FVector(0.05f)));
-    mp_parachute_mesh->AttachToComponent(m_static_mesh, FAttachmentTransformRules::KeepRelativeTransform);
+    mp_parachute_mesh->AttachToComponent(p_static_mesh_comp, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ACrate_box::Update_collider()

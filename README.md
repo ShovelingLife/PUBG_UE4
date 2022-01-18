@@ -7,26 +7,40 @@
 #### 3. 에임 시 스나이퍼 / 기본 모드 전환
 </br>
 
-## 정보 )
-
-#### 구글시트 CSV파일) 0_CSV
-#### UML ) 폴더 내 0_Diagrams 폴더 / Class (클래스 다이어그램), MODULES (모듈 맵)
-#### 구현 예정 ) https://trello.com/b/34tauMdQ/ue4pubg
+## 정보 ) &#x2B1B; 제목 및 폴더 위치 / &#x25FE; 상세 내용 / &#x25AA; 사이트 경로
+#### &#x2B1B; CSV 파일 구글시트) 프로젝트 폴더 내 0_CSV 통상적으로 데이터임
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; WEAPON_DATA(총기), OTHER_WEAPON_DATA(근접/투척무기), ATTACHMENT_DATA(부착물), VEHICLE_DATA(차량), SOUND_DATA(미정)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; ITEM_DATA(파밍 아이템)
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; https://docs.google.com/spreadsheets/d/1RMEf637caAJwg0p0abtzzqoj2tuGjVTUY7crYpbKW7M/edit#gid=0 
+#### &#x2B1B; UML 파일 draw.io) 프로젝트 폴더 내 0_Diagrams
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Class(클래스), SEQUENCE(시퀀스), MODULES(모듈 맵), 필요시 클라 서버 분리
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; https://app.diagrams.net/
+#### &#x2B1B; 구현 예정 트렐로)
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; https://trello.com/b/34tauMdQ/ue4pubg
 </br>
 
-## 쓰여진 에셋 )
-#### 1. Vehicle Variety Pack
-#### 2. Modular House (유료)
-#### 3. FPS Weapon Bundle
-#### 4. FX Variety Pack
-#### 5. SFX bundle (마켓플레이스에 없음)
-#### 6. MCO Mocap Basics
-#### 7. Animation Starter Pack
-#### 8. Defect Ultimate Props Bundle Vol.1
-#### 9. M5 VFX Vol2. Fire and Frames
-#### 10. Infinity Blade: Effects
-#### 11. KC-135R Air Tanker (West)
-
+## 쓰여진 에셋 ) &#x2B1B; 에셋 사이트 경로 / &#x25FE; 에셋 명칭 / $ 표시있을 시 유료
+#### &#x2B1B; 언리얼 마켓 플레이스)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Vehicle Variety Pack
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Modular House $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; FPS Weapon Bundle
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; FX Variety Pack
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; MCO Mocap Basics
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Animation Starter Pack
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Defect Ultimate Props Bundle Vol.1 $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; M5 VFX Vol2. Fire and Frames $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Infinity Blade: Effects
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Modular Interface Pack $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Car Sound Effects Pack. Vol. 1 (100+ SFX) $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Icon Creator $
+#### &#x2B1B; 유니티 에셋 스토어)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; SFX bundle
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; ProgressBars #4
+#### &#x2B1B; CUBEBRUSH)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Advance Weapon Pack
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Military Style UI
+#### &#x2B1B; 기타 경로)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; crosshairpack_kenney
 </br>
 
 ## 에셋 경로 ) &#x2B1B; 최상위 폴더 / &#x25FE; 하위 폴더 / &#x25AA; 최하위 폴더
@@ -46,13 +60,14 @@
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Vehicles (차량)
 #### &#x2B1B; Data) 데이터 테이블
 #### &#x2B1B; Items) 총기, 부속품과 같은 각종 아이템들은 상위 폴더로 둘 예정
-##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Attachment   > 부속품
-##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Consumables > 섭취 가능한 아이템
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Attachment > 부속품
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Recovery > 섭취 가능한 아이템
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; HP) 체력 회복 아이템
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Energy) 에너지 회복 아이템
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Equipment    > 장비
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Weapons      > 무기
-##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Materials ) 매터리얼 폴더
-##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Meshes ) 메쉬 폴더
-##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Textures ) 텍스처 폴더
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Explosives) 투척류 모음
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Melee) 근접 무기
 #### &#x2B1B; Meshes) 여기는 주로 인벤토리/플레이어 창에 즉 1회성인 아이템 메쉬들이 들어갈 폴더
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Parachute   > 낙하산
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Pubg_crate > 보급상자
@@ -61,11 +76,10 @@
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Item_sounds > 아이템 소리
 #### &#x2B1B; UI) 이미지 UI 
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Car (자동차 계기판)
-##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Military (메인 무기 UI 및 인벤토리 슬롯)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Military (인벤토리 슬롯)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Weapon_icon (메인 UI 무기 아이콘)
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Weapon_inventory_icon (인벤토리 무기 아이콘)
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Progress_bar (바 UI)
-##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Render_target_UI (인벤토리/장착슬롯 UI전용)
-##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Materials       > 렌더타깃2D UI 매터리얼 파일 폴더
-##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; Render_target > 렌더타깃2D 파일 폴더
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Reticle (조준선)
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Weapon_icon (인벤토리 무기 UI)
 #### &#x2B1B; VFX) 이펙트 

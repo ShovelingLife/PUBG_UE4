@@ -73,7 +73,7 @@ void AUI_manager::Init_inventory_weapon_UI()
     for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_weapon_data[i].weapon_icon_path;
+        FString weapon_ui_path = "/Game/UI/Weapon_inventory_icon/" + AData_table_manager::arr_weapon_data[i].weapon_icon_path;
         auto    weapon_ui_tex = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
 
         if (weapon_ui_tex.Succeeded())
@@ -86,7 +86,7 @@ void AUI_manager::Init_main_weapon_UI()
     for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString weapon_ui_path = "/Game/UI/Military/" + AData_table_manager::arr_weapon_data[i].weapon_slot_icon_path;
+        FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_weapon_data[i].weapon_slot_icon_path;
         auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
 
         if (weapon_ui_mat.Succeeded())

@@ -4,8 +4,10 @@
 #include "Global.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
  ABase_interaction::ABase_interaction()
@@ -59,27 +61,27 @@
  void ABase_interaction::Init_static_mesh(FString _path, FName _name)
  {
      // 메시 생성
-     m_static_mesh = CreateDefaultSubobject<UStaticMeshComponent>(_name);
-     m_static_mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     p_static_mesh_comp = CreateDefaultSubobject<UStaticMeshComponent>(_name);
+     p_static_mesh_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
      // 경로로부터 메시 생성
      ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*_path);
 
      if (MESH.Succeeded())
-         m_static_mesh->SetStaticMesh(MESH.Object);
+         p_static_mesh_comp->SetStaticMesh(MESH.Object);
  }
 
  void ABase_interaction::Init_skeletal_mesh(FString _path, FName _name)
  {
      // 메시 생성
-     skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(_name);
-     skeletal_mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     p_skeletal_mesh_comp = CreateDefaultSubobject<USkeletalMeshComponent>(_name);
+     p_skeletal_mesh_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
      // 경로로부터 메시 생성
      ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*_path);
 
      if (MESH.Succeeded())
-         skeletal_mesh->SetSkeletalMesh(MESH.Object);
+         p_skeletal_mesh_comp->SetSkeletalMesh(MESH.Object);
  }
 
  void ABase_interaction::Init_interaction_UI()

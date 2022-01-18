@@ -83,22 +83,21 @@ void AData_table_manager::Init_vehicle_data()
         if (!p_row)
             break;
 
-        Fs_vehicle_data data                = *p_row;
-        auto tmp_vehicle_data               = *(arr_vehicle_data + i);
-        tmp_vehicle_data.type               = data.type;
-        tmp_vehicle_data.audio_path         = data.audio_path;
-        tmp_vehicle_data.mesh_path          = mk_vehicle_mesh_path + data.mesh_path;
-        tmp_vehicle_data.anim_instance_path = mk_anim_instance_path + data.type + "/BP_AnimInst_" + data.type;
-        tmp_vehicle_data.collider_pos       = data.collider_pos;
-        tmp_vehicle_data.collider_size      = data.collider_size;
-        tmp_vehicle_data.durability         = data.durability;
-        tmp_vehicle_data.max_seater         = data.max_seater;
-        tmp_vehicle_data.speed              = data.speed;
+        Fs_vehicle_data data                   = *p_row;
+        arr_vehicle_data[i].type               = data.type;
+        arr_vehicle_data[i].audio_path         = data.audio_path;
+        arr_vehicle_data[i].mesh_path          = mk_vehicle_mesh_path + data.mesh_path;
+        arr_vehicle_data[i].anim_instance_path = mk_anim_instance_path + data.type + "/BP_AnimInst_" + data.type;
+        arr_vehicle_data[i].collider_pos       = data.collider_pos;
+        arr_vehicle_data[i].collider_size      = data.collider_size;
+        arr_vehicle_data[i].durability         = data.durability;
+        arr_vehicle_data[i].max_seater         = data.max_seater;
+        arr_vehicle_data[i].speed              = data.speed;
 
         // 좌석 정보 배치
-        tmp_vehicle_data.arr_player_seat_pos[0] = { data.seat_1_player_location, data.seat_1_camera_location };
-        tmp_vehicle_data.arr_player_seat_pos[1] = { data.seat_2_player_location, data.seat_2_camera_location };
-        tmp_vehicle_data.arr_player_seat_pos[2] = { data.seat_3_player_location, data.seat_3_camera_location };
-        tmp_vehicle_data.arr_player_seat_pos[3] = { data.seat_4_player_location, data.seat_4_camera_location };
+        arr_vehicle_data[i].arr_player_seat_pos[0] = { data.seat_1_player_location, data.seat_1_camera_location };
+        arr_vehicle_data[i].arr_player_seat_pos[1] = { data.seat_2_player_location, data.seat_2_camera_location };
+        arr_vehicle_data[i].arr_player_seat_pos[2] = { data.seat_3_player_location, data.seat_3_camera_location };
+        arr_vehicle_data[i].arr_player_seat_pos[3] = { data.seat_4_player_location, data.seat_4_camera_location };
     }
 }

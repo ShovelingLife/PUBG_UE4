@@ -96,6 +96,9 @@ void UCurrent_Weapon_UI::Update_icon_color()
         else
             p_arr_img[i]->SetColorAndOpacity(mk_unselected_color);
     }
+    p_arr_img[3]->SetColorAndOpacity(mk_unselected_color);
+    p_arr_img[4]->SetColorAndOpacity(mk_unselected_color);
+
     // 선택하고 있을 시
     if(current_selected_weapon != e_current_weapon_type::NONE)
     {
@@ -114,22 +117,22 @@ void UCurrent_Weapon_UI::Set_icon_UI()
         return;
     
     // 첫번째 무기
-    if (mp_weapon_manager->is_first_equipped)
+    if (mp_weapon_manager->arr_is_weapon_equipped[0])
         First_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_first_gun->weapon_type]);
 
     // 두번째 무기
-    if (mp_weapon_manager->is_second_equipped)
+    if (mp_weapon_manager->arr_is_weapon_equipped[1])
         Second_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_second_gun->weapon_type]);
 
     // 세번째 무기
-    if (mp_weapon_manager->is_third_equipped)
+    if (mp_weapon_manager->arr_is_weapon_equipped[2])
         Third_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_pistol->weapon_type]);
     
     // 네번쨰 무기
-    if (mp_weapon_manager->is_fourth_equipped)
+    if (mp_weapon_manager->arr_is_weapon_equipped[3])
         Fourth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_melee->weapon_type]);
     
     // 다섯번째 무기
-    if (mp_weapon_manager->is_fifth_equipped)
+    if (mp_weapon_manager->arr_is_weapon_equipped[4])
         Fifth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_throwable->weapon_type]);
 }

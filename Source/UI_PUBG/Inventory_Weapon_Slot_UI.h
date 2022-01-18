@@ -6,9 +6,6 @@
 #include "Components/Image.h"
 #include "Inventory_Weapon_Slot_UI.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
 {
