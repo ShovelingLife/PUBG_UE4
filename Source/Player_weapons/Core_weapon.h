@@ -16,9 +16,6 @@ class PLAYER_WEAPONS_API ACore_weapon : public ABase_interaction
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(VisibleAnywhere, Category = Sound)
-        UAudioComponent* p_audio_comp = nullptr;
-
     // ÃÑ¾Ë °ü·Ã
     UPROPERTY(VisibleAnywhere, Category = Bullet)
         ACore_bullet* p_bullet;
@@ -30,8 +27,6 @@ public:
 
     e_weapon_type  weapon_type;
     Fs_weapon_data weapon_data;
-    bool		   is_equipped = false;
-
 
 protected:
     // Called when the game starts or when spawned

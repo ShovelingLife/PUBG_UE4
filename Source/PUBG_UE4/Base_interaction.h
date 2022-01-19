@@ -15,10 +15,13 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Collider)
     class UBoxComponent* m_box_collider = nullptr;
 
+
     // 상호작용 관련 변수
     UPROPERTY(VisibleAnywhere, Category = Widget_component)
     class UWidgetComponent* mp_interaction_widget_comp;
-    FString                 m_object_type;
+
+    FString m_object_type;
+    float   m_current_time = 0.f;
 
 public:
     UPROPERTY(VisibleAnywhere, Category = Mesh)
@@ -26,6 +29,9 @@ public:
 
     UPROPERTY(VisibleAnywhere, Category = Mesh)
     class USkeletalMeshComponent* p_skeletal_mesh_comp = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Sound)
+        class UAudioComponent* p_audio_comp = nullptr;
 
     bool is_player_near = false;
 
@@ -39,15 +45,12 @@ protected:
 
     virtual void Tick(float) override;
 
-public:
-    virtual void NotifyActorBeginOverlap(AActor*) override;
-
-    virtual void NotifyActorEndOverlap(AActor*) override;
-
 protected:
     void Init_static_mesh(FString, FName);
 
     void Init_skeletal_mesh(FString, FName);
+
+    void Init_audio();
 
     void Init_interaction_UI();
 };

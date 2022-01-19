@@ -14,4 +14,6 @@ class PLAYER_WEAPONS_API AClaymore : public ACore_throwable_weapon
 {
 	GENERATED_BODY()
 	
+public:
+	AClaymore();
 };

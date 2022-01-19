@@ -3,3 +3,7 @@
 
 #include "Claymore.h"
 
+AClaymore::AClaymore()
+{
+    Init(e_throwable_weapon_type::CLAYMORE);
+}

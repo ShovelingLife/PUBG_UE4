@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Vehicle_data.h"
+#include "Other_weapon_data.h"
 #include "Weapon_data.h"
 #include "Item_data.h"
 #include "GameFramework/Actor.h"
@@ -12,7 +13,8 @@ class PUBG_UE4_API AData_table_manager : public AActor
     GENERATED_BODY()
 
 private:
-    // 무기 데이터테이블 관련
+    // ------- 무기 데이터 관련 -------
+
     UPROPERTY(VisibleAnywhere)
     class UDataTable* mp_weapon_data_table;
 
@@ -20,9 +22,17 @@ private:
     const FString     mk_bullet_bp_path         = "/Game/Blueprints/Weapons/Ammo/BP_";
     const FString     mk_rendertarget_mesh_path = "/Game/Materials/Weapon_UI/UI_material_";
     const FString     mk_weapon_sound_path      = "/Game/SFX/Gun_sounds/";
-    int               m_current_weapon_count    = 0;
 
-    // 차량 데이터 테이블 관련
+
+    // ------- 기타 무기 (투척류/근접) 데이터 관련 -------
+
+    UPROPERTY(VisibleAnywhere)
+    class UDataTable* mp_other_weapon_data_table;
+
+    const FString	  mk_other_weapon_mesh_path = "/Game/Items/Weapons/";
+
+    // ------- 차량 데이터 관련 -------
+
     UPROPERTY(VisibleAnywhere)
     class UDataTable* mp_vehicle_data_table;
 
@@ -32,12 +42,18 @@ private:
     int               m_current_vehicle_count = 0;
 
 public:
-    static Fs_weapon_data    arr_weapon_data[MAX_WEAPON_COUNT];
-    static Fs_vehicle_data   arr_vehicle_data[MAX_VEHICLE_COUNT];
+    static Fs_weapon_data       arr_weapon_data[MAX_WEAPON_COUNT];
+    static Fs_vehicle_data      arr_vehicle_data[MAX_VEHICLE_COUNT];
+    static Fs_other_weapon_data arr_other_weapon_data[MAX_OTHER_WEAPON_COUNT];
 
 private:
+    // 무기 데이터 초기화
     void Init_weapon_data();
 
+    // 기타 무기 데이터 초기화
+    void Init_another_weapon_data();
+
+    // 차량 데이터 초기화
     void Init_vehicle_data();
 
 public:

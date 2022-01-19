@@ -2,6 +2,7 @@
 #include "Data_table_manager.h"
 #include "Custom_game_instance.h"
 #include "Global.h"
+#include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/SceneComponent.h"
@@ -32,30 +33,22 @@
  }
 
  // Called every frame
- void ABase_interaction::Tick(float DeltaTime)
+ void ABase_interaction::Tick(float _delta_time)
  {
-     Super::Tick(DeltaTime);
-     mp_interaction_widget_comp->SetVisibility(is_player_near);
- }
+     Super::Tick(_delta_time);
 
- void ABase_interaction::NotifyActorBeginOverlap(AActor* _collided_actor)
- {
-     Super::NotifyActorBeginOverlap(_collided_actor);
+     if (is_player_near)
+         m_current_time += _delta_time;
 
-     APawn* current_player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+     else
+         m_current_time = 0.f;
 
-     if (current_player == Cast<APawn>(_collided_actor))
-         is_player_near = true;
- }
+     // 0.25초 지날 시 UI설정
+     if (m_current_time > 0.25f)
+         mp_interaction_widget_comp->SetVisibility(true);
 
- void ABase_interaction::NotifyActorEndOverlap(AActor* _collided_actor)
- {
-     Super::NotifyActorEndOverlap(_collided_actor);
-
-     APawn* current_player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-
-     if (current_player == Cast<APawn>(_collided_actor))
-         is_player_near = false;
+     else
+         mp_interaction_widget_comp->SetVisibility(false);
  }
 
  void ABase_interaction::Init_static_mesh(FString _path, FName _name)
@@ -82,6 +75,13 @@
 
      if (MESH.Succeeded())
          p_skeletal_mesh_comp->SetSkeletalMesh(MESH.Object);
+ }
+
+ void ABase_interaction::Init_audio()
+ {
+     // 오디오 포인터에 대한 생성
+     p_audio_comp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+     p_audio_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
  }
 
  void ABase_interaction::Init_interaction_UI()

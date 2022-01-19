@@ -78,7 +78,7 @@ void AWeapon_manager::Play_sound(e_weapon_sound_type _weapon_sound_type)
     //if (is_fifth_equipped)
     //    p_audio_comp = p_first_gun->p_audio_comp;
 
-    if (_weapon_sound_type != e_weapon_sound_type::SHOT_SOUND)
+    if (_weapon_sound_type != e_weapon_sound_type::SHOT)
         AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _weapon_sound_type);
 
     else
@@ -166,12 +166,12 @@ void AWeapon_manager::Equip(AActor* _p_weapon)
         }
     }
     // 근접 종류
-    if (_p_weapon->IsA<ACore_melee_weapon>())
+    else if (_p_weapon->IsA<ACore_melee_weapon>())
     {
         ACore_melee_weapon* p_collided_melee = Cast<ACore_melee_weapon>(_p_weapon);
     }
     // 투척류
-    if (_p_weapon->IsA<ACore_throwable_weapon>())
+    else if (_p_weapon->IsA<ACore_throwable_weapon>())
     {
         ACore_throwable_weapon* p_collided_throwable = Cast<ACore_throwable_weapon>(_p_weapon);
 
@@ -180,18 +180,12 @@ void AWeapon_manager::Equip(AActor* _p_weapon)
 
 void AWeapon_manager::Shoot()
 {
-    ACore_weapon* tmp_weapon = nullptr;
+    ACore_weapon* tmp_weapon = Get_weapon_type(current_weapon_type);
     UWorld*       p_world = GetWorld();
 
     if (m_is_reloading)
         return;
 
-    switch (current_weapon_type)
-    {
-    case e_current_weapon_type::FIRST:  tmp_weapon = p_first_gun;  break;
-    case e_current_weapon_type::SECOND: tmp_weapon = p_second_gun; break;
-    case e_current_weapon_type::PISTOL: tmp_weapon = p_pistol;     break;
-    }
     if (tmp_weapon)
     {
         auto weapon_data = tmp_weapon->weapon_data;
@@ -209,7 +203,7 @@ void AWeapon_manager::Shoot()
         }
         // 사운드 적용 및 총알 1개 차감
         weapon_data.current_bullet_count--;
-        Play_sound(e_weapon_sound_type::SHOT_SOUND);
+        Play_sound(e_weapon_sound_type::SHOT);
 
         // 레이캐스트 적용
         APlayerCameraManager* camera_manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
@@ -245,15 +239,9 @@ void AWeapon_manager::Shoot()
 
 void AWeapon_manager::Reload()
 {
-    ACore_weapon* tmp_weapon = nullptr;
+    ACore_weapon* tmp_weapon = Get_weapon_type(current_weapon_type);
     int           result = 0;
 
-    switch (current_weapon_type)
-    {
-    case e_current_weapon_type::FIRST:  tmp_weapon = p_first_gun;  break;
-    case e_current_weapon_type::SECOND: tmp_weapon = p_second_gun; break;
-    case e_current_weapon_type::PISTOL: tmp_weapon = p_pistol;     break;
-    }
     if (tmp_weapon)
     {
         m_is_reloading   = true;
@@ -273,15 +261,16 @@ void AWeapon_manager::Reload()
 
         weapon_data.current_max_bullet_count -= result;
         weapon_data.current_bullet_count     += result;
-        Play_sound(e_weapon_sound_type::RELOAD_SOUND);
+        Play_sound(e_weapon_sound_type::RELOAD);
     }
 }
 
-void AWeapon_manager::Scroll_select(int _pos)
+bool AWeapon_manager::Scroll_select(int _pos)
 {
     // 현재 무기 인덱스 갖고와서 선택
-    int current_index = (int)current_weapon_type;
-    int total_weapon  = -1;
+    e_current_weapon_type final_index   = e_current_weapon_type::NONE;
+    int                   current_index = (int)current_weapon_type;
+    int                   total_weapon  = -1;
 
     for (int i = 0; i < 5; i++)
     {
@@ -291,7 +280,7 @@ void AWeapon_manager::Scroll_select(int _pos)
     }
     // 무기가 1개일 시 옮길 필요가 없음
     if (total_weapon == 0)
-        return;
+        return false;
 
     // 아래로 스크롤
     if (_pos == -1)
@@ -303,7 +292,7 @@ void AWeapon_manager::Scroll_select(int _pos)
         else
         {
             // 현재 위치에서 탐색
-            e_current_weapon_type final_index = Find_weapon_index("down", current_index);
+            final_index = Find_weapon_index("down", current_index);
 
             // 발견하지 못함
             if (final_index == e_current_weapon_type::NONE)
@@ -323,7 +312,7 @@ void AWeapon_manager::Scroll_select(int _pos)
         else
         {
             // 현재 위치에서 탐색
-            e_current_weapon_type final_index = Find_weapon_index("up", current_index + 1);
+            final_index = Find_weapon_index("up", current_index + 1);
 
             // 발견하지 못함
             if (final_index == e_current_weapon_type::NONE)
@@ -333,6 +322,7 @@ void AWeapon_manager::Scroll_select(int _pos)
                 current_weapon_type = final_index;
         }
     }
+    return true;
 }
 
 void AWeapon_manager::Swap(ABase_interaction* _current_weapon, AActor* _new_weapon, FString _socket_name)
@@ -380,6 +370,25 @@ void AWeapon_manager::Check_continously_shooting(float _delta_time)
     }
 }
 
+bool AWeapon_manager::Check_if_weapon_available(e_current_weapon_type _weapon_type)
+{
+    bool can_switch = false;
+
+    switch (_weapon_type)
+    {
+    case e_current_weapon_type::FIRST:     if (p_first_gun)  can_switch = true; break;
+    case e_current_weapon_type::SECOND:    if (p_second_gun) can_switch = true; break;
+    case e_current_weapon_type::PISTOL:    if (p_pistol)     can_switch = true; break;
+    case e_current_weapon_type::MELEE:     if (p_melee)      can_switch = true; break;
+    case e_current_weapon_type::THROWABLE: if (p_throwable)  can_switch = true; break;
+    }
+    // 착용 가능하다면 변경
+    if (can_switch)
+        current_weapon_type = _weapon_type;
+
+    return can_switch;
+}
+
 void AWeapon_manager::Check_for_equipped_weapon()
 {
     
@@ -387,14 +396,8 @@ void AWeapon_manager::Check_for_equipped_weapon()
 
 int AWeapon_manager::Get_weapon_max_bullet_count(e_current_weapon_type _weapon_type)
 {
-    ACore_weapon* tmp_weapon = nullptr;
+    ACore_weapon* tmp_weapon = Get_weapon_type(_weapon_type);
 
-    switch (_weapon_type)
-    {
-    case e_current_weapon_type::FIRST:  tmp_weapon = p_first_gun;  break;
-    case e_current_weapon_type::SECOND: tmp_weapon = p_second_gun; break;
-    case e_current_weapon_type::PISTOL: tmp_weapon = p_pistol;     break;
-    }
     if (tmp_weapon)
         return tmp_weapon->weapon_data.current_max_bullet_count;
 
@@ -416,7 +419,7 @@ void AWeapon_manager::Attach_weapon(ABase_interaction* _new_weapon, FString _soc
              p_static_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
 
     // 무기 오브젝트를 인벤토리 매니저에 부착
-    _new_weapon->GetRootComponent()->AttachTo(RootComponent);
+    _new_weapon->GetRootComponent()->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
     // 소켓 기반 무기 종류 판별 후 다운캐스팅
     if      (_socket_name == "hand_gun_sock")
@@ -433,6 +436,7 @@ void AWeapon_manager::Attach_weapon(ABase_interaction* _new_weapon, FString _soc
 
     else*/
 
+    
 }
 
 void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _current_weapon, FTransform _new_pos)
@@ -444,16 +448,29 @@ void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _current_w
     if (p_skeletal_mesh_comp)
     {
         p_skeletal_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        p_skeletal_mesh_comp->AttachTo(_current_weapon->GetRootComponent());
+        p_skeletal_mesh_comp->AttachToComponent(_current_weapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
         p_skeletal_mesh_comp->ResetRelativeTransform();
     }
     else if (p_static_mesh_comp)
     {
         p_static_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        p_static_mesh_comp->AttachTo(_current_weapon->GetRootComponent());
+        p_static_mesh_comp->AttachToComponent(_current_weapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
         p_static_mesh_comp->ResetRelativeTransform();
     }
     // 현재 무기를 탈착 후 월드에 소환
     _current_weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     _current_weapon->SetActorTransform(_new_pos);
+}
+
+ACore_weapon* AWeapon_manager::Get_weapon_type(e_current_weapon_type _weapon_type)
+{
+    ACore_weapon* tmp_weapon = nullptr;
+
+    switch (_weapon_type)
+    {
+    case e_current_weapon_type::FIRST:  tmp_weapon = p_first_gun;  break;
+    case e_current_weapon_type::SECOND: tmp_weapon = p_second_gun; break;
+    case e_current_weapon_type::PISTOL: tmp_weapon = p_pistol;     break;
+    }
+    return tmp_weapon;
 }

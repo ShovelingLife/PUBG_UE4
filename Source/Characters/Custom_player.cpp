@@ -8,6 +8,8 @@
 #include "Player_weapons/Weapon_manager.h"
 #include "AI_PUBG/AI_character.h"
 #include "PUBG_UE4/Global.h" 
+#include "PUBG_UE4/My_enum.h"
+#include "PUBG_UE4/Sound_manager.h" 
 #include "PUBG_UE4/Custom_game_instance.h" 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -28,10 +30,11 @@ ACustom_player::ACustom_player()
 {
     PrimaryActorTick.bCanEverTick = true;
     RootComponent = GetCapsuleComponent();
-    Init_player_settings();
-    Init_camera_settings();
-    Init_mesh_settings();
-    Init_animation_settings();
+    Update_player_settings();
+    Init_camera_comp();
+    Init_mesh_comp();
+    Init_audio_comp();
+    Init_anim_instance();
     Init_particle_system();
 }
 
@@ -41,12 +44,16 @@ void ACustom_player::BeginPlay()
 
     // 무기 매니저 생성
     mp_weapon_manager = GetWorld()->SpawnActor<AWeapon_manager>(AWeapon_manager::StaticClass());
-    mp_weapon_manager->GetRootComponent()->AttachTo(RootComponent);
+    mp_weapon_manager->GetRootComponent()->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ACustom_player::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
+
+    if (!mp_sound_manager)
+        mp_sound_manager = AGlobal::Get_sound_manager();
+
     Check_if_moving();
     Check_if_is_vehicle_near();
     //Play_walk_sound();
@@ -89,32 +96,32 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     InputComponent->BindAction(FName(TEXT("Inventory")), IE_Pressed, this, &ACustom_player::Open_inventory);
 }
 
-void ACustom_player::Init_player_settings()
+void ACustom_player::Update_player_settings()
 {
     // 플레이어 설정
     GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
 }
 
-void ACustom_player::Init_camera_settings()
+void ACustom_player::Init_camera_comp()
 {
     // 카메라 컴포넌트 초기화
-    p_spring_arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring_arm"));
-    p_camera     = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+    p_spring_arm_comp = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring_arm"));
+    p_camera_comp     = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
     // 카메라를 부모 컴포넌트에 부착
-    p_spring_arm->SetupAttachment(reinterpret_cast<USceneComponent*>(GetCapsuleComponent()));
-    p_camera->SetupAttachment(p_spring_arm);
+    p_spring_arm_comp->SetupAttachment(reinterpret_cast<USceneComponent*>(GetCapsuleComponent()));
+    p_camera_comp->SetupAttachment(p_spring_arm_comp);
 
     // 카메라 설정
     AGlobal* p_global = AGlobal::Get();
-    p_spring_arm->TargetArmLength = p_global->player_spring_arm_length;
-    p_spring_arm->SetRelativeRotation(p_global->player_spring_arm_rotation);
-    p_spring_arm->SetWorldLocation(p_global->player_spring_arm_location);
-    p_spring_arm->bUsePawnControlRotation = true;
+    p_spring_arm_comp->TargetArmLength = p_global->player_spring_arm_length;
+    p_spring_arm_comp->SetRelativeRotation(p_global->player_spring_arm_rotation);
+    p_spring_arm_comp->SetWorldLocation(p_global->player_spring_arm_location);
+    p_spring_arm_comp->bUsePawnControlRotation = true;
 }
 
-void ACustom_player::Init_mesh_settings()
+void ACustom_player::Init_mesh_comp()
 {
     // 메쉬 초기화
     static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/Characters/UE4_Mannequin/Mesh/SK_Mannequin"));
@@ -125,7 +132,13 @@ void ACustom_player::Init_mesh_settings()
     GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, 0.f));
 }
 
-void ACustom_player::Init_animation_settings()
+void ACustom_player::Init_audio_comp()
+{
+    mp_audio_comp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio_comp"));
+    mp_audio_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+}
+
+void ACustom_player::Init_anim_instance()
 {
     // 애니메이션 초기화
     static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/Blueprints/Animations/BP_Player_anim_instance"));
@@ -311,7 +324,7 @@ void ACustom_player::Custom_crouch()
         GetCharacterMovement()->IsFalling())
         return;
 
-    p_spring_arm->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+    p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
 
     // 숙이고 있음
     if (GetCharacterMovement()->IsCrouching())
@@ -388,12 +401,14 @@ void ACustom_player::Change_shoot_mode()
 
 void ACustom_player::Swap_scrolling_up()
 {
-    mp_weapon_manager->Scroll_select(1);
+    if (mp_weapon_manager->Scroll_select(1))
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
 void ACustom_player::Swap_scrolling_down()
 {
-    mp_weapon_manager->Scroll_select(-1);
+    if (mp_weapon_manager->Scroll_select(-1))
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
 void ACustom_player::Proning()
@@ -402,13 +417,13 @@ void ACustom_player::Proning()
     {
     case e_player_state::IDLE:
         current_state = e_player_state::PRONING;
-        p_spring_arm->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
+        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
         break;
 
     case e_player_state::CROUCH:
     case e_player_state::CROUCH_WALK:
         current_state = e_player_state::PRONING;
-        p_spring_arm->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
+        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
         UnCrouch();
         break;
 
@@ -419,14 +434,14 @@ void ACustom_player::Proning()
     case e_player_state::PRONING:
     case e_player_state::PRONING_WALK:
         current_state = e_player_state::IDLE;
-        p_spring_arm->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
         break;
     }
 }
 
 void ACustom_player::Check_for_object()
 {
-    FVector    direction = GetActorForwardVector() * 25;
+    FVector    direction = GetActorForwardVector() * 50;
     FVector    begin_pos = GetMesh()->GetSocketLocation("detect_object_ray_sock");
     FVector    end_pos   = begin_pos + direction;
     FHitResult hit_result;
@@ -443,15 +458,12 @@ void ACustom_player::Check_for_object()
             hitted_actor->IsA<ACore_throwable_weapon>() ||
             hitted_actor->IsA<ACore_melee_weapon>())
         {
-            AGlobal::Print_log(0, 2.f, FColor::Red, "Is a weapon");
             m_collided_weapon = hitted_actor;
+            Set_item_UI(true);
         }
     }
     else
-    {
-        if (m_collided_weapon)
-            m_collided_weapon = nullptr;
-    }
+        Set_item_UI(false);
 }
 
 void ACustom_player::Try_to_get_collided_component()
@@ -461,8 +473,9 @@ void ACustom_player::Try_to_get_collided_component()
         // 무기랑 충돌 시
         if (m_collided_weapon)
         {
+            mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_EQUIP);
             mp_weapon_manager->Equip(m_collided_weapon);
-            m_collided_weapon = nullptr;
+            Set_item_UI(false);
         }
         if (m_collided_vehicle)
         {
@@ -495,27 +508,44 @@ void ACustom_player::Update_weapon_pos()
 
 void ACustom_player::Equip_first_weapon()
 {
-    mp_weapon_manager->current_weapon_type = e_current_weapon_type::FIRST;
+    if (mp_weapon_manager->Check_if_weapon_available(e_current_weapon_type::FIRST))    
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
 void ACustom_player::Equip_second_weapon()
 {
-    mp_weapon_manager->current_weapon_type = e_current_weapon_type::SECOND;
+    if (mp_weapon_manager->Check_if_weapon_available(e_current_weapon_type::SECOND))
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
 void ACustom_player::Equip_third_weapon()
 {
-    mp_weapon_manager->current_weapon_type = e_current_weapon_type::PISTOL;
+    if (mp_weapon_manager->Check_if_weapon_available(e_current_weapon_type::PISTOL))
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
 void ACustom_player::Equip_fourth_weapon()
 {
-    mp_weapon_manager->current_weapon_type = e_current_weapon_type::MELEE;
+    if (mp_weapon_manager->Check_if_weapon_available(e_current_weapon_type::MELEE))
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
 void ACustom_player::Equip_fifth_weapon()
 {
-    mp_weapon_manager->current_weapon_type = e_current_weapon_type::THROWABLE;
+    if (mp_weapon_manager->Check_if_weapon_available(e_current_weapon_type::THROWABLE))
+        mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
+}
+
+void ACustom_player::Set_item_UI(bool _is_player_near)
+{
+    // 현재 무기가 있을 시
+    if (m_collided_weapon)
+    {
+        Cast<ABase_interaction>(m_collided_weapon)->is_player_near = _is_player_near;
+
+        if (!_is_player_near)
+            m_collided_weapon = nullptr;
+    }
 }
 
 void ACustom_player::Exit_from_vehicle(FVector _exit_location)
@@ -530,7 +560,7 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
     current_seat_type = e_seat_type::NONE;
     is_in_vehicle     = false;
     SetActorLocation(_exit_location);
-    p_spring_arm->SetRelativeLocation(AGlobal::Get()->player_spring_arm_location);
+    p_spring_arm_comp->SetRelativeLocation(AGlobal::Get()->player_spring_arm_location);
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 

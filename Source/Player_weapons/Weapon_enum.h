@@ -42,20 +42,22 @@ enum class e_weapon_type : uint8
 // 던지는 무기
 enum class e_throwable_weapon_type : uint8
 {
-    FRAGMENTATION1 = (uint8)e_weapon_type::MAX,
+    FRAGMENTATION1,
     FRAGMENTATION2,
     ILLUMINATION,
-    SMOKE_RED,
-    SMOKE_GRAY,
+    GRAY_SMOKE,
+    RED_SMOKE,
     STICK,
+    MOLOTOV,
+    CLAYMORE,
     MAX
 };
 
 // 근접 무기
 enum class e_melee_weapon_type : uint8
 {
-    KNIFE = (uint8)e_throwable_weapon_type::MAX,
-    PAN,
+    PAN = (uint8)e_throwable_weapon_type::MAX,
+    KNIFE,
     MAX
 };
 

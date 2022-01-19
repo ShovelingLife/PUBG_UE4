@@ -52,19 +52,26 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	// 착용 중인 무기 체크
     void Check_for_equipped_weapon();
 
 	// 현재 장착 중인 무기
 	void Update_current_equipped_weapon();
 
+	// 사운드 재생
     void Play_sound(e_weapon_sound_type);
 
 	// 배열 내에 원소 찾음 / 방향 / 시작 위치
     e_current_weapon_type Find_weapon_index(FString, int);
 
+	// 부착
     void Attach_weapon(ABase_interaction*, FString);
 
+	// 탈착 후 위치 초기화
     void Reset_weapon_after_detaching(ABase_interaction*, FTransform);
+
+	// 무기 종류를 가져옴
+	ACore_weapon* Get_weapon_type(e_current_weapon_type);
 
 public:
 	// 장착
@@ -77,7 +84,7 @@ public:
 	void Reload();
 
 	// 마우스 휠
-	void Scroll_select(int);
+	bool Scroll_select(int);
 
 	// 교체 현재 무기 / 맵 무기 / 소켓 이름
 	void Swap(ABase_interaction*, AActor*, FString);
@@ -91,6 +98,9 @@ public:
 
 	// 연사 / 연발 확인
 	void Check_continously_shooting(float);
+
+	// 무기 교체가 가능한지 확인
+	bool Check_if_weapon_available(e_current_weapon_type);
 
 	// ------- 부착 관련 함수 -------
 

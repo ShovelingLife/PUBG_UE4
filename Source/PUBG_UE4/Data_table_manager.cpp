@@ -2,11 +2,13 @@
 
 Fs_weapon_data  AData_table_manager::arr_weapon_data[MAX_WEAPON_COUNT];
 Fs_vehicle_data AData_table_manager::arr_vehicle_data[MAX_VEHICLE_COUNT];
+Fs_other_weapon_data AData_table_manager::arr_other_weapon_data[MAX_OTHER_WEAPON_COUNT];
 
 // Sets default values
 AData_table_manager::AData_table_manager()
 {
     Init_weapon_data();
+    Init_another_weapon_data();
     Init_vehicle_data();
 }
 
@@ -28,20 +30,19 @@ void AData_table_manager::Init_weapon_data()
         return;
 
     // 모든 이름 가져오기
-    TArray<FName> row_name_arr = mp_weapon_data_table->GetRowNames();
-    m_current_weapon_count = row_name_arr.Num();
+    TArray<FName> arr_row_name = mp_weapon_data_table->GetRowNames();
     
     // 갖고온 CSV로부터 데이터 할당
-    for (int i = 0; i < m_current_weapon_count; i++)
+    for (int i = 0; i < arr_row_name.Num(); i++)
     {
         // row_name_arr 안에 정보 및 명칭
-        auto p_row = mp_weapon_data_table->FindRow<Fs_weapon_data>(row_name_arr[i], row_name_arr[i].ToString());
+        auto p_row = mp_weapon_data_table->FindRow<Fs_weapon_data>(arr_row_name[i], arr_row_name[i].ToString());
 
         if (!p_row)
             break;
 
-        Fs_weapon_data data                   = *p_row;
-        //auto tmp_weapon_data                  = *(arr_weapon_data + i);
+        Fs_weapon_data data                      = *p_row;
+        //auto tmp_weapon_data                   = *(arr_weapon_data + i);
         arr_weapon_data[i].type                  = data.type;
         arr_weapon_data[i].mesh_path             = mk_weapon_mesh_path + data.weapon_group_type + "/SK_" + data.mesh_path;
         arr_weapon_data[i].weapon_icon_path      = data.weapon_icon_path;
@@ -59,6 +60,42 @@ void AData_table_manager::Init_weapon_data()
     }
 }
 
+void AData_table_manager::Init_another_weapon_data()
+{
+    // CSV 로드
+    ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));
+
+    if (OTHER_WEAPON_DATA_TABLE.Succeeded())
+        mp_other_weapon_data_table = OTHER_WEAPON_DATA_TABLE.Object;
+
+    if (!mp_other_weapon_data_table)
+        return;
+
+    // 모든 이름 가져오기
+    TArray<FName> arr_row_name = mp_other_weapon_data_table->GetRowNames();
+
+    // 갖고온 CSV로부터 데이터 할당
+    for (int i = 0; i < arr_row_name.Num(); i++)
+    {
+        // row_name_arr 안에 정보 및 명칭
+        auto p_row = mp_other_weapon_data_table->FindRow<Fs_other_weapon_data>(arr_row_name[i], arr_row_name[i].ToString());
+
+        if (!p_row)
+            break;
+
+        Fs_other_weapon_data data              = *p_row;
+        arr_other_weapon_data[i].type          = data.type;
+        arr_other_weapon_data[i].weapon_group  = data.weapon_group;
+        arr_other_weapon_data[i].mesh_path     = mk_other_weapon_mesh_path + data.weapon_group + "/Meshes/SM_" + data.type;
+        arr_other_weapon_data[i].audio_path    = data.audio_path;
+        arr_other_weapon_data[i].particle_path = data.particle_path;
+        arr_other_weapon_data[i].collider_size = data.collider_size;
+        arr_other_weapon_data[i].collider_pos  = data.collider_pos;
+        arr_other_weapon_data[i].damage        = data.damage;
+        arr_other_weapon_data[i].radius        = data.radius;
+    }
+}
+
 void AData_table_manager::Init_vehicle_data()
 {
     // CSV 로드
@@ -71,14 +108,14 @@ void AData_table_manager::Init_vehicle_data()
         return;
 
     // 모든 이름 가져오기
-    TArray<FName> row_name_arr = mp_vehicle_data_table->GetRowNames();
-    m_current_vehicle_count    = row_name_arr.Num();
+    TArray<FName> arr_row_name = mp_vehicle_data_table->GetRowNames();
+    m_current_vehicle_count    = arr_row_name.Num();
 
     // 갖고온 CSV로부터 데이터 할당
     for (int i = 0; i < m_current_vehicle_count; i++)
     {
         // row_name_arr 안에 정보 및 명칭
-        auto p_row = mp_vehicle_data_table->FindRow<Fs_vehicle_data>(row_name_arr[i], row_name_arr[i].ToString());
+        auto p_row = mp_vehicle_data_table->FindRow<Fs_vehicle_data>(arr_row_name[i], arr_row_name[i].ToString());
 
         if (!p_row)
             break;

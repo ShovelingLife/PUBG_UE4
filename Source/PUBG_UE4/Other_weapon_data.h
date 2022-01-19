@@ -22,9 +22,6 @@ struct Fs_other_weapon_data : public FTableRowBase
 		FString weapon_group;
 
     UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-		FString mesh_path;
-
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
 	FString audio_path;
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
@@ -40,7 +37,9 @@ struct Fs_other_weapon_data : public FTableRowBase
 	float damage;
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	float radius;
+        float radius;
+
+    FString mesh_path;
 };
 
 UCLASS()

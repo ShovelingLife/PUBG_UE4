@@ -3,8 +3,6 @@
 #include "PUBG_UE4/Data_table_manager.h"
 #include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Sound_manager.h"
-#include "PUBG_UE4/Custom_game_instance.h"
-#include "Components/AudioComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"
 #include "Sound/SoundBase.h"
@@ -41,15 +39,15 @@ void ACore_weapon::Tick(float _delta_time)
     Super::Tick(_delta_time);
 }
 
-void ACore_weapon::Init(e_weapon_type _index)
+void ACore_weapon::Init(e_weapon_type _weapon_type)
 {
-    weapon_data = AData_table_manager::arr_weapon_data[(int)_index];
-    weapon_type = _index;
+    weapon_data   = AData_table_manager::arr_weapon_data[(int)_weapon_type];
+    weapon_type   = _weapon_type;
     m_object_type = weapon_data.type;
 
+    ABase_interaction::Init_audio();
     Update_collider();
     Init_mesh();
-    Init_audio();
     Init_bullet();
     Init_particle_system();
 }
@@ -80,12 +78,7 @@ void ACore_weapon::Init_bullet()
     }
 }
 
-void ACore_weapon::Init_audio()
-{
-    // 오디오 포인터에 대한 생성
-    p_audio_comp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-    p_audio_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-}
+
 
 void ACore_weapon::Init_particle_system()
 {

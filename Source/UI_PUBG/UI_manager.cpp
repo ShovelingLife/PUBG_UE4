@@ -65,7 +65,7 @@ void AUI_manager::Init_player_inventory()
     //FActorSpawnParameters actor_spawn_parameters;
     //actor_spawn_parameters.Owner = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
     p_inventory_manager = GetWorld()->SpawnActor<AInventory_manager>(AInventory_manager::StaticClass());
-    p_inventory_manager->GetRootComponent()->AttachTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetRootComponent());
+    p_inventory_manager->GetRootComponent()->AttachToComponent(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AUI_manager::Init_inventory_weapon_UI()

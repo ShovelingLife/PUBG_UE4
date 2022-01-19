@@ -1,0 +1,11 @@
+,Type,Weapon_group,Audio_path,Particle_path,Collider_size,Collider_pos,Damage,Radius
+14,Grenade_fragmentation1,Explosive,,,,,50,100
+15,Grenade_fragmentation2,Explosive,,,,,100,100
+16,Grenade_illumination,Explosive,,,,,0,100
+17,Grenade_gray_smoke,Explosive,,,,,0,50
+18,Grenade_red_smoke,Explosive,,,,,0,50
+19,Grenade_stick,Explosive,,,,,75,100
+20,Molotov,Explosive,,,,,5,100
+21,Claymore,Explosive,,,,,200,200
+22,Pan,Melee,,,,,10,0
+23,Knife,Melee,,,,,20,0

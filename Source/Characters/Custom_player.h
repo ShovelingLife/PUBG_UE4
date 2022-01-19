@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 
+class ASound_manager;
 class AWeapon_manager;
 class UMy_anim_instance;
 class ACore_weapon;
@@ -17,13 +18,14 @@ class CHARACTERS_API ACustom_player : public ACharacter
 
 private:
     // 현재 쓰여지는 오브젝트들
+    ASound_manager*  mp_sound_manager;
     AWeapon_manager* mp_weapon_manager;
     AActor*          m_collided_weapon  = nullptr;
     ACore_vehicle*   m_collided_vehicle = nullptr;
 
     // 오디오 관련
     UPROPERTY(VisibleAnywhere, Category = Audio)
-        class UAudioComponent* mp_audio;
+        class UAudioComponent* mp_audio_comp;
 
     // 파티클 관련
     UPROPERTY(VisibleAnywhere, Category = Particle)
@@ -41,10 +43,10 @@ private:
  // 플레이어 컴포넌트 및 상태 변수
 public:
     UPROPERTY(VisibleAnywhere, Category = Camera)
-        class USpringArmComponent* p_spring_arm = nullptr;
+        class USpringArmComponent* p_spring_arm_comp = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Camera)
-        class UCameraComponent* p_camera = nullptr;
+        class UCameraComponent* p_camera_comp = nullptr;
 
     const float k_max_health = 100.f;
 
@@ -82,13 +84,15 @@ private:
 
 // 초기화 함수들
 private:
-    void Init_player_settings();
+    void Update_player_settings();
 
-    void Init_camera_settings();
+    void Init_camera_comp();
 
-    void Init_mesh_settings();
+    void Init_mesh_comp();
 
-    void Init_animation_settings();
+    void Init_audio_comp();
+
+    void Init_anim_instance();
 
     void Init_particle_system();
 
@@ -167,6 +171,8 @@ private:
     void Equip_fourth_weapon();
 
     void Equip_fifth_weapon();
+
+    void Set_item_UI(bool);
 
 public:
     void Exit_from_vehicle(FVector);

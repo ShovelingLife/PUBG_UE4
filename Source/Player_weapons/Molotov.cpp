@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Molotov.h"
 
+AMolotov::AMolotov()
+{
+    Init(e_throwable_weapon_type::MOLOTOV);
+}
