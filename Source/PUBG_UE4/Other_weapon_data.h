@@ -1,13 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
 #include "Other_weapon_data.generated.h"
-
-#define MAX_OTHER_WEAPON_COUNT 10
 
 // CSV로부터 가지고올 기타 무기(투척류,근접) 정보 구조체
 USTRUCT(BlueprintType)

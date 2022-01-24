@@ -1,10 +1,18 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h"
 #include "Item_data.generated.h"
+
+#define MAX_ITEM_COUNT 13
+
+// CSV로부터 가지고올 아이템 정보 구조체
+USTRUCT()
+struct Fs_item_data : public FTableRowBase
+{
+	GENERATED_BODY()
+};
 
 UCLASS()
 class PUBG_UE4_API AItem_data : public AActor

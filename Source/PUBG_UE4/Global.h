@@ -9,8 +9,25 @@ class AData_table_manager;
 class ASound_manager;
 class UCustom_game_instance;
 
-DECLARE_DELEGATE_TwoParams(FDele_update_interaction_widget_comp, UWidgetComponent*,FString)
+DECLARE_DELEGATE_TwoParams(FDele_update_interaction_widget_comp, UWidgetComponent*, FString)
+DECLARE_DELEGATE_OneParam(FDele_set_item_slot_UI, Fs_slot_item_data)
 
+USTRUCT()
+struct Fs_slot_item_data
+{
+    GENERATED_BODY()
+
+public:
+    FString name        = "";
+    int     image_index = 0;
+    int     count       = 0;
+
+public:
+    Fs_slot_item_data() = default;
+
+    // 아이템 명칭/개수/이미지 인덱스(UI매니저)
+    Fs_slot_item_data(FString _name, int _image_index, int _count = 1) : name(_name), image_index(_image_index), count(_count){ }
+};
 
 // 전역 변수 / 함수 클래스
 UCLASS()
@@ -38,6 +55,7 @@ private:
 
 public:
     FDele_update_interaction_widget_comp  dele_update_interaction_widget_comp;
+    FDele_set_item_slot_UI dele_set_item_slot_UI;
 	FRotator player_spring_arm_rotation;
 	FVector  player_spring_arm_location;
 	float	 player_spring_arm_length;
@@ -79,4 +97,6 @@ public:
 
     // (로그 띄우기) 인덱스 / 띄우는 시간 / 색상 / 로그 문자열
     static void Print_log(int, float, FColor, FString);
+
+    static void Set_item_slot_UI(Fs_slot_item_data);
 };

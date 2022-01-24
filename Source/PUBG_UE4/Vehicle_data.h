@@ -7,8 +7,6 @@
 #include "Engine/DataTable.h"
 #include "Vehicle_data.generated.h"
 
-#define MAX_VEHICLE_COUNT 6
-
 // CSV로부터 가지고올 차량 정보 구조체
 USTRUCT(BlueprintType)
 struct Fs_vehicle_data : public FTableRowBase

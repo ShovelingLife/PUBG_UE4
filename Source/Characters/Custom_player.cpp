@@ -57,7 +57,6 @@ void ACustom_player::Tick(float _delta_time)
     Check_if_moving();
     Check_if_is_vehicle_near();
     //Play_walk_sound();
-    Update_weapon_pos();
     Check_for_object();
     Try_to_get_collided_component();
 }
@@ -110,7 +109,7 @@ void ACustom_player::Init_camera_comp()
     p_camera_comp     = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
     // 카메라를 부모 컴포넌트에 부착
-    p_spring_arm_comp->SetupAttachment(reinterpret_cast<USceneComponent*>(GetCapsuleComponent()));
+    p_spring_arm_comp->SetupAttachment(GetCapsuleComponent());
     p_camera_comp->SetupAttachment(p_spring_arm_comp);
 
     // 카메라 설정
@@ -161,34 +160,34 @@ void ACustom_player::Check_if_moving()
     {
         if (m_is_moving)
         {
-            if      (current_state == e_player_state::CROUCH_WALK)
-                     current_state = e_player_state::CROUCH;
+            if (current_state == e_player_state::CROUCH_WALK)
+                current_state = e_player_state::CROUCH;
 
             else if (current_state == e_player_state::PRONING_WALK)
-                     current_state = e_player_state::PRONING;
+                current_state = e_player_state::PRONING;
 
             else if (current_state == e_player_state::AIM_WALK)
-                     current_state = e_player_state::AIM;
+                current_state = e_player_state::AIM;
 
             else
-                     current_state = e_player_state::IDLE;
+                current_state = e_player_state::IDLE;
         }
-        m_is_moving  = false;
+        m_is_moving = false;
         is_sprinting = false;
     }
     else
     {
         // 숙이고 있음
-        if      (current_state == e_player_state::CROUCH ||
-                 current_state == e_player_state::CROUCH_AIM)
-                 current_state = e_player_state::CROUCH_WALK;
+        if (current_state == e_player_state::CROUCH ||
+            current_state == e_player_state::CROUCH_AIM)
+            current_state = e_player_state::CROUCH_WALK;
 
         // 엎드리고 있음
         else if (current_state == e_player_state::PRONING)
-                 current_state = e_player_state::PRONING_WALK;
+            current_state = e_player_state::PRONING_WALK;
 
         else if (current_state == e_player_state::AIM)
-                 current_state = e_player_state::AIM_WALK;
+            current_state = e_player_state::AIM_WALK;
 
         else
         {
@@ -198,7 +197,7 @@ void ACustom_player::Check_if_moving()
                 // 뛰면서 점프후 착지
                 if (m_sprint_multiplier > 1.f)
                 {
-                    is_sprinting  = true;
+                    is_sprinting = true;
                     current_state = e_player_state::SPRINT_JUMP;
                 }
                 else // 점프함
@@ -214,17 +213,17 @@ void ACustom_player::Check_if_moving()
                 {
                     if (current_oxygen < 0)
                     {
-                        current_state                        = e_player_state::IDLE;
-                        m_sprint_multiplier                  = 1;
+                        current_state = e_player_state::IDLE;
+                        m_sprint_multiplier = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
-                        is_sprinting                         = false;
+                        is_sprinting = false;
                         return;
                     }
                     is_sprinting = true;
 
                     if (m_sprint_multiplier < 1.75f)
                     {
-                        m_sprint_multiplier                  += 0.25f;
+                        m_sprint_multiplier += 0.25f;
                         GetCharacterMovement()->MaxWalkSpeed *= m_sprint_multiplier;
                     }
                 }
@@ -235,6 +234,57 @@ void ACustom_player::Check_if_moving()
             }
         }
         m_is_moving = true;
+    }
+}
+
+void ACustom_player::Check_for_object()
+{
+    FVector    direction = GetActorForwardVector() * 50;
+    FVector    begin_pos = GetMesh()->GetSocketLocation("detect_object_ray_sock");
+    FVector    end_pos = begin_pos + direction;
+    FHitResult hit_result;
+
+    GetWorld()->LineTraceSingleByProfile(hit_result, begin_pos, end_pos, "Object");
+
+    AActor* hitted_actor = hit_result.GetActor();
+
+    // 충돌한 오브젝트가 있을 시
+    if (hitted_actor)
+    {
+        // 충돌한 오브젝트가 무기일 시
+        if (hitted_actor->IsA<ACore_weapon>() ||
+            hitted_actor->IsA<ACore_throwable_weapon>() ||
+            hitted_actor->IsA<ACore_melee_weapon>())
+        {
+            m_collided_weapon = hitted_actor;
+            Set_item_UI(true);
+        }
+    }
+    else
+        Set_item_UI(false);
+}
+
+void ACustom_player::Try_to_get_collided_component()
+{
+    if (m_is_interacting)
+    {
+        // 무기랑 충돌 시
+        if (m_collided_weapon)
+        {
+            mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_EQUIP);
+            mp_weapon_manager->Equip(m_collided_weapon);
+            Set_item_UI(false);
+        }
+        if (m_collided_vehicle)
+        {
+            //  차량 탑승 상태
+            if (m_collided_vehicle->Check_available_seat(this))
+            {
+                m_collided_vehicle->is_collided = false;
+                is_in_vehicle = true;
+            }
+            m_collided_vehicle = nullptr;
+        }
     }
 }
 
@@ -280,16 +330,6 @@ void ACustom_player::Custom_jump()
         return;
 
     Jump();
-}
-
-void ACustom_player::Begin_shooting()
-{
-    //mp_weapon_manager->is_shooting = true;
-}
-
-void ACustom_player::End_shooting()
-{
-    //mp_weapon_manager->is_shooting = false;
 }
 
 void ACustom_player::Move_up_down(float _value)
@@ -349,6 +389,34 @@ void ACustom_player::Custom_crouch()
     }
 }
 
+void ACustom_player::Proning()
+{
+    switch (current_state)
+    {
+    case e_player_state::IDLE:
+        current_state = e_player_state::PRONING;
+        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
+        break;
+
+    case e_player_state::CROUCH:
+    case e_player_state::CROUCH_WALK:
+        current_state = e_player_state::PRONING;
+        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
+        UnCrouch();
+        break;
+
+    case e_player_state::AIM:
+        current_state = e_player_state::PRONING_AIM;
+        break;
+
+    case e_player_state::PRONING:
+    case e_player_state::PRONING_WALK:
+        current_state = e_player_state::IDLE;
+        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+        break;
+    }
+}
+
 void ACustom_player::Begin_sprint()
 {
     if (!GetVelocity().IsZero())
@@ -360,6 +428,16 @@ void ACustom_player::End_sprint()
     current_state                        = e_player_state::IDLE;
     m_sprint_multiplier                  = 1;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
+}
+
+void ACustom_player::Begin_shooting()
+{
+    //mp_weapon_manager->is_shooting = true;
+}
+
+void ACustom_player::End_shooting()
+{
+    //mp_weapon_manager->is_shooting = false;
 }
 
 void ACustom_player::Reload()
@@ -397,6 +475,7 @@ void ACustom_player::Aim()
 
 void ACustom_player::Change_shoot_mode()
 {
+    mp_weapon_manager->Change_shoot_mode();
 }
 
 void ACustom_player::Swap_scrolling_up()
@@ -409,101 +488,6 @@ void ACustom_player::Swap_scrolling_down()
 {
     if (mp_weapon_manager->Scroll_select(-1))
         mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
-}
-
-void ACustom_player::Proning()
-{
-    switch (current_state)
-    {
-    case e_player_state::IDLE:
-        current_state = e_player_state::PRONING;
-        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
-        break;
-
-    case e_player_state::CROUCH:
-    case e_player_state::CROUCH_WALK:
-        current_state = e_player_state::PRONING;
-        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, -50.f));
-        UnCrouch();
-        break;
-
-    case e_player_state::AIM:
-        current_state = e_player_state::PRONING_AIM;
-        break;
-
-    case e_player_state::PRONING:
-    case e_player_state::PRONING_WALK:
-        current_state = e_player_state::IDLE;
-        p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
-        break;
-    }
-}
-
-void ACustom_player::Check_for_object()
-{
-    FVector    direction = GetActorForwardVector() * 50;
-    FVector    begin_pos = GetMesh()->GetSocketLocation("detect_object_ray_sock");
-    FVector    end_pos   = begin_pos + direction;
-    FHitResult hit_result;
-    GetWorld()->LineTraceSingleByProfile(hit_result, begin_pos, end_pos, "Object");
-    DrawDebugLine(GetWorld(), begin_pos, end_pos, FColor::Red,false,1.f,0U,0.5f);
-
-    AActor* hitted_actor = hit_result.GetActor();
-
-    // 충돌한 오브젝트가 있을 시
-    if(hitted_actor)
-    {
-        // 충돌한 오브젝트가 무기일 시
-        if (hitted_actor->IsA<ACore_weapon>() ||
-            hitted_actor->IsA<ACore_throwable_weapon>() ||
-            hitted_actor->IsA<ACore_melee_weapon>())
-        {
-            m_collided_weapon = hitted_actor;
-            Set_item_UI(true);
-        }
-    }
-    else
-        Set_item_UI(false);
-}
-
-void ACustom_player::Try_to_get_collided_component()
-{
-    if (m_is_interacting)
-    {
-        // 무기랑 충돌 시
-        if (m_collided_weapon)
-        {
-            mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_EQUIP);
-            mp_weapon_manager->Equip(m_collided_weapon);
-            Set_item_UI(false);
-        }
-        if (m_collided_vehicle)
-        {
-            //  차량 탑승 상태
-            if (m_collided_vehicle->Check_available_seat(this))
-            {
-                m_collided_vehicle->is_collided = false;
-                is_in_vehicle                   = true; 
-            }
-            m_collided_vehicle = nullptr;
-        }
-    }
-}
-
-void ACustom_player::Update_weapon_pos()
-{
-    switch (current_state)
-    {
-    case e_player_state::WALK:
-    case e_player_state::SPRINT:
-    case e_player_state::JUMP:
-    case e_player_state::PRONING:
-
-        // 무기를 등 뒤에다 부착
-        //Attach_first_weapon("first_back_weapon_sock");
-        //Attach_second_weapon("second_back_weapon_sock");
-        break;
-    }
 }
 
 void ACustom_player::Equip_first_weapon()
@@ -566,5 +550,6 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
 
 void ACustom_player::Open_inventory()
 {
-    is_inventory_opened = (is_inventory_opened) ? false : true;
+    m_is_inventory_opened = (!m_is_inventory_opened) ? true : false;
+    dele_open_or_close_inventory.ExecuteIfBound(m_is_inventory_opened);
 }

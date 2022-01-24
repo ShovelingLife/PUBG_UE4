@@ -13,23 +13,24 @@
 
  ABase_interaction::ABase_interaction()
  {
-     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
      PrimaryActorTick.bCanEverTick = true;
-
+     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root_comp"));
+     
      // 박스 콜라이더 초기화
-     m_box_collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
-     RootComponent  = m_box_collider;
+     m_box_collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision_comp"));
+     m_box_collider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
      // UI 위젯 컴포넌트 초기화
      mp_interaction_widget_comp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interaction_widget"));
      mp_interaction_widget_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
  }
 
- // Called when the game starts or when spawned
  void ABase_interaction::BeginPlay()
  {
      Super::BeginPlay();
      Init_interaction_UI();
+     m_box_collider->BodyInstance.SetCollisionProfileName("Object");
+     m_box_collider->BodyInstance.bNotifyRigidBodyCollision = false;
  }
 
  // Called every frame

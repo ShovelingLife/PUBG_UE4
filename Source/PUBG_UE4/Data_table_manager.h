@@ -42,16 +42,16 @@ private:
     int               m_current_vehicle_count = 0;
 
 public:
-    static Fs_weapon_data       arr_weapon_data[MAX_WEAPON_COUNT];
-    static Fs_vehicle_data      arr_vehicle_data[MAX_VEHICLE_COUNT];
-    static Fs_other_weapon_data arr_other_weapon_data[MAX_OTHER_WEAPON_COUNT];
+    static TArray<Fs_weapon_data>       arr_weapon_data;
+    static TArray<Fs_vehicle_data>      arr_vehicle_data;
+    static TArray<Fs_other_weapon_data> arr_other_weapon_data;
 
 private:
     // 무기 데이터 초기화
     void Init_weapon_data();
 
     // 기타 무기 데이터 초기화
-    void Init_another_weapon_data();
+    void Init_other_weapon_data();
 
     // 차량 데이터 초기화
     void Init_vehicle_data();

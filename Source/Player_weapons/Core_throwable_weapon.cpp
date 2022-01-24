@@ -59,8 +59,5 @@ void ACore_throwable_weapon::Init_particle_system()
     // ÃÑ±â °ü·Ã
     p_grenade_particle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
     p_grenade_particle->bAutoActivate = false;
-    /*ConstructorHelpers::FObjectFinder<UParticleSystem> GUN_PARTICLE(TEXT("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave"));
-
-    if (GUN_PARTICLE.Succeeded())
-        p_gun_particle->SetTemplate(GUN_PARTICLE.Object);*/
+    p_grenade_particle->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }

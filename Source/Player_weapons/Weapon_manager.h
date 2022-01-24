@@ -70,9 +70,6 @@ private:
 	// 탈착 후 위치 초기화
     void Reset_weapon_after_detaching(ABase_interaction*, FTransform);
 
-	// 무기 종류를 가져옴
-	ACore_weapon* Get_weapon_type(e_current_weapon_type);
-
 public:
 	// 장착
 	void Equip(AActor*);
@@ -104,5 +101,8 @@ public:
 
 	// ------- 부착 관련 함수 -------
 
-	int Get_weapon_max_bullet_count(e_current_weapon_type);
+    int Get_weapon_max_bullet_count(e_current_weapon_type);
+
+    // 무기 종류를 가져옴
+    ACore_weapon* Get_weapon_type(e_current_weapon_type);
 };

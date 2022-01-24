@@ -21,6 +21,7 @@ void ACore_weapon::BeginPlay()
 {
     Super::BeginPlay();
     Update_particle_system();
+    weapon_data.current_bullet_count = 100;
 }
 
 void ACore_weapon::NotifyActorBeginOverlap(AActor* _collided_actor)
@@ -77,8 +78,6 @@ void ACore_weapon::Init_bullet()
         p_bullet         = p_bp_bullet->GetDefaultObject<ACore_bullet>();
     }
 }
-
-
 
 void ACore_weapon::Init_particle_system()
 {

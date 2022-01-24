@@ -1,6 +1,7 @@
-#include "Crate_box.h"
+ï»¿#include "Crate_box.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/WidgetComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -8,21 +9,24 @@
 ACrate_box::ACrate_box()
 {
     PrimaryActorTick.bCanEverTick = true;
-    m_box_collider->OnComponentHit.AddDynamic(this, &ACrate_box::Turn_off_after_landing);
+    m_object_type = "ë³´ê¸‰ìƒì";
+    Update_collider();
     Init_vfx();
     Init_meshes();
-    Update_collider();
 }
 
 void ACrate_box::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
 
-    // ÂøÁö ÇÏÁö ¾Ê¾ÒÀ¸¸é ¶³¾îÁü
-    if (!m_is_landed)
-        SetActorLocation(GetActorLocation() + FVector::DownVector);
+    if (m_box_collider->GetCollisionProfileName() == "Object")
+        m_box_collider->SetCollisionProfileName("BlockAll");
 
-    else // ÂøÁö ÇÏ¿´À¸¸é Ä«¿îÆ® ½ÃÀÛ
+    // ì°©ì§€ í•˜ì§€ ì•Šì•˜ìœ¼ë©´ ë–¨ì–´ì§
+    if (IsRootComponentMovable())
+        SetActorLocation(GetActorLocation() + FVector::DownVector);
+    
+    else // ì°©ì§€ í•˜ì˜€ìœ¼ë©´ ì¹´ìš´íŠ¸ ì‹œì‘
     {
         m_current_time += _delta_time;
 
@@ -40,7 +44,7 @@ void ACrate_box::Tick(float _delta_time)
 
 void ACrate_box::Init_vfx()
 {
-    // ¸®¼Ò½º °¡Áö°í¿Í¼­ ºÎ¿©
+    // ë¦¬ì†ŒìŠ¤ ê°€ì§€ê³ ì™€ì„œ ë¶€ì—¬
     mp_particle_component = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Crate box effect"));
     mp_particle_component->SetRelativeTransform(FTransform(FRotator::ZeroRotator, FVector(0.f, 0.f, 70.f), FVector(1.35f)));
     mp_particle_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -55,11 +59,11 @@ void ACrate_box::Init_vfx()
 
 void ACrate_box::Init_meshes()
 {
-    // º¸±Ş »óÀÚ ¸Ş½¬ ¼³Á¤
+    // ë³´ê¸‰ ìƒì ë©”ì‰¬ ì„¤ì •
     ABase_interaction::Init_static_mesh("StaticMesh'/Game/Meshes/PUBG_CRATE/Box_crate_mesh.Box_crate_mesh'","Box_crate");
     p_static_mesh_comp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(-90.f, 0.f, 0.f)), FVector(0.f, 0.f, -70.f), FVector(0.1f)));
 
-    // ³«ÇÏ»ê ¸Ş½¬ ¼³Á¤
+    // ë‚™í•˜ì‚° ë©”ì‰¬ ì„¤ì •
     auto parachute_mesh_obj = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("StaticMesh'/Game/Meshes/PARACUTE_FREE/Parachute_mesh.Parachute_mesh'"));
     mp_parachute_mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Parachute mesh"));
 
@@ -72,11 +76,15 @@ void ACrate_box::Init_meshes()
 
 void ACrate_box::Update_collider()
 {
+    // ë£¨íŠ¸ì»´í¬ë„ŒíŠ¸ ì¬ì •ì˜ í›„ ì¬ë¶€ì°©
+    RootComponent->DestroyComponent();
+    RootComponent = m_box_collider;
+
+    m_box_collider->OnComponentHit.AddDynamic(this, &ACrate_box::Turn_off_after_landing);
     m_box_collider->SetSimulatePhysics(true);
     m_box_collider->SetEnableGravity(false);
     m_box_collider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
     m_box_collider->BodyInstance.bNotifyRigidBodyCollision = true;
-    m_box_collider->SetCollisionProfileName("BlockAll");
     m_box_collider->SetBoxExtent(FVector(70.f));
 }
 
@@ -85,11 +93,10 @@ void ACrate_box::Turn_off_after_landing(UPrimitiveComponent* HitComp, AActor* Ot
     FString actor_name = "";
     OtherActor->GetName(actor_name);
 
-    // Áö¸éÀÌ¶û ´ê¾ÒÀ» ½Ã
+    // ì§€ë©´ì´ë‘ ë‹¿ì•˜ì„ ì‹œ
     if (actor_name == "Floor")
     {
-        // ÀÌÆåÆ® ¹ßµ¿ ÈÄ °íÁ¤
-        m_is_landed = true;
+        // ì´í™íŠ¸ ë°œë™ í›„ ê³ ì •
         mp_parachute_mesh->DestroyComponent();
         mp_particle_component->Activate();
         m_box_collider->SetMobility(EComponentMobility::Static);

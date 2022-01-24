@@ -8,13 +8,15 @@
 #include "Current_Weapon_UI.generated.h"
 
 class AWeapon_manager;
-class AUI_manager;
 
 UCLASS()
 class UI_PUBG_API UCurrent_Weapon_UI : public UUserWidget
 {
 	GENERATED_BODY()
 	
+private:
+    class AUI_manager* mp_UI_manager;
+
 private:
 	// 슬롯 이미지 사이즈 관련
 	const FVector mk_gun_slot_size	  {	200.f, 60.f, 0.f};
@@ -35,9 +37,6 @@ private:
     // 현재 착용 중인 무기
     UPROPERTY(VisibleAnywhere, Category = Manager)
     AWeapon_manager* mp_weapon_manager = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Manager)
-	AUI_manager* mp_UI_manager = nullptr;
 
 public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -64,7 +63,7 @@ protected:
 	void NativeTick(const FGeometry&, float) override;
 
 private:
-	void Init_img_arr();
+	void Init_arr_img();
 
 	// UI 투명도 갱신
 	void Update_icon_visibility();

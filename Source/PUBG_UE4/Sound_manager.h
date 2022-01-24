@@ -20,7 +20,7 @@ private:
 public:
     // ------- 무기 관련 사운드 -------
     UPROPERTY(VisibleAnywhere, Category = Weapon_sound)
-        USoundBase* p_shot_sound_arr[MAX_WEAPON_COUNT];
+        TArray<USoundBase*> p_arr_shot_sound;
 
     UPROPERTY(VisibleAnywhere, Category = Weapon_sound)
         USoundBase* p_empty_ammo_sound = nullptr;

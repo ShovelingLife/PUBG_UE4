@@ -61,6 +61,15 @@ enum class e_melee_weapon_type : uint8
     MAX
 };
 
+// 총알 격발 종류
+enum class e_gun_shoot_type
+{
+    SINGLE,
+    BURST,
+    CONSECUTIVE,
+    MAX
+};
+
 UCLASS()
 class PLAYER_WEAPONS_API AWeapon_enum : public AActor
 {

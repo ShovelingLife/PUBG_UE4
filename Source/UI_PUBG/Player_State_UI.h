@@ -12,6 +12,9 @@ class UI_PUBG_API UPlayer_State_UI : public UUserWidget
 {
 	GENERATED_BODY()
 	
+private:
+    class AUI_manager* mp_UI_manager;
+
 public:
     // 체력 회복력(에너지드링크, 진통제바) 산소
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -58,7 +61,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
         UImage* Reticle_img;
 
-    class ACustom_player* p_custom_player;
+    class ACustom_player* p_player;
 
 protected:
 	void NativeConstruct() override;
@@ -66,17 +69,15 @@ protected:
 	void NativeTick(const FGeometry&, float) override;
 
 public:
-    // 무기 슬롯 갱신
-    void Update_weapon_slot_UI();
-
     // 조준선 갱신
     void Update_aim_UI();
+
+    // 발사 방법 갱신
+    void Update_shoot_mode();
 
     // 총알 개수 갱신
     void Update_bullet_count_UI();
 
     // 산소 바 갱신
     void Update_oxygen_bar_UI(float);
-
-    void Change_shoot_mode();
 };

@@ -25,8 +25,9 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Particle)
         class UParticleSystemComponent* p_gun_particle = nullptr;
 
-    e_weapon_type  weapon_type;
-    Fs_weapon_data weapon_data;
+    Fs_weapon_data   weapon_data;
+    e_weapon_type    weapon_type    = e_weapon_type::MAX;
+    e_gun_shoot_type gun_shoot_type = e_gun_shoot_type::SINGLE;
 
 protected:
     // Called when the game starts or when spawned
@@ -53,9 +54,6 @@ protected:
 
     // 탄알 초기화
     void Init_bullet();
-
-    // 사운드 초기화
-    void Init_audio();
 
     void Init_particle_system();
 

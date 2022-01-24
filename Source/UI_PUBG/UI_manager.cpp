@@ -1,9 +1,10 @@
 #include "UI_manager.h"
-#include "PUBG_UE4/Global.h"
-#include "PUBG_UE4/Data_table_manager.h"
 #include "Interaction_UI.h"
 #include "Inventory_manager.h"
+#include "Item_Slot_UI.h"
 #include "Player_UI.h"
+#include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Data_table_manager.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
@@ -12,10 +13,12 @@
 AUI_manager::AUI_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
+    Init_slot_UI();
     Init_player_UI();
     Init_interaction_UI();
-    Init_inventory_weapon_UI();
-    Init_main_weapon_UI();
+    Init_player_UI_tex();
+    Init_inventory_weapon_UI_tex();
+    Init_main_weapon_UI_mat();
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +30,7 @@ void AUI_manager::BeginPlay()
     mp_global = AGlobal::Get();
     mp_global->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
 
+    Set_inventory_slot_UI();
     Set_player_UI();
     Init_player_inventory();
     Set_weapon_UI();
@@ -53,6 +57,28 @@ void AUI_manager::Init_interaction_UI()
     m_interaction_widget_bp = widget_bp.Class;
 }
 
+void AUI_manager::Init_slot_UI()
+{
+    // 인벤토리 위젯 초기화
+    auto BP_item_slot_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_UI_Item_Slot.BP_UI_Item_Slot_C'"));
+
+    if (BP_item_slot_UI.Succeeded())
+        bp_item_slot_UI = BP_item_slot_UI.Class;
+}
+
+void AUI_manager::Init_player_UI_tex()
+{
+    for (int i = 0; i < mk_arr_player_UI_tex_path.Num(); i++)
+    {
+        // 리소스를 불러온 후 데이터 테이블에 대입
+        FString player_ui_path = mk_default_player_UI_path + mk_arr_player_UI_tex_path[i] + "_icon";
+        auto    player_ui_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*player_ui_path);
+
+        if (player_ui_tex.Succeeded())
+            map_player_ui_tex.Add(i, player_ui_tex.Object);
+    }
+}
+
 void AUI_manager::Set_player_UI()
 {
     UUserWidget* p_widget = CreateWidget(GetWorld(), m_bp_player_UI);
@@ -62,36 +88,43 @@ void AUI_manager::Set_player_UI()
 
 void AUI_manager::Init_player_inventory()
 {
-    //FActorSpawnParameters actor_spawn_parameters;
-    //actor_spawn_parameters.Owner = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
     p_inventory_manager = GetWorld()->SpawnActor<AInventory_manager>(AInventory_manager::StaticClass());
     p_inventory_manager->GetRootComponent()->AttachToComponent(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-void AUI_manager::Init_inventory_weapon_UI()
+void AUI_manager::Init_inventory_weapon_UI_tex()
 {
-    for (int i = 0; i < MAX_WEAPON_COUNT; i++)
+    for (int i = 0; i < AData_table_manager::arr_weapon_data.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString weapon_ui_path = "/Game/UI/Weapon_inventory_icon/" + AData_table_manager::arr_weapon_data[i].weapon_icon_path;
-        auto    weapon_ui_tex = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
+        auto    weapon_ui_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
 
         if (weapon_ui_tex.Succeeded())
             map_inventory_weapon_ui_tex.Add(i, weapon_ui_tex.Object);
     }
 }
 
-void AUI_manager::Init_main_weapon_UI()
+void AUI_manager::Init_main_weapon_UI_mat()
 {
-    for (int i = 0; i < MAX_WEAPON_COUNT; i++)
+    for (int i = 0; i < AData_table_manager::arr_weapon_data.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_weapon_data[i].weapon_slot_icon_path;
-        auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
+        auto    weapon_ui_mat  = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
 
         if (weapon_ui_mat.Succeeded())
             map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
     }
+    //for (int i = 0; i < MAX_OTHER_WEAPON_COUNT; i++)
+    //{
+    //    // 리소스를 불러온 후 데이터 테이블에 대입
+    //    FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_other_weapon_data[i].weapon_slot_icon_path;
+    //    auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
+
+    //    if (weapon_ui_mat.Succeeded())
+    //        map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
+    //}
 }
 
 void AUI_manager::Set_weapon_UI()
@@ -99,6 +132,12 @@ void AUI_manager::Set_weapon_UI()
     /*for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
     }*/
+}
+
+void AUI_manager::Set_inventory_slot_UI()
+{
+    if (bp_item_slot_UI)
+        p_item_slot_UI = Cast<UItem_Slot_UI>(CreateWidget(GetWorld(), bp_item_slot_UI));
 }
 
 void AUI_manager::Update_interaction_UI(UWidgetComponent* _widget_comp, FString _type)

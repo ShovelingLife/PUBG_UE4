@@ -1,4 +1,5 @@
 #include "Sound_manager.h"
+#include "Data_table_manager.h"
 #include "Components/AudioComponent.h"
 #include "Editor/EditorEngine.h"
 #include "LevelEditor.h"
@@ -56,12 +57,12 @@ void ASound_manager::Init_weapon_audio()
         p_reload_sound = Cast<USoundBase>(BP_RELOAD_AMMO_SOUND.Object);
 
     // 총알 발사 사운드
-    for (int i = 0; i < MAX_WEAPON_COUNT; i++)
+    for (int i = 0; i < AData_table_manager::arr_weapon_data.Num(); i++)
     {
         ConstructorHelpers::FObjectFinder<USoundWave> BP_SHOT_SOUND(*(mk_sound_path + AData_table_manager::arr_weapon_data[i].type + "_shot"));
 
         if (BP_SHOT_SOUND.Succeeded())
-            p_shot_sound_arr[i] = Cast<USoundBase>(BP_SHOT_SOUND.Object);
+            p_arr_shot_sound.Add(Cast<USoundBase>(BP_SHOT_SOUND.Object));
     }
 }
 
@@ -72,7 +73,7 @@ void ASound_manager::Play_weapon_sound(UAudioComponent* _p_audio_comp, e_weapon_
     switch (_sound_type)
     {
     case e_weapon_sound_type::EMPTY_AMMO: tmp_sound = p_empty_ammo_sound;              break;
-    case e_weapon_sound_type::SHOT:       tmp_sound = p_shot_sound_arr[_weapon_index]; break;
+    case e_weapon_sound_type::SHOT:       tmp_sound = p_arr_shot_sound[_weapon_index]; break;
     case e_weapon_sound_type::RELOAD:     tmp_sound = p_reload_sound;                  break;
     }
     _p_audio_comp->SetSound(tmp_sound);

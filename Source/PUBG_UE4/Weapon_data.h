@@ -5,13 +5,11 @@
 #include "Engine/DataTable.h"
 #include "Weapon_data.generated.h"
 
-#define MAX_WEAPON_COUNT 13
-
 // CSV로부터 가지고올 무기 정보 구조체
-USTRUCT(BlueprintType)
+USTRUCT()
 struct Fs_weapon_data : public FTableRowBase
 {
-    GENERATED_BODY()
+    GENERATED_BODY(BlueprintType)
 
         UPROPERTY(BlueprintReadWrite, Category = Weapon_data_variable)
         FString type = "";

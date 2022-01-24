@@ -22,7 +22,6 @@ class FARMABLE_ITEMS_API ACrate_box : public ACore_farmable_item
 
 	float m_current_time			 = 0.f;
     const float mk_max_particle_time = 15.f;
-	bool  m_is_landed				 = false;
 	bool  m_is_particle_ended		 = false;
 
 public:

@@ -46,7 +46,7 @@ void AWeapon_manager::Update_current_equipped_weapon()
     arr_is_weapon_equipped[(int)e_current_weapon_type::THROWABLE] = (p_throwable  != nullptr);
 }
 
-void AWeapon_manager::Play_sound(e_weapon_sound_type _weapon_sound_type)
+void AWeapon_manager::Play_sound(e_weapon_sound_type _sound_type)
 {
     // 오디오 컴포넌트 가져오기
     UAudioComponent* p_audio_comp = nullptr;
@@ -70,19 +70,23 @@ void AWeapon_manager::Play_sound(e_weapon_sound_type _weapon_sound_type)
         p_audio_comp = p_pistol->p_audio_comp;
         weapon_index = (int)p_pistol->weapon_type;
     }
-    //// 네번째 무기
-    //if (is_fourth_equipped)
-    //    p_audio_comp = p_first_gun->p_audio_comp;
-
-    //// 다섯번째 무기
-    //if (is_fifth_equipped)
-    //    p_audio_comp = p_first_gun->p_audio_comp;
-
-    if (_weapon_sound_type != e_weapon_sound_type::SHOT)
-        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _weapon_sound_type);
+    // 네번째 무기
+    if (arr_is_weapon_equipped[3])
+    {
+        p_audio_comp = p_melee->p_audio_comp;
+        weapon_index = (int)p_melee->weapon_type;
+    }
+    // 다섯번째 무기
+    if (arr_is_weapon_equipped[4])
+    {
+        p_audio_comp = p_throwable->p_audio_comp;
+        weapon_index = (int)p_throwable->weapon_type;
+    }
+    if (_sound_type != e_weapon_sound_type::SHOT)
+        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type);
 
     else
-        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _weapon_sound_type, weapon_index);
+        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type, weapon_index);
 }
 
 e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int _start_index)
@@ -90,9 +94,6 @@ e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int
     // 위에서 아래
     if (_direction == "down")
     {
-        if (_start_index != (int)e_current_weapon_type::THROWABLE)
-            _start_index--;
-
         for (int i = _start_index; i > -1; i--)
         {
             if (arr_is_weapon_equipped[i])
@@ -113,20 +114,20 @@ e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int
 
 void AWeapon_manager::Equip(AActor* _p_weapon)
 {
+    ABase_interaction* tmp_collided_weapon = Cast<ABase_interaction>(_p_weapon);
+
+    if (!tmp_collided_weapon)
+        return;
+
     // 총기 종류
     if (_p_weapon->IsA<ACore_weapon>())
     {
-        ACore_weapon* p_collided_gun = Cast<ACore_weapon>(_p_weapon);
-
         // 권총일 시 무조건 3번 슬롯
-        if (p_collided_gun->weapon_data.weapon_group_type == "Handgun")
+        if (Cast<ACore_weapon>(_p_weapon)->weapon_data.weapon_group_type == "Handgun")
         {
             if (!p_pistol)
-            {
-                p_pistol = p_collided_gun;
-                current_weapon_type = e_current_weapon_type::PISTOL;
-                Attach_weapon(p_pistol, "hand_gun_sock");
-            }
+                Attach_weapon(tmp_collided_weapon, "hand_gun_sock");
+
             else
                 Swap(p_pistol, _p_weapon, "hand_gun_sock");
         }
@@ -134,54 +135,38 @@ void AWeapon_manager::Equip(AActor* _p_weapon)
         else
         {
             if (!p_first_gun) // 첫번째 무기가 없을 시
-            {
-                p_first_gun = p_collided_gun;
-                current_weapon_type = e_current_weapon_type::FIRST;
-                Attach_weapon(p_first_gun, "first_gun_sock");
-            }
+                Attach_weapon(tmp_collided_weapon, "first_gun_sock");
+
             else
             {
                 if (!p_second_gun) // 두번째 무기가 없을 시
-                {
-                    p_second_gun = p_collided_gun;
-                    current_weapon_type = e_current_weapon_type::SECOND;
-                    Attach_weapon(p_second_gun, "second_gun_sock");
-                }
+                    Attach_weapon(tmp_collided_weapon, "second_gun_sock");
+
                 else
                 {
                     // 첫번째 무기 장착중
-                    if (current_weapon_type == e_current_weapon_type::FIRST)
-                    {
-                        current_weapon_type = e_current_weapon_type::FIRST;
-                        Swap(p_first_gun, _p_weapon, "first_gun_sock");
-                    }
+                    if      (current_weapon_type == e_current_weapon_type::FIRST)
+                             Swap(p_first_gun, _p_weapon, "first_gun_sock");
+
                     // 두째 무기 장착중
                     else if (current_weapon_type == e_current_weapon_type::SECOND)
-                    {
-                        current_weapon_type = e_current_weapon_type::SECOND;
-                        Swap(p_second_gun, _p_weapon, "second_gun_sock");
-                    }
+                             Swap(p_second_gun, _p_weapon, "second_gun_sock");
                 }
             }
         }
     }
     // 근접 종류
     else if (_p_weapon->IsA<ACore_melee_weapon>())
-    {
-        ACore_melee_weapon* p_collided_melee = Cast<ACore_melee_weapon>(_p_weapon);
-    }
+             Attach_weapon(tmp_collided_weapon, "equipped_weapon_pos_sock");
+
     // 투척류
     else if (_p_weapon->IsA<ACore_throwable_weapon>())
-    {
-        ACore_throwable_weapon* p_collided_throwable = Cast<ACore_throwable_weapon>(_p_weapon);
-
-    }
+             Attach_weapon(tmp_collided_weapon, "equipped_weapon_pos_sock");
 }
 
 void AWeapon_manager::Shoot()
 {
     ACore_weapon* tmp_weapon = Get_weapon_type(current_weapon_type);
-    UWorld*       p_world = GetWorld();
 
     if (m_is_reloading)
         return;
@@ -211,7 +196,7 @@ void AWeapon_manager::Shoot()
         FVector               forward_vec = camera_manager->GetActorForwardVector() * 500;
         FHitResult            hit_result;
         FVector               end_pos = begin_pos + forward_vec;
-        p_world->LineTraceSingleByObjectType(hit_result, begin_pos, end_pos, FCollisionObjectQueryParams(ECC_Pawn));
+        GetWorld()->LineTraceSingleByObjectType(hit_result, begin_pos, end_pos, FCollisionObjectQueryParams(ECC_Pawn));
         //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
         FRotator bullet_rotation = UKismetMathLibrary::FindLookAtRotation(begin_pos, end_pos);
         //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
@@ -223,7 +208,7 @@ void AWeapon_manager::Shoot()
             // 총알 회전값 수정 요망
             auto test_rotation = FRotator::MakeFromEuler(FVector(end_pos.X, bullet_rotation.Pitch, bullet_rotation.Yaw));
             test_rotation.Yaw += 100.f;
-            bullet = p_world->SpawnActor(tmp_weapon->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
+            bullet = GetWorld()->SpawnActor(tmp_weapon->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
             //GEngine->AddOnScreenDebugMessage(0, 5.f, FColor::Cyan, test_rotation.ToString());
             /*ACore_bullet* core_bullet = Cast<ACore_bullet>(bullet);
 
@@ -240,7 +225,7 @@ void AWeapon_manager::Shoot()
 void AWeapon_manager::Reload()
 {
     ACore_weapon* tmp_weapon = Get_weapon_type(current_weapon_type);
-    int           result = 0;
+    int           result     = 0;
 
     if (tmp_weapon)
     {
@@ -286,13 +271,13 @@ bool AWeapon_manager::Scroll_select(int _pos)
     if (_pos == -1)
     {
         // 마지막 원소 0 도달 시
-        if ((current_index - 1) < (int)e_current_weapon_type::FIRST)
+        if (current_index == (int)e_current_weapon_type::FIRST)
             current_weapon_type = Find_weapon_index("down", (int)e_current_weapon_type::THROWABLE);
 
         else
         {
             // 현재 위치에서 탐색
-            final_index = Find_weapon_index("down", current_index);
+            final_index = Find_weapon_index("down", current_index - 1);
 
             // 발견하지 못함
             if (final_index == e_current_weapon_type::NONE)
@@ -306,9 +291,14 @@ bool AWeapon_manager::Scroll_select(int _pos)
     else
     {
         // 현재 마지막 원소에 접근 할 시
-        if (current_index == total_weapon)
-            current_weapon_type = e_current_weapon_type::FIRST;
+        if (current_index == (int)e_current_weapon_type::THROWABLE)
+        {
+            if (p_first_gun)
+                current_weapon_type = e_current_weapon_type::FIRST;
 
+            else
+                current_weapon_type = Find_weapon_index("up", (int)e_current_weapon_type::FIRST);
+        }
         else
         {
             // 현재 위치에서 탐색
@@ -333,6 +323,39 @@ void AWeapon_manager::Swap(ABase_interaction* _current_weapon, AActor* _new_weap
 
 void AWeapon_manager::Change_shoot_mode()
 {
+    auto p_weapon           = Get_weapon_type(current_weapon_type);
+    int  max_gun_shoot_type = 0;
+
+    if (p_weapon)
+    {
+        AGlobal::Print_log(0, 2.f, FColor::Red, "Changing shoot mode");
+        FString weapon_group = p_weapon->weapon_data.weapon_group_type;
+
+        // 단발/점사/연사 가능
+        if      (weapon_group == "Assault" ||
+                 weapon_group == "SMG")
+                 max_gun_shoot_type = (int)e_gun_shoot_type::CONSECUTIVE;
+
+        // 단발/점사 가능
+        else if (weapon_group == "Shotgun")
+                 max_gun_shoot_type = (int)e_gun_shoot_type::BURST;
+
+        // 오직 단발만 가능
+        else if (weapon_group == "Handgun" ||
+                 weapon_group == "Sniper" ||
+                 weapon_group == "Special")
+                 max_gun_shoot_type = (int)e_gun_shoot_type::SINGLE;
+
+        // 격발 방식 변경
+        int current_gun_shoot_type = (int)p_weapon->gun_shoot_type;
+
+        if      ((int)p_weapon->gun_shoot_type < max_gun_shoot_type)
+                 p_weapon->gun_shoot_type = (e_gun_shoot_type)++current_gun_shoot_type;
+
+        // 초기화
+        else if ((int)p_weapon->gun_shoot_type == max_gun_shoot_type)
+                 p_weapon->gun_shoot_type = e_gun_shoot_type::SINGLE;
+    }
 }
 
 void AWeapon_manager::Change_aim_pose(int _type)
@@ -405,11 +428,46 @@ int AWeapon_manager::Get_weapon_max_bullet_count(e_current_weapon_type _weapon_t
         return 1;
 }
 
-void AWeapon_manager::Attach_weapon(ABase_interaction* _new_weapon, FString _socket_name)
+void AWeapon_manager::Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _socket_name)
 {
-    auto                    current_player_mesh  = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-    USkeletalMeshComponent* p_skeletal_mesh_comp = _new_weapon->p_skeletal_mesh_comp;
-    UStaticMeshComponent*   p_static_mesh_comp   = _new_weapon->p_static_mesh_comp;
+    auto current_player_mesh  = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
+
+    // 소켓 기반 무기 종류 판별 후 다운캐스팅
+    if      (_socket_name == "hand_gun_sock")
+    {
+        p_pistol = Cast<ACore_weapon>(_p_tmp_weapon);
+        current_weapon_type = e_current_weapon_type::PISTOL;
+    }
+    else if (_socket_name == "first_gun_sock")
+    {
+        p_first_gun = Cast<ACore_weapon>(_p_tmp_weapon);
+        current_weapon_type = e_current_weapon_type::FIRST;
+    }
+    else if (_socket_name == "second_gun_sock")
+    {
+        // 중복 무기 방지
+        if (p_first_gun != Cast<ACore_weapon>(_p_tmp_weapon))
+        {
+            p_second_gun = Cast<ACore_weapon>(_p_tmp_weapon);
+            current_weapon_type = e_current_weapon_type::SECOND;
+        }
+    }
+    // 투척류/근접무기
+    else
+    {
+        if(_p_tmp_weapon->IsA<ACore_throwable_weapon>())
+        {
+            p_throwable = Cast<ACore_throwable_weapon>(_p_tmp_weapon);
+            current_weapon_type = e_current_weapon_type::THROWABLE;
+        }
+        else if (_p_tmp_weapon->IsA<ACore_melee_weapon>())
+        {
+            p_melee = Cast<ACore_melee_weapon>(_p_tmp_weapon);
+            current_weapon_type = e_current_weapon_type::MELEE;
+        }
+    }
+    USkeletalMeshComponent* p_skeletal_mesh_comp = _p_tmp_weapon->p_skeletal_mesh_comp;
+    UStaticMeshComponent*   p_static_mesh_comp   = _p_tmp_weapon->p_static_mesh_comp;
 
     // 무기 메시를 플레이어 메시에 부착
     if      (p_skeletal_mesh_comp)
@@ -419,24 +477,7 @@ void AWeapon_manager::Attach_weapon(ABase_interaction* _new_weapon, FString _soc
              p_static_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
 
     // 무기 오브젝트를 인벤토리 매니저에 부착
-    _new_weapon->GetRootComponent()->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-    // 소켓 기반 무기 종류 판별 후 다운캐스팅
-    if      (_socket_name == "hand_gun_sock")
-             p_pistol = Cast<ACore_weapon>(_new_weapon);
-
-    else if (_socket_name == "first_gun_sock")
-             p_first_gun = Cast<ACore_weapon>(_new_weapon);
-
-    else if (_socket_name == "second_gun_sock")
-             p_second_gun = Cast<ACore_weapon>(_new_weapon);
-
-    /*else if (_socket_name == "hand_gun_sock")
-        p_first_gun = Cast<ACore_weapon>(_new_weapon);
-
-    else*/
-
-    
+    _p_tmp_weapon->GetRootComponent()->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _current_weapon, FTransform _new_pos)

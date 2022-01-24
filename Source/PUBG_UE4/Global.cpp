@@ -124,3 +124,8 @@ void AGlobal::Print_log(int _index, float _time, FColor _color, FString _text)
 {
     GEngine->AddOnScreenDebugMessage(_index, _time, _color, _text);
 }
+
+void AGlobal::Set_item_slot_UI(Fs_slot_item_data _item_data)
+{
+    mp_global->dele_set_item_slot_UI.ExecuteIfBound(_item_data);
+}

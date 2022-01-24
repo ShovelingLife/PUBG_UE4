@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PUBG_UE4/Global.h"
 #include "Inventory_manager.generated.h"
 
 UCLASS()
@@ -10,6 +11,8 @@ class UI_PUBG_API AInventory_manager : public AActor
     GENERATED_BODY()
 
 private:
+    class AUI_manager* mp_UI_manager;
+
     UPROPERTY(EditAnywhere, Category = Scene_comp)
         class USceneComponent* mp_scene_comp = nullptr;
 
@@ -42,6 +45,12 @@ private:
 
     // 기타 함수 모음
 private:
-    // 인벤토리 상태를 업데이트
-    void Check_inventory_state();
+
+public:
+    // 인벤토리를 열음/닫음
+    UFUNCTION()
+    void Open_or_close_inventory(bool _is_opened);
+
+    UFUNCTION()
+    void Update_item_slot_UI(Fs_slot_item_data _item_data);
 };

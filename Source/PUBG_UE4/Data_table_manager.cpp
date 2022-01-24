@@ -1,14 +1,14 @@
 #include "Data_table_manager.h"
 
-Fs_weapon_data  AData_table_manager::arr_weapon_data[MAX_WEAPON_COUNT];
-Fs_vehicle_data AData_table_manager::arr_vehicle_data[MAX_VEHICLE_COUNT];
-Fs_other_weapon_data AData_table_manager::arr_other_weapon_data[MAX_OTHER_WEAPON_COUNT];
+TArray<Fs_weapon_data>       AData_table_manager::arr_weapon_data;
+TArray<Fs_vehicle_data>      AData_table_manager::arr_vehicle_data;
+TArray<Fs_other_weapon_data> AData_table_manager::arr_other_weapon_data;
 
 // Sets default values
 AData_table_manager::AData_table_manager()
 {
     Init_weapon_data();
-    Init_another_weapon_data();
+    Init_other_weapon_data();
     Init_vehicle_data();
 }
 
@@ -41,26 +41,17 @@ void AData_table_manager::Init_weapon_data()
         if (!p_row)
             break;
 
-        Fs_weapon_data data                      = *p_row;
-        //auto tmp_weapon_data                   = *(arr_weapon_data + i);
-        arr_weapon_data[i].type                  = data.type;
-        arr_weapon_data[i].mesh_path             = mk_weapon_mesh_path + data.weapon_group_type + "/SK_" + data.mesh_path;
-        arr_weapon_data[i].weapon_icon_path      = data.weapon_icon_path;
-        arr_weapon_data[i].weapon_slot_icon_path = data.weapon_slot_icon_path;
-        arr_weapon_data[i].mag_mesh_path         = mk_weapon_mesh_path + data.type + data.mag_mesh_path;
-        arr_weapon_data[i].bullet_mesh_path      = mk_weapon_mesh_path + "Ammunition/SM_Shell_" + data.bullet_mesh_path;
-        arr_weapon_data[i].weapon_group_type     = data.weapon_group_type;
-        arr_weapon_data[i].collider_size         = data.collider_size;
-        arr_weapon_data[i].collider_pos          = data.collider_pos;
-        arr_weapon_data[i].max_bullet_count      = data.max_bullet_count;
-        arr_weapon_data[i].damage                = data.damage;
-        arr_weapon_data[i].current_bullet_count  = data.max_bullet_count;
-        arr_weapon_data[i].UI_material_bp_path   = mk_rendertarget_mesh_path + data.type;
-        arr_weapon_data[i].bullet_bp_path        = mk_bullet_bp_path + data.type + "_bullet";
+        Fs_weapon_data data      = *p_row;
+        data.mesh_path           = mk_weapon_mesh_path + data.weapon_group_type + "/SK_" + data.mesh_path;
+        data.mag_mesh_path       = mk_weapon_mesh_path + data.type + data.mag_mesh_path;
+        data.bullet_mesh_path    = mk_weapon_mesh_path + "Ammunition/SM_Shell_" + data.bullet_mesh_path;
+        data.UI_material_bp_path = mk_rendertarget_mesh_path + data.type;
+        data.bullet_bp_path      = mk_bullet_bp_path + data.type + "_bullet";
+        arr_weapon_data.Add(data);
     }
 }
 
-void AData_table_manager::Init_another_weapon_data()
+void AData_table_manager::Init_other_weapon_data()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));
@@ -83,16 +74,9 @@ void AData_table_manager::Init_another_weapon_data()
         if (!p_row)
             break;
 
-        Fs_other_weapon_data data              = *p_row;
-        arr_other_weapon_data[i].type          = data.type;
-        arr_other_weapon_data[i].weapon_group  = data.weapon_group;
-        arr_other_weapon_data[i].mesh_path     = mk_other_weapon_mesh_path + data.weapon_group + "/Meshes/SM_" + data.type;
-        arr_other_weapon_data[i].audio_path    = data.audio_path;
-        arr_other_weapon_data[i].particle_path = data.particle_path;
-        arr_other_weapon_data[i].collider_size = data.collider_size;
-        arr_other_weapon_data[i].collider_pos  = data.collider_pos;
-        arr_other_weapon_data[i].damage        = data.damage;
-        arr_other_weapon_data[i].radius        = data.radius;
+        Fs_other_weapon_data data = *p_row;
+        data.mesh_path            = mk_other_weapon_mesh_path + data.weapon_group + "/Meshes/SM_" + data.type;
+        arr_other_weapon_data.Add(data);
     }
 }
 
@@ -120,21 +104,15 @@ void AData_table_manager::Init_vehicle_data()
         if (!p_row)
             break;
 
-        Fs_vehicle_data data                   = *p_row;
-        arr_vehicle_data[i].type               = data.type;
-        arr_vehicle_data[i].audio_path         = data.audio_path;
-        arr_vehicle_data[i].mesh_path          = mk_vehicle_mesh_path + data.mesh_path;
-        arr_vehicle_data[i].anim_instance_path = mk_anim_instance_path + data.type + "/BP_AnimInst_" + data.type;
-        arr_vehicle_data[i].collider_pos       = data.collider_pos;
-        arr_vehicle_data[i].collider_size      = data.collider_size;
-        arr_vehicle_data[i].durability         = data.durability;
-        arr_vehicle_data[i].max_seater         = data.max_seater;
-        arr_vehicle_data[i].speed              = data.speed;
+        Fs_vehicle_data data    = *p_row;
+        data.mesh_path          = mk_vehicle_mesh_path + data.mesh_path;
+        data.anim_instance_path = mk_anim_instance_path + data.type + "/BP_AnimInst_" + data.type;
 
         // 좌석 정보 배치
-        arr_vehicle_data[i].arr_player_seat_pos[0] = { data.seat_1_player_location, data.seat_1_camera_location };
-        arr_vehicle_data[i].arr_player_seat_pos[1] = { data.seat_2_player_location, data.seat_2_camera_location };
-        arr_vehicle_data[i].arr_player_seat_pos[2] = { data.seat_3_player_location, data.seat_3_camera_location };
-        arr_vehicle_data[i].arr_player_seat_pos[3] = { data.seat_4_player_location, data.seat_4_camera_location };
+        data.arr_player_seat_pos[0] = { data.seat_1_player_location, data.seat_1_camera_location };
+        data.arr_player_seat_pos[1] = { data.seat_2_player_location, data.seat_2_camera_location };
+        data.arr_player_seat_pos[2] = { data.seat_3_player_location, data.seat_3_camera_location };
+        data.arr_player_seat_pos[3] = { data.seat_4_player_location, data.seat_4_camera_location };
+        arr_vehicle_data.Add(data);
     }
 }

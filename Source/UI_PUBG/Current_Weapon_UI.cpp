@@ -2,6 +2,7 @@
 #include "UI_manager.h"
 #include "Characters/Custom_player.h"
 #include "Player_weapons/Weapon_manager.h"
+#include "Player_weapons/Weapon_enum.h"
 #include "Player_weapons/Core_weapon.h"
 #include "Player_weapons/Core_melee_weapon.h"
 #include "Player_weapons/Core_throwable_weapon.h"
@@ -23,13 +24,13 @@ void UCurrent_Weapon_UI::NativeTick(const FGeometry& _my_geometry, float _delta_
     if (!mp_UI_manager)
         mp_UI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
 
-    Init_img_arr();
+    Init_arr_img();
     Update_icon_visibility();
     Update_icon_color();
     Set_icon_UI();
 }
 
-void UCurrent_Weapon_UI::Init_img_arr()
+void UCurrent_Weapon_UI::Init_arr_img()
 {
     p_arr_img.Add(First_weapon_img);
     p_arr_img.Add(Second_weapon_img);
@@ -43,40 +44,11 @@ void UCurrent_Weapon_UI::Update_icon_visibility()
     if (!mp_weapon_manager)
         return;
     
-    // 첫번째 무기
-    if (mp_weapon_manager->p_first_gun)
-        First_weapon_img->SetVisibility(ESlateVisibility::Visible);
-
-    else
-        First_weapon_img->SetVisibility(ESlateVisibility::Hidden);
-
-    // 두번째 무기
-    if (mp_weapon_manager->p_second_gun)
-        Second_weapon_img->SetVisibility(ESlateVisibility::Visible);
-
-    else
-        Second_weapon_img->SetVisibility(ESlateVisibility::Hidden);
-    
-    // 세번째 무기
-    if (mp_weapon_manager->p_pistol)
-        Third_weapon_img->SetVisibility(ESlateVisibility::Visible);
-
-    else
-        Third_weapon_img->SetVisibility(ESlateVisibility::Hidden);
-
-    // 네번째 무기
-    if (mp_weapon_manager->p_melee)
-        Fourth_weapon_img->SetVisibility(ESlateVisibility::Visible);
-
-    else
-        Fourth_weapon_img->SetVisibility(ESlateVisibility::Hidden);
-
-    // 다섯번째 무기
-    if (mp_weapon_manager->p_throwable)
-        Fifth_weapon_img->SetVisibility(ESlateVisibility::Visible);
-
-    else
-        Fifth_weapon_img->SetVisibility(ESlateVisibility::Hidden);
+    First_weapon_img->SetVisibility((mp_weapon_manager->p_first_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_weapon_img->SetVisibility(mp_weapon_manager->p_second_gun ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Third_weapon_img->SetVisibility((mp_weapon_manager->p_pistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Fourth_weapon_img->SetVisibility((mp_weapon_manager->p_melee)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Fifth_weapon_img->SetVisibility((mp_weapon_manager->p_throwable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UCurrent_Weapon_UI::Update_icon_color()
@@ -113,7 +85,8 @@ void UCurrent_Weapon_UI::Update_icon_color()
 
 void UCurrent_Weapon_UI::Set_icon_UI()
 {
-    if (!mp_weapon_manager)
+    if (!mp_weapon_manager &&
+        !mp_UI_manager)
         return;
     
     // 첫번째 무기
@@ -128,11 +101,16 @@ void UCurrent_Weapon_UI::Set_icon_UI()
     if (mp_weapon_manager->arr_is_weapon_equipped[2])
         Third_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_pistol->weapon_type]);
     
-    // 네번쨰 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[3])
-        Fourth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_melee->weapon_type]);
-    
-    // 다섯번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[4])
-        Fifth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_throwable->weapon_type]);
+    //// 네번쨰 무기
+    //if (mp_weapon_manager->arr_is_weapon_equipped[3])
+    //{
+    //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_melee->weapon_type);
+    //    Fourth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);
+    //}
+    //// 다섯번째 무기
+    //if (mp_weapon_manager->arr_is_weapon_equipped[4])
+    //{
+    //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_throwable->weapon_type);
+    //    Fifth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);
+    //}
 }

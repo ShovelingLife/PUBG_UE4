@@ -11,60 +11,78 @@ class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
 {
 	GENERATED_BODY()
 	
+private:
+    class AUI_manager*     mp_UI_manager     = nullptr;
+    class AWeapon_manager* mp_weapon_manager = nullptr;
 
 public:
     //1¹ø ½½·Ô
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot_1_img;
+        UImage* Gun_slot1_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name_1_txt;
+        UTextBlock* Gun_name1_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Bullet_type_1_txt;
+        UTextBlock* Bullet_type1_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Magazine_1_txt;
+        UTextBlock* Magazine1_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Number1_txt;
 
     //2¹ø ½½·Ô
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot_2_img;
+        UImage* Gun_slot2_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name_2_txt;
+        UTextBlock* Gun_name2_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Bullet_type_2_txt;
+        UTextBlock* Bullet_type2_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Magazine_2_txt;
+        UTextBlock* Magazine2_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Number2_txt;
 
     //3¹ø ½½·Ô
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot_3_img;
+        UImage* Gun_slot3_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name_3_txt;
+        UTextBlock* Gun_name3_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Bullet_type_3_txt;
+        UTextBlock* Bullet_type3_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Magazine_3_txt;
+        UTextBlock* Magazine3_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Number3_txt;
 
     //4¹ø ½½·Ô (±ÙÁ¢¹«±â)
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot_4_img;
+        UImage* Gun_slot4_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name_4_txt;
+        UTextBlock* Gun_name4_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Number4_txt;
 
     //5¹ø ½½·Ô (ÅõÃ´¹«±â)
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot_5_img;
+        UImage* Gun_slot5_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name_5_txt;
+        UTextBlock* Gun_name5_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Number5_txt;
 
     // ÀÎº¥Åä¸® UI
     UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
@@ -74,4 +92,9 @@ protected:
     void NativeConstruct() override;
 
     void NativeTick(const FGeometry&, float) override;
+
+private:
+    void Update_UI_visibility();
+
+    void Update_inventory_weapon_UI();
 };

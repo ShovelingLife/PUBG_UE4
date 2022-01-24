@@ -15,9 +15,8 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Collider)
     class UBoxComponent* m_box_collider = nullptr;
 
-
     // 상호작용 관련 변수
-    UPROPERTY(VisibleAnywhere, Category = Widget_component)
+    UPROPERTY(VisibleAnywhere, Category = Widget)
     class UWidgetComponent* mp_interaction_widget_comp;
 
     FString m_object_type;

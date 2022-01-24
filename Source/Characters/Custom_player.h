@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 
+DECLARE_DELEGATE_OneParam(FDele_open_or_close_inventory,bool)
+
 class ASound_manager;
 class AWeapon_manager;
 class UMy_anim_instance;
@@ -39,9 +41,12 @@ private:
     float       m_sprint_multiplier    = 1.f;
     bool        m_is_moving            = false;
     bool        m_is_interacting       = false;
+    bool        m_is_inventory_opened  = false;
 
  // 플레이어 컴포넌트 및 상태 변수
 public:
+    FDele_open_or_close_inventory dele_open_or_close_inventory;
+
     UPROPERTY(VisibleAnywhere, Category = Camera)
         class USpringArmComponent* p_spring_arm_comp = nullptr;
 
@@ -63,7 +68,6 @@ public:
     bool           is_animation_playing  = false;
     bool           is_aiming             = false;
     bool           is_weapon_equipped    = false;
-    bool           is_inventory_opened   = false;
     
     // 차량 관련 변수
     e_seat_type    current_seat_type = e_seat_type::NONE;
@@ -97,7 +101,13 @@ private:
     void Init_particle_system();
 
 private:
+    // 
+    void Check_if_moving();
+
     void Check_for_object();
+
+    // 차량 감지하는 함수
+    void Check_if_is_vehicle_near();
 
     void Try_to_get_collided_component();
 
@@ -105,22 +115,12 @@ private:
 
     void End_interact()   { m_is_interacting = false; }
 
-    void Begin_shooting();
-
-    void End_shooting();
-
     // 
     void Move_up_down(float);
 
     // 
     void Move_left_right(float);
-
-    // 
-    void Check_if_moving();
-
-    // 차량 감지하는 함수
-    void Check_if_is_vehicle_near();
-    
+  
     // 위 아래 카메라 전환
     void Look_up(float);
 
@@ -149,7 +149,11 @@ private:
 
 
     // ------- 무기 관련 -------
-    
+
+    void Begin_shooting();
+
+    void End_shooting();
+
     void Reload();
 
     void Aim();
@@ -159,8 +163,6 @@ private:
     void Swap_scrolling_up();
 
     void Swap_scrolling_down();
-
-    void Update_weapon_pos();
 
     void Equip_first_weapon();
 
