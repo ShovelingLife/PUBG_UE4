@@ -20,7 +20,7 @@ private:
     TSubclassOf<UUserWidget> m_inventory_actor;
     class UInventory_UI* mp_inventory_ui;
 
-    class ACustom_player* mp_custom_player;
+    class ACustom_player* mp_player;
 
 public:
     bool is_opened = false;
@@ -47,9 +47,12 @@ private:
 private:
 
 public:
-    // 인벤토리를 열음/닫음
+    // 인벤토리를 열음
     UFUNCTION()
-    void Open_or_close_inventory(bool _is_opened);
+    void Open_inventory();
+
+    UFUNCTION()
+    void Close_inventory();
 
     UFUNCTION()
     void Update_item_slot_UI(Fs_slot_item_data _item_data);

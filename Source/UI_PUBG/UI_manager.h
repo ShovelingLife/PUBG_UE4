@@ -12,6 +12,11 @@ class UI_PUBG_API AUI_manager : public AActor
 {
 	GENERATED_BODY()
 	
+public:    
+    static TMap<int, UMaterial*> map_main_weapon_ui_mat; // 메인 무기 UI    
+    static TMap<int, UTexture*> map_inventory_weapon_ui_tex; // 인벤토리 무기 UI    
+    static TMap<int, UTexture*> map_player_ui_tex; // 플레이어 UI
+
 private:
     // ------- 현재 쓰이고있는 변수들 -------
 
@@ -42,17 +47,6 @@ public:
     // 아이템 슬롯 UI
     UItem_Slot_UI*             p_item_slot_UI;
     TSubclassOf<UItem_Slot_UI> bp_item_slot_UI;
-
-    // 메인 무기 UI
-    UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
-        TMap<int, UMaterial*> map_main_weapon_ui_mat;
-
-    // 인벤토리 무기 UI
-    UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
-        TMap<int, UTexture*> map_inventory_weapon_ui_tex;
-
-    UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
-        TMap<int, UTexture*> map_player_ui_tex;
 
     class AInventory_manager* p_inventory_manager;
 

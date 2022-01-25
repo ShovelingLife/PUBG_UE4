@@ -10,6 +10,10 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
+TMap<int, UMaterial*> AUI_manager::map_main_weapon_ui_mat;
+TMap<int, UTexture*>  AUI_manager::map_inventory_weapon_ui_tex;
+TMap<int, UTexture*>  AUI_manager::map_player_ui_tex;
+
 AUI_manager::AUI_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -101,7 +105,7 @@ void AUI_manager::Init_inventory_weapon_UI_tex()
         auto    weapon_ui_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
 
         if (weapon_ui_tex.Succeeded())
-            map_inventory_weapon_ui_tex.Add(i, weapon_ui_tex.Object);
+            AUI_manager::map_inventory_weapon_ui_tex.Add(i, weapon_ui_tex.Object);
     }
 }
 
@@ -114,7 +118,7 @@ void AUI_manager::Init_main_weapon_UI_mat()
         auto    weapon_ui_mat  = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
 
         if (weapon_ui_mat.Succeeded())
-            map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
+            AUI_manager::map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);
     }
     //for (int i = 0; i < MAX_OTHER_WEAPON_COUNT; i++)
     //{

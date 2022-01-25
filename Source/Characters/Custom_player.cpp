@@ -65,7 +65,7 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
     Super::SetupPlayerInputComponent(InputComponent);
 
-    InputComponent->BindAxis(FName(TEXT("Up_down")), this, &ACustom_player::Move_up_down);
+    InputComponent->BindAxis(FName(TEXT("Up_down")), this, &ACustom_player::Move_forward_back);
     InputComponent->BindAxis(FName(TEXT("Left_right")), this, &ACustom_player::Move_left_right);
     InputComponent->BindAxis(FName(TEXT("Look_up")), this, &ACustom_player::Look_up);
     InputComponent->BindAxis(FName(TEXT("Turn")), this, &ACustom_player::Turn);
@@ -332,7 +332,7 @@ void ACustom_player::Custom_jump()
     Jump();
 }
 
-void ACustom_player::Move_up_down(float _value)
+void ACustom_player::Move_forward_back(float _value)
 {
     if (is_animation_playing)
         return;
@@ -350,12 +350,16 @@ void ACustom_player::Move_left_right(float _value)
 
 void ACustom_player::Look_up(float _value)
 {
-    AddControllerPitchInput(_value);
+    //AddControllerPitchInput(_value);
+    if (!m_is_inventory_opened)
+        AddControllerPitchInput(_value);
 }
 
 void ACustom_player::Turn(float _value)
 {
-    AddControllerYawInput(_value);
+    //AddControllerYawInput(_value);
+    if (!m_is_inventory_opened)
+        AddControllerYawInput(_value);
 }
 
 void ACustom_player::Custom_crouch()
@@ -550,6 +554,15 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
 
 void ACustom_player::Open_inventory()
 {
-    m_is_inventory_opened = (!m_is_inventory_opened) ? true : false;
-    dele_open_or_close_inventory.ExecuteIfBound(m_is_inventory_opened);
+    if (!m_is_inventory_opened)
+    {
+        dele_open_inventory.ExecuteIfBound();
+        m_is_inventory_opened = true;
+    }
+    else
+    {
+        p_spring_arm_comp->SetRelativeRotation(AGlobal::Get()->player_spring_arm_rotation);
+        dele_close_inventory.ExecuteIfBound();
+        m_is_inventory_opened = false;
+    }
 }

@@ -11,8 +11,8 @@ struct Fs_weapon_data : public FTableRowBase
 {
     GENERATED_BODY(BlueprintType)
 
-        UPROPERTY(BlueprintReadWrite, Category = Weapon_data_variable)
-        FString type = "";
+    UPROPERTY(BlueprintReadWrite, Category = Weapon_data_variable)
+    FString type = "";
 
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data_variable)
         FString weapon_group_type = "";
@@ -48,6 +48,9 @@ struct Fs_weapon_data : public FTableRowBase
     FString bullet_bp_path           = "";
     int     current_max_bullet_count = 0;
     int     current_bullet_count     = 0;
+
+public:
+    Fs_weapon_data() = default;
 };
 
 UCLASS()

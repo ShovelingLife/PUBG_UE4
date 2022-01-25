@@ -5,7 +5,8 @@
 #include "GameFramework/Character.h"
 #include "Custom_player.generated.h"
 
-DECLARE_DELEGATE_OneParam(FDele_open_or_close_inventory,bool)
+DECLARE_DELEGATE(FDele_open_inventory)
+DECLARE_DELEGATE(FDele_close_inventory)
 
 class ASound_manager;
 class AWeapon_manager;
@@ -45,7 +46,8 @@ private:
 
  // 플레이어 컴포넌트 및 상태 변수
 public:
-    FDele_open_or_close_inventory dele_open_or_close_inventory;
+    FDele_open_inventory  dele_open_inventory;
+    FDele_close_inventory dele_close_inventory;
 
     UPROPERTY(VisibleAnywhere, Category = Camera)
         class USpringArmComponent* p_spring_arm_comp = nullptr;
@@ -114,12 +116,6 @@ private:
     void Begin_interact() { m_is_interacting = true; }
 
     void End_interact()   { m_is_interacting = false; }
-
-    // 
-    void Move_up_down(float);
-
-    // 
-    void Move_left_right(float);
   
     // 위 아래 카메라 전환
     void Look_up(float);
@@ -177,6 +173,12 @@ private:
     void Set_item_UI(bool);
 
 public:
+    // 
+    void Move_forward_back(float);
+
+    // 
+    void Move_left_right(float);
+
     void Exit_from_vehicle(FVector);
 
     AWeapon_manager* Get_weapon_manager() { return mp_weapon_manager; }

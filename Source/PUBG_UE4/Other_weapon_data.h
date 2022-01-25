@@ -12,30 +12,34 @@ struct Fs_other_weapon_data : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-		FString type;
+		FString type = "";
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-		FString weapon_group;
+		FString weapon_group = "";
 
     UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FString audio_path;
+	FString audio_path = "";
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FString particle_path;
+	FString particle_path = "";
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FVector collider_size;
+	FVector collider_size = FVector::ZeroVector;
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FVector collider_pos;
+	FVector collider_pos = FVector::ZeroVector;
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	float damage;
+	float damage = 0.f;
 
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-        float radius;
+        float radius = 0.f;
 
-    FString mesh_path;
+    FString mesh_path = "";
+
+public:
+	Fs_other_weapon_data() = default;
+
 };
 
 UCLASS()

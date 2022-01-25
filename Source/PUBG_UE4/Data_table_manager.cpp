@@ -1,8 +1,8 @@
 #include "Data_table_manager.h"
 
 TArray<Fs_weapon_data>       AData_table_manager::arr_weapon_data;
-TArray<Fs_vehicle_data>      AData_table_manager::arr_vehicle_data;
 TArray<Fs_other_weapon_data> AData_table_manager::arr_other_weapon_data;
+TArray<Fs_vehicle_data>      AData_table_manager::arr_vehicle_data;
 
 // Sets default values
 AData_table_manager::AData_table_manager()

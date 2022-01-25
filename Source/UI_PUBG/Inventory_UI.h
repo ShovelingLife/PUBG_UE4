@@ -2,8 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ListView.h"
 #include "Character_Slot_UI.h"
+#include "Inventory_list_UI.h"
+#include "Input/Events.h"
+#include "Input/Reply.h"
 #include "Inventory_Weapon_Slot_UI.h"
 #include "Inventory_UI.generated.h"
 
@@ -16,13 +18,9 @@ private:
     class AUI_manager* mp_UI_manager;
 
 public:
-    // 드랍 아이템 리스트
+    // 리스트 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	    UListView* World_list_view;
-
-    // 현재 인벤토리 아이템 리스트
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UListView* Inventory_list_view;
+    UInventory_list_UI* Inventory_list_UI;
 
     // 캐릭터 장비창 UI
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -36,4 +34,6 @@ protected:
     virtual void NativeConstruct() override;
 
     virtual void NativeTick(const FGeometry&, float) override;
+
+    virtual FReply NativeOnKeyDown(const FGeometry&, const FKeyEvent&) override;
 };

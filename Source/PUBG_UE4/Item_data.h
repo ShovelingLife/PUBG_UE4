@@ -5,8 +5,6 @@
 #include "Engine/DataTable.h"
 #include "Item_data.generated.h"
 
-#define MAX_ITEM_COUNT 13
-
 // CSV로부터 가지고올 아이템 정보 구조체
 USTRUCT()
 struct Fs_item_data : public FTableRowBase

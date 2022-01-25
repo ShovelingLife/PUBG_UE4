@@ -14,13 +14,11 @@ void UItem_Slot_UI::NativeTick(const FGeometry& _geometry, float _delta_time)
 
 void UItem_Slot_UI::NativeOnListItemObjectSet(UObject* _p_obj)
 {
-    auto p_UI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
     auto p_tmp_item   = Cast<UItem_Slot_UI>(_p_obj);
 
-    if (p_UI_manager &&
-        p_tmp_item)
+    if (p_tmp_item)
     {
-        Item_img->SetBrushFromTexture(Cast<UTexture2D>(p_UI_manager->map_inventory_weapon_ui_tex[p_tmp_item->item_data.image_index]));
+        Item_img->SetBrushFromTexture(Cast<UTexture2D>(AUI_manager::map_inventory_weapon_ui_tex[p_tmp_item->item_data.image_index]));
         Name_txt->SetText(FText::FromString(p_tmp_item->item_data.name));
         Count_txt->SetText(FText::FromString(FString::FromInt(p_tmp_item->item_data.count)));
     }

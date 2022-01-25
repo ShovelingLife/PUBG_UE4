@@ -79,6 +79,9 @@ struct Fs_vehicle_data : public FTableRowBase
         int     speed = 0;
 
     std::pair<FVector, FVector> arr_player_seat_pos[4];
+
+public:
+    Fs_vehicle_data() = default;
 };
 
 UCLASS()
