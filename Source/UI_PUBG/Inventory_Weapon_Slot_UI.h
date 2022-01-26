@@ -2,8 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/TextBlock.h"
+#include "Components/CanvasPanel.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Inventory_Weapon_Slot_UI.generated.h"
 
 UCLASS()
@@ -14,75 +15,94 @@ class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
 private:
     class AUI_manager*     mp_UI_manager     = nullptr;
     class AWeapon_manager* mp_weapon_manager = nullptr;
+    int m_selected_weapon_index = 0;
 
 public:
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UImage* Highlight_img;
+
     //1¹ø ½½·Ô
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot1_img;
+        UCanvasPanel* First_gun_canvas_panel;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name1_txt;
+        UImage* First_gun_slot_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Bullet_type1_txt;
+        UTextBlock* First_gun_name_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Magazine1_txt;
+        UTextBlock* First_gun_bullet_type_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Number1_txt;
+        UTextBlock* First_gun_magazine_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* First_gun_number_txt;
 
     //2¹ø ½½·Ô
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot2_img;
+        UCanvasPanel* Second_gun_canvas_panel;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name2_txt;
+        UImage* Second_gun_slot_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Bullet_type2_txt;
+        UTextBlock* Second_gun_name_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Magazine2_txt;
+        UTextBlock* Second_gun_bullet_type_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Number2_txt;
+        UTextBlock* Second_gun_magazine_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Second_gun_number_txt;
 
     //3¹ø ½½·Ô
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot3_img;
+        UCanvasPanel* Pistol_canvas_panel;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name3_txt;
+        UImage* Pistol_slot_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Bullet_type3_txt;
+        UTextBlock* Pistol_name_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Magazine3_txt;
+        UTextBlock* Pistol_bullet_type_txt;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Number3_txt;
+        UTextBlock* Pistol_magazine_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Pistol_number_txt;
 
     //4¹ø ½½·Ô (±ÙÁ¢¹«±â)
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot4_img;
+        UCanvasPanel* Melee_canvas_panel;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name4_txt;
+        UImage* Melee_slot_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Number4_txt;
+        UTextBlock* Melee_name_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Melee_number_txt;
 
     //5¹ø ½½·Ô (ÅõÃ´¹«±â)
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Gun_slot5_img;
+        UCanvasPanel* Grenade_canvas_panel;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Gun_name5_txt;
+        UImage* Grenade_slot_img;
 
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Number5_txt;
+        UTextBlock* Grenade_name_txt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+        UTextBlock* Grenade_number_txt;
 
     // ÀÎº¥Åä¸® UI
     UPROPERTY(VisibleAnywhere, Category = Weapon_UI)
@@ -93,8 +113,16 @@ protected:
 
     void NativeTick(const FGeometry&, float) override;
 
+    virtual void NativeOnMouseEnter(const FGeometry&, const FPointerEvent&) override;
+
+    virtual void NativeOnMouseLeave(const FPointerEvent&) override;
+
+    virtual FReply NativeOnMouseButtonDown(const FGeometry&, const FPointerEvent&) override;
+
 private:
     void Update_UI_visibility();
 
     void Update_inventory_weapon_UI();
+
+    void Update_weapon_UI_highlight_img();
 };

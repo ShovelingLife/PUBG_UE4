@@ -317,7 +317,7 @@ bool AWeapon_manager::Scroll_select(int _pos)
 
 void AWeapon_manager::Swap(ABase_interaction* _current_weapon, AActor* _new_weapon, FString _socket_name)
 {
-    Reset_weapon_after_detaching(_current_weapon, _new_weapon->GetTransform());
+    Reset_weapon_after_detaching(_current_weapon, _new_weapon->GetActorTransform());
     Attach_weapon(Cast<ABase_interaction>(_new_weapon), _socket_name);
 }
 
@@ -514,4 +514,33 @@ ACore_weapon* AWeapon_manager::Get_weapon_type(e_current_weapon_type _weapon_typ
     case e_current_weapon_type::PISTOL: tmp_weapon = p_pistol;     break;
     }
     return tmp_weapon;
+}
+
+void AWeapon_manager::Drop(ABase_interaction* _p_weapon)
+{
+    if (!_p_weapon)
+        return;
+    
+    FVector  final_location = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+    FRotator player_rotation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorRotation();
+    final_location.Y += 75.f;
+    final_location.Z = 20.f;
+    FTransform new_location = FTransform(player_rotation, final_location);
+    Reset_weapon_after_detaching(_p_weapon, new_location);
+
+    // 현재 보유 중인 무기랑 비교
+    if      (_p_weapon == p_first_gun)
+             p_first_gun = nullptr;
+
+    else if (_p_weapon == p_second_gun)
+             p_second_gun = nullptr;
+
+    else if (_p_weapon == p_pistol)
+             p_pistol = nullptr;
+
+    else if (_p_weapon == p_melee)
+             p_melee = nullptr;
+
+    else if (_p_weapon == p_throwable)
+             p_throwable = nullptr;
 }

@@ -81,75 +81,75 @@ void ACore_vehicle::Init(e_vehicle_type _vehicle_type_index)
 void ACore_vehicle::Init_car_pos_component()
 {
     // 문짝 오브젝트 초기화
-    first_door_pos  = CreateDefaultSubobject<USceneComponent>(TEXT("First_Door_pos"));
-    second_door_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Second_Door_pos"));
-    third_door_pos  = CreateDefaultSubobject<USceneComponent>(TEXT("Third_Door_pos"));
-    fourth_door_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Fourth_Door_pos"));
+    first_door_pos_comp  = CreateDefaultSubobject<USceneComponent>(TEXT("First_Door_pos"));
+    second_door_pos_comp = CreateDefaultSubobject<USceneComponent>(TEXT("Second_Door_pos"));
+    third_door_pos_comp  = CreateDefaultSubobject<USceneComponent>(TEXT("Third_Door_pos"));
+    fourth_door_pos_comp = CreateDefaultSubobject<USceneComponent>(TEXT("Fourth_Door_pos"));
 
-    first_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-    second_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-    third_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-    fourth_door_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    first_door_pos_comp->SetupAttachment(RootComponent);
+    second_door_pos_comp->SetupAttachment(RootComponent);
+    third_door_pos_comp->SetupAttachment(RootComponent);
+    fourth_door_pos_comp->SetupAttachment(RootComponent);
 
     // 좌석 오브젝트 초기화
-    first_seat_pos  = CreateDefaultSubobject<USceneComponent>(TEXT("First_Seat_pos"));
-    second_seat_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Second_Seat_pos"));
-    third_seat_pos  = CreateDefaultSubobject<USceneComponent>(TEXT("Third_Seat_pos"));
-    fourth_seat_pos = CreateDefaultSubobject<USceneComponent>(TEXT("Fourth_Seat_pos"));
+    first_seat_pos_comp  = CreateDefaultSubobject<USceneComponent>(TEXT("First_Seat_pos"));
+    second_seat_pos_comp = CreateDefaultSubobject<USceneComponent>(TEXT("Second_Seat_pos"));
+    third_seat_pos_comp  = CreateDefaultSubobject<USceneComponent>(TEXT("Third_Seat_pos"));
+    fourth_seat_pos_comp = CreateDefaultSubobject<USceneComponent>(TEXT("Fourth_Seat_pos"));
 
-    first_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-    second_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-    third_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-    fourth_seat_pos->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+    first_seat_pos_comp->SetupAttachment(RootComponent);
+    second_seat_pos_comp->SetupAttachment(RootComponent);
+    third_seat_pos_comp->SetupAttachment(RootComponent);
+    fourth_seat_pos_comp->SetupAttachment(RootComponent);
 }
 
 void ACore_vehicle::Init_car_pos_data()
 {
     // 좌석 및 문짝 위치 초기화
-    m_map_door_pos.Add(e_seat_type::FIRST, first_door_pos->GetComponentLocation());
-    m_map_door_pos.Add(e_seat_type::SECOND, second_door_pos->GetComponentLocation());
-    m_map_seat_pos.Add(e_seat_type::FIRST, first_seat_pos->GetComponentLocation());
-    m_map_seat_pos.Add(e_seat_type::SECOND, second_seat_pos->GetComponentLocation());
+    m_map_door_pos.Add(e_seat_type::FIRST, first_door_pos_comp->GetComponentLocation());
+    m_map_door_pos.Add(e_seat_type::SECOND, second_door_pos_comp->GetComponentLocation());
+    m_map_seat_pos.Add(e_seat_type::FIRST, first_seat_pos_comp->GetComponentLocation());
+    m_map_seat_pos.Add(e_seat_type::SECOND, second_seat_pos_comp->GetComponentLocation());
 
     if(m_vehicle_data.max_seater == 4)
     {
-        m_map_door_pos.Add(e_seat_type::THIRD, third_door_pos->GetComponentLocation());
-        m_map_door_pos.Add(e_seat_type::FOURTH, fourth_door_pos->GetComponentLocation());
-        m_map_seat_pos.Add(e_seat_type::THIRD, third_seat_pos->GetComponentLocation());
-        m_map_seat_pos.Add(e_seat_type::FOURTH, fourth_seat_pos->GetComponentLocation());
+        m_map_door_pos.Add(e_seat_type::THIRD, third_door_pos_comp->GetComponentLocation());
+        m_map_door_pos.Add(e_seat_type::FOURTH, fourth_door_pos_comp->GetComponentLocation());
+        m_map_seat_pos.Add(e_seat_type::THIRD, third_seat_pos_comp->GetComponentLocation());
+        m_map_seat_pos.Add(e_seat_type::FOURTH, fourth_seat_pos_comp->GetComponentLocation());
     }
 }
 
 void ACore_vehicle::Update_car_pos_data()
 {
     // 좌석 및 문짝 위치 업데이트
-    m_map_door_pos[e_seat_type::FIRST]  = first_door_pos->GetComponentLocation();
-    m_map_door_pos[e_seat_type::SECOND] = second_door_pos->GetComponentLocation();
-    m_map_seat_pos[e_seat_type::FIRST]  = first_seat_pos->GetComponentLocation();
-    m_map_seat_pos[e_seat_type::SECOND] = second_seat_pos->GetComponentLocation();
+    m_map_door_pos[e_seat_type::FIRST]  = first_door_pos_comp->GetComponentLocation();
+    m_map_door_pos[e_seat_type::SECOND] = second_door_pos_comp->GetComponentLocation();
+    m_map_seat_pos[e_seat_type::FIRST]  = first_seat_pos_comp->GetComponentLocation();
+    m_map_seat_pos[e_seat_type::SECOND] = second_seat_pos_comp->GetComponentLocation();
 
     if (m_vehicle_data.max_seater == 4)
     {
-        m_map_door_pos[e_seat_type::THIRD] = third_door_pos->GetComponentLocation();
-        m_map_door_pos[e_seat_type::FOURTH] = fourth_door_pos->GetComponentLocation();
-        m_map_seat_pos[e_seat_type::THIRD] = third_seat_pos->GetComponentLocation();
-        m_map_seat_pos[e_seat_type::FOURTH] = fourth_seat_pos->GetComponentLocation();
+        m_map_door_pos[e_seat_type::THIRD] = third_door_pos_comp->GetComponentLocation();
+        m_map_door_pos[e_seat_type::FOURTH] = fourth_door_pos_comp->GetComponentLocation();
+        m_map_seat_pos[e_seat_type::THIRD] = third_seat_pos_comp->GetComponentLocation();
+        m_map_seat_pos[e_seat_type::FOURTH] = fourth_seat_pos_comp->GetComponentLocation();
     }
 }
 
 void ACore_vehicle::Init_camera()
 {
     // 스프링 암 초기화 및 설정
-    mp_spring_arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring_arm"));
-    mp_spring_arm->SetupAttachment(GetMesh());
-    mp_spring_arm->TargetArmLength = m_vehicle_data.spring_arm_length;
-    mp_spring_arm->bUsePawnControlRotation = true;
+    mp_spring_arm_comp = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring_arm"));
+    mp_spring_arm_comp->SetupAttachment(GetMesh());
+    mp_spring_arm_comp->TargetArmLength = m_vehicle_data.spring_arm_length;
+    mp_spring_arm_comp->bUsePawnControlRotation = true;
 
     // 카메라 초기화 및 설정
-    mp_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-    mp_camera->SetupAttachment(mp_spring_arm);
-    mp_camera->SetRelativeRotation(FRotator::MakeFromEuler(m_vehicle_data.camera_rotation));
-    mp_camera->SetWorldLocation(m_vehicle_data.camera_location);
+    mp_camera_comp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+    mp_camera_comp->SetupAttachment(mp_spring_arm_comp);
+    mp_camera_comp->SetRelativeRotation(FRotator::MakeFromEuler(m_vehicle_data.camera_rotation));
+    mp_camera_comp->SetWorldLocation(m_vehicle_data.camera_location);
 }
 
 void ACore_vehicle::Init_skeletal_mesh()
@@ -171,7 +171,7 @@ void ACore_vehicle::Init_skeletal_mesh()
 
     // 위젯 컴포넌트 초기화
     mp_interaction_widget_comp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interaction_widget"));
-    mp_interaction_widget_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    mp_interaction_widget_comp->SetupAttachment(RootComponent);
 }
 
 void ACore_vehicle::Init_wheeled_component()

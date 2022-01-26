@@ -18,37 +18,36 @@ class CHARACTERS_API ACore_vehicle : public AWheeledVehiclePawn
 protected:
     // 컴포넌트들
     UPROPERTY(VisibleAnywhere, Category = Camera)
-        class USpringArmComponent* mp_spring_arm = nullptr;
+        class USpringArmComponent* mp_spring_arm_comp = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Camera)
-        class UCameraComponent* mp_camera = nullptr;
+        class UCameraComponent* mp_camera_comp = nullptr;
 
     // 문짝 위치
     UPROPERTY(EditAnywhere, Category = Door_Pos)
-        USceneComponent* first_door_pos;
+    USceneComponent* first_door_pos_comp;
 
     UPROPERTY(EditAnywhere, Category = Door_Pos)
-        USceneComponent* second_door_pos;
+    USceneComponent* second_door_pos_comp;
 
     UPROPERTY(EditAnywhere, Category = Door_Pos)
-        USceneComponent* third_door_pos;
+    USceneComponent* third_door_pos_comp;
 
     UPROPERTY(EditAnywhere, Category = Door_Pos)
-    USceneComponent* fourth_door_pos;
+    USceneComponent* fourth_door_pos_comp;
 
     // 좌석 위치
     UPROPERTY(EditAnywhere, Category = Seat_Pos)
-        USceneComponent* first_seat_pos;
+    USceneComponent* first_seat_pos_comp;
 
     UPROPERTY(EditAnywhere, Category = Seat_Pos)
-        USceneComponent* second_seat_pos;
+    USceneComponent* second_seat_pos_comp;
 
     UPROPERTY(EditAnywhere, Category = Seat_Pos)
-        USceneComponent* third_seat_pos;
+    USceneComponent* third_seat_pos_comp;
 
     UPROPERTY(EditAnywhere, Category = Seat_Pos)
-    USceneComponent* fourth_seat_pos;
-
+    USceneComponent* fourth_seat_pos_comp;
 
     // 기타 변수
     UPROPERTY(VisibleAnywhere,Category = Seat_pos)

@@ -18,11 +18,11 @@
      
      // 박스 콜라이더 초기화
      m_box_collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision_comp"));
-     m_box_collider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     m_box_collider->SetupAttachment(RootComponent);
 
      // UI 위젯 컴포넌트 초기화
      mp_interaction_widget_comp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interaction_widget"));
-     mp_interaction_widget_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     mp_interaction_widget_comp->SetupAttachment(RootComponent);
  }
 
  void ABase_interaction::BeginPlay()
@@ -56,7 +56,7 @@
  {
      // 메시 생성
      p_static_mesh_comp = CreateDefaultSubobject<UStaticMeshComponent>(_name);
-     p_static_mesh_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     p_static_mesh_comp->SetupAttachment(RootComponent);
 
      // 경로로부터 메시 생성
      ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*_path);
@@ -69,7 +69,7 @@
  {
      // 메시 생성
      p_skeletal_mesh_comp = CreateDefaultSubobject<USkeletalMeshComponent>(_name);
-     p_skeletal_mesh_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     p_skeletal_mesh_comp->SetupAttachment(RootComponent);
 
      // 경로로부터 메시 생성
      ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*_path);
@@ -82,7 +82,7 @@
  {
      // 오디오 포인터에 대한 생성
      p_audio_comp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-     p_audio_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+     p_audio_comp->SetupAttachment(RootComponent);
  }
 
  void ABase_interaction::Init_interaction_UI()

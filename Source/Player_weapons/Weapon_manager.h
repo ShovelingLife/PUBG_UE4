@@ -105,4 +105,9 @@ public:
 
     // 무기 종류를 가져옴
     ACore_weapon* Get_weapon_type(e_current_weapon_type);
+
+	// ------- UI 관련 함수 -------
+
+	// 무기를 맵에다가 버림
+	void Drop(ABase_interaction*);
 };

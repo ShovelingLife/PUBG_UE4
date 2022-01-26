@@ -72,7 +72,7 @@ void AGlobal::Init_sound_manager()
     ConstructorHelpers::FClassFinder<AActor> SOUND_MANAGER_BP(TEXT("Blueprint'/Game/Blueprints/Managers/BP_Sound_manager.BP_Sound_manager_C'"));
 
     if (SOUND_MANAGER_BP.Succeeded())
-        mp_sound_manager = Cast<ASound_manager>(SOUND_MANAGER_BP.Class->GetDefaultObject());
+        mp_sound_manager = Cast<ASound_manager>(SOUND_MANAGER_BP.Class);
 }
 
 void AGlobal::Init_game_instance()

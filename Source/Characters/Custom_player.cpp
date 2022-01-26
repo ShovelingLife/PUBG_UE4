@@ -134,7 +134,7 @@ void ACustom_player::Init_mesh_comp()
 void ACustom_player::Init_audio_comp()
 {
     mp_audio_comp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio_comp"));
-    mp_audio_comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    mp_audio_comp->SetupAttachment(RootComponent);
 }
 
 void ACustom_player::Init_anim_instance()
