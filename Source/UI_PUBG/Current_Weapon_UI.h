@@ -39,20 +39,11 @@ private:
     AWeapon_manager* mp_weapon_manager = nullptr;
 
 public:
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		UImage* First_weapon_img;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		UImage* Second_weapon_img;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		UImage* Third_weapon_img;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		UImage* Fourth_weapon_img;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		UImage* Fifth_weapon_img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* First_weapon_img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Second_weapon_img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Third_weapon_img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Fourth_weapon_img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Fifth_weapon_img;
 
     // 현재 이미지 배열
 	TArray<UImage*> p_arr_img;

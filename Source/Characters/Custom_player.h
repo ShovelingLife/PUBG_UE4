@@ -35,14 +35,14 @@ private:
         class UParticleSystemComponent* mp_particle;
 
     // 이동 관련
-    FVector     m_direction_up_down    = FVector::ZeroVector;
-    FVector     m_direction_left_right = FVector::ZeroVector;
-    float       m_sprint_time          = 0.f;
-    float       m_max_sprint_time      = 0.5f;
-    float       m_sprint_multiplier    = 1.f;
-    bool        m_is_moving            = false;
-    bool        m_is_interacting       = false;
-    bool        m_is_inventory_opened  = false;
+    FVector m_direction_up_down    = FVector::ZeroVector;
+    FVector m_direction_left_right = FVector::ZeroVector;
+    float   m_sprint_time          = 0.f;
+    float   m_max_sprint_time      = 0.5f;
+    float   m_sprint_multiplier    = 1.f;
+    bool    m_is_moving            = false;
+    bool    m_is_interacting       = false;
+    bool    m_is_inventory_opened  = false;
 
  // 플레이어 컴포넌트 및 상태 변수
 public:

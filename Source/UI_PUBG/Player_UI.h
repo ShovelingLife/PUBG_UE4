@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -11,9 +9,6 @@
 #include "Current_Weapon_UI.h"
 #include "Player_UI.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class UI_PUBG_API UPlayer_UI : public UUserWidget
 {
@@ -21,24 +16,19 @@ class UI_PUBG_API UPlayer_UI : public UUserWidget
 
 public:
     // 플레이어 파티창 UI
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-    UMember_State_UI* Member_state_UI; 
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UMember_State_UI* Member_state_UI; 
 
     // 현재 플레이어 UI
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-    UPlayer_State_UI* Player_state_UI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UPlayer_State_UI* Player_state_UI;
 
     // 킬로그 UI
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-    UKillLog_Box_UI* Kill_log_box_UI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UKillLog_Box_UI* Kill_log_box_UI;
 
     // 미니맵 UI
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-    UMiniMap_UI* Minimap_UI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UMiniMap_UI* Minimap_UI;
 
     // 현재 무기 UI
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-    UCurrent_Weapon_UI* Current_weapon_UI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCurrent_Weapon_UI* Current_weapon_UI;
 
 protected:
     void NativeConstruct() override;

@@ -14,6 +14,5 @@ class UI_PUBG_API UInteraction_UI : public UUserWidget
 	GENERATED_BODY()
 
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-    UTextBlock* Title_txt;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Title_txt;
 };

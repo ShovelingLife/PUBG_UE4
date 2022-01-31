@@ -1,7 +1,7 @@
 #include "UI_manager.h"
 #include "Interaction_UI.h"
+#include "Inventory_list_UI.h"
 #include "Inventory_manager.h"
-#include "Item_Slot_UI.h"
 #include "Player_UI.h"
 #include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Data_table_manager.h"
@@ -17,7 +17,6 @@ TMap<int, UTexture*>  AUI_manager::map_player_ui_tex;
 AUI_manager::AUI_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
-    Init_slot_UI();
     Init_player_UI();
     Init_interaction_UI();
     Init_player_UI_tex();
@@ -34,7 +33,6 @@ void AUI_manager::BeginPlay()
     mp_global = AGlobal::Get();
     mp_global->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
 
-    Set_inventory_slot_UI();
     Set_player_UI();
     Init_player_inventory();
     Set_weapon_UI();
@@ -48,7 +46,7 @@ void AUI_manager::Tick(float _delta_time)
 
 void AUI_manager::Init_player_UI()
 {
-    auto BP_player_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_UI_Player.BP_UI_Player_C'"));
+    auto BP_player_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Player_UI.BP_Player_UI_C'"));
 
     if (BP_player_UI.Succeeded())
         m_bp_player_UI = BP_player_UI.Class;
@@ -59,15 +57,6 @@ void AUI_manager::Init_interaction_UI()
     // 위젯 컴포넌트 블루프린트 초기화
     auto widget_bp = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C'"));
     m_interaction_widget_bp = widget_bp.Class;
-}
-
-void AUI_manager::Init_slot_UI()
-{
-    // 인벤토리 위젯 초기화
-    auto BP_item_slot_UI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_UI_Item_Slot.BP_UI_Item_Slot_C'"));
-
-    if (BP_item_slot_UI.Succeeded())
-        bp_item_slot_UI = BP_item_slot_UI.Class;
 }
 
 void AUI_manager::Init_player_UI_tex()
@@ -136,12 +125,6 @@ void AUI_manager::Set_weapon_UI()
     /*for (int i = 0; i < MAX_WEAPON_COUNT; i++)
     {
     }*/
-}
-
-void AUI_manager::Set_inventory_slot_UI()
-{
-    if (bp_item_slot_UI)
-        p_item_slot_UI = Cast<UItem_Slot_UI>(CreateWidget(GetWorld(), bp_item_slot_UI));
 }
 
 void AUI_manager::Update_interaction_UI(UWidgetComponent* _widget_comp, FString _type)

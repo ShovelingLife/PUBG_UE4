@@ -9,7 +9,7 @@
 ACrate_box::ACrate_box()
 {
     PrimaryActorTick.bCanEverTick = true;
-    m_object_type = "보급상자";
+    object_type = "보급상자";
     Update_collider();
     Init_vfx();
     Init_meshes();

@@ -6,6 +6,7 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "PUBG_UE4/Global.h"
 #include "Item_Slot_UI.generated.h"
 
 UCLASS()
@@ -14,14 +15,9 @@ class UI_PUBG_API UItem_Slot_UI : public UUserWidget, public IUserObjectListEntr
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UImage* Item_img;
-
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Name_txt;
-
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-        UTextBlock* Count_txt;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Item_img;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Name_txt;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Count_txt;
 
     Fs_slot_item_data item_data;
 
@@ -37,5 +33,5 @@ protected:
     virtual void NativeOnItemSelectionChanged(bool) override;
 
 public:
-    void Set_slot_item_data(Fs_slot_item_data);
+    void Init();
 };

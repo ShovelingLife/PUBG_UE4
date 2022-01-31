@@ -31,7 +31,7 @@ void ACore_throwable_weapon::Init(e_throwable_weapon_type _weapon_type)
 {
     weapon_data   = AData_table_manager::arr_other_weapon_data[(int)_weapon_type];
     weapon_type   = _weapon_type;
-    m_object_type = weapon_data.type;
+    object_type = weapon_data.type;
 
     ABase_interaction::Init_audio();
     Update_collider();

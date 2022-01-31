@@ -18,11 +18,9 @@ private:
 
     // UI 관련
     TSubclassOf<UUserWidget> m_inventory_actor;
-    class UInventory_UI* mp_inventory_ui;
-
-    class ACustom_player* mp_player;
 
 public:
+    class UInventory_UI* p_inventory_UI;
     bool is_opened = false;
 
 public:
@@ -32,8 +30,6 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-public:
-    // Called every frame
     virtual void Tick(float DeltaTime) override;
 
     // 초기화 함수 모음
@@ -42,9 +38,6 @@ private:
 
     // 인벤토리 위젯 초기화
     void Init_inventory_widget();
-
-    // 기타 함수 모음
-private:
 
 public:
     // 인벤토리를 열음

@@ -87,5 +87,5 @@
 
  void ABase_interaction::Init_interaction_UI()
  {
-     AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 줍기"), *m_object_type));
+     AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 줍기"), *object_type));
  }

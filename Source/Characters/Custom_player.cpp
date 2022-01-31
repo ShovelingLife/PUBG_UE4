@@ -44,16 +44,13 @@ void ACustom_player::BeginPlay()
 
     // 무기 매니저 생성
     mp_weapon_manager = GetWorld()->SpawnActor<AWeapon_manager>(AWeapon_manager::StaticClass());
-    mp_weapon_manager->GetRootComponent()->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    mp_weapon_manager->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    mp_sound_manager = Cast<ASound_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), ASound_manager::StaticClass()));
 }
 
 void ACustom_player::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
-
-    if (!mp_sound_manager)
-        mp_sound_manager = AGlobal::Get_sound_manager();
-
     Check_if_moving();
     Check_if_is_vehicle_near();
     //Play_walk_sound();

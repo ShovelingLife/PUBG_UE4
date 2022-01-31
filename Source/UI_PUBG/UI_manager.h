@@ -44,10 +44,6 @@ private:
     const FString mk_default_player_UI_path = "/Game/UI/Player/State/";
 
 public:
-    // 아이템 슬롯 UI
-    UItem_Slot_UI*             p_item_slot_UI;
-    TSubclassOf<UItem_Slot_UI> bp_item_slot_UI;
-
     class AInventory_manager* p_inventory_manager;
 
 public:
@@ -71,8 +67,6 @@ private:
     // 상호작용 UI 초기화
     void Init_interaction_UI();
 
-    void Init_slot_UI();
-
     // 플레이어 UI를 띄움
     void Set_player_UI();
 
@@ -87,8 +81,6 @@ private:
     void Init_player_UI_tex();
 
     void Set_weapon_UI();
-
-    void Set_inventory_slot_UI();
 
 public:
     UFUNCTION()

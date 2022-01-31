@@ -60,7 +60,13 @@ void UPlayer_State_UI::Update_shoot_mode()
 
     if (p_weapon &&
         mp_UI_manager)
+    {
+        BoltAction_img->SetVisibility(ESlateVisibility::Visible);
         BoltAction_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_player_ui_tex[(int)p_weapon->gun_shoot_type]));
+    }
+
+    else
+        BoltAction_img->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time)

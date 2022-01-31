@@ -520,7 +520,7 @@ void AWeapon_manager::Drop(ABase_interaction* _p_weapon)
 {
     if (!_p_weapon)
         return;
-    
+
     FVector  final_location = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
     FRotator player_rotation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorRotation();
     final_location.Y += 75.f;

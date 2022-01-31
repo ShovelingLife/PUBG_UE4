@@ -19,7 +19,6 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Widget)
     class UWidgetComponent* mp_interaction_widget_comp;
 
-    FString m_object_type;
     float   m_current_time = 0.f;
 
 public:
@@ -32,6 +31,7 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Sound)
         class UAudioComponent* p_audio_comp = nullptr;
 
+    FString object_type;
     bool is_player_near = false;
 
 public:
