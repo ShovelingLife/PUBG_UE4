@@ -1,6 +1,12 @@
 #include "Inventory_list_UI.h"
+#include "Item_slot_UI.h"
 #include "Custom_drag_drop_operation.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
+#include "Components/HorizontalBox.h"
+#include "Components/Image.h"
+#include "Components/ListView.h"
+#include "Components/SizeBox.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -43,14 +49,14 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     FVector2D world_size_box_center_pos = world_size_box_pixel_pos + world_size_box_half_size;
 
     // 인벤토리 사이즈 박스 중앙점 구함
-    FGeometry inventory_size_box_geometry  = Inventory_list_view->GetCachedGeometry();
+    FGeometry inventory_size_box_geometry  = Inventory_list_size_box->GetCachedGeometry();
     FVector2D inventory_size_box_pixel_pos = FVector2D::ZeroVector;
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), inventory_size_box_geometry, FVector2D::ZeroVector, inventory_size_box_pixel_pos, dummy_vector);
     FVector2D inventory_size_box_half_size  = (USlateBlueprintLibrary::GetAbsoluteSize(inventory_size_box_geometry) / FVector2D(2.f));
     FVector2D inventory_size_box_center_pos = inventory_size_box_pixel_pos + inventory_size_box_half_size;
 
     // 슬롯 이미지 중앙점 구함
-    FGeometry slot_image_geometry  = p_slot_UI->Item_img->GetCachedGeometry();
+    FGeometry slot_image_geometry  = p_slot_UI->Main_horizontal_box->GetCachedGeometry();
     FVector2D slot_image_pixel_pos = FVector2D::ZeroVector;
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), slot_image_geometry, FVector2D::ZeroVector, slot_image_pixel_pos, dummy_vector);
     FVector2D slot_image_half_size  = (USlateBlueprintLibrary::GetAbsoluteSize(slot_image_geometry) / FVector2D(2.f));

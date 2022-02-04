@@ -4,10 +4,14 @@
 #include "PUBG_UE4/Global.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
 #include "PUBG_UE4/Global.h"
-#include "Item_Slot_UI.generated.h"
+#include "Item_Slot_UI.generated.h" 
+
+class UImage;
+class UTextBlock;
+class USizeBox;
+class UBorder;
+class UHorizontalBox;
 
 UCLASS()
 class UI_PUBG_API UItem_Slot_UI : public UUserWidget, public IUserObjectListEntry
@@ -15,7 +19,10 @@ class UI_PUBG_API UItem_Slot_UI : public UUserWidget, public IUserObjectListEntr
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Item_img;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UHorizontalBox* Main_horizontal_box;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* Background_size_box;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*    Item_border;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     Item_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Name_txt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Count_txt;
 
@@ -33,5 +40,5 @@ protected:
     virtual void NativeOnItemSelectionChanged(bool) override;
 
 public:
-    void Init();
+    void Set_as_cursor(FVector2D);
 };

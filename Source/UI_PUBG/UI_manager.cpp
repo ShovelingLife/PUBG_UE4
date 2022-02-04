@@ -6,6 +6,7 @@
 #include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Data_table_manager.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"

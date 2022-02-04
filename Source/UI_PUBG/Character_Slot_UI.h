@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
 #include "Character_Slot_UI.generated.h"
+
+class UImage;
+class UProgressBar;
+class UTextBlock;
 
 UCLASS()
 class UI_PUBG_API UCharacter_Slot_UI : public UUserWidget

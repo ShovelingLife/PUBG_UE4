@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Image.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
 #include "MiniMap_UI.generated.h"
+
+class UTextBlock;
+class UImage;
+class UProgressBar;
 
 UCLASS()
 class UI_PUBG_API UMiniMap_UI : public UUserWidget
@@ -14,10 +15,10 @@ class UI_PUBG_API UMiniMap_UI : public UUserWidget
 	
 
 public:
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*	 Magnetic_timer_text;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*	 Phase_text;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*		 MiniMap_img;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*		 Warring_img;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*	 Magnetic_timer_text;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*	 Phase_text;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Magnetic_field_bar;
 
 protected:

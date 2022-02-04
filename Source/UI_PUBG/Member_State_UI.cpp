@@ -1,10 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Member_State_UI.h"
-
-
 #include "Character_Slot_UI.h"
+#include "Components/TextBlock.h"
+#include "Components/ProgressBar.h"
+#include "Components/Image.h"
 
 void UMember_State_UI::NativeConstruct()
 {

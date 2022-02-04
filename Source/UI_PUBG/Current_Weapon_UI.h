@@ -1,13 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Image.h"
 #include "Current_Weapon_UI.generated.h"
 
 class AWeapon_manager;
+class UImage;
 
 UCLASS()
 class UI_PUBG_API UCurrent_Weapon_UI : public UUserWidget

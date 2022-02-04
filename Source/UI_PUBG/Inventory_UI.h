@@ -2,12 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Character_Slot_UI.h"
-#include "Inventory_list_UI.h"
 #include "Input/Events.h"
 #include "Input/Reply.h"
-#include "Inventory_Weapon_Slot_UI.h"
 #include "Inventory_UI.generated.h"
+
+class UInventory_list_UI;
+class UCharacter_Slot_UI;
+class UInventory_Weapon_Slot_UI;
 
 UCLASS()
 class UI_PUBG_API UInventory_UI : public UUserWidget

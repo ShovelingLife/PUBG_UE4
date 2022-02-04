@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
 #include "Player_State_UI.generated.h"
+
+class UProgressBar;
+class UImage;
+class UTextBlock;
 
 UCLASS()
 class UI_PUBG_API UPlayer_State_UI : public UUserWidget

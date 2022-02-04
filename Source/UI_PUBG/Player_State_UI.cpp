@@ -1,9 +1,12 @@
 #include "Player_State_UI.h"
 #include "UI_manager.h"
 #include "Characters/Custom_player.h"
-#include "Kismet/GameplayStatics.h"
 #include "Player_weapons/Core_weapon.h"
 #include "Player_weapons/Weapon_manager.h"
+#include "Components/ProgressBar.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
 
 void UPlayer_State_UI::NativeConstruct()
 {

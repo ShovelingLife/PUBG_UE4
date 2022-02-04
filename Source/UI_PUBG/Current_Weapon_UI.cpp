@@ -7,6 +7,7 @@
 #include "Player_weapons/Core_melee_weapon.h"
 #include "Player_weapons/Core_throwable_weapon.h"
 #include "PUBG_UE4/Global.h"
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 
 void UCurrent_Weapon_UI::NativeConstruct()
@@ -89,26 +90,23 @@ void UCurrent_Weapon_UI::Set_icon_UI()
         !mp_UI_manager)
         return;
     
-    // 첫번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[0])
+    if (mp_weapon_manager->p_first_gun)
         First_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_first_gun->weapon_type]);
 
-    // 두번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[1])
+    if (mp_weapon_manager->p_second_gun)
         Second_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_second_gun->weapon_type]);
 
-    // 세번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[2])
+    if (mp_weapon_manager->p_pistol)
         Third_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_pistol->weapon_type]);
     
     //// 네번쨰 무기
-    //if (mp_weapon_manager->arr_is_weapon_equipped[3])
+    //if (mp_weapon_manager->p_melee)
     //{
     //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_melee->weapon_type);
     //    Fourth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);
     //}
     //// 다섯번째 무기
-    //if (mp_weapon_manager->arr_is_weapon_equipped[4])
+    //if (mp_weapon_manager->p_throwable)
     //{
     //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_throwable->weapon_type);
     //    Fifth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);

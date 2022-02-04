@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
 #include "Member_State_UI.generated.h"
+
+class UTextBlock;
+class UProgressBar;
+class UImage;
 
 UCLASS()
 class UI_PUBG_API UMember_State_UI : public UUserWidget

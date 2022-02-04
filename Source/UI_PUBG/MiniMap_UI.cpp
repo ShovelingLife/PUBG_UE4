@@ -1,7 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MiniMap_UI.h"
+#include "Components/TextBlock.h"
+#include "Components/Image.h"
+#include "Components/ProgressBar.h"
 
 void UMiniMap_UI::NativeConstruct()
 {

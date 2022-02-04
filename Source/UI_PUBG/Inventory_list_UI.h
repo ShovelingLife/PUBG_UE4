@@ -2,11 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ListView.h"
-#include "Components/SizeBox.h"
 #include "Inventory_list_UI.generated.h"
 
 DECLARE_DELEGATE(FDele_set_weapon_slot_null)
+
+class USizeBox;
+class UListView;
 
 UCLASS()
 class UI_PUBG_API UInventory_list_UI : public UUserWidget

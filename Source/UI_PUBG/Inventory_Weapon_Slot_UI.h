@@ -2,12 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/CanvasPanel.h"
-#include "Components/Image.h"
-#include "Components/TextBlock.h"
 #include "Input/Events.h"
 #include "PUBG_UE4/Global.h"
 #include "Inventory_Weapon_Slot_UI.generated.h"
+
+class UImage;
+class UCanvasPanel;
+class UTextBlock;
+class UItem_Slot_UI;
 
 UCLASS()
 class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
@@ -17,6 +19,7 @@ class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
 private:
     class AUI_manager*     mp_UI_manager           = nullptr;
     class AWeapon_manager* mp_weapon_manager       = nullptr;
+    TSubclassOf<UUserWidget*> m_slot_class;
     Fs_slot_item_data      m_item_data;
           int              m_selected_weapon_index = 0;
           bool             m_is_clicked            = false;
@@ -62,6 +65,8 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Grenade_name_txt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Grenade_number_txt;
 
+    UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItem_Slot_UI> p_item_slot_UI_class;
+
 protected:
     void NativeConstruct() override;
 
@@ -78,6 +83,8 @@ protected:
     virtual void NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _pointer_event, class UDragDropOperation*& _operation) override;
 
     virtual bool NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _pointer_event, class UDragDropOperation* _operation) override;
+
+    virtual void NativeOnDragLeave(const FDragDropEvent& _in_drag_drop_event, UDragDropOperation* _in_operation) override;
 
 private:
     void Update_UI_visibility();

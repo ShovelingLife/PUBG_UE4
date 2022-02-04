@@ -2,12 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/TextBlock.h"
 #include "Interaction_UI.generated.h"
 
-/**
- * 
- */
+class UTextBlock;
+
 UCLASS()
 class UI_PUBG_API UInteraction_UI : public UUserWidget
 {

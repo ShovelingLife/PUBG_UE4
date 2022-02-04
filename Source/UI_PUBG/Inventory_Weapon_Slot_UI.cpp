@@ -1,4 +1,4 @@
-#include "Inventory_Weapon_Slot_UI.h"
+ #include "Inventory_Weapon_Slot_UI.h"
 #include "Item_slot_UI.h"
 #include "Inventory_UI.h"
 #include "Inventory_list_UI.h"
@@ -11,16 +11,21 @@
 #include "Player_weapons/Core_throwable_weapon.h"
 #include "Player_weapons/Weapon_manager.h"
 #include "Blueprint/DragDropOperation.h"
+#include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/CanvasPanelSlot.h"
+#include "Components/CanvasPanel.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UInventory_Weapon_Slot_UI::NativeConstruct()
 {
-    Super::NativeConstruct();
+    Super::NativeConstruct();   
 }
 
 void UInventory_Weapon_Slot_UI::NativeTick(const FGeometry& _my_geometry, float _delta_time)
+
 {
     Super::NativeTick(_my_geometry, _delta_time);
 
@@ -107,27 +112,30 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry,
 {
     Super::NativeOnDragDetected(_geometry, _mouse_event, _out_operation);
 
-    auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
-    auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), UItem_Slot_UI::StaticClass());
+    if (p_item_slot_UI_class)
+    {
+        auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
+        FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) - FVector2D(35.f);
 
-    if (!p_slot)
-        return;
+        if (!p_slot)
+            return;
 
-    p_slot->Init(); 
-    p_slot->SetVisibility(ESlateVisibility::Visible);
-    p_slot->Item_img->SetBrushFromTexture(Cast<UTexture2D>(AUI_manager::map_inventory_weapon_ui_tex[m_item_data.image_index]));
-    p_slot->Name_txt->SetText(FText::FromString(m_item_data.name));
-    p_slot->Count_txt->SetText(FText::FromString(FString::FromInt(1)));
-    p_drag_drop_operation->p_slot_UI = p_slot;
-    p_drag_drop_operation->DefaultDragVisual = p_slot;
-    p_drag_drop_operation->Payload           = p_slot;
-    p_drag_drop_operation->Pivot             = EDragPivot::MouseDown;    
-    p_drag_drop_operation->Offset            = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition());
-    p_drag_drop_operation->is_weapon         = true;
-    p_drag_drop_operation->item_data         = m_item_data;
-    m_item_data                              = Fs_slot_item_data();
-    p_slot->AddToViewport();
-    _out_operation                           = p_drag_drop_operation;
+        // 슬롯 설정
+        p_slot->item_data = m_item_data;
+        p_slot->Priority = 1;
+        p_slot->Set_as_cursor(mouse_pos);
+
+        // 드래그 구현
+        auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
+        p_drag_drop_operation->p_slot_UI = p_slot;
+        p_drag_drop_operation->DefaultDragVisual = p_slot;
+        p_drag_drop_operation->Pivot = EDragPivot::MouseDown;
+        p_drag_drop_operation->is_weapon = true;
+        p_drag_drop_operation->item_data = m_item_data;
+        //p_slot->RemoveFromParent();
+        _out_operation = p_drag_drop_operation;
+        Reset_highlight_img();
+    }
 }
 
 bool UInventory_Weapon_Slot_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _drag_drop_event, UDragDropOperation* _in_operation)
@@ -137,11 +145,20 @@ bool UInventory_Weapon_Slot_UI::NativeOnDrop(const FGeometry& _geometry, const F
     return true;
 }
 
+void UInventory_Weapon_Slot_UI::NativeOnDragLeave(const FDragDropEvent& _in_drag_drop_event, UDragDropOperation* _in_operation)
+{
+    Super::NativeOnDragLeave(_in_drag_drop_event, _in_operation);
+    m_is_clicked = false;
+}
+
 FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonUp(const FGeometry& _geometry, const FPointerEvent& _mouse_event)
 {
     Super::NativeOnMouseButtonUp(_geometry, _mouse_event);
-    Highlight_img->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.1f });
     m_is_clicked = false;
+
+    Fs_slot_item_data tmp_data;
+    m_item_data = tmp_data;
+
     return FReply::Handled();
 }
 
@@ -182,37 +199,32 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
 void UInventory_Weapon_Slot_UI::Update_inventory_weapon_UI()
 {
     // 첫번째 무기
-    if(mp_weapon_manager->arr_is_weapon_equipped[0])
+    if(auto p_first_gun = mp_weapon_manager->p_first_gun)
     {
-        auto p_first_gun = mp_weapon_manager->p_first_gun;
         First_gun_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)p_first_gun->weapon_type]));
         First_gun_name_txt->SetText(FText::FromString(p_first_gun->weapon_data.type));        
     }
     // 두번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[1])
+    if (auto p_second_gun = mp_weapon_manager->p_second_gun)
     {
-        auto p_second_gun = mp_weapon_manager->p_second_gun;
         Second_gun_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)p_second_gun->weapon_type]));
         Second_gun_name_txt->SetText(FText::FromString(p_second_gun->weapon_data.type));
     }
     // 세번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[2])
+    if (auto p_pistol = mp_weapon_manager->p_pistol)
     {
-        auto p_pistol = mp_weapon_manager->p_pistol;
         Pistol_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_pistol->weapon_type]));
         Pistol_name_txt->SetText(FText::FromString(p_pistol->weapon_data.type));
     }
     // 네번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[3])
+    if (auto p_throwable = mp_weapon_manager->p_throwable)
     {
-        auto p_throwable = mp_weapon_manager->p_throwable;
         Melee_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_throwable->weapon_type]));
         Melee_name_txt->SetText(FText::FromString(p_throwable->weapon_data.type));
     }
     // 다섯번째 무기
-    if (mp_weapon_manager->arr_is_weapon_equipped[4])
+    if (auto p_melee = mp_weapon_manager->p_melee)
     {
-        auto p_melee = mp_weapon_manager->p_melee;
         Grenade_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_melee->weapon_type]));
         Grenade_name_txt->SetText(FText::FromString(p_melee->weapon_data.type));
     }
@@ -272,11 +284,11 @@ void UInventory_Weapon_Slot_UI::Reset_highlight_img()
     // 선택 이미지 부모 새로 지정 및 무기 슬롯 이미지 설정
     switch (m_selected_weapon_index)
     {
-    case 1: First_gun_canvas_panel->RemoveChild(Highlight_img);  First_gun_slot_img->SetVisibility(ESlateVisibility::Hidden);  break;
-    case 2: Second_gun_canvas_panel->RemoveChild(Highlight_img); Second_gun_slot_img->SetVisibility(ESlateVisibility::Hidden); break;
-    case 3: Pistol_canvas_panel->RemoveChild(Highlight_img);     Pistol_slot_img->SetVisibility(ESlateVisibility::Hidden);     break;
-    case 4: Melee_canvas_panel->RemoveChild(Highlight_img);      Melee_slot_img->SetVisibility(ESlateVisibility::Hidden);      break;
-    case 5: Grenade_canvas_panel->RemoveChild(Highlight_img);    Grenade_slot_img->SetVisibility(ESlateVisibility::Hidden);    break;
+    case 1: First_gun_canvas_panel->RemoveChild(Highlight_img);  break;
+    case 2: Second_gun_canvas_panel->RemoveChild(Highlight_img); break;
+    case 3: Pistol_canvas_panel->RemoveChild(Highlight_img);     break;
+    case 4: Melee_canvas_panel->RemoveChild(Highlight_img);      break;
+    case 5: Grenade_canvas_panel->RemoveChild(Highlight_img);    break;
     }
     m_selected_weapon_index = 0;
     Main_canvas_panel->AddChildToCanvas(Highlight_img);
@@ -309,4 +321,5 @@ void UInventory_Weapon_Slot_UI::Set_slot_null()
     case 5: mp_weapon_manager->p_throwable  = nullptr; break;
     }
     m_selected_weapon_index = 0;
+    Reset_highlight_img();
 }

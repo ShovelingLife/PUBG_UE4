@@ -1,17 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Blueprint/UserWidget.h"
-#include "Components/TextBlock.h"
-#include "Components/ListView.h"
 #include "KillLog_Box_UI.generated.h"
 
-/**
- * 
- */
+class UTextBlock;
+class UListView;
+
 UCLASS()
 class UI_PUBG_API UKillLog_Box_UI : public UUserWidget
 {
