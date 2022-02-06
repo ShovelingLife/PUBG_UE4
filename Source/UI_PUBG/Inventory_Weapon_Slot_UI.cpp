@@ -13,6 +13,7 @@
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Components/Border.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/CanvasPanel.h"
 #include "Components/Image.h"
@@ -43,11 +44,6 @@ void UInventory_Weapon_Slot_UI::NativeTick(const FGeometry& _my_geometry, float 
     Update_UI_visibility();
     Update_inventory_weapon_UI();
     Update_weapon_UI_highlight_img();
-}
-
-void UInventory_Weapon_Slot_UI::NativeOnMouseEnter(const FGeometry& _geometry, const FPointerEvent& _mouse_event)
-{
-    Super::NativeOnMouseEnter(_geometry, _mouse_event);
 }
 
 void UInventory_Weapon_Slot_UI::NativeOnMouseLeave(const FPointerEvent& _mouse_event)
@@ -115,7 +111,7 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry,
     if (p_item_slot_UI_class)
     {
         auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
-        FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) - FVector2D(35.f);
+        FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
 
         if (!p_slot)
             return;
@@ -127,10 +123,13 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry,
 
         // 드래그 구현
         auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
+
+        if (m_selected_weapon_index < 4)
+            p_drag_drop_operation->is_gun = true;
+
         p_drag_drop_operation->p_slot_UI = p_slot;
         p_drag_drop_operation->DefaultDragVisual = p_slot;
         p_drag_drop_operation->Pivot = EDragPivot::MouseDown;
-        p_drag_drop_operation->is_weapon = true;
         p_drag_drop_operation->item_data = m_item_data;
         //p_slot->RemoveFromParent();
         _out_operation = p_drag_drop_operation;
@@ -148,6 +147,7 @@ bool UInventory_Weapon_Slot_UI::NativeOnDrop(const FGeometry& _geometry, const F
 void UInventory_Weapon_Slot_UI::NativeOnDragLeave(const FDragDropEvent& _in_drag_drop_event, UDragDropOperation* _in_operation)
 {
     Super::NativeOnDragLeave(_in_drag_drop_event, _in_operation);
+    Reset_highlight_img();
     m_is_clicked = false;
 }
 
@@ -165,35 +165,38 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonUp(const FGeometry& _geomet
 void UInventory_Weapon_Slot_UI::Update_UI_visibility()
 {
     // 첫번째 무기
-    First_gun_slot_img->SetVisibility((mp_weapon_manager->p_first_gun)        ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    First_gun_name_txt->SetVisibility((mp_weapon_manager->p_first_gun)        ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    First_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_first_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    First_gun_magazine_txt->SetVisibility((mp_weapon_manager->p_first_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    First_gun_number_txt->SetVisibility((mp_weapon_manager->p_first_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    First_gun_slot_img->SetVisibility((mp_weapon_manager->p_first_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    First_gun_name_txt->SetVisibility((mp_weapon_manager->p_first_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    First_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_first_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    First_gun_current_magazine_txt->SetVisibility((mp_weapon_manager->p_first_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    First_gun_max_magazine_txt->SetVisibility((mp_weapon_manager->p_first_gun)     ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    First_gun_number_background->SetVisibility((mp_weapon_manager->p_first_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
     // 두번째 무기
-    Second_gun_slot_img->SetVisibility((mp_weapon_manager->p_second_gun)        ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Second_gun_name_txt->SetVisibility((mp_weapon_manager->p_second_gun)        ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Second_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_second_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Second_gun_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Second_gun_number_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_slot_img->SetVisibility((mp_weapon_manager->p_second_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_name_txt->SetVisibility((mp_weapon_manager->p_second_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_current_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_max_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_number_background->SetVisibility((mp_weapon_manager->p_second_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
     // 세번째 무기
-    Pistol_slot_img->SetVisibility((mp_weapon_manager->p_pistol)        ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Pistol_name_txt->SetVisibility((mp_weapon_manager->p_pistol)        ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Pistol_bullet_type_txt->SetVisibility((mp_weapon_manager->p_pistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Pistol_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Pistol_number_txt->SetVisibility((mp_weapon_manager->p_pistol)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_slot_img->SetVisibility((mp_weapon_manager->p_pistol)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_name_txt->SetVisibility((mp_weapon_manager->p_pistol)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_bullet_type_txt->SetVisibility((mp_weapon_manager->p_pistol)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_current_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_max_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_number_background->SetVisibility((mp_weapon_manager->p_pistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
     // 네번째 무기
-    Melee_slot_img->SetVisibility((mp_weapon_manager->p_melee)   ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Melee_name_txt->SetVisibility((mp_weapon_manager->p_melee)   ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Melee_number_txt->SetVisibility((mp_weapon_manager->p_melee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Melee_slot_img->SetVisibility((mp_weapon_manager->p_melee)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Melee_name_txt->SetVisibility((mp_weapon_manager->p_melee)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Melee_number_background->SetVisibility((mp_weapon_manager->p_melee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
     // 다섯번째 무기
-    Grenade_slot_img->SetVisibility((mp_weapon_manager->p_throwable)   ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Grenade_name_txt->SetVisibility((mp_weapon_manager->p_throwable)   ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Grenade_number_txt->SetVisibility((mp_weapon_manager->p_throwable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Grenade_slot_img->SetVisibility((mp_weapon_manager->p_throwable)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Grenade_name_txt->SetVisibility((mp_weapon_manager->p_throwable)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Grenade_number_background->SetVisibility((mp_weapon_manager->p_throwable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UInventory_Weapon_Slot_UI::Update_inventory_weapon_UI()
@@ -263,17 +266,16 @@ void UInventory_Weapon_Slot_UI::Update_weapon_UI_highlight_img()
     // 무기가 선택됐을 시 이미지 설정
     switch(m_selected_weapon_index)
     {
-    case 1: canvas_panel_slot = First_gun_canvas_panel->AddChildToCanvas(Highlight_img);  size_x = 610.f; break;
-    case 2: canvas_panel_slot = Second_gun_canvas_panel->AddChildToCanvas(Highlight_img); size_x = 610.f; break;
-    case 3: canvas_panel_slot = Pistol_canvas_panel->AddChildToCanvas(Highlight_img);     size_x = 610.f; break;
-    case 4: canvas_panel_slot = Melee_canvas_panel->AddChildToCanvas(Highlight_img);      size_x = 290.f; break;
-    case 5: canvas_panel_slot = Grenade_canvas_panel->AddChildToCanvas(Highlight_img);    size_x = 290.f; break;
+    case 1: canvas_panel_slot = First_gun_canvas_panel->AddChildToCanvas(Highlight_img);  size_x = 545.f; break;
+    case 2: canvas_panel_slot = Second_gun_canvas_panel->AddChildToCanvas(Highlight_img); size_x = 545.f; break;
+    case 3: canvas_panel_slot = Pistol_canvas_panel->AddChildToCanvas(Highlight_img);     size_x = 545.f; break;
+    case 4: canvas_panel_slot = Melee_canvas_panel->AddChildToCanvas(Highlight_img);      size_x = 225.f; break;
+    case 5: canvas_panel_slot = Grenade_canvas_panel->AddChildToCanvas(Highlight_img);    size_x = 225.f; break;
     }
     if (m_selected_weapon_index != 0 &&
         canvas_panel_slot)
     {
-        canvas_panel_slot->SetSize(FVector2D(size_x, 240.f));
-        canvas_panel_slot->SetPosition(FVector2D(16.f, 12.f));
+        canvas_panel_slot->SetSize(FVector2D(size_x, 195.f));
         Highlight_img->SetVisibility(ESlateVisibility::Visible);
         Highlight_img->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.1f });
     }

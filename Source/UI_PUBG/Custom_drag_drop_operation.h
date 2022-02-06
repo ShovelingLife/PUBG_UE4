@@ -16,5 +16,5 @@ class UI_PUBG_API UCustom_drag_drop_operation : public UDragDropOperation
 public:
     UItem_Slot_UI*	  p_slot_UI = nullptr;
     Fs_slot_item_data item_data;
-	bool			  is_weapon	= false;
+	bool			  is_gun	= false;
 };

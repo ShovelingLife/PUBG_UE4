@@ -20,7 +20,7 @@ struct Fs_slot_item_data
 public:
     FString name        = "";
     int     image_index = 0;
-    int     count       = 1;
+    int     count       = 0;
 
 public:
     Fs_slot_item_data() = default;

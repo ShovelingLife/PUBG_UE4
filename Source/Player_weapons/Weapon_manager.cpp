@@ -477,7 +477,7 @@ void AWeapon_manager::Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _s
              p_static_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
 
     // 무기 오브젝트를 인벤토리 매니저에 부착
-    _p_tmp_weapon->GetRootComponent()->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    _p_tmp_weapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _current_weapon, FTransform _new_pos)
@@ -521,11 +521,11 @@ void AWeapon_manager::Drop(ABase_interaction* _p_weapon)
     if (!_p_weapon)
         return;
 
-    FVector  final_location = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+    FVector  final_location  = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
     FRotator player_rotation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorRotation();
-    final_location.Y += 75.f;
-    final_location.Z = 20.f;
-    FTransform new_location = FTransform(player_rotation, final_location);
+    final_location.Y        += 75.f;
+    final_location.Z         = 20.f;
+    FTransform new_location  = FTransform(player_rotation, final_location);
     Reset_weapon_after_detaching(_p_weapon, new_location);
 
     // 현재 보유 중인 무기랑 비교

@@ -73,22 +73,19 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     // 월드 리스트에 드롭
     if (image_world_size_box_distance < image_inventory_size_box_distance)
     {
-        GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Green, "Dropped in world");
-        // 무기일 시 개수 텍스트 숨김
-        if (p_drag_operation->is_weapon)
-            p_slot_UI->Name_txt->SetVisibility(ESlateVisibility::Hidden);
-
+        GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, "World list");
         World_list_view->AddItem(p_slot_UI);
         dele_set_weapon_slot_null.ExecuteIfBound();
     }
     // 인벤토리 리스트에 드롭
     else
     {
-        GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Green, "Dropped in inventory");
-        if (p_drag_operation->is_weapon)
+        GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Green, "Inventory list");
+        if (p_drag_operation->is_gun)
             return false;
 
         Inventory_list_view->AddItem(p_slot_UI);
+        dele_set_weapon_slot_null.ExecuteIfBound();
     }
     return true;
 }

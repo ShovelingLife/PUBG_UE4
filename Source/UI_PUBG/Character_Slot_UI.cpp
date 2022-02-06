@@ -1,9 +1,9 @@
+#include "Character_Slot_UI.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 
 
-#include "Character_Slot_UI.h"
 
 void UCharacter_Slot_UI::NativeConstruct()
 {
