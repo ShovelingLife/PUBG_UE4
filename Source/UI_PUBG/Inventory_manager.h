@@ -2,8 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PUBG_UE4/Global.h"
 #include "Inventory_manager.generated.h"
+
+class USceneComponent;
 
 UCLASS()
 class UI_PUBG_API AInventory_manager : public AActor
@@ -13,8 +14,7 @@ class UI_PUBG_API AInventory_manager : public AActor
 private:
     class AUI_manager* mp_UI_manager;
 
-    UPROPERTY(EditAnywhere, Category = Scene_comp)
-        class USceneComponent* mp_scene_comp = nullptr;
+    UPROPERTY(EditAnywhere, Category = Scene_comp) USceneComponent* mp_scene_comp = nullptr;
 
     // UI ฐüทร
     TSubclassOf<UUserWidget> m_inventory_actor;
@@ -46,7 +46,4 @@ public:
 
     UFUNCTION()
     void Close_inventory();
-
-    UFUNCTION()
-    void Update_item_slot_UI(Fs_slot_item_data _item_data);
 };

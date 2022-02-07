@@ -3,7 +3,7 @@
 #include "Inventory_list_UI.h"
 #include "Inventory_manager.h"
 #include "Player_UI.h"
-#include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/Custom_game_instance.h"
 #include "PUBG_UE4/Data_table_manager.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
@@ -31,18 +31,12 @@ void AUI_manager::BeginPlay()
     Super::BeginPlay();
     
     // 델리게이트 바인딩
-    mp_global = AGlobal::Get();
-    mp_global->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
+    auto p_custom_game_instance = Cast<UCustom_game_instance>(GetWorld()->GetGameInstance());
+    p_custom_game_instance->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
 
     Set_player_UI();
     Init_player_inventory();
     Set_weapon_UI();
-}
-
-// Called every frame
-void AUI_manager::Tick(float _delta_time)
-{
-    Super::Tick(_delta_time);
 }
 
 void AUI_manager::Init_player_UI()

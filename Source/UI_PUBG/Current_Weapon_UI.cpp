@@ -6,7 +6,6 @@
 #include "Player_weapons/Core_weapon.h"
 #include "Player_weapons/Core_melee_weapon.h"
 #include "Player_weapons/Core_throwable_weapon.h"
-#include "PUBG_UE4/Global.h"
 #include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 

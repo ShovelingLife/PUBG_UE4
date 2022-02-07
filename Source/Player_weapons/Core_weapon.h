@@ -9,6 +9,7 @@
 class UAudioComponent;
 class USoundBase;
 class ACore_bullet;
+class UParticleSystemComponent;
 
 UCLASS()
 class PLAYER_WEAPONS_API ACore_weapon : public ABase_interaction
@@ -17,27 +18,23 @@ class PLAYER_WEAPONS_API ACore_weapon : public ABase_interaction
 	
 public:
     // ÃÑ¾Ë °ü·Ã
-    UPROPERTY(VisibleAnywhere, Category = Bullet)
-        ACore_bullet* p_bullet;
+    UPROPERTY(VisibleAnywhere, Category = Bullet) ACore_bullet* p_bullet;
 
     class ACore_gun_mag* p_gun_mag = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = Particle)
-        class UParticleSystemComponent* p_gun_particle = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* p_gun_particle = nullptr;
 
     Fs_weapon_data   weapon_data;
     e_weapon_type    weapon_type    = e_weapon_type::MAX;
     e_gun_shoot_type gun_shoot_type = e_gun_shoot_type::SINGLE;
 
 protected:
-    // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
     virtual void NotifyActorBeginOverlap(AActor*) override;
 
     virtual void NotifyActorEndOverlap(AActor*) override;
 
-    // Called every frame
     virtual void Tick(float DeltaTime) override;
 
 public:

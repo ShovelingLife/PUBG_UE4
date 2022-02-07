@@ -1,7 +1,6 @@
 ﻿#include "Base_interaction.h"
 #include "Data_table_manager.h"
 #include "Custom_game_instance.h"
-#include "Global.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
@@ -87,5 +86,6 @@
 
  void ABase_interaction::Init_interaction_UI()
  {
-     AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 줍기"), *object_type));
+     auto custom_game_instance = Cast<UCustom_game_instance>(GetWorld()->GetGameInstance());
+     custom_game_instance->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 줍기"), *object_type));
  }

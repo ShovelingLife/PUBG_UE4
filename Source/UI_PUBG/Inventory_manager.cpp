@@ -4,7 +4,6 @@
 #include "UI_manager.h"
 #include "Characters/Custom_player.h"
 #include "PUBG_UE4/Data_table_manager.h"
-#include "PUBG_UE4/Global.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
@@ -27,9 +26,6 @@ void AInventory_manager::BeginPlay()
 {
     Super::BeginPlay();
     Init_inventory_widget();
-
-    // 델리게이트에 바인딩
-    AGlobal::Get()->dele_set_item_slot_UI.BindUFunction(this, "Update_item_slot_UI");     
 
     // 캐릭터 관련 초기화
     auto p_player = Cast<ACustom_player>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
@@ -77,11 +73,4 @@ void AInventory_manager::Close_inventory()
     p_inventory_UI->SetVisibility(ESlateVisibility::Hidden);
     player_controller->SetShowMouseCursor(false);
     UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
-}
-
-void AInventory_manager::Update_item_slot_UI(Fs_slot_item_data _item_data)
-{
-    //auto test_slot = Cast<UItem_Slot_UI>(CreateWidget(GetWorld(), p_UI_manager->bp_item_slot_UI));
-    //test_slot->Set_slot_item_data(_item_data);
-    //mp_inventory_ui->Inventory_list_view->AddItem(test_slot);
 }

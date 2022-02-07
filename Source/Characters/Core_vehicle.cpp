@@ -1,9 +1,8 @@
 ﻿#include "Core_vehicle.h"
 #include "Custom_player.h"
 #include "Animation/AnimInstance.h"
-#include "PUBG_UE4/Global.h"
-#include "PUBG_UE4/Data_table_manager.h"
 #include "PUBG_UE4/Custom_game_instance.h"
+#include "PUBG_UE4/Data_table_manager.h"
 #include "Camera/CameraComponent.h"
 #include "ChaosVehicleMovementComponent.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
@@ -30,7 +29,8 @@ void ACore_vehicle::BeginPlay()
     Super::BeginPlay();
     
     // 상호작용 UI 업데이트
-    AGlobal::Get()->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
+    auto custom_game_instance = Cast<UCustom_game_instance>(GetWorld()->GetGameInstance());
+    custom_game_instance->dele_update_interaction_widget_comp.ExecuteIfBound(mp_interaction_widget_comp, FString::Printf(TEXT("%s 탑승하기"), *m_vehicle_data.type));
 }
 
 // Called every frame

@@ -4,7 +4,6 @@
 #include "Core_throwable_weapon.h"
 #include "Core_weapon.h"
 #include "PUBG_UE4/Base_interaction.h"
-#include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Sound_manager.h"
 #include "Components/AudioComponent.h"
 #include "Components/SceneComponent.h"
@@ -82,11 +81,11 @@ void AWeapon_manager::Play_sound(e_weapon_sound_type _sound_type)
         p_audio_comp = p_throwable->p_audio_comp;
         weapon_index = (int)p_throwable->weapon_type;
     }
-    if (_sound_type != e_weapon_sound_type::SHOT)
+    /*if (_sound_type != e_weapon_sound_type::SHOT)
         AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type);
 
     else
-        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type, weapon_index);
+        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type, weapon_index);*/
 }
 
 e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int _start_index)
@@ -328,7 +327,6 @@ void AWeapon_manager::Change_shoot_mode()
 
     if (p_weapon)
     {
-        AGlobal::Print_log(0, 2.f, FColor::Red, "Changing shoot mode");
         FString weapon_group = p_weapon->weapon_data.weapon_group_type;
 
         // 단발/점사/연사 가능

@@ -19,25 +19,15 @@ private:
 
 public:
     // ------- 무기 관련 사운드 -------
-    UPROPERTY(VisibleAnywhere, Category = Weapon_sound)
-        TArray<USoundBase*> p_arr_shot_sound;
-
-    UPROPERTY(VisibleAnywhere, Category = Weapon_sound)
-        USoundBase* p_empty_ammo_sound = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Player_sound)
-        USoundBase* p_reload_sound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Weapon_sound) TArray<USoundBase*> p_arr_shot_sound;
+    UPROPERTY(VisibleAnywhere, Category = Weapon_sound) USoundBase*         p_empty_ammo_sound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase*         p_reload_sound = nullptr;
 
 
     // ------- 플레이어 무기 사운드 관련 -------
-    UPROPERTY(VisibleAnywhere, Category = Player_sound)
-        USoundBase* p_item_farm_sound = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Player_sound)
-        USoundBase* p_weapon_pickup_sound = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Player_sound)
-        USoundBase* p_weapon_swap_sound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* p_item_farm_sound = nullptr; 
+    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* p_weapon_pickup_sound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* p_weapon_swap_sound = nullptr;
 
 private:
     void Init_weapon_audio();

@@ -10,6 +10,7 @@ class ABase_interaction;
 class ACore_weapon;
 class ACore_melee_weapon;
 class ACore_throwable_weapon;
+class USceneComponent;
 
 UCLASS()
 class PLAYER_WEAPONS_API AWeapon_manager : public AActor
@@ -17,8 +18,7 @@ class PLAYER_WEAPONS_API AWeapon_manager : public AActor
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere, Category = Scene_comp)
-	class USceneComponent* mp_scene_comp = nullptr;
+	UPROPERTY(EditAnywhere, Category = Scene_comp) USceneComponent* mp_scene_comp = nullptr;
 
     const float	mk_reload_time			= 2.f;
     float		m_current_reload_time	= 0.f;
@@ -40,15 +40,12 @@ public:
 	bool					is_shooting			= false;
 
 public:	
-	// Sets default values for this actor's properties
 	AWeapon_manager();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:

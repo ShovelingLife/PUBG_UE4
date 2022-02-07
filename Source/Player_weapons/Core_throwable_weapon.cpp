@@ -1,6 +1,5 @@
 #include "Core_throwable_weapon.h"
 #include "PUBG_UE4/Data_table_manager.h"
-#include "PUBG_UE4/Global.h"
 #include "PUBG_UE4/Sound_manager.h"
 #include "Components/WidgetComponent.h"
 #include "Components/BoxComponent.h"

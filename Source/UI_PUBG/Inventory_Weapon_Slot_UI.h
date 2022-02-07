@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Input/Events.h"
-#include "PUBG_UE4/Global.h"
+#include "Item_Slot_UI.h"
 #include "Inventory_Weapon_Slot_UI.generated.h"
 
 class UImage;

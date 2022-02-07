@@ -7,23 +7,22 @@
 #include "Player_weapons/Core_bullet.h"
 #include "Player_weapons/Weapon_manager.h"
 #include "AI_PUBG/AI_character.h"
-#include "PUBG_UE4/Global.h" 
 #include "PUBG_UE4/My_enum.h"
 #include "PUBG_UE4/Sound_manager.h" 
 #include "PUBG_UE4/Custom_game_instance.h" 
-#include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/ProjectileMovementComponent.h"
-#include "Framework/Application/SlateApplication.h"
-#include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Particles/ParticleSystemComponent.h"
-#include "DrawDebugHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/TimelineComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/WidgetComponent.h"
+#include "DrawDebugHelpers.h"
+#include "Framework/Application/SlateApplication.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ACustom_player::ACustom_player()
@@ -62,34 +61,34 @@ void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
     Super::SetupPlayerInputComponent(InputComponent);
 
-    InputComponent->BindAxis(FName(TEXT("Up_down")), this, &ACustom_player::Move_forward_back);
+    InputComponent->BindAxis(FName(TEXT("Up_down")),    this, &ACustom_player::Move_forward_back);
     InputComponent->BindAxis(FName(TEXT("Left_right")), this, &ACustom_player::Move_left_right);
-    InputComponent->BindAxis(FName(TEXT("Look_up")), this, &ACustom_player::Look_up);
-    InputComponent->BindAxis(FName(TEXT("Turn")), this, &ACustom_player::Turn);
+    InputComponent->BindAxis(FName(TEXT("Look_up")),    this, &ACustom_player::Look_up);
+    InputComponent->BindAxis(FName(TEXT("Turn")),       this, &ACustom_player::Turn);
 
     // 이동 관련
-    InputComponent->BindAction(FName(TEXT("Jump")), IE_Pressed, this, &ACustom_player::Custom_jump);
-    InputComponent->BindAction(FName(TEXT("Crouch")), IE_Pressed, this, &ACustom_player::Custom_crouch);
-    InputComponent->BindAction(FName(TEXT("Sprint")), IE_Pressed, this, &ACustom_player::Begin_sprint);
+    InputComponent->BindAction(FName(TEXT("Jump")),   IE_Pressed,  this, &ACustom_player::Custom_jump);
+    InputComponent->BindAction(FName(TEXT("Crouch")), IE_Pressed,  this, &ACustom_player::Custom_crouch);
+    InputComponent->BindAction(FName(TEXT("Sprint")), IE_Pressed,  this, &ACustom_player::Begin_sprint);
     InputComponent->BindAction(FName(TEXT("Sprint")), IE_Released, this, &ACustom_player::End_sprint);
-    InputComponent->BindAction(FName(TEXT("Aim")), IE_Pressed, this, &ACustom_player::Aim);
+    InputComponent->BindAction(FName(TEXT("Aim")),    IE_Pressed,  this, &ACustom_player::Aim);
 
     // 무기 관련
-    InputComponent->BindAction(FName(TEXT("Equip_first_weapon")), IE_Pressed, this,  &ACustom_player::Equip_first_weapon);
-    InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed, this, &ACustom_player::Equip_second_weapon);
-    InputComponent->BindAction(FName(TEXT("Equip_third_weapon")), IE_Pressed, this, &ACustom_player::Equip_third_weapon);
-    InputComponent->BindAction(FName(TEXT("Equip_fourth_weapon")), IE_Pressed, this, &ACustom_player::Equip_fourth_weapon);
-    InputComponent->BindAction(FName(TEXT("Equip_fifth_weapon")), IE_Pressed, this, &ACustom_player::Equip_fifth_weapon);
-    InputComponent->BindAction(FName(TEXT("Change_shoot_mode")), IE_Pressed, this, &ACustom_player::Change_shoot_mode);
-    InputComponent->BindAction(FName(TEXT("Swap_scrolling_up")), IE_Pressed, this, &ACustom_player::Swap_scrolling_up);
-    InputComponent->BindAction(FName(TEXT("Swap_scrolling_down")), IE_Pressed, this, &ACustom_player::Swap_scrolling_down);
-    InputComponent->BindAction(FName(TEXT("Shoot")), IE_Pressed, this, &ACustom_player::Begin_shooting);
-    InputComponent->BindAction(FName(TEXT("Shoot")), IE_Released, this, &ACustom_player::End_shooting);
-    InputComponent->BindAction(FName(TEXT("Reload")), IE_Pressed, this, &ACustom_player::Reload);
-    InputComponent->BindAction(FName(TEXT("Proning")), IE_Pressed, this, &ACustom_player::Proning);
-    InputComponent->BindAction(FName(TEXT("Interact")), IE_Pressed, this, &ACustom_player::Begin_interact);
-    InputComponent->BindAction(FName(TEXT("Interact")), IE_Released, this, &ACustom_player::End_interact);
-    InputComponent->BindAction(FName(TEXT("Inventory")), IE_Pressed, this, &ACustom_player::Open_inventory);
+    InputComponent->BindAction(FName(TEXT("Equip_first_weapon")),  IE_Pressed,  this,  &ACustom_player::Equip_first_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_second_weapon")), IE_Pressed,  this, &ACustom_player::Equip_second_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_third_weapon")),  IE_Pressed,  this, &ACustom_player::Equip_third_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_fourth_weapon")), IE_Pressed,  this, &ACustom_player::Equip_fourth_weapon);
+    InputComponent->BindAction(FName(TEXT("Equip_fifth_weapon")),  IE_Pressed,  this, &ACustom_player::Equip_fifth_weapon);
+    InputComponent->BindAction(FName(TEXT("Change_shoot_mode")),   IE_Pressed,  this, &ACustom_player::Change_shoot_mode);
+    InputComponent->BindAction(FName(TEXT("Swap_scrolling_up")),   IE_Pressed,  this, &ACustom_player::Swap_scrolling_up);
+    InputComponent->BindAction(FName(TEXT("Swap_scrolling_down")), IE_Pressed,  this, &ACustom_player::Swap_scrolling_down);
+    InputComponent->BindAction(FName(TEXT("Shoot")),               IE_Pressed,  this, &ACustom_player::Begin_shooting);
+    InputComponent->BindAction(FName(TEXT("Shoot")),               IE_Released, this, &ACustom_player::End_shooting);
+    InputComponent->BindAction(FName(TEXT("Reload")),              IE_Pressed,  this, &ACustom_player::Reload);
+    InputComponent->BindAction(FName(TEXT("Proning")),             IE_Pressed,  this, &ACustom_player::Proning);
+    InputComponent->BindAction(FName(TEXT("Interact")),            IE_Pressed,  this, &ACustom_player::Begin_interact);
+    InputComponent->BindAction(FName(TEXT("Interact")),            IE_Released, this, &ACustom_player::End_interact);
+    InputComponent->BindAction(FName(TEXT("Inventory")),           IE_Pressed,  this, &ACustom_player::Open_inventory);
 }
 
 void ACustom_player::Update_player_settings()
@@ -110,10 +109,9 @@ void ACustom_player::Init_camera_comp()
     p_camera_comp->SetupAttachment(p_spring_arm_comp);
 
     // 카메라 설정
-    AGlobal* p_global = AGlobal::Get();
-    p_spring_arm_comp->TargetArmLength = p_global->player_spring_arm_length;
-    p_spring_arm_comp->SetRelativeRotation(p_global->player_spring_arm_rotation);
-    p_spring_arm_comp->SetWorldLocation(p_global->player_spring_arm_location);
+    p_spring_arm_comp->TargetArmLength = 150.f;
+    p_spring_arm_comp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
+    p_spring_arm_comp->SetWorldLocation(FVector(0.f, 0.f, 80.f));
     p_spring_arm_comp->bUsePawnControlRotation = true;
 }
 
@@ -150,41 +148,39 @@ void ACustom_player::Init_particle_system()
 
 void ACustom_player::Check_if_moving()
 {
-    AGlobal* p_global = AGlobal::Get();
-
     // 움직이고 있지 않음
     if (GetVelocity().IsZero())
     {
         if (m_is_moving)
         {
-            if (current_state == e_player_state::CROUCH_WALK)
-                current_state = e_player_state::CROUCH;
+            if      (current_state == e_player_state::CROUCH_WALK)
+                     current_state = e_player_state::CROUCH;
 
             else if (current_state == e_player_state::PRONING_WALK)
-                current_state = e_player_state::PRONING;
+                     current_state = e_player_state::PRONING;
 
             else if (current_state == e_player_state::AIM_WALK)
-                current_state = e_player_state::AIM;
+                     current_state = e_player_state::AIM;
 
             else
-                current_state = e_player_state::IDLE;
+                     current_state = e_player_state::IDLE;
         }
-        m_is_moving = false;
+        m_is_moving  = false;
         is_sprinting = false;
     }
     else
     {
         // 숙이고 있음
-        if (current_state == e_player_state::CROUCH ||
-            current_state == e_player_state::CROUCH_AIM)
-            current_state = e_player_state::CROUCH_WALK;
+        if      (current_state == e_player_state::CROUCH ||
+                 current_state == e_player_state::CROUCH_AIM)
+                 current_state = e_player_state::CROUCH_WALK;
 
         // 엎드리고 있음
         else if (current_state == e_player_state::PRONING)
-            current_state = e_player_state::PRONING_WALK;
+                 current_state = e_player_state::PRONING_WALK;
 
         else if (current_state == e_player_state::AIM)
-            current_state = e_player_state::AIM_WALK;
+                 current_state = e_player_state::AIM_WALK;
 
         else
         {
@@ -253,7 +249,7 @@ void ACustom_player::Check_for_object()
             hitted_actor->IsA<ACore_throwable_weapon>() ||
             hitted_actor->IsA<ACore_melee_weapon>())
         {
-            m_collided_weapon = hitted_actor;
+            mp_collided_weapon = hitted_actor;
             Set_item_UI(true);
         }
     }
@@ -266,21 +262,21 @@ void ACustom_player::Try_to_get_collided_component()
     if (m_is_interacting)
     {
         // 무기랑 충돌 시
-        if (m_collided_weapon)
+        if (mp_collided_weapon)
         {
             mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_EQUIP);
-            mp_weapon_manager->Equip(m_collided_weapon);
+            mp_weapon_manager->Equip(mp_collided_weapon);
             Set_item_UI(false);
         }
-        if (m_collided_vehicle)
+        if (mp_collided_vehicle)
         {
             //  차량 탑승 상태
-            if (m_collided_vehicle->Check_available_seat(this))
+            if (mp_collided_vehicle->Check_available_seat(this))
             {
-                m_collided_vehicle->is_collided = false;
+                mp_collided_vehicle->is_collided = false;
                 is_in_vehicle = true;
             }
-            m_collided_vehicle = nullptr;
+            mp_collided_vehicle = nullptr;
         }
     }
 }
@@ -304,19 +300,19 @@ void ACustom_player::Check_if_is_vehicle_near()
 
     if (!hitted_actor)
     {
-        if (m_collided_vehicle)
+        if (mp_collided_vehicle)
         {
-            m_collided_vehicle->is_collided = false;
-            m_collided_vehicle              = nullptr;
+            mp_collided_vehicle->is_collided = false;
+            mp_collided_vehicle              = nullptr;
         }
         return;
     }
-    if(hitted_actor->IsA(ACore_vehicle::StaticClass()))
+    if (hitted_actor->IsA(ACore_vehicle::StaticClass()))
     {
-        m_collided_vehicle = Cast<ACore_vehicle>(hitted_actor);
+        mp_collided_vehicle = Cast<ACore_vehicle>(hitted_actor);
         
-        if (m_collided_vehicle)
-            m_collided_vehicle->is_collided = true;
+        if (mp_collided_vehicle)
+            mp_collided_vehicle->is_collided = true;
     }
 }
 
@@ -347,14 +343,12 @@ void ACustom_player::Move_left_right(float _value)
 
 void ACustom_player::Look_up(float _value)
 {
-    //AddControllerPitchInput(_value);
     if (!m_is_inventory_opened)
         AddControllerPitchInput(_value);
 }
 
 void ACustom_player::Turn(float _value)
 {
-    //AddControllerYawInput(_value);
     if (!m_is_inventory_opened)
         AddControllerYawInput(_value);
 }
@@ -451,8 +445,6 @@ void ACustom_player::Aim()
     bool is_second_equipped = false;
     int  code               = 0;
 
-    //Verify_equipped_weapon(is_first_equipped, is_second_equipped);
-
     // 무기 장착하고 있지 않은 상태
     if (!is_first_equipped &&
         !is_second_equipped)
@@ -524,12 +516,12 @@ void ACustom_player::Equip_fifth_weapon()
 void ACustom_player::Set_item_UI(bool _is_player_near)
 {
     // 현재 무기가 있을 시
-    if (m_collided_weapon)
+    if (mp_collided_weapon)
     {
-        Cast<ABase_interaction>(m_collided_weapon)->is_player_near = _is_player_near;
+        Cast<ABase_interaction>(mp_collided_weapon)->is_player_near = _is_player_near;
 
         if (!_is_player_near)
-            m_collided_weapon = nullptr;
+            mp_collided_weapon = nullptr;
     }
 }
 
@@ -545,7 +537,7 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
     current_seat_type = e_seat_type::NONE;
     is_in_vehicle     = false;
     SetActorLocation(_exit_location);
-    p_spring_arm_comp->SetRelativeLocation(AGlobal::Get()->player_spring_arm_location);
+    p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 
@@ -558,7 +550,7 @@ void ACustom_player::Open_inventory()
     }
     else
     {
-        p_spring_arm_comp->SetRelativeRotation(AGlobal::Get()->player_spring_arm_rotation);
+        p_spring_arm_comp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
         dele_close_inventory.ExecuteIfBound();
         m_is_inventory_opened = false;
     }

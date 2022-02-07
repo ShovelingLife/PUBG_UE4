@@ -46,12 +46,7 @@ private:
     int           m_current_vehicle_count = 0;
 
 public:
-    // Sets default values for this actor's properties
     AData_table_manager();
-
-protected:
-    // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
 
 private:
     // 무기 데이터 초기화

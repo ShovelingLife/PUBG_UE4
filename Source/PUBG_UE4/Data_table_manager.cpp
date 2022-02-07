@@ -12,12 +12,6 @@ AData_table_manager::AData_table_manager()
     Init_vehicle_data();
 }
 
-// Called when the game starts or when spawned
-void AData_table_manager::BeginPlay()
-{
-    Super::BeginPlay();
-}
-
 void AData_table_manager::Init_weapon_data()
 {
     // CSV ·Îµå

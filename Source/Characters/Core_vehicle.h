@@ -64,7 +64,6 @@ protected:
         { e_seat_type::FOURTH,false },
         { e_seat_type::NONE,  false }
     };
-    class AUI_manager* mp_ui_manager;
     ACustom_player*    m_player;
     Fs_vehicle_data    m_vehicle_data;
                        
