@@ -60,7 +60,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
     if(_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         m_is_clicked = true;
-        ABase_interaction* p_tmp_weapon = Get_weapon();
+        ABase_interaction* p_tmp_weapon = mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index);
         int index = 0;
 
         if(p_tmp_weapon)
@@ -97,7 +97,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
     // 오른쪽 클릭 / 맵에다가 무기를 버림
     else if (_mouse_event.IsMouseButtonDown(EKeys::RightMouseButton))
     {
-        mp_weapon_manager->Drop(Get_weapon());
+        mp_weapon_manager->Drop(mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index));
         Reset_highlight_img();
     }
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_mouse_event, this, EKeys::LeftMouseButton);
@@ -108,39 +108,40 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry,
 {
     Super::NativeOnDragDetected(_geometry, _mouse_event, _out_operation);
 
-    if (p_item_slot_UI_class)
-    {
-        auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
-        FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
+    auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
+    FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
 
-        if (!p_slot)
-            return;
+    if (!p_slot)
+        return;
 
-        // 슬롯 설정
-        p_slot->item_data = m_item_data;
-        p_slot->Priority = 1;
-        p_slot->Set_as_cursor(mouse_pos);
+    // 슬롯 설정
+    p_slot->item_data = m_item_data;
+    p_slot->Priority = 1;
+    p_slot->Set_as_cursor(mouse_pos);
 
-        // 드래그 구현
-        auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
+    // 드래그 구현
+    auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
 
-        if (m_selected_weapon_index < 4)
-            p_drag_drop_operation->is_gun = true;
+    if (m_selected_weapon_index < 4)
+        p_drag_drop_operation->is_gun = true;
 
-        p_drag_drop_operation->p_slot_UI = p_slot;
-        p_drag_drop_operation->DefaultDragVisual = p_slot;
-        p_drag_drop_operation->Pivot = EDragPivot::MouseDown;
-        p_drag_drop_operation->item_data = m_item_data;
-        //p_slot->RemoveFromParent();
-        _out_operation = p_drag_drop_operation;
-        Reset_highlight_img();
-    }
+    p_drag_drop_operation->p_slot_UI         = p_slot;
+    p_drag_drop_operation->DefaultDragVisual = p_slot;
+    p_drag_drop_operation->Pivot             = EDragPivot::MouseDown;
+    p_drag_drop_operation->item_data         = m_item_data;
+    _out_operation = p_drag_drop_operation;
+    Reset_highlight_img();
 }
 
 bool UInventory_Weapon_Slot_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _drag_drop_event, UDragDropOperation* _in_operation)
 {
     Super::NativeOnDrop(_geometry, _drag_drop_event, _in_operation);
     m_is_clicked = false;
+    auto p_custom_drag_drop_operation = Cast<UCustom_drag_drop_operation>(_in_operation);
+    
+    if (p_custom_drag_drop_operation->wk_p_slot_obj.Get())
+        p_custom_drag_drop_operation->wk_p_slot_obj->MarkPendingKill();
+
     return true;
 }
 
@@ -295,21 +296,6 @@ void UInventory_Weapon_Slot_UI::Reset_highlight_img()
     m_selected_weapon_index = 0;
     Main_canvas_panel->AddChildToCanvas(Highlight_img);
     Highlight_img->SetVisibility(ESlateVisibility::Hidden);
-}
-
-ABase_interaction* UInventory_Weapon_Slot_UI::Get_weapon()
-{
-    ABase_interaction* p_tmp_weapon = nullptr;
-
-    switch (m_selected_weapon_index)
-    {
-    case 1: p_tmp_weapon = mp_weapon_manager->p_first_gun;  break;
-    case 2: p_tmp_weapon = mp_weapon_manager->p_second_gun; break;
-    case 3: p_tmp_weapon = mp_weapon_manager->p_pistol;     break;
-    case 4: p_tmp_weapon = mp_weapon_manager->p_melee;      break;
-    case 5: p_tmp_weapon = mp_weapon_manager->p_throwable;  break;
-    }
-    return p_tmp_weapon;
 }
 
 void UInventory_Weapon_Slot_UI::Set_slot_null()

@@ -44,7 +44,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Count_txt;
 
     FDele_check_for_slot dele_check_for_slot;
-    Fs_slot_item_data item_data;
+    Fs_slot_item_data    item_data;
 
 protected:
     virtual void NativeConstruct() override;
@@ -53,10 +53,6 @@ protected:
 
     // 아이템 설정 시
     virtual void NativeOnListItemObjectSet(UObject*);
-
-    virtual FReply NativeOnMouseButtonDown(const FGeometry&, const FPointerEvent&) override;
-
-    virtual void NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _pointer_event, class UDragDropOperation*& _operation) override;
 
 public:
     void Set_as_cursor(FVector2D);

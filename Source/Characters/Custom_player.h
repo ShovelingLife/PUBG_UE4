@@ -25,10 +25,10 @@ class CHARACTERS_API ACustom_player : public ACharacter
 
 private:
     // 현재 쓰여지는 오브젝트들
-    ASound_manager*  mp_sound_manager;
-    AWeapon_manager* mp_weapon_manager;
-    AActor*          mp_collided_weapon  = nullptr;
-    ACore_vehicle*   mp_collided_vehicle = nullptr;
+    UPROPERTY() ASound_manager*  mp_sound_manager;
+    UPROPERTY() AWeapon_manager* mp_weapon_manager;
+    UPROPERTY() AActor*          mp_collided_weapon  = nullptr;
+    UPROPERTY() ACore_vehicle*   mp_collided_vehicle = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          mp_audio_comp;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* mp_particle;
@@ -51,10 +51,10 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Camera) USpringArmComponent* p_spring_arm_comp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent* p_camera_comp = nullptr;
 
-    const float k_max_health = 100.f;
-    UPROPERTY(VisibleAnywhere, Category = Health) float current_health = 100;
-    UPROPERTY(VisibleAnywhere, Category = Oxygen) float current_oxygen = 1.f;
-    UPROPERTY(VisibleAnywhere, Category = State)  bool  is_sprinting = false;
+    const float k_max_health   = 100.f;
+    float       current_health = 100;
+    float       current_oxygen = 1.f;
+    bool        is_sprinting   = false;
 
     e_player_state current_state;
     bool           is_animation_playing  = false;
@@ -69,13 +69,10 @@ public:
     ACustom_player();
 
 private: 
-    // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-    // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 // 초기화 함수들

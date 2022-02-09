@@ -46,26 +46,34 @@ void UPlayer_State_UI::Update_aim_UI()
 void UPlayer_State_UI::Update_bullet_count_UI()
 {
     auto p_weapon_manager = p_player->Get_weapon_manager();
-    auto p_weapon         = p_weapon_manager->Get_weapon_type(p_weapon_manager->current_weapon_type);
+    auto p_weapon         = p_weapon_manager->Get_weapon(p_weapon_manager->current_weapon_type);
+
+    if (!p_weapon)
+        return;
 
     // 현재 및 최대 총알 개수 설정
-    if (p_weapon)
+    if (p_weapon->IsA<ACore_weapon>())
     {
-        Magazine_current_text->SetText(FText::FromString(FString::FromInt(p_weapon->weapon_data.current_bullet_count)));
-        Magazine_total_text->SetText(FText::FromString(FString::FromInt(p_weapon->weapon_data.max_bullet_count)));
+        auto p_gun = Cast<ACore_weapon>(p_weapon);
+        Magazine_current_text->SetText(FText::FromString(FString::FromInt(p_gun->weapon_data.current_bullet_count)));
+        Magazine_total_text->SetText(FText::FromString(FString::FromInt(p_gun->weapon_data.max_bullet_count)));
     }
 }
 
 void UPlayer_State_UI::Update_shoot_mode()
 {
     auto p_weapon_manager = p_player->Get_weapon_manager();
-    auto p_weapon         = p_weapon_manager->Get_weapon_type(p_weapon_manager->current_weapon_type);
+    auto p_weapon         = p_weapon_manager->Get_weapon(p_weapon_manager->current_weapon_type);
 
-    if (p_weapon &&
-        mp_UI_manager)
+    if (!p_weapon)
+        return;
+
+    if (mp_UI_manager &&
+        p_weapon->IsA<ACore_weapon>())
     {
+        auto p_gun = Cast<ACore_weapon>(p_weapon);
         BoltAction_img->SetVisibility(ESlateVisibility::Visible);
-        BoltAction_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_player_ui_tex[(int)p_weapon->gun_shoot_type]));
+        BoltAction_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_player_ui_tex[(int)p_gun->gun_shoot_type]));
     }
     else
         BoltAction_img->SetVisibility(ESlateVisibility::Hidden);

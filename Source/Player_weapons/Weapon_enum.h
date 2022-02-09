@@ -6,7 +6,7 @@
 
 enum class e_current_weapon_type
 {
-    FIRST,
+    FIRST = 1,
     SECOND,
     PISTOL,
     MELEE,

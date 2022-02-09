@@ -33,7 +33,6 @@ void ACore_weapon::NotifyActorEndOverlap(AActor* _collided_actor)
     ABase_interaction::NotifyActorEndOverlap(_collided_actor);
 }
 
-// Called every frame
 void ACore_weapon::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);

@@ -2,6 +2,8 @@
 #include "Item_slot_UI.h"
 #include "Custom_drag_drop_operation.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
@@ -11,10 +13,84 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
+void UInventory_list_UI::NativeConstruct()
+{
+    Super::NativeConstruct();
+    Get_item_list_width();
+}
+
 void UInventory_list_UI::NativeTick(const FGeometry& _geometry, float _delta_time)
 {
     Super::NativeTick(_geometry, _delta_time);
-    Change_highlight_img_pos();
+}
+
+FReply UInventory_list_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _mouse_event)
+{
+    Super::NativeOnMouseButtonDown(_geometry, _mouse_event);
+
+    // 왼쪽 클릭 / 마우스 커서 변경
+    if (_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
+    {
+        Highlight_img->SetVisibility(ESlateVisibility::Hidden);
+
+        if (p_slot_obj &&
+            p_slot_obj->IsSelected())
+        {
+            auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_mouse_event, this, EKeys::LeftMouseButton);
+            return reply.NativeReply;
+        }
+    }
+    return FReply::Handled();
+}
+
+FReply UInventory_list_UI::NativeOnMouseMove(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event)
+{
+    Super::NativeOnMouseMove(_geometry, _in_mouse_event);
+
+    // 움직일 때마다 현재 이미지의 위치를 구함    
+    FVector2D distance = Get_distance_between_slot_cursor();
+    //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, FString::Printf(TEXT("Distance posX : %f, Distance posY : %f"),distance.X, distance.Y));
+
+    if (World_txt->IsHovered()     ||
+        Inventory_txt->IsHovered() ||
+        Separator_img->IsHovered() ||
+        distance.Y <= 2.5f         ||
+        distance.Y >= 55.f)    
+        Highlight_img->SetVisibility(ESlateVisibility::Hidden);
+
+    return FReply::Handled();
+}
+
+void UInventory_list_UI::NativeOnMouseLeave(const FPointerEvent& _in_mouse_event)
+{
+    Super::NativeOnMouseLeave(_in_mouse_event);
+    Highlight_img->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _mouse_event, UDragDropOperation*& _out_operation)
+{
+    Super::NativeOnDragDetected(_geometry, _mouse_event, _out_operation);
+    
+    // 마우스 위치를 구함
+    auto p_slot         = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
+    FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
+
+    if (!p_slot ||
+        !p_slot_obj)
+        return;
+
+    // 슬롯 설정
+    p_slot->item_data = p_slot_obj->item_data;
+    p_slot->Priority  = 1;
+    p_slot->Set_as_cursor(mouse_pos);
+
+    // 드래그 구현
+    auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
+    p_drag_drop_operation->p_slot_UI         = p_slot;
+    p_drag_drop_operation->DefaultDragVisual = p_slot;
+    p_drag_drop_operation->Pivot             = EDragPivot::MouseDown;
+    p_drag_drop_operation->item_data         = p_slot_obj->item_data;
+    _out_operation  = p_drag_drop_operation;
 }
 
 bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _pointer_event, UDragDropOperation* _operation)
@@ -25,45 +101,13 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     if (!p_slot_UI)
         return false;
 
-    p_slot_UI->item_data = p_drag_operation->item_data;
-
-    FVector2D dummy_vector = FVector2D::ZeroVector;
-
-    // 월드 사이즈 박스 중앙점 위치 구함
-    FGeometry world_size_box_geometry  = World_list_size_box->GetCachedGeometry();
-    FVector2D world_size_box_pixel_pos = FVector2D::ZeroVector;
-    USlateBlueprintLibrary::LocalToViewport(GetWorld(), world_size_box_geometry, FVector2D::ZeroVector, world_size_box_pixel_pos, dummy_vector);
-    FVector2D world_size_box_half_size  = (USlateBlueprintLibrary::GetAbsoluteSize(world_size_box_geometry) / FVector2D(2.f));
-    FVector2D world_size_box_center_pos = world_size_box_pixel_pos + world_size_box_half_size;
-
-    // 인벤토리 사이즈 박스 중앙점 구함
-    FGeometry inventory_size_box_geometry  = Inventory_list_size_box->GetCachedGeometry();
-    FVector2D inventory_size_box_pixel_pos = FVector2D::ZeroVector;
-    USlateBlueprintLibrary::LocalToViewport(GetWorld(), inventory_size_box_geometry, FVector2D::ZeroVector, inventory_size_box_pixel_pos, dummy_vector);
-    FVector2D inventory_size_box_half_size  = (USlateBlueprintLibrary::GetAbsoluteSize(inventory_size_box_geometry) / FVector2D(2.f));
-    FVector2D inventory_size_box_center_pos = inventory_size_box_pixel_pos + inventory_size_box_half_size;
-
-    // 슬롯 이미지 중앙점 구함
-    FGeometry slot_image_geometry  = p_slot_UI->Main_horizontal_box->GetCachedGeometry();
-    FVector2D slot_image_pixel_pos = FVector2D::ZeroVector;
-    USlateBlueprintLibrary::LocalToViewport(GetWorld(), slot_image_geometry, FVector2D::ZeroVector, slot_image_pixel_pos, dummy_vector);
-    FVector2D slot_image_half_size  = (USlateBlueprintLibrary::GetAbsoluteSize(slot_image_geometry) / FVector2D(2.f));
-    FVector2D slot_image_center_pos = slot_image_pixel_pos + slot_image_half_size;
-
-    // 슬롯 이미지 - 월드 리스트 UI 중간값간 거리    
-    float image_world_size_box_distance     = FVector::Distance(FVector(slot_image_center_pos.X, slot_image_center_pos.Y, 0.f), 
-                                                                FVector(world_size_box_center_pos.X, world_size_box_center_pos.Y, 0.f));
-
-    // 슬롯 이미지 - 인벤토리 리스트 UI 중간값간 거리
-    float image_inventory_size_box_distance = FVector::Distance(FVector(slot_image_center_pos.X, slot_image_center_pos.Y, 0.f), 
-                                                                FVector(inventory_size_box_center_pos.X, inventory_size_box_center_pos.Y, 0.f));
-
-    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, FString::Printf(TEXT("image_world_size_box_distance : %f, image_inventory_size_box_distance : %f"), image_inventory_size_box_distance, image_world_size_box_distance));
+    // 마우스 위치 구하기
+    FVector2D mouse_pos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
     // 월드 리스트에 드롭
-    if (image_world_size_box_distance < image_inventory_size_box_distance)
+    if (mouse_pos.X > 100.f &&
+        mouse_pos.X < 325.f)
     {
-        //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, "World list");
         p_slot_UI->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
         World_list_view->AddItem(p_slot_UI);
         dele_set_weapon_slot_null.ExecuteIfBound();
@@ -71,7 +115,6 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     // 인벤토리 리스트에 드롭
     else
     {
-        //GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Green, "Inventory list");
         if (p_drag_operation->is_gun)
             return false;
 
@@ -82,57 +125,76 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     return true;
 }
 
-void UInventory_list_UI::Check_for_hovered_item(UItem_Slot_UI* _p_slot_obj)
+void UInventory_list_UI::Get_item_list_width()
 {
-    if (m_hovered_list_type == e_hovered_list_type::WORLD ||
-        m_hovered_list_type == e_hovered_list_type::INVENTORY)
-        return;
-
-    // 월드 리스트 뷰 감시
-    int world_list_slot_index = World_list_view->GetIndexForItem(_p_slot_obj);
-    
-    if(world_list_slot_index != -1)
+    // 월드 사이즈 박스 넓이 구함
+    if (auto p_world_list_canvas_slot = Cast<UCanvasPanelSlot>(World_list_size_box->Slot))
     {
-        World_list_view->GetItemAt(world_list_slot_index);
-        m_hovered_list_type = e_hovered_list_type::WORLD;
-        wk_p_slot_obj = MakeWeakObjectPtr(_p_slot_obj);
-        return;
+        FVector2D world_size_box_pos = p_world_list_canvas_slot->GetPosition();
+        FVector2D world_size_box_size = p_world_list_canvas_slot->GetSize();
+        m_world_size_box_width = world_size_box_pos.X + world_size_box_size.X;
     }
-    // 인벤토리 리스트 뷰 감시
-    int inventory_list_slot_index = Inventory_list_view->GetIndexForItem(_p_slot_obj);
-
-    if (inventory_list_slot_index != -1)
+    // 인벤토리 사이즈 박스 넓이 구함    
+    if (auto p_inventory_list_canvas_slot = Cast<UCanvasPanelSlot>(Inventory_list_size_box->Slot))
     {
-        Inventory_list_view->GetItemAt(inventory_list_slot_index);
-        m_hovered_list_type = e_hovered_list_type::INVENTORY;
-        wk_p_slot_obj = MakeWeakObjectPtr(_p_slot_obj);
+        FVector2D inventory_size_box_pos = p_inventory_list_canvas_slot->GetPosition();
+        FVector2D inventory_size_box_size = p_inventory_list_canvas_slot->GetSize();
+        m_inventory_size_box_width = inventory_size_box_pos.X + inventory_size_box_size.X;
     }
 }
 
-void UInventory_list_UI::Change_highlight_img_pos()
+FVector2D UInventory_list_UI::Get_distance_between_slot_cursor()
 {
-    if (m_hovered_list_type == e_hovered_list_type::NONE)
-        return;
+    // 마우스 위치를 구함   
+    FVector2D mouse_pos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
-    FVector2D move_pos     = FVector2D::ZeroVector;
-    FVector2D dummy_vector = FVector2D::ZeroVector;
-
-    // 아이템이 널이 아닐 시 슬롯 접근 후 이미지를 해당 위치로 옮김
-    if (auto p_item = Cast<UItem_Slot_UI>(wk_p_slot_obj.Get()))
+    if (p_slot_obj)
     {
-        if (!p_item->IsHovered())
-        {
-            Highlight_img->SetVisibility(ESlateVisibility::Hidden);
-            m_hovered_list_type = e_hovered_list_type::NONE;
-            wk_p_slot_obj->MarkPendingKill();
-            return;
-        }
-        USlateBlueprintLibrary::LocalToViewport(GetWorld(), p_item->GetCachedGeometry(), FVector2D::ZeroVector, dummy_vector, move_pos);
-        
-        if(auto p_canvas_panel_slot = Cast<UCanvasPanelSlot>(Highlight_img->Slot))
-        {
-            p_canvas_panel_slot->SetPosition(move_pos);
-            Highlight_img->SetVisibility(ESlateVisibility::Visible);
-        }
+        // 현재 이미지 위치를 구함
+        FVector2D img_pos = FVector2D::ZeroVector, dummy_vec;
+        auto cached_geometry = p_slot_obj->GetCachedGeometry();
+        USlateBlueprintLibrary::LocalToViewport(GetWorld(), cached_geometry, FVector2D::ZeroVector, dummy_vec, img_pos);
+
+        // 마우스 좌표 - 이미지 좌표 간 거리
+        float posX = 0.f, posY = 0.f;
+
+        if (img_pos.X > mouse_pos.X)
+            posX = img_pos.X - mouse_pos.X;
+
+        else
+            posX = mouse_pos.X - img_pos.X;
+
+        if (img_pos.Y > mouse_pos.Y)
+            posY = img_pos.Y - mouse_pos.Y;
+
+        else
+            posY = mouse_pos.Y - img_pos.Y;
+
+        return FVector2D(posX, posY);
     }
+    return FVector2D::ZeroVector;
+}
+
+// this가 넘어오므로 널 체크 불필요
+void UInventory_list_UI::Check_for_hovered_item(UItem_Slot_UI* _p_slot_obj)
+{
+    if (World_list_view->GetIndexForItem(_p_slot_obj) != -1)
+        GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Cyan, "Found slot");
+
+    // 현재 이미지 위치를 구함
+    FVector2D move_pos = FVector2D::ZeroVector, dummy_vec;
+    auto cached_geometry = Cast<UItem_Slot_UI>(_p_slot_obj)->GetCachedGeometry();
+    USlateBlueprintLibrary::LocalToViewport(GetWorld(), cached_geometry, FVector2D::ZeroVector, dummy_vec, move_pos);
+    move_pos.X = 0.f;
+    //GEngine->AddOnScreenDebugMessage(7, 2.f, FColor::Red, FString::SanitizeFloat(move_pos.Y));
+
+    if (move_pos.Y > 87.f)
+        move_pos.Y = move_pos.Y + 5;
+        //move_pos.Y = FMath::Abs(move_pos.Y + 4);
+
+    if (auto p_canvas_panel_slot = Cast<UCanvasPanelSlot>(Highlight_img->Slot))
+        p_canvas_panel_slot->SetPosition(move_pos);
+
+    Highlight_img->SetVisibility(ESlateVisibility::Visible);
+    p_slot_obj = _p_slot_obj;
 }

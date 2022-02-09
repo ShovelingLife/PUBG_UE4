@@ -20,14 +20,13 @@ class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
 private:
     class AUI_manager*     mp_UI_manager           = nullptr;
     class AWeapon_manager* mp_weapon_manager       = nullptr;
-    TSubclassOf<UUserWidget*> m_slot_class;
     Fs_slot_item_data      m_item_data;
           int              m_selected_weapon_index = 0;
           bool             m_is_clicked            = false;
           bool             m_is_initialized        = false;
 
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Highlight_img;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Highlight_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* Main_canvas_panel;
             
     //1¹ø ½½·Ô    
@@ -96,8 +95,6 @@ private:
     void Update_weapon_UI_highlight_img();
 
     void Reset_highlight_img();
-
-    class ABase_interaction* Get_weapon();
 
 public:
     // ½½·Ô ÃÊ±âÈ­

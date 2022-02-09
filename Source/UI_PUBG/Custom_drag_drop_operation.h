@@ -12,6 +12,7 @@ class UI_PUBG_API UCustom_drag_drop_operation : public UDragDropOperation
 	GENERATED_BODY()
 	
 public:
+	TWeakObjectPtr<UItem_Slot_UI> wk_p_slot_obj;
     UItem_Slot_UI*	  p_slot_UI = nullptr;
     Fs_slot_item_data item_data;
 	bool			  is_gun	= false;

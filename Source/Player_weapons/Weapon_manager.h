@@ -30,11 +30,11 @@ private:
     bool		m_is_shooting			= false;
 
 public:
-	ACore_weapon*			p_first_gun			= nullptr;
-    ACore_weapon*			p_second_gun		= nullptr;
-    ACore_weapon*			p_pistol			= nullptr;
-    ACore_melee_weapon*		p_melee				= nullptr;
-    ACore_throwable_weapon* p_throwable			= nullptr;
+	UPROPERTY() ACore_weapon*			p_first_gun			= nullptr;
+    UPROPERTY() ACore_weapon*			p_second_gun		= nullptr;
+    UPROPERTY() ACore_weapon*			p_pistol			= nullptr;
+    UPROPERTY() ACore_melee_weapon*		p_melee				= nullptr;
+    UPROPERTY() ACore_throwable_weapon* p_throwable			= nullptr;
     e_current_weapon_type	current_weapon_type = e_current_weapon_type::NONE;
 	bool					arr_is_weapon_equipped[5]{ false };
 	bool					is_shooting			= false;
@@ -101,7 +101,7 @@ public:
     int Get_weapon_max_bullet_count(e_current_weapon_type);
 
     // 무기 종류를 가져옴
-    ACore_weapon* Get_weapon_type(e_current_weapon_type);
+	ABase_interaction* Get_weapon(e_current_weapon_type);
 
 	// ------- UI 관련 함수 -------
 

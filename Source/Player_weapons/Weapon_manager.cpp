@@ -165,14 +165,16 @@ void AWeapon_manager::Equip(AActor* _p_weapon)
 
 void AWeapon_manager::Shoot()
 {
-    ACore_weapon* tmp_weapon = Get_weapon_type(current_weapon_type);
+    ABase_interaction* tmp_weapon = Get_weapon(current_weapon_type);
 
-    if (m_is_reloading)
+    if (m_is_reloading ||
+        !tmp_weapon)
         return;
 
-    if (tmp_weapon)
+    if (tmp_weapon->IsA<ACore_weapon>())
     {
-        auto weapon_data = tmp_weapon->weapon_data;
+        auto p_gun = Cast<ACore_weapon>(tmp_weapon);
+        auto weapon_data = p_gun->weapon_data;
 
         // 총알 부족
         if (weapon_data.current_bullet_count == 0)
@@ -191,7 +193,7 @@ void AWeapon_manager::Shoot()
 
         // 레이캐스트 적용
         APlayerCameraManager* camera_manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-        FVector               begin_pos = tmp_weapon->p_skeletal_mesh_comp->GetSocketLocation("Muzzle_socket");
+        FVector               begin_pos = p_gun->p_skeletal_mesh_comp->GetSocketLocation("Muzzle_socket");
         FVector               forward_vec = camera_manager->GetActorForwardVector() * 500;
         FHitResult            hit_result;
         FVector               end_pos = begin_pos + forward_vec;
@@ -202,12 +204,12 @@ void AWeapon_manager::Shoot()
         //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Cyan, bullet_rotation.ToString());
         AActor* bullet = nullptr;
 
-        if (tmp_weapon->p_bullet)
+        if (p_gun->p_bullet)
         {
             // 총알 회전값 수정 요망
             auto test_rotation = FRotator::MakeFromEuler(FVector(end_pos.X, bullet_rotation.Pitch, bullet_rotation.Yaw));
             test_rotation.Yaw += 100.f;
-            bullet = GetWorld()->SpawnActor(tmp_weapon->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
+            bullet = GetWorld()->SpawnActor(p_gun->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
             //GEngine->AddOnScreenDebugMessage(0, 5.f, FColor::Cyan, test_rotation.ToString());
             /*ACore_bullet* core_bullet = Cast<ACore_bullet>(bullet);
 
@@ -217,19 +219,20 @@ void AWeapon_manager::Shoot()
         //if(another_character)
 
         // 파티클 적용
-        tmp_weapon->p_gun_particle->Activate(true);
+        p_gun->p_gun_particle->Activate(true);
     }
 }
 
 void AWeapon_manager::Reload()
 {
-    ACore_weapon* tmp_weapon = Get_weapon_type(current_weapon_type);
-    int           result     = 0;
+    ABase_interaction* tmp_weapon = Get_weapon(current_weapon_type);
+    
 
-    if (tmp_weapon)
+    if (auto p_gun = Cast<ACore_weapon>(tmp_weapon))
     {
+        int result = 0;
         m_is_reloading   = true;
-        auto weapon_data = tmp_weapon->weapon_data;
+        auto weapon_data = p_gun->weapon_data;
 
         // 허용 총알 개수가 똑같을 시
         if      (weapon_data.current_bullet_count == weapon_data.max_bullet_count)
@@ -241,7 +244,7 @@ void AWeapon_manager::Reload()
 
         // 전체 총알 소모 후 장전
         else
-                 result = tmp_weapon->weapon_data.max_bullet_count;
+                 result = p_gun->weapon_data.max_bullet_count;
 
         weapon_data.current_max_bullet_count -= result;
         weapon_data.current_bullet_count     += result;
@@ -322,12 +325,17 @@ void AWeapon_manager::Swap(ABase_interaction* _current_weapon, AActor* _new_weap
 
 void AWeapon_manager::Change_shoot_mode()
 {
-    auto p_weapon           = Get_weapon_type(current_weapon_type);
+    auto p_weapon           = Get_weapon(current_weapon_type);
     int  max_gun_shoot_type = 0;
 
-    if (p_weapon)
+    if (!p_weapon)
+        return;
+
+    // 총기일 시
+    if (p_weapon->IsA<ACore_weapon>())
     {
-        FString weapon_group = p_weapon->weapon_data.weapon_group_type;
+        auto p_gun = Cast<ACore_weapon>(p_weapon);
+        FString weapon_group = p_gun->weapon_data.weapon_group_type;
 
         // 단발/점사/연사 가능
         if      (weapon_group == "Assault" ||
@@ -345,14 +353,14 @@ void AWeapon_manager::Change_shoot_mode()
                  max_gun_shoot_type = (int)e_gun_shoot_type::SINGLE;
 
         // 격발 방식 변경
-        int current_gun_shoot_type = (int)p_weapon->gun_shoot_type;
+        int current_gun_shoot_type = (int)p_gun->gun_shoot_type;
 
-        if      ((int)p_weapon->gun_shoot_type < max_gun_shoot_type)
-                 p_weapon->gun_shoot_type = (e_gun_shoot_type)++current_gun_shoot_type;
+        if      ((int)p_gun->gun_shoot_type < max_gun_shoot_type)
+                 p_gun->gun_shoot_type = (e_gun_shoot_type)++current_gun_shoot_type;
 
         // 초기화
-        else if ((int)p_weapon->gun_shoot_type == max_gun_shoot_type)
-                 p_weapon->gun_shoot_type = e_gun_shoot_type::SINGLE;
+        else if ((int)p_gun->gun_shoot_type == max_gun_shoot_type)
+                 p_gun->gun_shoot_type = e_gun_shoot_type::SINGLE;
     }
 }
 
@@ -417,10 +425,13 @@ void AWeapon_manager::Check_for_equipped_weapon()
 
 int AWeapon_manager::Get_weapon_max_bullet_count(e_current_weapon_type _weapon_type)
 {
-    ACore_weapon* tmp_weapon = Get_weapon_type(_weapon_type);
+    ABase_interaction* tmp_weapon = Get_weapon(_weapon_type);
 
-    if (tmp_weapon)
-        return tmp_weapon->weapon_data.current_max_bullet_count;
+    if (!tmp_weapon)
+        return 0;
+
+    if (tmp_weapon->IsA<ACore_weapon>())
+        return Cast<ACore_weapon>(tmp_weapon)->weapon_data.current_max_bullet_count;
 
     else
         return 1;
@@ -501,15 +512,17 @@ void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _current_w
     _current_weapon->SetActorTransform(_new_pos);
 }
 
-ACore_weapon* AWeapon_manager::Get_weapon_type(e_current_weapon_type _weapon_type)
+ABase_interaction* AWeapon_manager::Get_weapon(e_current_weapon_type _weapon_type)
 {
-    ACore_weapon* tmp_weapon = nullptr;
+    ABase_interaction* tmp_weapon = nullptr;
 
     switch (_weapon_type)
     {
-    case e_current_weapon_type::FIRST:  tmp_weapon = p_first_gun;  break;
-    case e_current_weapon_type::SECOND: tmp_weapon = p_second_gun; break;
-    case e_current_weapon_type::PISTOL: tmp_weapon = p_pistol;     break;
+    case e_current_weapon_type::FIRST:      tmp_weapon = p_first_gun;  break;
+    case e_current_weapon_type::SECOND:     tmp_weapon = p_second_gun; break;
+    case e_current_weapon_type::PISTOL:     tmp_weapon = p_pistol;     break;
+    case e_current_weapon_type::MELEE:      tmp_weapon = p_melee;      break;
+    case e_current_weapon_type::THROWABLE:  tmp_weapon = p_throwable;  break;
     }
     return tmp_weapon;
 }
