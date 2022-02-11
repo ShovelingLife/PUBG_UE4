@@ -37,9 +37,6 @@ void AInventory_manager::BeginPlay()
 void AInventory_manager::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-    if (!mp_UI_manager)
-        mp_UI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
 }
 
 void AInventory_manager::Init_inventory_UI()

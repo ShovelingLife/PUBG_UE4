@@ -1,0 +1,56 @@
+\hypertarget{_data__table__manager_8h_source}{}\doxysection{Data\+\_\+table\+\_\+manager.\+h}
+\label{_data__table__manager_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Data\_table\_manager.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Data\_table\_manager.h}}
+\mbox{\hyperlink{_data__table__manager_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00011}00011 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_vehicle__data_8h}{Vehicle\_data.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_other__weapon__data_8h}{Other\_weapon\_data.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_weapon__data_8h}{Weapon\_data.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00016}00016 \textcolor{preprocessor}{\#include "{}Data\_table\_manager.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00018}00018 \textcolor{keyword}{class }UDataTable;}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00019}00019 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00020}00020 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00021}\mbox{\hyperlink{class_a_data__table__manager}{00021}} class PUBG\_UE4\_API \mbox{\hyperlink{class_a_data__table__manager}{AData\_table\_manager}} : public AActor}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00022}00022 \{}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00023}00023     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00024}00024         }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00025}00025 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00029}\mbox{\hyperlink{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}{00029}}     \textcolor{keyword}{static} TArray<Fs\_weapon\_data>       \mbox{\hyperlink{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}{arr\_weapon\_data}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00030}\mbox{\hyperlink{class_a_data__table__manager_a849ad15c17f660feb4cd9ca0df58ba06}{00030}}     \textcolor{keyword}{static} TArray<Fs\_other\_weapon\_data> \mbox{\hyperlink{class_a_data__table__manager_a849ad15c17f660feb4cd9ca0df58ba06}{arr\_other\_weapon\_data}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00031}\mbox{\hyperlink{class_a_data__table__manager_a52a4a7487abd30f0f5497881cbbf8eb8}{00031}}     \textcolor{keyword}{static} TArray<Fs\_vehicle\_data>      \mbox{\hyperlink{class_a_data__table__manager_a52a4a7487abd30f0f5497881cbbf8eb8}{arr\_vehicle\_data}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00032}00032 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00033}00033 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00037}\mbox{\hyperlink{class_a_data__table__manager_a94110bacd306219adbaf2f933f5a5352}{00037}}     \mbox{\hyperlink{class_a_data__table__manager_a94110bacd306219adbaf2f933f5a5352}{UPROPERTY}}(VisibleAnywhere) UDataTable* mp\_weapon\_data\_table;}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00038}00038 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00039}\mbox{\hyperlink{class_a_data__table__manager_ad48f97de5b1d23a43509702f139dfdf3}{00039}}     \textcolor{keyword}{const} FString mk\_weapon\_mesh\_path       = \textcolor{stringliteral}{"{}/Game/AdvanceWeaponPack/Mesh/Weapon/"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00040}\mbox{\hyperlink{class_a_data__table__manager_a687f2aaa9512cbccc41c0e8d6365af4c}{00040}}     \textcolor{keyword}{const} FString mk\_bullet\_bp\_path         = \textcolor{stringliteral}{"{}/Game/Blueprints/Weapons/Ammo/BP\_"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00041}\mbox{\hyperlink{class_a_data__table__manager_a65205cd03890315f1395a817b801746f}{00041}}     \textcolor{keyword}{const} FString mk\_rendertarget\_mesh\_path = \textcolor{stringliteral}{"{}/Game/Materials/Weapon\_UI/UI\_material\_"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00042}\mbox{\hyperlink{class_a_data__table__manager_a9b41aff8a2ce04879cac2b2e4e14d377}{00042}}     \textcolor{keyword}{const} FString mk\_weapon\_sound\_path      = \textcolor{stringliteral}{"{}/Game/SFX/Gun\_sounds/"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00047}\mbox{\hyperlink{class_a_data__table__manager_a093b07fc7255dbf74957bfbd1ca0d9a7}{00047}}     \mbox{\hyperlink{class_a_data__table__manager_a093b07fc7255dbf74957bfbd1ca0d9a7}{UPROPERTY}}(VisibleAnywhere) UDataTable* mp\_other\_weapon\_data\_table;}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00048}00048 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00049}\mbox{\hyperlink{class_a_data__table__manager_a0863bfd4c893e96e766c24cda01342f7}{00049}}     \textcolor{keyword}{const} FString mk\_other\_weapon\_mesh\_path = \textcolor{stringliteral}{"{}/Game/Items/Weapons/"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00050}00050 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00054}\mbox{\hyperlink{class_a_data__table__manager_aa44cae0f8e37fb34aea3fbcd8c97c578}{00054}}     \mbox{\hyperlink{class_a_data__table__manager_aa44cae0f8e37fb34aea3fbcd8c97c578}{UPROPERTY}}(VisibleAnywhere) UDataTable* mp\_vehicle\_data\_table;}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00055}00055 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00056}\mbox{\hyperlink{class_a_data__table__manager_a34571dcd876edb5dc9a2c09d7c0a45d6}{00056}}     \textcolor{keyword}{const} FString mk\_vehicle\_mesh\_path    = \textcolor{stringliteral}{"{}/Game/Characters/Vehicles/Skeletons/"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00057}\mbox{\hyperlink{class_a_data__table__manager_a13c7c72d722e8c2075566e683a5cb8a7}{00057}}     \textcolor{keyword}{const} FString mk\_anim\_instance\_path   = \textcolor{stringliteral}{"{}/Game/Blueprints/Vehicles/"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00058}\mbox{\hyperlink{class_a_data__table__manager_aad74de6c2fb0540e02fef1db75713c9e}{00058}}     \textcolor{keyword}{const} FString mk\_vehicle\_sound\_path   = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00059}\mbox{\hyperlink{class_a_data__table__manager_ad8d74dcf317ae2ced3e83789894bda79}{00059}}     \textcolor{keywordtype}{int}           m\_current\_vehicle\_count = 0;}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00061}00061 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00062}00062     \mbox{\hyperlink{class_a_data__table__manager}{AData\_table\_manager}}();}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00063}00063 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00064}00064 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00068}00068     \textcolor{keywordtype}{void} Init\_weapon\_data();}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00073}00073     \textcolor{keywordtype}{void} Init\_other\_weapon\_data();}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00074}00074 }
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00078}00078     \textcolor{keywordtype}{void} Init\_vehicle\_data();}
+\DoxyCodeLine{\Hypertarget{_data__table__manager_8h_source_l00079}00079 \};}
+
+\end{DoxyCode}

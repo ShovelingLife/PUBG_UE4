@@ -1,4 +1,4 @@
-#include "Current_Weapon_UI.h"
+ï»¿#include "Current_Weapon_UI.h"
 #include "UI_manager.h"
 #include "Characters/Custom_player.h"
 #include "Player_weapons/Weapon_manager.h"
@@ -56,10 +56,10 @@ void UCurrent_Weapon_UI::Update_icon_color()
     if (!mp_weapon_manager)
         return;
 
-    // ÇöÀç ¼±ÅÃµÈ ¹«±â
+    // í˜„ì¬ ì„ íƒëœ ë¬´ê¸°
     e_current_weapon_type current_selected_weapon = mp_weapon_manager->current_weapon_type;
 
-    // ¼±ÅÃ ÇØÁ¦ ¹× Åº¾ËÀÌ ºñ¾îÀÖÀ» ½Ã
+    // ì„ íƒ í•´ì œ ë° íƒ„ì•Œì´ ë¹„ì–´ìˆì„ ì‹œ
     for (int i = 0; i < 3; i++)
     {
         if (mp_weapon_manager->Get_weapon_max_bullet_count((e_current_weapon_type)i) == 0)
@@ -71,10 +71,10 @@ void UCurrent_Weapon_UI::Update_icon_color()
     p_arr_img[3]->SetColorAndOpacity(mk_unselected_color);
     p_arr_img[4]->SetColorAndOpacity(mk_unselected_color);
 
-    // ¼±ÅÃÇÏ°í ÀÖÀ» ½Ã
+    // ì„ íƒí•˜ê³  ìˆì„ ì‹œ
     if(current_selected_weapon != e_current_weapon_type::NONE)
     {
-        // ¼±ÅÃ ¹× Åº¾ËÀÌ ºñ¾îÀÖÀ» ½Ã
+        // ì„ íƒ ë° íƒ„ì•Œì´ ë¹„ì–´ìˆì„ ì‹œ
         if (mp_weapon_manager->Get_weapon_max_bullet_count((e_current_weapon_type)current_selected_weapon) == 0)
             p_arr_img[(int)current_selected_weapon]->SetColorAndOpacity(mk_selected_no_ammo_color);
 
@@ -98,13 +98,13 @@ void UCurrent_Weapon_UI::Set_icon_UI()
     if (mp_weapon_manager->p_pistol)
         Third_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[(int)mp_weapon_manager->p_pistol->weapon_type]);
     
-    //// ³×¹ø¤Š ¹«±â
+    //// ë„¤ë²ˆì¨° ë¬´ê¸°
     //if (mp_weapon_manager->p_melee)
     //{
     //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_melee->weapon_type);
     //    Fourth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);
     //}
-    //// ´Ù¼¸¹øÂ° ¹«±â
+    //// ë‹¤ì„¯ë²ˆì§¸ ë¬´ê¸°
     //if (mp_weapon_manager->p_throwable)
     //{
     //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_throwable->weapon_type);

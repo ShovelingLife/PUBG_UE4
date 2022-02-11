@@ -1,0 +1,64 @@
+\hypertarget{_item___slot___u_i_8h_source}{}\doxysection{Item\+\_\+\+Slot\+\_\+\+UI.\+h}
+\label{_item___slot___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Item\_Slot\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Item\_Slot\_UI.h}}
+\mbox{\hyperlink{_item___slot___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Blueprint/IUserObjectListEntry.h"{}}}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}Item\_Slot\_UI.generated.h"{}} }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00017}\mbox{\hyperlink{_item___slot___u_i_8h_aeb85883eba73a1b18645d239e06d8cd3}{00017}} \mbox{\hyperlink{_item___slot___u_i_8h_aeb85883eba73a1b18645d239e06d8cd3}{DECLARE\_DELEGATE\_OneParam}}(FDele\_check\_for\_slot, UObject*)}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00018}00018 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00019}00019 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00020}00020 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00021}00021 \textcolor{keyword}{class }USizeBox;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00022}00022 \textcolor{keyword}{class }UBorder;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00023}00023 \textcolor{keyword}{class }UHorizontalBox;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00028}00028 USTRUCT()}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00029}\mbox{\hyperlink{struct_fs__slot__item__data}{00029}} struct \mbox{\hyperlink{struct_fs__slot__item__data}{Fs\_slot\_item\_data}}}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00030}00030 \{}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00031}00031     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00032}00032 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00033}00033 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00034}\mbox{\hyperlink{struct_fs__slot__item__data_af3bfa7230f3565036140a7dff19d4944}{00034}}     FString name = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00035}\mbox{\hyperlink{struct_fs__slot__item__data_ab95e37d0a2aa6f7301eb9fef34517a2c}{00035}}     \textcolor{keywordtype}{int}     image\_index = 0;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00036}\mbox{\hyperlink{struct_fs__slot__item__data_aec2919437f24b8c3a8d16d5dfc507b7b}{00036}}     \textcolor{keywordtype}{int}     count = 0;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00038}00038 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00039}\mbox{\hyperlink{struct_fs__slot__item__data_a9ce1cca9e5878efa0dee4c07bc056db3}{00039}}     \mbox{\hyperlink{struct_fs__slot__item__data_a9ce1cca9e5878efa0dee4c07bc056db3}{Fs\_slot\_item\_data}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00040}00040 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00045}\mbox{\hyperlink{struct_fs__slot__item__data_a3cfb0607fd691b2e3c24487ded535b1d}{00045}}     \mbox{\hyperlink{struct_fs__slot__item__data_a3cfb0607fd691b2e3c24487ded535b1d}{Fs\_slot\_item\_data}}(FString \_name, \textcolor{keywordtype}{int} \_image\_index, \textcolor{keywordtype}{int} \_count = 1) : name(\_name), image\_index(\_image\_index), count(\_count) \{ \}}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00046}00046 \};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00047}00047 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00048}00048 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00049}\mbox{\hyperlink{class_u_item___slot___u_i}{00049}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_item___slot___u_i}{UItem\_Slot\_UI}} : public UUserWidget, public IUserObjectListEntry}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00050}00050 \{}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00051}00051     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00052}00052     }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00053}00053 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00055}\mbox{\hyperlink{class_u_item___slot___u_i_ad5999dbb1e710a4b15b4055e1a1d196d}{00055}}     \mbox{\hyperlink{class_u_item___slot___u_i_ad5999dbb1e710a4b15b4055e1a1d196d}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UHorizontalBox* Main\_horizontal\_box;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00056}\mbox{\hyperlink{class_u_item___slot___u_i_a763973e6380147675c56b0ea320204d7}{00056}}     \mbox{\hyperlink{class_u_item___slot___u_i_a763973e6380147675c56b0ea320204d7}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) USizeBox*       Background\_size\_box;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00057}\mbox{\hyperlink{class_u_item___slot___u_i_a642f5432848cee295580e3cd559bea5c}{00057}}     \mbox{\hyperlink{class_u_item___slot___u_i_a642f5432848cee295580e3cd559bea5c}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UBorder*        Item\_border;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00058}\mbox{\hyperlink{class_u_item___slot___u_i_a1d09f2b0948c1defac67b68ab4db8498}{00058}}     \mbox{\hyperlink{class_u_item___slot___u_i_a1d09f2b0948c1defac67b68ab4db8498}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*         Item\_img;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00059}\mbox{\hyperlink{class_u_item___slot___u_i_a1190cbc4b257a71ffd078078247fa71f}{00059}}     \mbox{\hyperlink{class_u_item___slot___u_i_a1190cbc4b257a71ffd078078247fa71f}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Name\_txt;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00060}\mbox{\hyperlink{class_u_item___slot___u_i_adf1b8e6819ebda01976a4a19f9c7cf86}{00060}}     \mbox{\hyperlink{class_u_item___slot___u_i_adf1b8e6819ebda01976a4a19f9c7cf86}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Count\_txt;}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00061}00061 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00062}\mbox{\hyperlink{class_u_item___slot___u_i_a179b396d1dbd677967ad226ec4e5cc31}{00062}}     FDele\_check\_for\_slot \mbox{\hyperlink{class_u_item___slot___u_i_a179b396d1dbd677967ad226ec4e5cc31}{dele\_check\_for\_slot}};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00063}\mbox{\hyperlink{class_u_item___slot___u_i_a70b5d535763f97d1bd64cf7e982dd313}{00063}}     \mbox{\hyperlink{struct_fs__slot__item__data}{Fs\_slot\_item\_data}}    \mbox{\hyperlink{class_u_item___slot___u_i_a70b5d535763f97d1bd64cf7e982dd313}{item\_data}};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00065}00065 \textcolor{keyword}{protected}:    }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00066}00066     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00067}00067 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00072}00072     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\& \_geometry, \textcolor{keywordtype}{float} \_delta\_time) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00073}00073 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00078}00078     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NativeOnListItemObjectSet(UObject* \_p\_obj);}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00079}00079 }
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00080}00080 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00085}00085     \textcolor{keywordtype}{void} Set\_as\_cursor(FVector2D \_pos);}
+\DoxyCodeLine{\Hypertarget{_item___slot___u_i_8h_source_l00086}00086 \};}
+
+\end{DoxyCode}

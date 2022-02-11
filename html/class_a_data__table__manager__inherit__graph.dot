@@ -1,0 +1,9 @@
+digraph "AData_table_manager"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{AData_table_manager\n|+ arr_weapon_data\l+ arr_other_weapon_data\l+ arr_vehicle_data\l- mk_weapon_mesh_path\l- mk_bullet_bp_path\l- mk_rendertarget_mesh_path\l- mk_weapon_sound_path\l- mk_other_weapon_mesh_path\l- mk_vehicle_mesh_path\l- mk_anim_instance_path\l- mk_vehicle_sound_path\l- m_current_vehicle_count\l|+ AData_table_manager()\l- UPROPERTY()\l- UPROPERTY()\l- UPROPERTY()\l- Init_weapon_data()\l- Init_other_weapon_data()\l- Init_vehicle_data()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

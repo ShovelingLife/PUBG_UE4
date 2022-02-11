@@ -1,0 +1,16 @@
+digraph "ACore_bullet::Init"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ACore_bullet::Init",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="총알 오브젝트 초기화"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ACore_bullet::Init\l_collider",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__bullet.html#adca285496270be76ccf3fcfb73590edf",tooltip="충돌체 컴포넌트 초기화"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ACore_bullet::OnHit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__bullet.html#af593257f19121b4fc6cda772d48c1332",tooltip="충돌 시 오브젝트 소멸 (UFUNCTION)"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ACore_bullet::Init_mesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__bullet.html#a0dcf26a937ad8970056365fb79eb5b93",tooltip="메시 컴포넌트 초기화"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="ACore_bullet::Init\l_projectile_movement\l_component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__bullet.html#a2314271de5432d4b81ab9ff590de0668",tooltip="총알 컴포넌트 초기화"];
+}

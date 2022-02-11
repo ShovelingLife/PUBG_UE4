@@ -15,7 +15,6 @@ ACore_weapon::ACore_weapon()
     PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
 void ACore_weapon::BeginPlay()
 {
     Super::BeginPlay();

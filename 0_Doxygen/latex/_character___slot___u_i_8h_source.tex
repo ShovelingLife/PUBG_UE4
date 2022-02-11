@@ -1,0 +1,48 @@
+\hypertarget{_character___slot___u_i_8h_source}{}\doxysection{Character\+\_\+\+Slot\+\_\+\+UI.\+h}
+\label{_character___slot___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Character\_Slot\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Character\_Slot\_UI.h}}
+\mbox{\hyperlink{_character___slot___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00001}00001 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00003}00003 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00005}00005 \textcolor{preprocessor}{\#include "{}Character\_Slot\_UI.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00007}00007 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00008}00008 \textcolor{keyword}{class }UProgressBar;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00009}00009 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00011}00011 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00012}\mbox{\hyperlink{class_u_character___slot___u_i}{00012}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_character___slot___u_i}{UCharacter\_Slot\_UI}} : public UUserWidget}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00013}00013 \{}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00014}00014     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00016}00016 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00017}00017     \textcolor{comment}{// 장비 관련}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00018}\mbox{\hyperlink{class_u_character___slot___u_i_a9261655ea0c04e47c36dc880e433acca}{00018}}     \mbox{\hyperlink{class_u_character___slot___u_i_a9261655ea0c04e47c36dc880e433acca}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Head\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00019}\mbox{\hyperlink{class_u_character___slot___u_i_a1591201da07e30a2156e6eab9d62bcc6}{00019}}     \mbox{\hyperlink{class_u_character___slot___u_i_a1591201da07e30a2156e6eab9d62bcc6}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Backbag\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00020}\mbox{\hyperlink{class_u_character___slot___u_i_a84ff0b31a45a37682c3f3bb82eff44c2}{00020}}     \mbox{\hyperlink{class_u_character___slot___u_i_a84ff0b31a45a37682c3f3bb82eff44c2}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Belt\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00021}00021 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00022}00022     \textcolor{comment}{// 가방 여유 게이지바}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00023}\mbox{\hyperlink{class_u_character___slot___u_i_ac6bb7404e5d4e4bc5cba066c7323481d}{00023}}     \mbox{\hyperlink{class_u_character___slot___u_i_ac6bb7404e5d4e4bc5cba066c7323481d}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Backbag\_free\_space\_bar;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00025}00025     \textcolor{comment}{// 방탄복 관련}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00026}\mbox{\hyperlink{class_u_character___slot___u_i_a2e011da67c8942574dd5d0da380b3777}{00026}}     \mbox{\hyperlink{class_u_character___slot___u_i_a2e011da67c8942574dd5d0da380b3777}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*     Bodyarmor\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00027}\mbox{\hyperlink{class_u_character___slot___u_i_a241e1882fcdee0957f3290580d771d04}{00027}}     \mbox{\hyperlink{class_u_character___slot___u_i_a241e1882fcdee0957f3290580d771d04}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*     Armor\_icon\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00028}\mbox{\hyperlink{class_u_character___slot___u_i_abc83ea50190a6202b5397221b6c58471}{00028}}     \mbox{\hyperlink{class_u_character___slot___u_i_abc83ea50190a6202b5397221b6c58471}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Armor\_durability\_text;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00030}00030     \textcolor{comment}{// 스킨 관련}}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00031}\mbox{\hyperlink{class_u_character___slot___u_i_a9163e1583f702cb063b6fd7d61f2ad29}{00031}}     \mbox{\hyperlink{class_u_character___slot___u_i_a9163e1583f702cb063b6fd7d61f2ad29}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Hat\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00032}\mbox{\hyperlink{class_u_character___slot___u_i_a26d458cbcb53d3c281dc92b56880f21d}{00032}}     \mbox{\hyperlink{class_u_character___slot___u_i_a26d458cbcb53d3c281dc92b56880f21d}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Mask\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00033}\mbox{\hyperlink{class_u_character___slot___u_i_a96e866678f1103dc70f8aafceef8181f}{00033}}     \mbox{\hyperlink{class_u_character___slot___u_i_a96e866678f1103dc70f8aafceef8181f}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Coat\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00034}\mbox{\hyperlink{class_u_character___slot___u_i_a27418864dc32bfd31f167b87038a15b9}{00034}}     \mbox{\hyperlink{class_u_character___slot___u_i_a27418864dc32bfd31f167b87038a15b9}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Shirts\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00035}\mbox{\hyperlink{class_u_character___slot___u_i_aaa907a769ffd8e00cc2c1a1e6c0574c7}{00035}}     \mbox{\hyperlink{class_u_character___slot___u_i_aaa907a769ffd8e00cc2c1a1e6c0574c7}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Pants\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00036}\mbox{\hyperlink{class_u_character___slot___u_i_a4b6f7d8a44a0be440a64a99143d8e637}{00036}}     \mbox{\hyperlink{class_u_character___slot___u_i_a4b6f7d8a44a0be440a64a99143d8e637}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Shoes\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00038}00038 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00039}00039     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00040}00040 }
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00041}00041     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_character___slot___u_i_8h_source_l00042}00042 \};}
+
+\end{DoxyCode}

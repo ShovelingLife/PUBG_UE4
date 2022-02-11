@@ -1,0 +1,40 @@
+\hypertarget{_core__melee__weapon_8h_source}{}\doxysection{Core\+\_\+melee\+\_\+weapon.\+h}
+\label{_core__melee__weapon_8h_source}\index{Source/Player\_weapons/Core\_melee\_weapon.h@{Source/Player\_weapons/Core\_melee\_weapon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Fill out your copyright notice in the Description page of Project Settings.}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}Weapon\_enum.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}PUBG\_UE4/Base\_interaction.h"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}PUBG\_UE4/Other\_weapon\_data.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}Core\_melee\_weapon.generated.h"{}}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 UCLASS()}
+\DoxyCodeLine{12 class PLAYER\_WEAPONS\_API \mbox{\hyperlink{class_a_core__melee__weapon}{ACore\_melee\_weapon}} : public \mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     GENERATED\_BODY()}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{public}:}
+\DoxyCodeLine{17     \mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\_other\_weapon\_data}} weapon\_data;}
+\DoxyCodeLine{18     e\_melee\_weapon\_type  weapon\_type;   }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{public}:}
+\DoxyCodeLine{21     \mbox{\hyperlink{class_a_core__melee__weapon}{ACore\_melee\_weapon}}();}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{24     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{27     \textcolor{keywordtype}{void} Init(e\_melee\_weapon\_type);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{comment}{// 메쉬 초기화}}
+\DoxyCodeLine{30     \textcolor{keywordtype}{void} Init\_mesh();}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \textcolor{comment}{// 콜라이더 정보 갱신}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{void} Update\_collider();}
+\DoxyCodeLine{34 \};}
+
+\end{DoxyCode}

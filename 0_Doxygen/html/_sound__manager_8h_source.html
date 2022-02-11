@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/PUBG_UE4/Sound_manager.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_sound__manager_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Sound_manager.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_sound__manager_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;GameFramework/Actor.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="_data__table__manager_8h.html">Data_table_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="_my__enum_8h.html">My_enum.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;Sound_manager.generated.h&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">class </span>USoundBase;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span>UAudioComponent;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>UCLASS()</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html">   22</a></span>class PUBG_UE4_API <a class="code hl_class" href="class_a_sound__manager.html">ASound_manager</a> : public AActor</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#a5e2e41a622ea66d3760d89b59616362e">   27</a></span>    <span class="keyword">const</span> FString     mk_sound_path = <span class="stringliteral">&quot;/Game/SFX/Gun_sounds/&quot;</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#a0666ea01d6b0b7e459d50294b754f06f">   33</a></span>    <a class="code hl_function" href="class_a_sound__manager.html#a0666ea01d6b0b7e459d50294b754f06f">UPROPERTY</a>(VisibleAnywhere, Category = Weapon_sound) TArray&lt;USoundBase*&gt; p_arr_shot_sound;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#a9bd7059ba4fb02ba328b38ad07b9c2ef">   34</a></span>    <a class="code hl_function" href="class_a_sound__manager.html#a9bd7059ba4fb02ba328b38ad07b9c2ef">UPROPERTY</a>(VisibleAnywhere, Category = Weapon_sound) USoundBase*         p_empty_ammo_sound = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#ac483392258046201a8c60a82b64b8fa5">   35</a></span>    <a class="code hl_function" href="class_a_sound__manager.html#ac483392258046201a8c60a82b64b8fa5">UPROPERTY</a>(VisibleAnywhere, Category = Player_sound) USoundBase*         p_reload_sound = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#a129294978b94ac50292110e92de99a5b">   40</a></span>    <a class="code hl_function" href="class_a_sound__manager.html#a129294978b94ac50292110e92de99a5b">UPROPERTY</a>(VisibleAnywhere, Category = Player_sound) USoundBase* p_item_farm_sound = <span class="keyword">nullptr</span>; </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#a652db77bfe2118aec57611cbe78261fe">   41</a></span>    <a class="code hl_function" href="class_a_sound__manager.html#a652db77bfe2118aec57611cbe78261fe">UPROPERTY</a>(VisibleAnywhere, Category = Player_sound) USoundBase* p_weapon_pickup_sound = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_a_sound__manager.html#aaf121f263537fc774a91bd7e81a57828">   42</a></span>    <a class="code hl_function" href="class_a_sound__manager.html#aaf121f263537fc774a91bd7e81a57828">UPROPERTY</a>(VisibleAnywhere, Category = Player_sound) USoundBase* p_weapon_swap_sound = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">void</span> Init_weapon_audio();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">void</span> Init_player_audio();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">public</span>: </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <a class="code hl_class" href="class_a_sound__manager.html">ASound_manager</a>();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> BeginPlay() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Tick(<span class="keywordtype">float</span> DeltaTime) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">void</span> Play_weapon_sound(UAudioComponent* _p_audio_comp, <a class="code hl_enumeration" href="_my__enum_8h.html#a9c58b5149878c5626b46b7f81a392a32">e_weapon_sound_type</a> _sound_type, <span class="keywordtype">int</span> _weapon_index = 0);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">void</span> Play_player_sound(UAudioComponent* _p_audio_comp, <a class="code hl_enumeration" href="_my__enum_8h.html#a8689bd30a94d552a37e9d2cce8041387">e_player_sound_type</a> _sound_type);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
+<div class="ttc" id="a_data__table__manager_8h_html"><div class="ttname"><a href="_data__table__manager_8h.html">Data_table_manager.h</a></div><div class="ttdoc">데이터 테이블 매니저</div></div>
+<div class="ttc" id="a_my__enum_8h_html"><div class="ttname"><a href="_my__enum_8h.html">My_enum.h</a></div><div class="ttdoc">게임 내 쓰여질 열거형 관리</div></div>
+<div class="ttc" id="a_my__enum_8h_html_a8689bd30a94d552a37e9d2cce8041387"><div class="ttname"><a href="_my__enum_8h.html#a8689bd30a94d552a37e9d2cce8041387">e_player_sound_type</a></div><div class="ttdeci">e_player_sound_type</div><div class="ttdoc">플레이어 사운드 종류  ITEM_FARM 파밍  WEAPON_EQUIP 장착  WEAPON_SWAP 교체</div><div class="ttdef"><b>Definition:</b> <a href="_my__enum_8h_source.html#l00089">My_enum.h:90</a></div></div>
+<div class="ttc" id="a_my__enum_8h_html_a9c58b5149878c5626b46b7f81a392a32"><div class="ttname"><a href="_my__enum_8h.html#a9c58b5149878c5626b46b7f81a392a32">e_weapon_sound_type</a></div><div class="ttdeci">e_weapon_sound_type</div><div class="ttdoc">총기 사운드 관련  EMPTY_AMMO 빈 탄창  SHOT 격발  RELOAD 장전</div><div class="ttdef"><b>Definition:</b> <a href="_my__enum_8h_source.html#l00102">My_enum.h:103</a></div></div>
+<div class="ttc" id="aclass_a_sound__manager_html"><div class="ttname"><a href="class_a_sound__manager.html">ASound_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_sound__manager_8h_source.html#l00022">Sound_manager.h:23</a></div></div>
+<div class="ttc" id="aclass_a_sound__manager_html_a0666ea01d6b0b7e459d50294b754f06f"><div class="ttname"><a href="class_a_sound__manager.html#a0666ea01d6b0b7e459d50294b754f06f">ASound_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere, Category=Weapon_sound) TArray&lt; USoundBase * &gt; p_arr_shot_sound</div><div class="ttdoc">무기 관련 사운드</div></div>
+<div class="ttc" id="aclass_a_sound__manager_html_a129294978b94ac50292110e92de99a5b"><div class="ttname"><a href="class_a_sound__manager.html#a129294978b94ac50292110e92de99a5b">ASound_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere, Category=Player_sound) USoundBase *p_item_farm_sound</div><div class="ttdoc">플레이어 무기 사운드 관련</div></div>
+<div class="ttc" id="aclass_a_sound__manager_html_a652db77bfe2118aec57611cbe78261fe"><div class="ttname"><a href="class_a_sound__manager.html#a652db77bfe2118aec57611cbe78261fe">ASound_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere, Category=Player_sound) USoundBase *p_weapon_pickup_sound</div></div>
+<div class="ttc" id="aclass_a_sound__manager_html_a9bd7059ba4fb02ba328b38ad07b9c2ef"><div class="ttname"><a href="class_a_sound__manager.html#a9bd7059ba4fb02ba328b38ad07b9c2ef">ASound_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere, Category=Weapon_sound) USoundBase *p_empty_ammo_sound</div></div>
+<div class="ttc" id="aclass_a_sound__manager_html_aaf121f263537fc774a91bd7e81a57828"><div class="ttname"><a href="class_a_sound__manager.html#aaf121f263537fc774a91bd7e81a57828">ASound_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere, Category=Player_sound) USoundBase *p_weapon_swap_sound</div></div>
+<div class="ttc" id="aclass_a_sound__manager_html_ac483392258046201a8c60a82b64b8fa5"><div class="ttname"><a href="class_a_sound__manager.html#ac483392258046201a8c60a82b64b8fa5">ASound_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere, Category=Player_sound) USoundBase *p_reload_sound</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_81f16cdd936fcaf8cbca3e97fb61d968.html">PUBG_UE4</a></li><li class="navelem"><a class="el" href="_sound__manager_8h.html">Sound_manager.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

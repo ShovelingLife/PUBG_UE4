@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/Characters/Custom_player.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_custom__player_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Custom_player.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_custom__player_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="_my__enum_8h.html">PUBG_UE4/My_enum.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;GameFramework/Character.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;Custom_player.generated.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>DECLARE_DELEGATE(FDele_open_inventory)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>DECLARE_DELEGATE(FDele_close_inventory)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">class </span><a class="code hl_class" href="class_a_sound__manager.html">ASound_manager</a>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">class </span><a class="code hl_class" href="class_a_weapon__manager.html">AWeapon_manager</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span>UMy_anim_instance;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">class </span><a class="code hl_class" href="class_a_core__weapon.html">ACore_weapon</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">class </span><a class="code hl_class" href="class_a_core__vehicle.html">ACore_vehicle</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">class </span>UAudioComponent;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">class </span>UParticleSystemComponent;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">class </span>USpringArmComponent;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">class </span>UCameraComponent;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>UCLASS()</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_a_custom__player.html">   34</a></span>class CHARACTERS_API <a class="code hl_class" href="class_a_custom__player.html">ACustom_player</a> : public ACharacter</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#ad58848ba87ea9b14452e68806769866d">   42</a></span>    <a class="code hl_function" href="class_a_custom__player.html#ad58848ba87ea9b14452e68806769866d">UPROPERTY</a>() <a class="code hl_class" href="class_a_sound__manager.html">ASound_manager</a>*  mp_sound_manager;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a580813c96c016a66bb0922648f8d2d31">   43</a></span>    UPROPERTY() <a class="code hl_class" href="class_a_weapon__manager.html">AWeapon_manager</a>* mp_weapon_manager;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#ac072e187ee367550542786f17be5dede">   44</a></span>    UPROPERTY() AActor*          mp_collided_weapon  = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a2c8c110a7eb437fba9d6bb8c7a1df79a">   45</a></span>    UPROPERTY() <a class="code hl_class" href="class_a_core__vehicle.html">ACore_vehicle</a>*   mp_collided_vehicle = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#aa3856153eda134ff0ed7be5ee2b151f1">   47</a></span>    UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          mp_audio_comp;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#aac16291a0d671a676d49266c70acc5c3">   48</a></span>    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* mp_particle;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a3e9ec3fb161f8a3ea5b5da5f275198ac">   53</a></span>    FVector m_direction_up_down    = FVector::ZeroVector;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a5bffef7a8a1e64ca927a3e5d55212573">   54</a></span>    FVector m_direction_left_right = FVector::ZeroVector;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a0a81ebc7054213c0b1da4e4fc2495bdf">   55</a></span>    <span class="keywordtype">float</span>   m_sprint_time          = 0.f;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a9f30fc2581f4ae7a98609fbf9ed8246f">   56</a></span>    <span class="keywordtype">float</span>   m_max_sprint_time      = 0.5f;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a5eb152975d8082212369c50ddb3704f9">   57</a></span>    <span class="keywordtype">float</span>   m_sprint_multiplier    = 1.f;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a33e9fcc7175a2efef4e30d4d951047b8">   58</a></span>    <span class="keywordtype">bool</span>    m_is_moving            = false;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#aa5b36ac75fe8143441f13c6e0ef78d88">   59</a></span>    <span class="keywordtype">bool</span>    m_is_interacting       = false;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a29bd9312149de3dec2b297e6cc8e38f7">   60</a></span>    <span class="keywordtype">bool</span>    m_is_inventory_opened  = false;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="comment">// 플레이어 컴포넌트 및 상태 변수</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>public:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a65b6cb97815c529d2632e60e306b5230">   64</a></span>    FDele_open_inventory  dele_open_inventory;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a3dd5ad2da4f743506c0c82a7556eb96c">   65</a></span>    FDele_close_inventory dele_close_inventory;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a5e7fea99c31f93fc04568ad90bee4b03">   67</a></span>    UPROPERTY(VisibleAnywhere, Category = Camera) USpringArmComponent* p_spring_arm_comp = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#ae312bff4a57b86dd203b68d18f86041e">   68</a></span>    UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent* p_camera_comp = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a6d177d5f0cc2f221720edba27bcc8a08">   73</a></span>    <a class="code hl_enumeration" href="_my__enum_8h.html#a74b234f4b37b35b879d4d83a37833065">e_player_state</a> current_state;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a419201c4b85869abfeca5996d522a7b7">   74</a></span>    const <span class="keywordtype">float</span>    k_max_health          = 100.f;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#ab1105dca21f4f3d5754ff093482983a9">   75</a></span>    <span class="keywordtype">float</span>          current_health        = 100;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a32482a3ce2539d3d6df1d999c276b460">   76</a></span>    <span class="keywordtype">float</span>          current_oxygen        = 1.f;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a3d60f5d36aab095c2fe5c1ca17ab0c94">   77</a></span>    <span class="keywordtype">bool</span>           is_sprinting          = false;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a85ecc9a834488f90a87255bba1e4df04">   78</a></span>    <span class="keywordtype">bool</span>           is_animation_playing  = false;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a415d32d7a09a01c4a2a6e74576466b9d">   79</a></span>    <span class="keywordtype">bool</span>           is_aiming             = false;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a1c3cc9f82dffaff6d9e90df91b7e2a0f">   80</a></span>    <span class="keywordtype">bool</span>           is_weapon_equipped    = false;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#aaae839df80084dc09f13b2e701772c8a">   85</a></span>    <a class="code hl_enumeration" href="_my__enum_8h.html#ad2899e3eb0e806c68c63e04ed11c5fb0">e_seat_type</a>    current_seat_type = <a class="code hl_enumeration" href="_my__enum_8h.html#ad2899e3eb0e806c68c63e04ed11c5fb0">e_seat_type</a>::<a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693">NONE</a>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a8f488547ca079663ff5757388dbdf6e3">   86</a></span>    <span class="keywordtype">bool</span>           is_in_vehicle     = false;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>public:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <a class="code hl_class" href="class_a_custom__player.html">ACustom_player</a>();</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>private: </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    virtual <span class="keywordtype">void</span> BeginPlay() override;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    virtual <span class="keywordtype">void</span> Tick(<span class="keywordtype">float</span> DeltaTime) override;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    virtual <span class="keywordtype">void</span> SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// 초기화 함수들</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>private:</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordtype">void</span> Update_player_settings();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">void</span> Init_camera_comp();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">void</span> Init_mesh_comp();</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">void</span> Init_audio_comp();</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordtype">void</span> Init_anim_instance();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordtype">void</span> Init_particle_system();</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>private:</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordtype">void</span> Check_if_moving();</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordtype">void</span> Check_for_object();</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordtype">void</span> Check_if_is_vehicle_near();</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keywordtype">void</span> Try_to_interact();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#ae9c24af8b779e9b9e1954e73e7ad2f0f">  154</a></span>    <span class="keywordtype">void</span> Begin_interact() { m_is_interacting = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#ae47a69f65264f64a7d28b9f389e1d77d">  159</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_a_custom__player.html#ae47a69f65264f64a7d28b9f389e1d77d">End_interact</a>()   { m_is_interacting = <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordtype">void</span> Move_forward_back(<span class="keywordtype">float</span>);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordtype">void</span> Move_left_right(<span class="keywordtype">float</span>);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordtype">void</span> Look_up(<span class="keywordtype">float</span> _value);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordtype">void</span> Turn(<span class="keywordtype">float</span> _value);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordtype">void</span> Custom_jump();</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordtype">void</span> Custom_crouch();</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordtype">void</span> Proning();</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordtype">void</span> Begin_sprint();</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordtype">void</span> End_sprint();</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="comment">// ------- UI 관련 -------</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="keywordtype">void</span> Open_inventory();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="comment">// ------- 무기 관련 -------</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordtype">void</span> Begin_shooting();</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keywordtype">void</span> End_shooting();</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordtype">void</span> Reload();</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keywordtype">void</span> Aim();</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordtype">void</span> Change_shoot_mode();</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordtype">void</span> Swap_scrolling_up();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordtype">void</span> Swap_scrolling_down();</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordtype">void</span> Equip_first_weapon();</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordtype">void</span> Equip_second_weapon();</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordtype">void</span> Equip_third_weapon();</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keywordtype">void</span> Equip_fourth_weapon();</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    <span class="keywordtype">void</span> Equip_fifth_weapon();</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keywordtype">void</span> Exit_from_vehicle(FVector _exit_location);</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="class_a_custom__player.html#a097b214e2b74b0b12b82f0ffadfd3674">  290</a></span>    <a class="code hl_class" href="class_a_weapon__manager.html">AWeapon_manager</a>* <a class="code hl_function" href="class_a_custom__player.html#a097b214e2b74b0b12b82f0ffadfd3674">Get_weapon_manager</a>() { <span class="keywordflow">return</span> mp_weapon_manager; }</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>};</div>
+<div class="ttc" id="a_my__enum_8h_html"><div class="ttname"><a href="_my__enum_8h.html">My_enum.h</a></div><div class="ttdoc">게임 내 쓰여질 열거형 관리</div></div>
+<div class="ttc" id="a_my__enum_8h_html_a74b234f4b37b35b879d4d83a37833065"><div class="ttname"><a href="_my__enum_8h.html#a74b234f4b37b35b879d4d83a37833065">e_player_state</a></div><div class="ttdeci">e_player_state</div><div class="ttdoc">플레이어 상태 관련</div><div class="ttdef"><b>Definition:</b> <a href="_my__enum_8h_source.html#l00019">My_enum.h:20</a></div></div>
+<div class="ttc" id="a_my__enum_8h_html_ad2899e3eb0e806c68c63e04ed11c5fb0"><div class="ttname"><a href="_my__enum_8h.html#ad2899e3eb0e806c68c63e04ed11c5fb0">e_seat_type</a></div><div class="ttdeci">e_seat_type</div><div class="ttdoc">좌석 종류</div><div class="ttdef"><b>Definition:</b> <a href="_my__enum_8h_source.html#l00074">My_enum.h:75</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693">e_current_weapon_type::NONE</a></div><div class="ttdeci">@ NONE</div></div>
+<div class="ttc" id="aclass_a_core__vehicle_html"><div class="ttname"><a href="class_a_core__vehicle.html">ACore_vehicle</a></div><div class="ttdef"><b>Definition:</b> <a href="_core__vehicle_8h_source.html#l00025">Core_vehicle.h:26</a></div></div>
+<div class="ttc" id="aclass_a_core__weapon_html"><div class="ttname"><a href="class_a_core__weapon.html">ACore_weapon</a></div><div class="ttdef"><b>Definition:</b> <a href="_core__weapon_8h_source.html#l00024">Core_weapon.h:25</a></div></div>
+<div class="ttc" id="aclass_a_custom__player_html"><div class="ttname"><a href="class_a_custom__player.html">ACustom_player</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom__player_8h_source.html#l00034">Custom_player.h:35</a></div></div>
+<div class="ttc" id="aclass_a_custom__player_html_a097b214e2b74b0b12b82f0ffadfd3674"><div class="ttname"><a href="class_a_custom__player.html#a097b214e2b74b0b12b82f0ffadfd3674">ACustom_player::Get_weapon_manager</a></div><div class="ttdeci">AWeapon_manager * Get_weapon_manager()</div><div class="ttdoc">무기 매니저를 갖고옴</div><div class="ttdef"><b>Definition:</b> <a href="_custom__player_8h_source.html#l00290">Custom_player.h:290</a></div></div>
+<div class="ttc" id="aclass_a_custom__player_html_ad58848ba87ea9b14452e68806769866d"><div class="ttname"><a href="class_a_custom__player.html#ad58848ba87ea9b14452e68806769866d">ACustom_player::UPROPERTY</a></div><div class="ttdeci">UPROPERTY() ASound_manager *mp_sound_manager</div><div class="ttdoc">플레이어가 사용하는 변수</div></div>
+<div class="ttc" id="aclass_a_custom__player_html_ae47a69f65264f64a7d28b9f389e1d77d"><div class="ttname"><a href="class_a_custom__player.html#ae47a69f65264f64a7d28b9f389e1d77d">ACustom_player::End_interact</a></div><div class="ttdeci">void End_interact()</div><div class="ttdoc">F키를 뗐을 시</div><div class="ttdef"><b>Definition:</b> <a href="_custom__player_8h_source.html#l00159">Custom_player.h:159</a></div></div>
+<div class="ttc" id="aclass_a_sound__manager_html"><div class="ttname"><a href="class_a_sound__manager.html">ASound_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_sound__manager_8h_source.html#l00022">Sound_manager.h:23</a></div></div>
+<div class="ttc" id="aclass_a_weapon__manager_html"><div class="ttname"><a href="class_a_weapon__manager.html">AWeapon_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_weapon__manager_8h_source.html#l00025">Weapon_manager.h:26</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_0a0d59c77e579b1c91ea726c2a6093a5.html">Characters</a></li><li class="navelem"><a class="el" href="_custom__player_8h.html">Custom_player.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

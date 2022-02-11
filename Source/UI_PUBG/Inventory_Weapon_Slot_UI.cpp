@@ -1,4 +1,4 @@
- #include "Inventory_Weapon_Slot_UI.h"
+Ôªø #include "Inventory_Weapon_Slot_UI.h"
 #include "Item_slot_UI.h"
 #include "Inventory_UI.h"
 #include "Inventory_list_UI.h"
@@ -46,18 +46,18 @@ void UInventory_Weapon_Slot_UI::NativeTick(const FGeometry& _my_geometry, float 
     Update_weapon_UI_highlight_img();
 }
 
-void UInventory_Weapon_Slot_UI::NativeOnMouseLeave(const FPointerEvent& _mouse_event)
+void UInventory_Weapon_Slot_UI::NativeOnMouseLeave(const FPointerEvent& _in_mouse_event)
 {
-    Super::NativeOnMouseLeave(_mouse_event);
+    Super::NativeOnMouseLeave(_in_mouse_event);
     Reset_highlight_img();
 }
 
-FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _mouse_event)
+FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event)
 {
-    Super::NativeOnMouseButtonDown(_geometry, _mouse_event);
+    Super::NativeOnMouseButtonDown(_geometry, _in_mouse_event);
     
-    // øﬁ¬  ≈¨∏Ø / ∏∂øÏΩ∫ ƒøº≠ ∫Ø∞Ê
-    if(_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
+    // ÏôºÏ™Ω ÌÅ¥Î¶≠ / ÎßàÏö∞Ïä§ Ïª§ÏÑú Î≥ÄÍ≤Ω
+    if(_in_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         m_is_clicked = true;
         ABase_interaction* p_tmp_weapon = mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index);
@@ -67,7 +67,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
         {
             switch (m_selected_weapon_index)
             {
-            // √—±‚∑˘
+            // Ï¥ùÍ∏∞Î•ò
             case 1: case 2: case 3:
                         
                 if (auto p_tmp_gun = Cast<ACore_weapon>(p_tmp_weapon))
@@ -75,7 +75,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
 
                 break;
 
-            // ±Ÿ¡¢ π´±‚
+            // Í∑ºÏ†ë Î¨¥Í∏∞
             case 4:
 
                 if (auto p_tmp_melee = Cast<ACore_melee_weapon>(p_tmp_weapon))
@@ -83,7 +83,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
 
                 break;
 
-            // ≈ı√¥∑˘ π´±‚
+            // Ìà¨Ï≤ôÎ•ò Î¨¥Í∏∞
             case 5:
 
                 if (auto p_tmp_throwable = Cast<ACore_throwable_weapon>(p_tmp_weapon))
@@ -94,32 +94,42 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
         }  
         Highlight_img->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.35f });
     }
-    // ø¿∏•¬  ≈¨∏Ø / ∏ ø°¥Ÿ∞° π´±‚∏¶ πˆ∏≤
-    else if (_mouse_event.IsMouseButtonDown(EKeys::RightMouseButton))
+    // Ïò§Î•∏Ï™Ω ÌÅ¥Î¶≠ / ÎßµÏóêÎã§Í∞Ä Î¨¥Í∏∞Î•º Î≤ÑÎ¶º
+    else if (_in_mouse_event.IsMouseButtonDown(EKeys::RightMouseButton))
     {
         mp_weapon_manager->Drop(mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index));
         Reset_highlight_img();
     }
-    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_mouse_event, this, EKeys::LeftMouseButton);
+    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
 }
 
-void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _mouse_event, UDragDropOperation*& _out_operation)
+FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonUp(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event)
 {
-    Super::NativeOnDragDetected(_geometry, _mouse_event, _out_operation);
+    Super::NativeOnMouseButtonUp(_geometry, _in_mouse_event);
+    m_is_clicked = false;
+
+    Fs_slot_item_data tmp_data;
+    m_item_data = tmp_data;
+
+    return FReply::Handled();
+}
+void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event, UDragDropOperation*& _out_operation)
+{
+    Super::NativeOnDragDetected(_geometry, _in_mouse_event, _out_operation);
 
     auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
-    FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
+    FVector2D mouse_pos = _geometry.AbsoluteToLocal(_in_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (!p_slot)
         return;
 
-    // ΩΩ∑‘ º≥¡§
+    // Ïä¨Î°Ø ÏÑ§Ï†ï
     p_slot->item_data = m_item_data;
     p_slot->Priority = 1;
     p_slot->Set_as_cursor(mouse_pos);
 
-    // µÂ∑°±◊ ±∏«ˆ
+    // ÎìúÎûòÍ∑∏ Íµ¨ÌòÑ
     auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
 
     if (m_selected_weapon_index < 4)
@@ -152,20 +162,9 @@ void UInventory_Weapon_Slot_UI::NativeOnDragLeave(const FDragDropEvent& _in_drag
     m_is_clicked = false;
 }
 
-FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonUp(const FGeometry& _geometry, const FPointerEvent& _mouse_event)
-{
-    Super::NativeOnMouseButtonUp(_geometry, _mouse_event);
-    m_is_clicked = false;
-
-    Fs_slot_item_data tmp_data;
-    m_item_data = tmp_data;
-
-    return FReply::Handled();
-}
-
 void UInventory_Weapon_Slot_UI::Update_UI_visibility()
 {
-    // √ππ¯¬∞ π´±‚
+    // Ï≤´Î≤àÏß∏ Î¨¥Í∏∞
     First_gun_slot_img->SetVisibility((mp_weapon_manager->p_first_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     First_gun_name_txt->SetVisibility((mp_weapon_manager->p_first_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     First_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_first_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
@@ -173,7 +172,7 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
     First_gun_max_magazine_txt->SetVisibility((mp_weapon_manager->p_first_gun)     ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     First_gun_number_background->SetVisibility((mp_weapon_manager->p_first_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
-    // µŒπ¯¬∞ π´±‚
+    // ÎëêÎ≤àÏß∏ Î¨¥Í∏∞
     Second_gun_slot_img->SetVisibility((mp_weapon_manager->p_second_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Second_gun_name_txt->SetVisibility((mp_weapon_manager->p_second_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Second_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
@@ -181,7 +180,7 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
     Second_gun_max_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Second_gun_number_background->SetVisibility((mp_weapon_manager->p_second_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
-    // ººπ¯¬∞ π´±‚
+    // ÏÑ∏Î≤àÏß∏ Î¨¥Í∏∞
     Pistol_slot_img->SetVisibility((mp_weapon_manager->p_pistol)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Pistol_name_txt->SetVisibility((mp_weapon_manager->p_pistol)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Pistol_bullet_type_txt->SetVisibility((mp_weapon_manager->p_pistol)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
@@ -189,12 +188,12 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
     Pistol_max_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Pistol_number_background->SetVisibility((mp_weapon_manager->p_pistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
-    // ≥◊π¯¬∞ π´±‚
+    // ÎÑ§Î≤àÏß∏ Î¨¥Í∏∞
     Melee_slot_img->SetVisibility((mp_weapon_manager->p_melee)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Melee_name_txt->SetVisibility((mp_weapon_manager->p_melee)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Melee_number_background->SetVisibility((mp_weapon_manager->p_melee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
-    // ¥Ÿº∏π¯¬∞ π´±‚
+    // Îã§ÏÑØÎ≤àÏß∏ Î¨¥Í∏∞
     Grenade_slot_img->SetVisibility((mp_weapon_manager->p_throwable)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Grenade_name_txt->SetVisibility((mp_weapon_manager->p_throwable)          ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Grenade_number_background->SetVisibility((mp_weapon_manager->p_throwable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
@@ -202,31 +201,31 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
 
 void UInventory_Weapon_Slot_UI::Update_inventory_weapon_UI()
 {
-    // √ππ¯¬∞ π´±‚
+    // Ï≤´Î≤àÏß∏ Î¨¥Í∏∞
     if(auto p_first_gun = mp_weapon_manager->p_first_gun)
     {
         First_gun_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)p_first_gun->weapon_type]));
         First_gun_name_txt->SetText(FText::FromString(p_first_gun->weapon_data.type));        
     }
-    // µŒπ¯¬∞ π´±‚
+    // ÎëêÎ≤àÏß∏ Î¨¥Í∏∞
     if (auto p_second_gun = mp_weapon_manager->p_second_gun)
     {
         Second_gun_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)p_second_gun->weapon_type]));
         Second_gun_name_txt->SetText(FText::FromString(p_second_gun->weapon_data.type));
     }
-    // ººπ¯¬∞ π´±‚
+    // ÏÑ∏Î≤àÏß∏ Î¨¥Í∏∞
     if (auto p_pistol = mp_weapon_manager->p_pistol)
     {
         Pistol_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_pistol->weapon_type]));
         Pistol_name_txt->SetText(FText::FromString(p_pistol->weapon_data.type));
     }
-    // ≥◊π¯¬∞ π´±‚
+    // ÎÑ§Î≤àÏß∏ Î¨¥Í∏∞
     if (auto p_throwable = mp_weapon_manager->p_throwable)
     {
         Melee_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_throwable->weapon_type]));
         Melee_name_txt->SetText(FText::FromString(p_throwable->weapon_data.type));
     }
-    // ¥Ÿº∏π¯¬∞ π´±‚
+    // Îã§ÏÑØÎ≤àÏß∏ Î¨¥Í∏∞
     if (auto p_melee = mp_weapon_manager->p_melee)
     {
         Grenade_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_melee->weapon_type]));
@@ -241,7 +240,7 @@ void UInventory_Weapon_Slot_UI::Update_weapon_UI_highlight_img()
 
     float size_x = 0.f;    
 
-    // º±≈√µ» π´±‚ ¿Œµ¶Ω∫ ±∏«‘
+    // ÏÑ†ÌÉùÎêú Î¨¥Í∏∞ Ïù∏Îç±Ïä§ Íµ¨Ìï®
     if      (First_gun_slot_img->GetVisibility() == ESlateVisibility::Visible &&
              First_gun_slot_img->IsHovered())
              m_selected_weapon_index = 1;
@@ -264,7 +263,7 @@ void UInventory_Weapon_Slot_UI::Update_weapon_UI_highlight_img()
 
     UCanvasPanelSlot* canvas_panel_slot = nullptr;
 
-    // π´±‚∞° º±≈√µ∆¿ª Ω√ ¿ÃπÃ¡ˆ º≥¡§
+    // Î¨¥Í∏∞Í∞Ä ÏÑ†ÌÉùÎêêÏùÑ Ïãú Ïù¥ÎØ∏ÏßÄ ÏÑ§Ï†ï
     switch(m_selected_weapon_index)
     {
     case 1: canvas_panel_slot = First_gun_canvas_panel->AddChildToCanvas(Highlight_img);  size_x = 545.f; break;
@@ -284,7 +283,7 @@ void UInventory_Weapon_Slot_UI::Update_weapon_UI_highlight_img()
 
 void UInventory_Weapon_Slot_UI::Reset_highlight_img()
 {
-    // º±≈√ ¿ÃπÃ¡ˆ ∫Œ∏ ªı∑Œ ¡ˆ¡§ π◊ π´±‚ ΩΩ∑‘ ¿ÃπÃ¡ˆ º≥¡§
+    // ÏÑ†ÌÉù Ïù¥ÎØ∏ÏßÄ Î∂ÄÎ™® ÏÉàÎ°ú ÏßÄÏ†ï Î∞è Î¨¥Í∏∞ Ïä¨Î°Ø Ïù¥ÎØ∏ÏßÄ ÏÑ§Ï†ï
     switch (m_selected_weapon_index)
     {
     case 1: First_gun_canvas_panel->RemoveChild(Highlight_img);  break;

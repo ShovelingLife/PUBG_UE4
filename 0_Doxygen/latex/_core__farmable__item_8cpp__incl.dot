@@ -1,0 +1,20 @@
+digraph "D:/0_Projects/Unreal/PUBG_UE4/Source/Farmable_items/Core_farmable_item.cpp"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Core_farmable_item.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="Core_farmable_item.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_core__farmable__item_8h.html",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="CoreMinimal.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="PUBG_UE4/Base_interaction.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_base__interaction_8h.html",tooltip="상호작용 가능한 모든 오브젝트들의 부모 클래스"];
+  Node4 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="GameFramework/Actor.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="Base_interaction.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="Core_farmable_item.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

@@ -1,0 +1,10 @@
+digraph "AData_table_manager::Init_other_weapon_data"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="AData_table_manager\l::Init_other_weapon_data",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="기타 무기 데이터 초기화"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AData_table_manager\l::AData_table_manager",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_data__table__manager.html#a8f148461a77cf13c4aa9f0b2c0f20541",tooltip=" "];
+}

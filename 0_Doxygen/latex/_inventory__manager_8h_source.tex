@@ -1,0 +1,49 @@
+\hypertarget{_inventory__manager_8h_source}{}\doxysection{Inventory\+\_\+manager.\+h}
+\label{_inventory__manager_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Inventory\_manager.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Inventory\_manager.h}}
+\mbox{\hyperlink{_inventory__manager_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Inventory\_manager.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00016}00016 \textcolor{keyword}{class }USceneComponent;}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00018}00018 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00019}\mbox{\hyperlink{class_a_inventory__manager}{00019}} class UI\_PUBG\_API \mbox{\hyperlink{class_a_inventory__manager}{AInventory\_manager}} : public AActor}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00020}00020 \{}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00021}00021     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00023}00023 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00025}\mbox{\hyperlink{class_a_inventory__manager_ab3f0881511e6e4b5f9e55cab32301cfb}{00025}}     \mbox{\hyperlink{class_a_inventory__manager_ab3f0881511e6e4b5f9e55cab32301cfb}{UPROPERTY}}(EditAnywhere, Category = Scene\_comp) USceneComponent* mp\_scene\_comp = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00026}00026 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00028}\mbox{\hyperlink{class_a_inventory__manager_ac4ddbd7de79788a0e988fb8c944308ff}{00028}}     TSubclassOf<UUserWidget> \mbox{\hyperlink{class_a_inventory__manager_ac4ddbd7de79788a0e988fb8c944308ff}{m\_inventory\_actor}};}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00030}00030 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00032}\mbox{\hyperlink{class_a_inventory__manager_a55f732a6cc2be4de372b62193153420c}{00032}}     \textcolor{keyword}{class }\mbox{\hyperlink{class_u_inventory___u_i}{UInventory\_UI}}* \mbox{\hyperlink{class_a_inventory__manager_a55f732a6cc2be4de372b62193153420c}{p\_inventory\_UI}};}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00034}00034 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00035}00035     \mbox{\hyperlink{class_a_inventory__manager}{AInventory\_manager}}();}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00037}00037 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00038}00038     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00040}00040     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00041}00041 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00042}00042 \textcolor{comment}{// 초기화 함수 모음}}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00043}00043 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00047}00047     \textcolor{keywordtype}{void} Init\_inventory\_UI();}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00048}00048 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00052}00052     \textcolor{keywordtype}{void} Init\_inventory\_widget();}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00053}00053 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00054}00054 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00058}00058     UFUNCTION()}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00059}00059     void Open\_inventory();}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00064}00064     UFUNCTION()}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00065}00065     \textcolor{keywordtype}{void} Close\_inventory();}
+\DoxyCodeLine{\Hypertarget{_inventory__manager_8h_source_l00066}00066 \};}
+
+\end{DoxyCode}

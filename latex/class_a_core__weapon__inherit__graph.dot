@@ -1,0 +1,37 @@
+digraph "ACore_weapon"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{ACore_weapon\n|+ p_gun_mag\l+ weapon_data\l+ weapon_type\l+ gun_shoot_type\l|+ UPROPERTY()\l+ UPROPERTY()\l+ ACore_weapon()\l# BeginPlay()\l# NotifyActorBeginOverlap()\l# NotifyActorEndOverlap()\l# Tick()\l# Init()\l# Init_mesh()\l# Update_collider()\l# Init_bullet()\l# Init_particle_system()\l# Update_particle_system()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node2 [label="{ABase_interaction\n|+ p_static_mesh_comp\l+ p_skeletal_mesh_comp\l+ p_audio_comp\l+ object_type\l+ is_player_near\l# m_box_collider\l# mp_interaction_widget_comp\l# m_current_time\l|+ ABase_interaction()\l# BeginPlay()\l# Tick()\l# Init_static_mesh()\l# Init_skeletal_mesh()\l# Init_audio()\l# Init_interaction_UI()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_base__interaction.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node3 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node4 [label="{AAyakashi\n||+ AAyakashi()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_ayakashi.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node5 [label="{AC7\n||+ AC7()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_c7.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node6 [label="{ACrossbow\n||+ ACrossbow()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_crossbow.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node7 [label="{ADouble_barrel\n||+ ADouble_barrel()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_double__barrel.html",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node8 [label="{AEON\n||+ AEON()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_e_o_n.html",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node9 [label="{AKaros\n||+ AKaros()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_karos.html",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node10 [label="{ALS80\n||+ ALS80()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_l_s80.html",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node11 [label="{AM1\n||+ AM1()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_m1.html",tooltip=" "];
+  Node1 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node12 [label="{APX_70\n||+ APX_70()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_p_x__70.html",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node13 [label="{ARPG_17\n||+ ARPG_17()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_r_p_g__17.html",tooltip=" "];
+  Node1 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node14 [label="{ARogerLR220\n||+ ARogerLR220()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_roger_l_r220.html",tooltip=" "];
+  Node1 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node15 [label="{ASK12\n||+ ASK12()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_s_k12.html",tooltip=" "];
+  Node1 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node16 [label="{AVSS\n||+ AVSS()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_v_s_s.html",tooltip=" "];
+}

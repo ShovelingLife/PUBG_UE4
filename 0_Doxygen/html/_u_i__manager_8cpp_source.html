@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/UI_PUBG/UI_manager.cpp 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_u_i__manager_8cpp_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">UI_manager.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_u_i__manager_8cpp.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="_u_i__manager_8h.html">UI_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="_interaction___u_i_8h.html">Interaction_UI.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="_inventory__list___u_i_8h.html">Inventory_list_UI.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="_inventory__manager_8h.html">Inventory_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="_player___u_i_8h.html">Player_UI.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="_custom__game__instance_8h.html">PUBG_UE4/Custom_game_instance.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="_data__table__manager_8h.html">PUBG_UE4/Data_table_manager.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;Blueprint/UserWidget.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;Components/TextBlock.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;Components/WidgetComponent.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;GameFramework/Character.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;Kismet/GameplayStatics.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>TMap&lt;int, UMaterial*&gt; <a class="code hl_variable" href="class_a_u_i__manager.html#a77474858936af59fb90eebd81209aad1">AUI_manager::map_main_weapon_ui_mat</a>;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>TMap&lt;int, UTexture*&gt;  <a class="code hl_variable" href="class_a_u_i__manager.html#ae645b39288eb236e93cb0628577ccac7">AUI_manager::map_inventory_weapon_ui_tex</a>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>TMap&lt;int, UTexture*&gt;  <a class="code hl_variable" href="class_a_u_i__manager.html#a1ec1346f3b6eda713622419b64ab8995">AUI_manager::map_player_ui_tex</a>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#a1d2bf1b6a52701e4b1517659e5c155d2">   18</a></span><a class="code hl_function" href="class_a_u_i__manager.html#a1d2bf1b6a52701e4b1517659e5c155d2">AUI_manager::AUI_manager</a>()</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    PrimaryActorTick.bCanEverTick = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_function" href="class_a_u_i__manager.html#a29ceaf64a676fe8397be9d0f5048f7cb">Init_player_UI</a>();</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_function" href="class_a_u_i__manager.html#ac95884f42aac3acdbe7203d7b863b346">Init_interaction_UI</a>();</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_function" href="class_a_u_i__manager.html#a9440298dc2eb9bdac26063b837161013">Init_player_UI_tex</a>();</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_function" href="class_a_u_i__manager.html#acc8778ac9c54a6ba142fcb06ff55f1ed">Init_inventory_weapon_UI_tex</a>();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_function" href="class_a_u_i__manager.html#a99c76753b5617d11ec63ac7bf22fd12e">Init_main_weapon_UI_mat</a>();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// Called when the game starts or when spawned</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#acc63bd44eae32215e38354ddbcb4884c">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#acc63bd44eae32215e38354ddbcb4884c">AUI_manager::BeginPlay</a>()</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    Super::BeginPlay();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// 델리게이트 바인딩</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">auto</span> p_custom_game_instance = Cast&lt;UCustom_game_instance&gt;(GetWorld()-&gt;GetGameInstance());</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    p_custom_game_instance-&gt;dele_update_interaction_widget_comp.BindUFunction(<span class="keyword">this</span>, <span class="stringliteral">&quot;Update_interaction_UI&quot;</span>);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_function" href="class_a_u_i__manager.html#ad025f888cd75517107f22d6b751dfdd4">Set_player_UI</a>();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_function" href="class_a_u_i__manager.html#aa611efffcdd244052a5690f46de5349c">Init_player_inventory</a>();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_function" href="class_a_u_i__manager.html#a54cc83fd2de5e2803edaad82bf5b9ecd">Set_weapon_UI</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#a29ceaf64a676fe8397be9d0f5048f7cb">   42</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#a29ceaf64a676fe8397be9d0f5048f7cb">AUI_manager::Init_player_UI</a>()</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">auto</span> BP_player_UI = ConstructorHelpers::FClassFinder&lt;UUserWidget&gt;(TEXT(<span class="stringliteral">&quot;WidgetBlueprint&#39;/Game/Blueprints/UI/BP_Player_UI.BP_Player_UI_C&#39;&quot;</span>));</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> (BP_player_UI.Succeeded())</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_variable" href="class_a_u_i__manager.html#a59562d67557ae19961bbd364d3d29d12">m_bp_player_UI</a> = BP_player_UI.Class;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#ac95884f42aac3acdbe7203d7b863b346">   50</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#ac95884f42aac3acdbe7203d7b863b346">AUI_manager::Init_interaction_UI</a>()</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// 위젯 컴포넌트 블루프린트 초기화</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">auto</span> widget_bp = ConstructorHelpers::FClassFinder&lt;UInteraction_UI&gt;(TEXT(<span class="stringliteral">&quot;WidgetBlueprint&#39;/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C&#39;&quot;</span>));</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    m_interaction_widget_bp = widget_bp.Class;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#a9440298dc2eb9bdac26063b837161013">   57</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#a9440298dc2eb9bdac26063b837161013">AUI_manager::Init_player_UI_tex</a>()</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_a_u_i__manager.html#a300ad5f3a05aed584914732a252e2972">mk_arr_player_UI_tex_path</a>.Num(); i++)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="comment">// 리소스를 불러온 후 데이터 테이블에 대입</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        FString player_ui_path = <a class="code hl_variable" href="class_a_u_i__manager.html#a83e00045aa4cf8f82dc27d09388e050a">mk_default_player_UI_path</a> + <a class="code hl_variable" href="class_a_u_i__manager.html#a300ad5f3a05aed584914732a252e2972">mk_arr_player_UI_tex_path</a>[i] + <span class="stringliteral">&quot;_icon&quot;</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keyword">auto</span>    player_ui_tex  = ConstructorHelpers::FObjectFinder&lt;UTexture&gt;(*player_ui_path);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">if</span> (player_ui_tex.Succeeded())</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <a class="code hl_variable" href="class_a_u_i__manager.html#a1ec1346f3b6eda713622419b64ab8995">map_player_ui_tex</a>.Add(i, player_ui_tex.Object);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#ad025f888cd75517107f22d6b751dfdd4">   70</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#ad025f888cd75517107f22d6b751dfdd4">AUI_manager::Set_player_UI</a>()</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    UUserWidget* p_widget = CreateWidget(GetWorld(), <a class="code hl_variable" href="class_a_u_i__manager.html#a59562d67557ae19961bbd364d3d29d12">m_bp_player_UI</a>);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_variable" href="class_a_u_i__manager.html#a8e324a415c6cfcf7b74a6b51a0a0f1ef">mp_player_UI</a> = Cast&lt;UPlayer_UI&gt;(p_widget);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_variable" href="class_a_u_i__manager.html#a8e324a415c6cfcf7b74a6b51a0a0f1ef">mp_player_UI</a>-&gt;AddToViewport(0);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#aa611efffcdd244052a5690f46de5349c">   77</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#aa611efffcdd244052a5690f46de5349c">AUI_manager::Init_player_inventory</a>()</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_variable" href="class_a_u_i__manager.html#abf120876a24dd9deca79b4acba87b0c4">p_inventory_manager</a> = GetWorld()-&gt;SpawnActor&lt;<a class="code hl_class" href="class_a_inventory__manager.html">AInventory_manager</a>&gt;(AInventory_manager::StaticClass());</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_variable" href="class_a_u_i__manager.html#abf120876a24dd9deca79b4acba87b0c4">p_inventory_manager</a>-&gt;GetRootComponent()-&gt;AttachToComponent(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)-&gt;GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#acc8778ac9c54a6ba142fcb06ff55f1ed">   83</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#acc8778ac9c54a6ba142fcb06ff55f1ed">AUI_manager::Init_inventory_weapon_UI_tex</a>()</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>{</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">AData_table_manager::arr_weapon_data</a>.Num(); i++)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="comment">// 리소스를 불러온 후 데이터 테이블에 대입</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        FString weapon_ui_path = <span class="stringliteral">&quot;/Game/UI/Weapon_inventory_icon/&quot;</span> + <a class="code hl_variable" href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">AData_table_manager::arr_weapon_data</a>[i].weapon_icon_path;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keyword">auto</span>    weapon_ui_tex  = ConstructorHelpers::FObjectFinder&lt;UTexture&gt;(*weapon_ui_path);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">if</span> (weapon_ui_tex.Succeeded())</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <a class="code hl_variable" href="class_a_u_i__manager.html#ae645b39288eb236e93cb0628577ccac7">AUI_manager::map_inventory_weapon_ui_tex</a>.Add(i, weapon_ui_tex.Object);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#a99c76753b5617d11ec63ac7bf22fd12e">   96</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#a99c76753b5617d11ec63ac7bf22fd12e">AUI_manager::Init_main_weapon_UI_mat</a>()</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>{</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">AData_table_manager::arr_weapon_data</a>.Num(); i++)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="comment">// 리소스를 불러온 후 데이터 테이블에 대입</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        FString weapon_ui_path = <span class="stringliteral">&quot;/Game/UI/Weapon_icon/&quot;</span> + <a class="code hl_variable" href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">AData_table_manager::arr_weapon_data</a>[i].weapon_slot_icon_path;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keyword">auto</span>    weapon_ui_mat  = ConstructorHelpers::FObjectFinder&lt;UMaterial&gt;(*weapon_ui_path);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">if</span> (weapon_ui_mat.Succeeded())</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <a class="code hl_variable" href="class_a_u_i__manager.html#a77474858936af59fb90eebd81209aad1">AUI_manager::map_main_weapon_ui_mat</a>.Add(i, weapon_ui_mat.Object);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">//for (int i = 0; i &lt; MAX_OTHER_WEAPON_COUNT; i++)</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="comment">//{</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment">//    // 리소스를 불러온 후 데이터 테이블에 대입</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="comment">//    FString weapon_ui_path = &quot;/Game/UI/Weapon_icon/&quot; + AData_table_manager::arr_other_weapon_data[i].weapon_slot_icon_path;</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment">//    auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder&lt;UMaterial&gt;(*weapon_ui_path);</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="comment">//    if (weapon_ui_mat.Succeeded())</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="comment">//        map_main_weapon_ui_mat.Add(i, weapon_ui_mat.Object);</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="comment">//}</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#a54cc83fd2de5e2803edaad82bf5b9ecd">  118</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#a54cc83fd2de5e2803edaad82bf5b9ecd">AUI_manager::Set_weapon_UI</a>()</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>{</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="comment">/*for (int i = 0; i &lt; MAX_WEAPON_COUNT; i++)</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">    {</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">    }*/</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="class_a_u_i__manager.html#a9c7f31d49eb30a775bb4a487d27c261e">  125</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_a_u_i__manager.html#a9c7f31d49eb30a775bb4a487d27c261e">AUI_manager::Update_interaction_UI</a>(<a class="code hl_variable" href="_base__interaction_8h.html#a295ed085e14fb2c8ec5323fc2aee5f99">UWidgetComponent</a>* _widget_comp, FString _type)</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>{</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="comment">// 위젯 설정</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    _widget_comp-&gt;SetWidgetSpace(EWidgetSpace::Screen);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    _widget_comp-&gt;SetRelativeLocation(FVector::ZeroVector);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    _widget_comp-&gt;SetWidgetClass(m_interaction_widget_bp);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">auto</span> p_interaction_ui = Cast&lt;UInteraction_UI&gt;(_widget_comp-&gt;GetWidget());</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">if</span> (p_interaction_ui)</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        p_interaction_ui-&gt;Title_txt-&gt;SetText(FText::FromString(_type));</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
+<div class="ttc" id="a_base__interaction_8h_html_a295ed085e14fb2c8ec5323fc2aee5f99"><div class="ttname"><a href="_base__interaction_8h.html#a295ed085e14fb2c8ec5323fc2aee5f99">UWidgetComponent</a></div><div class="ttdeci">class UStaticMeshComponent class UWidgetComponent</div><div class="ttdef"><b>Definition:</b> <a href="_base__interaction_8h_source.html#l00021">Base_interaction.h:20</a></div></div>
+<div class="ttc" id="a_custom__game__instance_8h_html"><div class="ttname"><a href="_custom__game__instance_8h.html">Custom_game_instance.h</a></div><div class="ttdoc">게임 인스턴스 = 싱글톤 통용</div></div>
+<div class="ttc" id="a_data__table__manager_8h_html"><div class="ttname"><a href="_data__table__manager_8h.html">Data_table_manager.h</a></div><div class="ttdoc">데이터 테이블 매니저</div></div>
+<div class="ttc" id="a_interaction___u_i_8h_html"><div class="ttname"><a href="_interaction___u_i_8h.html">Interaction_UI.h</a></div><div class="ttdoc">상호작용 UI</div></div>
+<div class="ttc" id="a_inventory__list___u_i_8h_html"><div class="ttname"><a href="_inventory__list___u_i_8h.html">Inventory_list_UI.h</a></div><div class="ttdoc">인벤토리 리스트 UI</div></div>
+<div class="ttc" id="a_inventory__manager_8h_html"><div class="ttname"><a href="_inventory__manager_8h.html">Inventory_manager.h</a></div><div class="ttdoc">인벤토리 매니저</div></div>
+<div class="ttc" id="a_player___u_i_8h_html"><div class="ttname"><a href="_player___u_i_8h.html">Player_UI.h</a></div><div class="ttdoc">메인 플레이어 UI</div></div>
+<div class="ttc" id="a_u_i__manager_8h_html"><div class="ttname"><a href="_u_i__manager_8h.html">UI_manager.h</a></div><div class="ttdoc">UI 매니저</div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_a070d0ea99ad4ea83de8f98678bfdb63e"><div class="ttname"><a href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">AData_table_manager::arr_weapon_data</a></div><div class="ttdeci">static TArray&lt; Fs_weapon_data &gt; arr_weapon_data</div><div class="ttdoc">게임 오브젝트 데이터 배열 (static)</div><div class="ttdef"><b>Definition:</b> <a href="_data__table__manager_8h_source.html#l00029">Data_table_manager.h:29</a></div></div>
+<div class="ttc" id="aclass_a_inventory__manager_html"><div class="ttname"><a href="class_a_inventory__manager.html">AInventory_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_inventory__manager_8h_source.html#l00019">Inventory_manager.h:20</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a1d2bf1b6a52701e4b1517659e5c155d2"><div class="ttname"><a href="class_a_u_i__manager.html#a1d2bf1b6a52701e4b1517659e5c155d2">AUI_manager::AUI_manager</a></div><div class="ttdeci">AUI_manager()</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00018">UI_manager.cpp:18</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a1ec1346f3b6eda713622419b64ab8995"><div class="ttname"><a href="class_a_u_i__manager.html#a1ec1346f3b6eda713622419b64ab8995">AUI_manager::map_player_ui_tex</a></div><div class="ttdeci">static TMap&lt; int, UTexture * &gt; map_player_ui_tex</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00027">UI_manager.h:27</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a29ceaf64a676fe8397be9d0f5048f7cb"><div class="ttname"><a href="class_a_u_i__manager.html#a29ceaf64a676fe8397be9d0f5048f7cb">AUI_manager::Init_player_UI</a></div><div class="ttdeci">void Init_player_UI()</div><div class="ttdoc">최상위 플레이어 UI 초기화</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00042">UI_manager.cpp:42</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a300ad5f3a05aed584914732a252e2972"><div class="ttname"><a href="class_a_u_i__manager.html#a300ad5f3a05aed584914732a252e2972">AUI_manager::mk_arr_player_UI_tex_path</a></div><div class="ttdeci">const TArray&lt; FString &gt; mk_arr_player_UI_tex_path</div><div class="ttdoc">메인 플레이어 UI 리소스 경로명</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00045">UI_manager.h:46</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a54cc83fd2de5e2803edaad82bf5b9ecd"><div class="ttname"><a href="class_a_u_i__manager.html#a54cc83fd2de5e2803edaad82bf5b9ecd">AUI_manager::Set_weapon_UI</a></div><div class="ttdeci">void Set_weapon_UI()</div><div class="ttdoc">미구현 상태</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00118">UI_manager.cpp:118</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a59562d67557ae19961bbd364d3d29d12"><div class="ttname"><a href="class_a_u_i__manager.html#a59562d67557ae19961bbd364d3d29d12">AUI_manager::m_bp_player_UI</a></div><div class="ttdeci">TSubclassOf&lt; UPlayer_UI &gt; m_bp_player_UI</div><div class="ttdoc">플레이어 UI BP</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00036">UI_manager.h:36</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a77474858936af59fb90eebd81209aad1"><div class="ttname"><a href="class_a_u_i__manager.html#a77474858936af59fb90eebd81209aad1">AUI_manager::map_main_weapon_ui_mat</a></div><div class="ttdeci">static TMap&lt; int, UMaterial * &gt; map_main_weapon_ui_mat</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00025">UI_manager.h:25</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a83e00045aa4cf8f82dc27d09388e050a"><div class="ttname"><a href="class_a_u_i__manager.html#a83e00045aa4cf8f82dc27d09388e050a">AUI_manager::mk_default_player_UI_path</a></div><div class="ttdeci">const FString mk_default_player_UI_path</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00052">UI_manager.h:52</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a8e324a415c6cfcf7b74a6b51a0a0f1ef"><div class="ttname"><a href="class_a_u_i__manager.html#a8e324a415c6cfcf7b74a6b51a0a0f1ef">AUI_manager::mp_player_UI</a></div><div class="ttdeci">UPlayer_UI * mp_player_UI</div><div class="ttdoc">플레이어 UI</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00033">UI_manager.h:33</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a9440298dc2eb9bdac26063b837161013"><div class="ttname"><a href="class_a_u_i__manager.html#a9440298dc2eb9bdac26063b837161013">AUI_manager::Init_player_UI_tex</a></div><div class="ttdeci">void Init_player_UI_tex()</div><div class="ttdoc">플레이어 UI 초기화</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00057">UI_manager.cpp:57</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a99c76753b5617d11ec63ac7bf22fd12e"><div class="ttname"><a href="class_a_u_i__manager.html#a99c76753b5617d11ec63ac7bf22fd12e">AUI_manager::Init_main_weapon_UI_mat</a></div><div class="ttdeci">void Init_main_weapon_UI_mat()</div><div class="ttdoc">플레이어 무기 선택 UI 초기화</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00096">UI_manager.cpp:96</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_a9c7f31d49eb30a775bb4a487d27c261e"><div class="ttname"><a href="class_a_u_i__manager.html#a9c7f31d49eb30a775bb4a487d27c261e">AUI_manager::Update_interaction_UI</a></div><div class="ttdeci">void Update_interaction_UI(class UWidgetComponent *_widget_comp, FString _title)</div><div class="ttdoc">상호작용 UI 업데이트 (델리게이트)</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00125">UI_manager.cpp:125</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_aa611efffcdd244052a5690f46de5349c"><div class="ttname"><a href="class_a_u_i__manager.html#aa611efffcdd244052a5690f46de5349c">AUI_manager::Init_player_inventory</a></div><div class="ttdeci">void Init_player_inventory()</div><div class="ttdoc">플레이어 인벤토리 설정</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00077">UI_manager.cpp:77</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_abf120876a24dd9deca79b4acba87b0c4"><div class="ttname"><a href="class_a_u_i__manager.html#abf120876a24dd9deca79b4acba87b0c4">AUI_manager::p_inventory_manager</a></div><div class="ttdeci">class AInventory_manager * p_inventory_manager</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00055">UI_manager.h:55</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_ac95884f42aac3acdbe7203d7b863b346"><div class="ttname"><a href="class_a_u_i__manager.html#ac95884f42aac3acdbe7203d7b863b346">AUI_manager::Init_interaction_UI</a></div><div class="ttdeci">void Init_interaction_UI()</div><div class="ttdoc">상호작용 UI 초기화</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00050">UI_manager.cpp:50</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_acc63bd44eae32215e38354ddbcb4884c"><div class="ttname"><a href="class_a_u_i__manager.html#acc63bd44eae32215e38354ddbcb4884c">AUI_manager::BeginPlay</a></div><div class="ttdeci">virtual void BeginPlay() override</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00029">UI_manager.cpp:29</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_acc8778ac9c54a6ba142fcb06ff55f1ed"><div class="ttname"><a href="class_a_u_i__manager.html#acc8778ac9c54a6ba142fcb06ff55f1ed">AUI_manager::Init_inventory_weapon_UI_tex</a></div><div class="ttdeci">void Init_inventory_weapon_UI_tex()</div><div class="ttdoc">인벤토리 무기 UI 초기화</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00083">UI_manager.cpp:83</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_ad025f888cd75517107f22d6b751dfdd4"><div class="ttname"><a href="class_a_u_i__manager.html#ad025f888cd75517107f22d6b751dfdd4">AUI_manager::Set_player_UI</a></div><div class="ttdeci">void Set_player_UI()</div><div class="ttdoc">플레이어 UI 띄움</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8cpp_source.html#l00070">UI_manager.cpp:70</a></div></div>
+<div class="ttc" id="aclass_a_u_i__manager_html_ae645b39288eb236e93cb0628577ccac7"><div class="ttname"><a href="class_a_u_i__manager.html#ae645b39288eb236e93cb0628577ccac7">AUI_manager::map_inventory_weapon_ui_tex</a></div><div class="ttdeci">static TMap&lt; int, UTexture * &gt; map_inventory_weapon_ui_tex</div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00026">UI_manager.h:26</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_3cfedc8f52242e717edf16aab75ba81f.html">UI_PUBG</a></li><li class="navelem"><a class="el" href="_u_i__manager_8cpp.html">UI_manager.cpp</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

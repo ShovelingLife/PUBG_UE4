@@ -1,0 +1,35 @@
+\hypertarget{_a_i__character_8h_source}{}\doxysection{AI\+\_\+character.\+h}
+\label{_a_i__character_8h_source}\index{Source/AI\_PUBG/AI\_character.h@{Source/AI\_PUBG/AI\_character.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Fill out your copyright notice in the Description page of Project Settings.}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}GameFramework/Character.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}AI\_character.generated.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 UCLASS()}
+\DoxyCodeLine{10 class AI\_PUBG\_API \mbox{\hyperlink{class_a_a_i__character}{AAI\_character}} : public ACharacter}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     GENERATED\_BODY()}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{public}:}
+\DoxyCodeLine{15     \textcolor{comment}{// Sets default values for this character's properties}}
+\DoxyCodeLine{16     \mbox{\hyperlink{class_a_a_i__character}{AAI\_character}}();}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{19     \textcolor{comment}{// Called when the game starts or when spawned}}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{public}: }
+\DoxyCodeLine{23     \textcolor{comment}{// Called every frame}}
+\DoxyCodeLine{24     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{comment}{// Called to bind functionality to input}}
+\DoxyCodeLine{27     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} SetupPlayerInputComponent(\textcolor{keyword}{class} UInputComponent* PlayerInputComponent) \textcolor{keyword}{override};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \};}
+
+\end{DoxyCode}

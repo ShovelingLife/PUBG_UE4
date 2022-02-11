@@ -1,0 +1,34 @@
+\hypertarget{_mini_map___u_i_8h_source}{}\doxysection{Mini\+Map\+\_\+\+UI.\+h}
+\label{_mini_map___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/MiniMap\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/MiniMap\_UI.h}}
+\mbox{\hyperlink{_mini_map___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00001}00001 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00003}00003 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00005}00005 \textcolor{preprocessor}{\#include "{}MiniMap\_UI.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00007}00007 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00008}00008 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00009}00009 \textcolor{keyword}{class }UProgressBar;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00011}00011 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00012}\mbox{\hyperlink{class_u_mini_map___u_i}{00012}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_mini_map___u_i}{UMiniMap\_UI}} : public UUserWidget}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00013}00013 \{}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00014}00014     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00015}00015     }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00017}00017 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00018}\mbox{\hyperlink{class_u_mini_map___u_i_a3a6c252d3f02793dd35da491899d0b7f}{00018}}     \mbox{\hyperlink{class_u_mini_map___u_i_a3a6c252d3f02793dd35da491899d0b7f}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*  Magnetic\_timer\_text;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00019}\mbox{\hyperlink{class_u_mini_map___u_i_afecd6087e59bb527125ef8617ffc12cc}{00019}}     \mbox{\hyperlink{class_u_mini_map___u_i_afecd6087e59bb527125ef8617ffc12cc}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*  Phase\_text;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00020}\mbox{\hyperlink{class_u_mini_map___u_i_ab861b6d081e2f6bfdf6b1d7ee1c19be1}{00020}}     \mbox{\hyperlink{class_u_mini_map___u_i_ab861b6d081e2f6bfdf6b1d7ee1c19be1}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*      MiniMap\_img;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00021}\mbox{\hyperlink{class_u_mini_map___u_i_a6c643c4db5ae7ebefead39a6fe9bac10}{00021}}     \mbox{\hyperlink{class_u_mini_map___u_i_a6c643c4db5ae7ebefead39a6fe9bac10}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*      Warring\_img;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00022}\mbox{\hyperlink{class_u_mini_map___u_i_a7e2ab5c60abb978afdbc89a95001b48d}{00022}}     \mbox{\hyperlink{class_u_mini_map___u_i_a7e2ab5c60abb978afdbc89a95001b48d}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Magnetic\_field\_bar;}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00023}00023 }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00024}00024 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00025}00025     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00026}00026 }
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00027}00027     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_mini_map___u_i_8h_source_l00028}00028 \};}
+
+\end{DoxyCode}

@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/UI_PUBG/Inventory_list_UI.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_inventory__list___u_i_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Inventory_list_UI.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_inventory__list___u_i_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;Blueprint/UserWidget.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;Inventory_list_UI.generated.h&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>DECLARE_DELEGATE(FDele_set_weapon_slot_null)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">class </span>UImage;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span>UListView;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span>USizeBox;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">class </span>UTextBlock;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span><a class="code hl_class" href="class_u_item___slot___u_i.html">UItem_Slot_UI</a>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>UCLASS()</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html">   25</a></span>class UI_PUBG_API <a class="code hl_class" href="class_u_inventory__list___u_i.html">UInventory_list_UI</a> : public UUserWidget</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#a86fb501bd9bfa665fda0fd5b2db416c4">   30</a></span>    <a class="code hl_function" href="class_u_inventory__list___u_i.html#a86fb501bd9bfa665fda0fd5b2db416c4">UPROPERTY</a>() <a class="code hl_class" href="class_u_item___slot___u_i.html">UItem_Slot_UI</a>* p_slot_obj;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#ad6d02daa439699094452dbf08f0be845">   31</a></span>    <span class="keywordtype">float</span> m_world_size_box_width = 0.f;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#a59a6e7af0058b7f9e994071da814a7a2">   32</a></span>    <span class="keywordtype">float</span> m_inventory_size_box_width = 0.f;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>public:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#a5a1e2003a73bf1bd8acbaf8f815acb4f">   36</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* World_txt;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#acdae0fd79e497bbc06c3447dd2ae4a90">   37</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   World_list_size_box;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#aa5503f3011b0a65627baa27191c13e36">   38</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) UListView*  World_list_view;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#aaea5da96df1e522326c90dcbc51f7c8e">   41</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Inventory_txt;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#afeaa6929e2de10c4a0b4be0eab2f7953">   42</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   Inventory_list_size_box;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#aaa94a12ea88fdf080275e6e41e0f2826">   43</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) UListView*  Inventory_list_view;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#a39de0ba5bd1c4804f20840924f867c29">   46</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) UImage*    Highlight_img;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#a9589fff2b3b3abcc0e87f2a2df16909e">   47</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) UImage*    Separator_img;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#af436617976f3f96376a52d850ce940dc">   49</a></span>    <a class="code hl_function" href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UPROPERTY</a>(EditDefaultsOnly, Category = Item_slot) TSubclassOf&lt;<a class="code hl_class" href="class_u_item___slot___u_i.html">UItem_Slot_UI</a>&gt; p_item_slot_UI_class;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_u_inventory__list___u_i.html#a97cb1aeb3d20f189b3f069c690372269">   50</a></span>    FDele_set_weapon_slot_null dele_set_weapon_slot_null;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>protected:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    virtual <span class="keywordtype">void</span> <a class="code hl_function" href="class_u_item___slot___u_i.html#a0febbe6a7c396c1d9f4f37f62a550494">NativeConstruct</a>() override;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    virtual <span class="keywordtype">void</span> <a class="code hl_function" href="class_u_item___slot___u_i.html#adf0eb09028b56854e2ad56198f1155f5">NativeTick</a>(const FGeometry&amp;, <span class="keywordtype">float</span>) override;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    virtual FReply NativeOnMouseButtonDown(const FGeometry&amp; _geometry, const FPointerEvent&amp; _in_mouse_event) override;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    virtual FReply NativeOnMouseMove(const FGeometry&amp; _geometry, const FPointerEvent&amp; _in_mouse_event) override;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    virtual <span class="keywordtype">void</span> NativeOnMouseLeave(const FPointerEvent&amp; _in_mouse_event) override;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    virtual <span class="keywordtype">void</span> NativeOnDragDetected(const FGeometry&amp; _geometry, const FPointerEvent&amp; _in_mouse_event, class UDragDropOperation*&amp; _operation) override;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    virtual <span class="keywordtype">bool</span> NativeOnDrop(const FGeometry&amp; _geometry, const FDragDropEvent&amp; _in_mouse_event, class UDragDropOperation* _operation) override;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>private:</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordtype">void</span> Get_item_list_width();</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    FVector2D Get_distance_between_slot_cursor();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>public:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    UFUNCTION()</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">void</span> Check_for_hovered_item(<a class="code hl_class" href="class_u_item___slot___u_i.html">UItem_Slot_UI</a>* _p_slot_obj);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>};</div>
+<div class="ttc" id="aclass_u_inventory__list___u_i_html"><div class="ttname"><a href="class_u_inventory__list___u_i.html">UInventory_list_UI</a></div><div class="ttdef"><b>Definition:</b> <a href="_inventory__list___u_i_8h_source.html#l00025">Inventory_list_UI.h:26</a></div></div>
+<div class="ttc" id="aclass_u_inventory__list___u_i_html_a86fb501bd9bfa665fda0fd5b2db416c4"><div class="ttname"><a href="class_u_inventory__list___u_i.html#a86fb501bd9bfa665fda0fd5b2db416c4">UInventory_list_UI::UPROPERTY</a></div><div class="ttdeci">UPROPERTY() UItem_Slot_UI *p_slot_obj</div></div>
+<div class="ttc" id="aclass_u_item___slot___u_i_html"><div class="ttname"><a href="class_u_item___slot___u_i.html">UItem_Slot_UI</a></div><div class="ttdef"><b>Definition:</b> <a href="_item___slot___u_i_8h_source.html#l00049">Item_Slot_UI.h:50</a></div></div>
+<div class="ttc" id="aclass_u_item___slot___u_i_html_a0febbe6a7c396c1d9f4f37f62a550494"><div class="ttname"><a href="class_u_item___slot___u_i.html#a0febbe6a7c396c1d9f4f37f62a550494">UItem_Slot_UI::NativeConstruct</a></div><div class="ttdeci">virtual void NativeConstruct() override</div><div class="ttdef"><b>Definition:</b> <a href="_item___slot___u_i_8cpp_source.html#l00015">Item_Slot_UI.cpp:15</a></div></div>
+<div class="ttc" id="aclass_u_item___slot___u_i_html_ad5999dbb1e710a4b15b4055e1a1d196d"><div class="ttname"><a href="class_u_item___slot___u_i.html#ad5999dbb1e710a4b15b4055e1a1d196d">UItem_Slot_UI::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(BlueprintReadWrite, meta=(BindWidget)) UHorizontalBox *Main_horizontal_box</div><div class="ttdoc">현재 쓰여지는 변수</div></div>
+<div class="ttc" id="aclass_u_item___slot___u_i_html_adf0eb09028b56854e2ad56198f1155f5"><div class="ttname"><a href="class_u_item___slot___u_i.html#adf0eb09028b56854e2ad56198f1155f5">UItem_Slot_UI::NativeTick</a></div><div class="ttdeci">virtual void NativeTick(const FGeometry &amp;_geometry, float _delta_time) override</div><div class="ttdoc">프레임마다 호출</div><div class="ttdef"><b>Definition:</b> <a href="_item___slot___u_i_8cpp_source.html#l00020">Item_Slot_UI.cpp:20</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_3cfedc8f52242e717edf16aab75ba81f.html">UI_PUBG</a></li><li class="navelem"><a class="el" href="_inventory__list___u_i_8h.html">Inventory_list_UI.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

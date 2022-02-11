@@ -1,0 +1,63 @@
+\hypertarget{_current___weapon___u_i_8h_source}{}\doxysection{Current\+\_\+\+Weapon\+\_\+\+UI.\+h}
+\label{_current___weapon___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Current\_Weapon\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Current\_Weapon\_UI.h}}
+\mbox{\hyperlink{_current___weapon___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Current\_Weapon\_UI.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00016}00016 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00017}00017 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00018}00018 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00019}00019 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00020}00020 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00021}\mbox{\hyperlink{class_u_current___weapon___u_i}{00021}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_current___weapon___u_i}{UCurrent\_Weapon\_UI}} : public UUserWidget}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00022}00022 \{}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00023}00023     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00024}00024     }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00025}00025 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00027}\mbox{\hyperlink{class_u_current___weapon___u_i_a2e5c062df7fadfc81f8287a5f5660cc7}{00027}}     \mbox{\hyperlink{class_u_current___weapon___u_i_a2e5c062df7fadfc81f8287a5f5660cc7}{UPROPERTY}}(VisibleAnywhere, Category = Manager) \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}}* mp\_weapon\_manager = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00028}00028 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00030}\mbox{\hyperlink{class_u_current___weapon___u_i_a86001a236fcf746772d54963e8f2821f}{00030}}     \mbox{\hyperlink{class_u_current___weapon___u_i_a86001a236fcf746772d54963e8f2821f}{UPROPERTY}}() \mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}* mp\_UI\_manager;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00031}00031 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00035}\mbox{\hyperlink{class_u_current___weapon___u_i_a125f5d4aa37e18eea05a8009cce513c5}{00035}}     const FVector mk\_gun\_slot\_size    \{ 200.f, 60.f, 0.f\};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00036}\mbox{\hyperlink{class_u_current___weapon___u_i_add09a6cca688f75932ea15198afd1a3f}{00036}}     \textcolor{keyword}{const} FVector mk\_pistol\_slot\_size \{  85.f, 60.f, 0.f\};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00037}\mbox{\hyperlink{class_u_current___weapon___u_i_a21c745c70b3d06098c061c096d011928}{00037}}     \textcolor{keyword}{const} FVector mk\_grenade\_slot\_size\{  25.f, 30.f, 0.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00038}00038 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00042}\mbox{\hyperlink{class_u_current___weapon___u_i_aa8b4a2787f86c9f500726106c03d38e7}{00042}}     \textcolor{keyword}{const} FVector mk\_gun\_slot\_pos    \{ 200.f, 60.f, 0.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00043}\mbox{\hyperlink{class_u_current___weapon___u_i_a3f8c88a7c92d8928ff9f31634416d388}{00043}}     \textcolor{keyword}{const} FVector mk\_pistol\_slot\_pos \{  85.f, 60.f, 0.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00044}\mbox{\hyperlink{class_u_current___weapon___u_i_acb517bacae86f4f12f2d5de54d4ec0e5}{00044}}     \textcolor{keyword}{const} FVector mk\_grenade\_slot\_pos\{  25.f, 30.f, 0.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00045}00045 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00049}\mbox{\hyperlink{class_u_current___weapon___u_i_af260edcddbfaa16a4d10208cb10e36eb}{00049}}     \textcolor{keyword}{const} FLinearColor mk\_selected\_color          \{   1.f,   1.f,   1.f, 1.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00050}\mbox{\hyperlink{class_u_current___weapon___u_i_a251f677662f05a607ef6fd2481c9819d}{00050}}     \textcolor{keyword}{const} FLinearColor mk\_selected\_no\_ammo\_color  \{   1.f,   0.f,   0.f, 1.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00051}\mbox{\hyperlink{class_u_current___weapon___u_i_addfef2b24e1d12db53d236cb25e236f4}{00051}}     \textcolor{keyword}{const} FLinearColor mk\_unselected\_color        \{ 0.25f, 0.25f, 0.25f, 1.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00052}\mbox{\hyperlink{class_u_current___weapon___u_i_a0ed3237477c7975a031aa7975d0058a4}{00052}}     \textcolor{keyword}{const} FLinearColor mk\_unselected\_no\_ammo\_color\{ 0.25f,   0.f,   0.f, 1.f \};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00053}00053 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00054}00054 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00058}\mbox{\hyperlink{class_u_current___weapon___u_i_ae7c0fe3755a9516c5b25afb824d34ed2}{00058}}     \mbox{\hyperlink{class_u_current___weapon___u_i_ae7c0fe3755a9516c5b25afb824d34ed2}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* First\_weapon\_img;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00059}\mbox{\hyperlink{class_u_current___weapon___u_i_aae49c4dc6134509046df79dbba59a1a5}{00059}}     \mbox{\hyperlink{class_u_current___weapon___u_i_aae49c4dc6134509046df79dbba59a1a5}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Second\_weapon\_img;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00060}\mbox{\hyperlink{class_u_current___weapon___u_i_aa5b653944b2fb699a0956a54d852f861}{00060}}     \mbox{\hyperlink{class_u_current___weapon___u_i_aa5b653944b2fb699a0956a54d852f861}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Third\_weapon\_img;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00061}\mbox{\hyperlink{class_u_current___weapon___u_i_a4b18f7dcf2984f4968c00fe9b6ce0bce}{00061}}     \mbox{\hyperlink{class_u_current___weapon___u_i_a4b18f7dcf2984f4968c00fe9b6ce0bce}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Fourth\_weapon\_img;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00062}\mbox{\hyperlink{class_u_current___weapon___u_i_a674f369b5ccd579c2f4c19392c8d7e39}{00062}}     \mbox{\hyperlink{class_u_current___weapon___u_i_a674f369b5ccd579c2f4c19392c8d7e39}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage* Fifth\_weapon\_img;}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00063}00063 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00065}\mbox{\hyperlink{class_u_current___weapon___u_i_a653f4006f1ddb5bd3db6ca57ea0bbf6e}{00065}}     TArray<UImage*> \mbox{\hyperlink{class_u_current___weapon___u_i_a653f4006f1ddb5bd3db6ca57ea0bbf6e}{p\_arr\_img}};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00066}00066 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00067}00067 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00068}00068     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00070}00070     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00071}00071 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00072}00072 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00076}00076     \textcolor{keywordtype}{void} Init\_arr\_img();}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00077}00077 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00081}00081     \textcolor{keywordtype}{void} Update\_icon\_visibility();}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00082}00082 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00086}00086     \textcolor{keywordtype}{void} Update\_icon\_color();}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00087}00087 }
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00091}00091     \textcolor{keywordtype}{void} Set\_icon\_UI();}
+\DoxyCodeLine{\Hypertarget{_current___weapon___u_i_8h_source_l00092}00092 \};}
+
+\end{DoxyCode}

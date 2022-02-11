@@ -1,0 +1,9 @@
+digraph "AUI_manager"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{AUI_manager\n|+ p_inventory_manager\l+ map_main_weapon_ui_mat\l+ map_inventory_weapon\l_ui_tex\l+ map_player_ui_tex\l- mp_player_UI\l- m_bp_player_UI\l- m_inventory_manager\l_actor\l- mk_arr_player_UI_tex_path\l- mk_default_player_UI_path\l|+ AUI_manager()\l+ Update_interaction_UI()\l# BeginPlay()\l- UPROPERTY()\l- Init_player_UI()\l- Init_interaction_UI()\l- Set_player_UI()\l- Init_player_inventory()\l- Init_inventory_weapon\l_UI_tex()\l- Init_main_weapon_UI\l_mat()\l- Init_player_UI_tex()\l- Set_weapon_UI()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

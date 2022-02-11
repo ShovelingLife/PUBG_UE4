@@ -1,0 +1,9 @@
+digraph "Fs_weapon_data"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Fs_weapon_data\n|+ type\l+ weapon_group_type\l+ mesh_path\l+ weapon_icon_path\l+ weapon_slot_icon_path\l+ bullet_mesh_path\l+ mag_mesh_path\l+ collider_size\l+ collider_pos\l+ max_bullet_count\l+ damage\l+ UI_material_bp_path\l+ bullet_bp_path\l+ current_max_bullet\l_count\l+ current_bullet_count\l|+ Fs_weapon_data()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node2 [label="{FTableRowBase\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

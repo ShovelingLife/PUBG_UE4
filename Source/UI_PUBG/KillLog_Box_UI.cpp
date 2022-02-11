@@ -1,4 +1,4 @@
-#include "KillLog_Box_UI.h"
+﻿#include "KillLog_Box_UI.h"
 #include "Components/TextBlock.h"
 #include "Components/ListView.h"
 

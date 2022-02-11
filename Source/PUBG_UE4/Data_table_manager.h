@@ -1,3 +1,12 @@
+ï»¿/**
+ * \file Data_table_manager.h
+ *
+ * \brief ë°ì´í„° í…Œì´ë¸” ë§¤ë‹ˆì €
+ *
+ * \ingroup PUBG_UE4
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 #include "CoreMinimal.h"
 #include "Vehicle_data.h"
@@ -14,13 +23,17 @@ class PUBG_UE4_API AData_table_manager : public AActor
     GENERATED_BODY()
         
 public:
+    /**
+      * \brief ê²Œì„ ì˜¤ë¸Œì íŠ¸ ë°ì´í„° ë°°ì—´ (static)
+     */
     static TArray<Fs_weapon_data>       arr_weapon_data;
     static TArray<Fs_other_weapon_data> arr_other_weapon_data;
     static TArray<Fs_vehicle_data>      arr_vehicle_data;
 
 private:
-    // ------- ¹«±â µ¥ÀÌÅÍ °ü·Ã -------
-
+    /**
+      * \brief ë¬´ê¸° ë°ì´í„° ê´€ë ¨
+     */
     UPROPERTY(VisibleAnywhere) UDataTable* mp_weapon_data_table;
 
     const FString mk_weapon_mesh_path       = "/Game/AdvanceWeaponPack/Mesh/Weapon/";
@@ -28,16 +41,16 @@ private:
     const FString mk_rendertarget_mesh_path = "/Game/Materials/Weapon_UI/UI_material_";
     const FString mk_weapon_sound_path      = "/Game/SFX/Gun_sounds/";
 
-
-    // ------- ±âÅ¸ ¹«±â (ÅõÃ´·ù/±ÙÁ¢) µ¥ÀÌÅÍ °ü·Ã -------
-
+    /**
+      * \brief ê¸°íƒ€ ë¬´ê¸° (íˆ¬ì²™ë¥˜/ê·¼ì ‘) ë°ì´í„° ê´€ë ¨
+     */
     UPROPERTY(VisibleAnywhere) UDataTable* mp_other_weapon_data_table;
 
     const FString mk_other_weapon_mesh_path = "/Game/Items/Weapons/";
 
-
-    // ------- Â÷·® µ¥ÀÌÅÍ °ü·Ã -------
-
+    /**
+      * \brief ì°¨ëŸ‰ ë°ì´í„° ê´€ë ¨
+     */
     UPROPERTY(VisibleAnywhere) UDataTable* mp_vehicle_data_table;
 
     const FString mk_vehicle_mesh_path    = "/Game/Characters/Vehicles/Skeletons/";
@@ -49,12 +62,18 @@ public:
     AData_table_manager();
 
 private:
-    // ¹«±â µ¥ÀÌÅÍ ÃÊ±âÈ­
+    /**
+      * \brief ë¬´ê¸° ë°ì´í„° ì´ˆê¸°í™”
+     */
     void Init_weapon_data();
 
-    // ±âÅ¸ ¹«±â µ¥ÀÌÅÍ ÃÊ±âÈ­
+    /**
+      * \brief ê¸°íƒ€ ë¬´ê¸° ë°ì´í„° ì´ˆê¸°í™”
+     */ 
     void Init_other_weapon_data();
 
-    // Â÷·® µ¥ÀÌÅÍ ÃÊ±âÈ­
+    /**
+      * \brief ì°¨ëŸ‰ ë°ì´í„° ì´ˆê¸°í™”
+     */
     void Init_vehicle_data();
 };

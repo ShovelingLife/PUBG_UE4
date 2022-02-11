@@ -1,4 +1,4 @@
-#include "Inventory_list_UI.h"
+ï»¿#include "Inventory_list_UI.h"
 #include "Item_slot_UI.h"
 #include "Custom_drag_drop_operation.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
@@ -24,19 +24,19 @@ void UInventory_list_UI::NativeTick(const FGeometry& _geometry, float _delta_tim
     Super::NativeTick(_geometry, _delta_time);
 }
 
-FReply UInventory_list_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _mouse_event)
+FReply UInventory_list_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event)
 {
-    Super::NativeOnMouseButtonDown(_geometry, _mouse_event);
-
-    // ¿ŞÂÊ Å¬¸¯ / ¸¶¿ì½º Ä¿¼­ º¯°æ
-    if (_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
+    Super::NativeOnMouseButtonDown(_geometry, _in_mouse_event);
+    
+    // ì™¼ìª½ í´ë¦­ / ë§ˆìš°ìŠ¤ ì»¤ì„œ ë³€ê²½
+    if (_in_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         Highlight_img->SetVisibility(ESlateVisibility::Hidden);
 
         if (p_slot_obj &&
             p_slot_obj->IsSelected())
         {
-            auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_mouse_event, this, EKeys::LeftMouseButton);
+            auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
             return reply.NativeReply;
         }
     }
@@ -47,7 +47,7 @@ FReply UInventory_list_UI::NativeOnMouseMove(const FGeometry& _geometry, const F
 {
     Super::NativeOnMouseMove(_geometry, _in_mouse_event);
 
-    // ¿òÁ÷ÀÏ ¶§¸¶´Ù ÇöÀç ÀÌ¹ÌÁöÀÇ À§Ä¡¸¦ ±¸ÇÔ    
+    // ì›€ì§ì¼ ë•Œë§ˆë‹¤ í˜„ì¬ ì´ë¯¸ì§€ì˜ ìœ„ì¹˜ë¥¼ êµ¬í•¨    
     FVector2D distance = Get_distance_between_slot_cursor();
     //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, FString::Printf(TEXT("Distance posX : %f, Distance posY : %f"),distance.X, distance.Y));
 
@@ -67,24 +67,24 @@ void UInventory_list_UI::NativeOnMouseLeave(const FPointerEvent& _in_mouse_event
     Highlight_img->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _mouse_event, UDragDropOperation*& _out_operation)
+void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event, UDragDropOperation*& _out_operation)
 {
-    Super::NativeOnDragDetected(_geometry, _mouse_event, _out_operation);
+    Super::NativeOnDragDetected(_geometry, _in_mouse_event, _out_operation);
     
-    // ¸¶¿ì½º À§Ä¡¸¦ ±¸ÇÔ
+    // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ êµ¬í•¨
     auto p_slot         = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
-    FVector2D mouse_pos = _geometry.AbsoluteToLocal(_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
-
+    FVector2D mouse_pos = _geometry.AbsoluteToLocal(_in_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
+    
     if (!p_slot ||
         !p_slot_obj)
         return;
 
-    // ½½·Ô ¼³Á¤
+    // ìŠ¬ë¡¯ ì„¤ì •
     p_slot->item_data = p_slot_obj->item_data;
     p_slot->Priority  = 1;
     p_slot->Set_as_cursor(mouse_pos);
 
-    // µå·¡±× ±¸Çö
+    // ë“œë˜ê·¸ êµ¬í˜„
     auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
     p_drag_drop_operation->p_slot_UI         = p_slot;
     p_drag_drop_operation->DefaultDragVisual = p_slot;
@@ -93,7 +93,7 @@ void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const 
     _out_operation  = p_drag_drop_operation;
 }
 
-bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _pointer_event, UDragDropOperation* _operation)
+bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _in_mouse_event, UDragDropOperation* _operation)
 {
     auto p_drag_operation = Cast<UCustom_drag_drop_operation>(_operation);
     auto p_slot_UI        = p_drag_operation->p_slot_UI;
@@ -101,10 +101,10 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     if (!p_slot_UI)
         return false;
 
-    // ¸¶¿ì½º À§Ä¡ ±¸ÇÏ±â
+    // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ êµ¬í•˜ê¸°
     FVector2D mouse_pos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
-    // ¿ùµå ¸®½ºÆ®¿¡ µå·Ó
+    // ì›”ë“œ ë¦¬ìŠ¤íŠ¸ì— ë“œë¡­
     if (mouse_pos.X > 100.f &&
         mouse_pos.X < 325.f)
     {
@@ -112,7 +112,7 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
         World_list_view->AddItem(p_slot_UI);
         dele_set_weapon_slot_null.ExecuteIfBound();
     }
-    // ÀÎº¥Åä¸® ¸®½ºÆ®¿¡ µå·Ó
+    // ì¸ë²¤í† ë¦¬ ë¦¬ìŠ¤íŠ¸ì— ë“œë¡­
     else
     {
         if (p_drag_operation->is_gun)
@@ -127,14 +127,14 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
 
 void UInventory_list_UI::Get_item_list_width()
 {
-    // ¿ùµå »çÀÌÁî ¹Ú½º ³ĞÀÌ ±¸ÇÔ
+    // ì›”ë“œ ì‚¬ì´ì¦ˆ ë°•ìŠ¤ ë„“ì´ êµ¬í•¨
     if (auto p_world_list_canvas_slot = Cast<UCanvasPanelSlot>(World_list_size_box->Slot))
     {
         FVector2D world_size_box_pos = p_world_list_canvas_slot->GetPosition();
         FVector2D world_size_box_size = p_world_list_canvas_slot->GetSize();
         m_world_size_box_width = world_size_box_pos.X + world_size_box_size.X;
     }
-    // ÀÎº¥Åä¸® »çÀÌÁî ¹Ú½º ³ĞÀÌ ±¸ÇÔ    
+    // ì¸ë²¤í† ë¦¬ ì‚¬ì´ì¦ˆ ë°•ìŠ¤ ë„“ì´ êµ¬í•¨    
     if (auto p_inventory_list_canvas_slot = Cast<UCanvasPanelSlot>(Inventory_list_size_box->Slot))
     {
         FVector2D inventory_size_box_pos = p_inventory_list_canvas_slot->GetPosition();
@@ -145,17 +145,17 @@ void UInventory_list_UI::Get_item_list_width()
 
 FVector2D UInventory_list_UI::Get_distance_between_slot_cursor()
 {
-    // ¸¶¿ì½º À§Ä¡¸¦ ±¸ÇÔ   
+    // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ êµ¬í•¨   
     FVector2D mouse_pos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
     if (p_slot_obj)
     {
-        // ÇöÀç ÀÌ¹ÌÁö À§Ä¡¸¦ ±¸ÇÔ
+        // í˜„ì¬ ì´ë¯¸ì§€ ìœ„ì¹˜ë¥¼ êµ¬í•¨
         FVector2D img_pos = FVector2D::ZeroVector, dummy_vec;
         auto cached_geometry = p_slot_obj->GetCachedGeometry();
         USlateBlueprintLibrary::LocalToViewport(GetWorld(), cached_geometry, FVector2D::ZeroVector, dummy_vec, img_pos);
 
-        // ¸¶¿ì½º ÁÂÇ¥ - ÀÌ¹ÌÁö ÁÂÇ¥ °£ °Å¸®
+        // ë§ˆìš°ìŠ¤ ì¢Œí‘œ - ì´ë¯¸ì§€ ì¢Œí‘œ ê°„ ê±°ë¦¬
         float posX = 0.f, posY = 0.f;
 
         if (img_pos.X > mouse_pos.X)
@@ -175,13 +175,13 @@ FVector2D UInventory_list_UI::Get_distance_between_slot_cursor()
     return FVector2D::ZeroVector;
 }
 
-// this°¡ ³Ñ¾î¿À¹Ç·Î ³Î Ã¼Å© ºÒÇÊ¿ä
+// thisê°€ ë„˜ì–´ì˜¤ë¯€ë¡œ ë„ ì²´í¬ ë¶ˆí•„ìš”
 void UInventory_list_UI::Check_for_hovered_item(UItem_Slot_UI* _p_slot_obj)
 {
     if (World_list_view->GetIndexForItem(_p_slot_obj) != -1)
         GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Cyan, "Found slot");
 
-    // ÇöÀç ÀÌ¹ÌÁö À§Ä¡¸¦ ±¸ÇÔ
+    // í˜„ì¬ ì´ë¯¸ì§€ ìœ„ì¹˜ë¥¼ êµ¬í•¨
     FVector2D move_pos = FVector2D::ZeroVector, dummy_vec;
     auto cached_geometry = Cast<UItem_Slot_UI>(_p_slot_obj)->GetCachedGeometry();
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), cached_geometry, FVector2D::ZeroVector, dummy_vec, move_pos);

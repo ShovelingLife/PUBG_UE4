@@ -1,0 +1,33 @@
+digraph "D:/0_Projects/Unreal/PUBG_UE4/Source/Farmable_items/Core_farmable_item.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Core_farmable_item.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Adrenaline_syringe.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_adrenaline__syringe_8h.html",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Adrenaline_syringe.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_adrenaline__syringe_8cpp.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Bandage.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_bandage_8h.html",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Bandage.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_bandage_8cpp.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Core_farmable_item.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_core__farmable__item_8cpp.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Crate_box.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_crate__box_8h.html",tooltip=" "];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Crate_box.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_crate__box_8cpp.html",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Energy_drink.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_energy__drink_8h.html",tooltip=" "];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Energy_drink.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_energy__drink_8cpp.html",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Medical_kit.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_medical__kit_8h.html",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Medical_kit.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_medical__kit_8cpp.html",tooltip=" "];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Painkillers.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_painkillers_8h.html",tooltip=" "];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Farmable\l_items/Painkillers.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_painkillers_8cpp.html",tooltip=" "];
+}

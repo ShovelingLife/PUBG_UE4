@@ -1,0 +1,145 @@
+\hypertarget{_player__anim__instance_8h}{}\doxysection{D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Animations/\+Player\+\_\+anim\+\_\+instance.h íŒŒì¼ ì°¸ì¡°}
+\label{_player__anim__instance_8h}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Animations/Player\_anim\_instance.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Animations/Player\_anim\_instance.h}}
+
+
+ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç °ü·Ã  
+
+
+{\ttfamily \#include \char`\"{}Core\+Minimal.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Animation/\+Anim\+Instance.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Player\+\_\+anim\+\_\+instance.\+generated.\+h\char`\"{}}\newline
+Player\+\_\+anim\+\_\+instance.\+hì— ëŒ€í•œ include ì˜ì¡´ ê·¸ë˜í”„
+% FIG 0
+ì´ ê·¸ë˜í”„ëŠ” ì´ íŒŒì¼ì„ ì§/ê°„ì ‘ì ìœ¼ë¡œ include í•˜ëŠ” íŒŒì¼ë“¤ì„ ë³´ì—¬ì¤ë‹ˆë‹¤.\+:
+% FIG 1
+\doxysubsection*{í´ë˜ìŠ¤}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_u_player__anim__instance}{UPlayer\+\_\+anim\+\_\+instance}}
+\end{DoxyCompactItemize}
+\doxysubsection*{ì—´ê±°í˜• íƒ€ì…}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95f}{e\+\_\+player\+\_\+animation\+\_\+state}} \+: uint8 \{ \newline
+\mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+IDLE\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+WALK\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+SPRINT\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+JUMP\char`\"{})
+, \newline
+\mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+CROUCH\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+PRONING\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+AIM\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+THROW\char`\"{})
+, \newline
+\mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+SWIM\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+INJURED\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+DEAD\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+CROUCH\+\_\+\+WALKING\char`\"{})
+, \newline
+\mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+PRONING\+\_\+\+WALKING\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+AIM\+\_\+\+WALKING\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+JUMP\+\_\+\+ON\+\_\+\+SPRINT\char`\"{})
+, \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+CROUCH\+\_\+\+ON\+\_\+\+AIM\char`\"{})
+, \newline
+\mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}{UMETA}} =(Display\+Name = \char`\"{}\+CROUCH\+\_\+\+ON\+\_\+\+PRONING\char`\"{})
+ \}
+\begin{DoxyCompactList}\small\item\em ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÔ IDLE °¡¸¸È÷ ¼­ÀÖ±â WALK °È±â SPRINT ¶Ù±â JUMP Á¡ÇÁÇÏ±â CROUCH ¼÷ÀÌ±â PRONING ¾şµå¸®±â AIM Á¶ÁØÇÏ±â (¼­¼­½÷) THROW ´øÁö±â SWIM ¼ö¿µÇÏ±â INJURED ºÎ»ó DEAD »ç¸Á CROUCH\+\_\+\+WALK ¼÷ÀÎÃ¤ °È±â PRONING\+\_\+\+WALK ¾şµå¸°Ã¤ °È±â AIM\+\_\+\+WALK Á¶ÁØÇÑÃ¤ °È±â SPRINT\+\_\+\+JUMP ¶Ú ÈÄ Á¡ÇÁ CROUCH\+\_\+\+AIM ¾É¾Æ½÷ PRONING\+\_\+\+AIM ¾şµå·Á½÷ TEST \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{ìƒì„¸í•œ ì„¤ëª…}
+ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç °ü·Ã 
+
+\begin{DoxyAuthor}{ì‘ì„±ì}
+Shoveling\+Life 
+\end{DoxyAuthor}
+
+
+\mbox{\hyperlink{_player__anim__instance_8h_source}{Player\+\_\+anim\+\_\+instance.\+h}} íŒŒì¼ì—ì„œ ì •ì˜ë˜ì—ˆìŠµë‹ˆë‹¤.
+
+
+
+\doxysubsection{ì—´ê±°í˜• íƒ€ì… ë¬¸ì„œí™”}
+\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95f}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95f}} 
+\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!e\_player\_animation\_state@{e\_player\_animation\_state}}
+\index{e\_player\_animation\_state@{e\_player\_animation\_state}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}
+\doxysubsubsection{\texorpdfstring{e\_player\_animation\_state}{e\_player\_animation\_state}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95f}{e\+\_\+player\+\_\+animation\+\_\+state}} \+: uint8\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÔ IDLE °¡¸¸È÷ ¼­ÀÖ±â WALK °È±â SPRINT ¶Ù±â JUMP Á¡ÇÁÇÏ±â CROUCH ¼÷ÀÌ±â PRONING ¾şµå¸®±â AIM Á¶ÁØÇÏ±â (¼­¼­½÷) THROW ´øÁö±â SWIM ¼ö¿µÇÏ±â INJURED ºÎ»ó DEAD »ç¸Á CROUCH\+\_\+\+WALK ¼÷ÀÎÃ¤ °È±â PRONING\+\_\+\+WALK ¾şµå¸°Ã¤ °È±â AIM\+\_\+\+WALK Á¶ÁØÇÑÃ¤ °È±â SPRINT\+\_\+\+JUMP ¶Ú ÈÄ Á¡ÇÁ CROUCH\+\_\+\+AIM ¾É¾Æ½÷ PRONING\+\_\+\+AIM ¾şµå·Á½÷ TEST 
+
+\begin{DoxyEnumFields}{ì—´ê±°í˜• ë©¤ë²„}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UMETA@{UMETA}!Player\_anim\_instance.h@{Player\_anim\_instance.h}}\index{Player\_anim\_instance.h@{Player\_anim\_instance.h}!UMETA@{UMETA}}}\mbox{\Hypertarget{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}\label{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95faa3f80d8f0f1b4ffa8c475f5d60ea5635}} 
+UMETA&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\mbox{\hyperlink{_player__anim__instance_8h_source}{Player\+\_\+anim\+\_\+instance.\+h}} íŒŒì¼ì˜ \mbox{\hyperlink{_player__anim__instance_8h_source_l00038}{38}} ë²ˆì§¸ ë¼ì¸ì—ì„œ ì •ì˜ë˜ì—ˆìŠµë‹ˆë‹¤.
+

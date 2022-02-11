@@ -1,0 +1,23 @@
+digraph "ACore_farmable_item"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{ACore_farmable_item\n||+ ACore_farmable_item()\l+ Tick()\l# BeginPlay()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{ABase_interaction\n|+ p_static_mesh_comp\l+ p_skeletal_mesh_comp\l+ p_audio_comp\l+ object_type\l+ is_player_near\l# m_box_collider\l# mp_interaction_widget_comp\l# m_current_time\l|+ ABase_interaction()\l# BeginPlay()\l# Tick()\l# Init_static_mesh()\l# Init_skeletal_mesh()\l# Init_audio()\l# Init_interaction_UI()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_base__interaction.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node3 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node4 [label="{AAdrenaline_syringe\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_adrenaline__syringe.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node5 [label="{ABandage\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_bandage.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node6 [label="{ACrate_box\n|- mp_parachute_mesh\l- mp_particle_component\l- m_current_time\l- mk_max_particle_time\l- m_is_particle_ended\l|+ ACrate_box()\l+ Turn_off_after_landing()\l# Tick()\l- Init_vfx()\l- Init_meshes()\l- Update_collider()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_crate__box.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node7 [label="{AEnergy_drink\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_energy__drink.html",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node8 [label="{AMedical_kit\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_medical__kit.html",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node9 [label="{APainkillers\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_painkillers.html",tooltip=" "];
+}

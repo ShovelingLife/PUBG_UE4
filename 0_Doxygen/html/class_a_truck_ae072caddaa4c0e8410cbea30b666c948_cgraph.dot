@@ -1,0 +1,20 @@
+digraph "ATruck::ATruck"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ATruck::ATruck",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ACore_vehicle::Init",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#ac8216aa437b1c28cba6f88a5ece06a20",tooltip="차량 종류에 따라 초기화"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ACore_vehicle::Init\l_camera",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a94463cecf3e4be14978df971e99c442d",tooltip="카메라 컴포넌트 초기화"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ACore_vehicle::Init\l_car_pos_component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a6272a2c5dbe08aab73822ed9185c5ea2",tooltip=" "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="ACore_vehicle::Init\l_car_pos_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a3f0aeaed9e81e356d560b46532ed7312",tooltip="자동차 문짝 및 좌석 위치 초기화"];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="ACore_vehicle::Init\l_skeletal_mesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a6729095072ee512814c21356b5751bd1",tooltip="차량 메시 초기화"];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="ACore_vehicle::Init\l_wheeled_component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#aaa5be8e81b3b2cf9db11e25bd747ae85",tooltip="차량 바퀴 컴포넌트 초기화"];
+}

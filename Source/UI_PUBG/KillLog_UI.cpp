@@ -1,4 +1,4 @@
-#include "KillLog_UI.h"
+﻿#include "KillLog_UI.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 

@@ -1,5 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+﻿/**
+ * \file Core_throwable_weapon.h
+ *
+ * \brief 모든 투척류 무기들은 이로부터 상속받음
+ *
+ * \ingroup Player_weapons
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -14,8 +21,7 @@ class PLAYER_WEAPONS_API ACore_throwable_weapon : public ABase_interaction
 	GENERATED_BODY()
 
 protected:
-    UPROPERTY(VisibleAnywhere, Category = Particle)
-        class UParticleSystemComponent* p_grenade_particle = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Particle) class UParticleSystemComponent* p_grenade_particle = nullptr;
 
 public:
 	Fs_other_weapon_data    weapon_data;
@@ -30,13 +36,24 @@ protected:
 	virtual void Tick(float) override;
 
 protected:
-    void Init(e_throwable_weapon_type);
+    /**
+      * \brief 투척류 무기 초기화
+      * \param _weapon_type 무기 종류
+     */
+    void Init(e_throwable_weapon_type _weapon_type);
 
-    // �޽� �ʱ�ȭ
+    /**
+      * \brief 메쉬 초기화
+     */
     void Init_mesh();
 
-    // �ݶ��̴� ���� ����
+    /**
+      * \brief 콜라이더 정보 갱신
+     */
     void Update_collider();
 
+    /**
+      * \brief 파티클 시스템 초기화
+     */
     void Init_particle_system();
 };

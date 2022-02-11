@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/PUBG_UE4/Data_table_manager.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_data__table__manager_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Data_table_manager.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_data__table__manager_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="_vehicle__data_8h.html">Vehicle_data.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="_other__weapon__data_8h.html">Other_weapon_data.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="_weapon__data_8h.html">Weapon_data.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;GameFramework/Actor.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;Data_table_manager.generated.h&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">class </span>UDataTable;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>UCLASS()</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html">   21</a></span>class PUBG_UE4_API <a class="code hl_class" href="class_a_data__table__manager.html">AData_table_manager</a> : public AActor</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">   29</a></span>    <span class="keyword">static</span> TArray&lt;Fs_weapon_data&gt;       <a class="code hl_variable" href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">arr_weapon_data</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a849ad15c17f660feb4cd9ca0df58ba06">   30</a></span>    <span class="keyword">static</span> TArray&lt;Fs_other_weapon_data&gt; <a class="code hl_variable" href="class_a_data__table__manager.html#a849ad15c17f660feb4cd9ca0df58ba06">arr_other_weapon_data</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a52a4a7487abd30f0f5497881cbbf8eb8">   31</a></span>    <span class="keyword">static</span> TArray&lt;Fs_vehicle_data&gt;      <a class="code hl_variable" href="class_a_data__table__manager.html#a52a4a7487abd30f0f5497881cbbf8eb8">arr_vehicle_data</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a94110bacd306219adbaf2f933f5a5352">   37</a></span>    <a class="code hl_function" href="class_a_data__table__manager.html#a94110bacd306219adbaf2f933f5a5352">UPROPERTY</a>(VisibleAnywhere) UDataTable* mp_weapon_data_table;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#ad48f97de5b1d23a43509702f139dfdf3">   39</a></span>    <span class="keyword">const</span> FString mk_weapon_mesh_path       = <span class="stringliteral">&quot;/Game/AdvanceWeaponPack/Mesh/Weapon/&quot;</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a687f2aaa9512cbccc41c0e8d6365af4c">   40</a></span>    <span class="keyword">const</span> FString mk_bullet_bp_path         = <span class="stringliteral">&quot;/Game/Blueprints/Weapons/Ammo/BP_&quot;</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a65205cd03890315f1395a817b801746f">   41</a></span>    <span class="keyword">const</span> FString mk_rendertarget_mesh_path = <span class="stringliteral">&quot;/Game/Materials/Weapon_UI/UI_material_&quot;</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a9b41aff8a2ce04879cac2b2e4e14d377">   42</a></span>    <span class="keyword">const</span> FString mk_weapon_sound_path      = <span class="stringliteral">&quot;/Game/SFX/Gun_sounds/&quot;</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a093b07fc7255dbf74957bfbd1ca0d9a7">   47</a></span>    <a class="code hl_function" href="class_a_data__table__manager.html#a093b07fc7255dbf74957bfbd1ca0d9a7">UPROPERTY</a>(VisibleAnywhere) UDataTable* mp_other_weapon_data_table;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a0863bfd4c893e96e766c24cda01342f7">   49</a></span>    <span class="keyword">const</span> FString mk_other_weapon_mesh_path = <span class="stringliteral">&quot;/Game/Items/Weapons/&quot;</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#aa44cae0f8e37fb34aea3fbcd8c97c578">   54</a></span>    <a class="code hl_function" href="class_a_data__table__manager.html#aa44cae0f8e37fb34aea3fbcd8c97c578">UPROPERTY</a>(VisibleAnywhere) UDataTable* mp_vehicle_data_table;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a34571dcd876edb5dc9a2c09d7c0a45d6">   56</a></span>    <span class="keyword">const</span> FString mk_vehicle_mesh_path    = <span class="stringliteral">&quot;/Game/Characters/Vehicles/Skeletons/&quot;</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#a13c7c72d722e8c2075566e683a5cb8a7">   57</a></span>    <span class="keyword">const</span> FString mk_anim_instance_path   = <span class="stringliteral">&quot;/Game/Blueprints/Vehicles/&quot;</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#aad74de6c2fb0540e02fef1db75713c9e">   58</a></span>    <span class="keyword">const</span> FString mk_vehicle_sound_path   = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="class_a_data__table__manager.html#ad8d74dcf317ae2ced3e83789894bda79">   59</a></span>    <span class="keywordtype">int</span>           m_current_vehicle_count = 0;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <a class="code hl_class" href="class_a_data__table__manager.html">AData_table_manager</a>();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">void</span> Init_weapon_data();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">void</span> Init_other_weapon_data();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">void</span> Init_vehicle_data();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+<div class="ttc" id="a_other__weapon__data_8h_html"><div class="ttname"><a href="_other__weapon__data_8h.html">Other_weapon_data.h</a></div><div class="ttdoc">기타 무기 데이터</div></div>
+<div class="ttc" id="a_vehicle__data_8h_html"><div class="ttname"><a href="_vehicle__data_8h.html">Vehicle_data.h</a></div><div class="ttdoc">차량 데이터</div></div>
+<div class="ttc" id="a_weapon__data_8h_html"><div class="ttname"><a href="_weapon__data_8h.html">Weapon_data.h</a></div><div class="ttdoc">무기 데이터</div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html"><div class="ttname"><a href="class_a_data__table__manager.html">AData_table_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_data__table__manager_8h_source.html#l00021">Data_table_manager.h:22</a></div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_a070d0ea99ad4ea83de8f98678bfdb63e"><div class="ttname"><a href="class_a_data__table__manager.html#a070d0ea99ad4ea83de8f98678bfdb63e">AData_table_manager::arr_weapon_data</a></div><div class="ttdeci">static TArray&lt; Fs_weapon_data &gt; arr_weapon_data</div><div class="ttdoc">게임 오브젝트 데이터 배열 (static)</div><div class="ttdef"><b>Definition:</b> <a href="_data__table__manager_8h_source.html#l00029">Data_table_manager.h:29</a></div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_a093b07fc7255dbf74957bfbd1ca0d9a7"><div class="ttname"><a href="class_a_data__table__manager.html#a093b07fc7255dbf74957bfbd1ca0d9a7">AData_table_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere) UDataTable *mp_other_weapon_data_table</div><div class="ttdoc">기타 무기 (투척류/근접) 데이터 관련</div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_a52a4a7487abd30f0f5497881cbbf8eb8"><div class="ttname"><a href="class_a_data__table__manager.html#a52a4a7487abd30f0f5497881cbbf8eb8">AData_table_manager::arr_vehicle_data</a></div><div class="ttdeci">static TArray&lt; Fs_vehicle_data &gt; arr_vehicle_data</div><div class="ttdef"><b>Definition:</b> <a href="_data__table__manager_8h_source.html#l00031">Data_table_manager.h:31</a></div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_a849ad15c17f660feb4cd9ca0df58ba06"><div class="ttname"><a href="class_a_data__table__manager.html#a849ad15c17f660feb4cd9ca0df58ba06">AData_table_manager::arr_other_weapon_data</a></div><div class="ttdeci">static TArray&lt; Fs_other_weapon_data &gt; arr_other_weapon_data</div><div class="ttdef"><b>Definition:</b> <a href="_data__table__manager_8h_source.html#l00030">Data_table_manager.h:30</a></div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_a94110bacd306219adbaf2f933f5a5352"><div class="ttname"><a href="class_a_data__table__manager.html#a94110bacd306219adbaf2f933f5a5352">AData_table_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere) UDataTable *mp_weapon_data_table</div><div class="ttdoc">무기 데이터 관련</div></div>
+<div class="ttc" id="aclass_a_data__table__manager_html_aa44cae0f8e37fb34aea3fbcd8c97c578"><div class="ttname"><a href="class_a_data__table__manager.html#aa44cae0f8e37fb34aea3fbcd8c97c578">AData_table_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(VisibleAnywhere) UDataTable *mp_vehicle_data_table</div><div class="ttdoc">차량 데이터 관련</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_81f16cdd936fcaf8cbca3e97fb61d968.html">PUBG_UE4</a></li><li class="navelem"><a class="el" href="_data__table__manager_8h.html">Data_table_manager.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,3 +1,12 @@
+ï»¿/**
+ * \file Weapon_manager.h
+ *
+ * \brief í”Œë ˆì´ì–´ ë¬´ê¸° ë§¤ë‹ˆì € ê´€ë ¨
+ *
+ * \ingroup Player_weapons
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -30,14 +39,15 @@ private:
     bool		m_is_shooting			= false;
 
 public:
-	UPROPERTY() ACore_weapon*			p_first_gun			= nullptr;
-    UPROPERTY() ACore_weapon*			p_second_gun		= nullptr;
-    UPROPERTY() ACore_weapon*			p_pistol			= nullptr;
-    UPROPERTY() ACore_melee_weapon*		p_melee				= nullptr;
-    UPROPERTY() ACore_throwable_weapon* p_throwable			= nullptr;
-    e_current_weapon_type	current_weapon_type = e_current_weapon_type::NONE;
-	bool					arr_is_weapon_equipped[5]{ false };
-	bool					is_shooting			= false;
+	/** \brief í˜„ì¬ ì°©ìš© ì¤‘ì¸ ë¬´ê¸° */
+	UPROPERTY() ACore_weapon*			p_first_gun	 = nullptr;
+    UPROPERTY() ACore_weapon*			p_second_gun = nullptr;
+    UPROPERTY() ACore_weapon*			p_pistol	 = nullptr;
+    UPROPERTY() ACore_melee_weapon*		p_melee		 = nullptr;
+    UPROPERTY() ACore_throwable_weapon* p_throwable	 = nullptr;
+
+    e_current_weapon_type current_weapon_type = e_current_weapon_type::NONE;
+	bool arr_is_weapon_equipped[5]{ false };
 
 public:	
 	AWeapon_manager();
@@ -49,62 +59,120 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	// Âø¿ë ÁßÀÎ ¹«±â Ã¼Å©
+	/* \brief ì°©ìš© ì¤‘ì¸ ë¬´ê¸°ë¥¼ ì²´í¬í•¨ */
+	// ë¯¸êµ¬í˜„ìƒíƒœ
     void Check_for_equipped_weapon();
-
-	// ÇöÀç ÀåÂø ÁßÀÎ ¹«±â
+	
+	/**
+     * \brief í˜„ì¬ ì¥ì°© ì¤‘ì¸ ë¬´ê¸°ì— ë”°ë¼ ì°©ìš© ì—¬ë¶€ \n
+	 * arr_is_weapon_equipped ë°°ì—´ ì—…ë°ì´íŠ¸
+	 */
 	void Update_current_equipped_weapon();
+	
+	/**
+	 * \brief ì†Œë¦¬ ì¬ìƒì„ í•´ì£¼ëŠ” í•¨ìˆ˜
+	 * \param _sound_type ì†Œë¦¬ì¢…ë¥˜
+	 */
+    void Play_sound(e_weapon_sound_type _sound_type);
 
-	// »ç¿îµå Àç»ı
-    void Play_sound(e_weapon_sound_type);
+    /**
+     * \brief ë°°ì—´ ë‚´ì— ì›ì†Œ ì°¾ìŒ
+	 * \param _direction ë°©í–¥
+	 * \param _start_index ì‹œì‘ ìœ„ì¹˜
+	 * \return e_current_weapon_type í˜„ì¬ ë¬´ê¸° íƒ€ì…
+     */
+    e_current_weapon_type Find_weapon_index(FString _direction, int _start_index);
 
-	// ¹è¿­ ³»¿¡ ¿ø¼Ò Ã£À½ / ¹æÇâ / ½ÃÀÛ À§Ä¡
-    e_current_weapon_type Find_weapon_index(FString, int);
+    /**
+     * \brief ë¬´ê¸°ë¥¼ í”Œë ˆì´ì–´ ë©”ì‹œì— ë¶€ì°©
+	 * \param _p_tmp_weapon ë¬´ê¸° ì¢…ë¥˜
+	 * \param _socket_name ì†Œì¼“ ì´ë¦„
+     */
+    void Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _socket_name);
 
-	// ºÎÂø
-    void Attach_weapon(ABase_interaction*, FString);
-
-	// Å»Âø ÈÄ À§Ä¡ ÃÊ±âÈ­
-    void Reset_weapon_after_detaching(ABase_interaction*, FTransform);
+	/**
+	 * \brief ë¬´ê¸° ë²„ë¦° í›„ ì´ˆê¸°í™”
+	 * \param _weapon ë§µì—ë‹¤ê°€ ë²„ë¦´ ë¬´ê¸°
+	 * \param _new_pos ìƒˆë¡œìš´ ìœ„ì¹˜
+	 */
+    void Reset_weapon_after_detaching(ABase_interaction* _weapon, FTransform _new_pos);
 
 public:
-	// ÀåÂø
-	void Equip(AActor*);
+	/**
+	 * \brief ë¬´ê¸° ì°©ìš©
+	 * \param _p_weapon ì°©ìš©í•  ë¬´ê¸°
+	 */
+	void Equip(AActor* _p_weapon);
 
-	// ¹ß»ç
+	/** \brief ë°œì‚¬ */
 	void Shoot();
 
-	// ÀåÀü
+	/** \brief ì¬ì¥ì „ */
 	void Reload();
 
-	// ¸¶¿ì½º ÈÙ
-	bool Scroll_select(int);
+	/**
+	 * \brief ë§ˆìš°ìŠ¤ íœ  í†µí•´ ë¬´ê¸° êµì²´
+	 * \param _pos í˜„ì¬ ì°©ìš© ì¤‘ì¸ ë¬´ê¸°ì˜ ìœ„ì¹˜
+	 * \return boolean êµì²´ ì—¬ë¶€
+	 */
+	bool Scroll_select(int _pos);
 
-	// ±³Ã¼ ÇöÀç ¹«±â / ¸Ê ¹«±â / ¼ÒÄÏ ÀÌ¸§
-	void Swap(ABase_interaction*, AActor*, FString);
+	/**
+	 * \brief ë¬´ê¸° êµì²´
+	 * \param _current_weapon í˜„ì¬ ì°©ìš© ì¤‘ì¸ ë¬´ê¸°
+	 * \param _new_weapon ìƒˆë¡œìš´ ë¬´ê¸°
+	 * \param _socket_name ë©”ì‹œ ì†Œì¼“ ëª…ì¹­
+	 */
+	void Swap(ABase_interaction* _current_weapon, AActor* _new_weapon, FString _socket_name);
 
+	/**
+	  * \brief ì°©ìš© ì¤‘ì¸ ë¬´ê¸°ë¥¼ ì²´í¬í•¨ 
+	 */
 	void Change_shoot_mode();
 
+	// ë¯¸êµ¬í˜„ ìƒíƒœ
 	void Change_aim_pose(int);
 
-	// ÀåÀü ÁßÀÎÁö È®ÀÎ
-	void Check_if_reloading(float);
+	/**
+	 * \brief ì¬ì¥ì „ ì¤‘ì¸ì§€ í™•ì¸
+	 * \param _transcurred_reload_time í˜„ì¬ ì¬ì¥ì „ìœ¼ë¡œë¶€í„° ì´ˆê³¼í•œ ì‹œê°„
+	 */
+	void Check_if_reloading(float _transcurred_reload_time);
 
-	// ¿¬»ç / ¿¬¹ß È®ÀÎ
-	void Check_continously_shooting(float);
+	/**
+	 * \brief ì—°ì‚¬ í•˜ê³ ìˆëŠ” ì¤‘ì¸ì§€ ì²´í¬
+	 * \param _transcurred_shoot_time ë°œì‚¬ ì‹œê°„ ê°„ê²©
+	 */
+	void Check_continously_shooting(float _transcurred_shoot_time);
 
-	// ¹«±â ±³Ã¼°¡ °¡´ÉÇÑÁö È®ÀÎ
-	bool Check_if_weapon_available(e_current_weapon_type);
+	/**
+	 * \brief ë¬´ê¸° ë³€ê²½ ê°€ëŠ¥í•œì§€ í™•ì¸
+	 * \param _weapon_type ë¬´ê¸° ì¢…ë¥˜
+	 * \return ë³€ê²½ ê°€ëŠ¥ ì—¬ë¶€
+	 */
+	bool Check_if_weapon_available(e_current_weapon_type _weapon_type);
 
-	// ------- ºÎÂø °ü·Ã ÇÔ¼ö -------
+	// ------- ë¶€ì°© ê´€ë ¨ í•¨ìˆ˜ -------
 
-    int Get_weapon_max_bullet_count(e_current_weapon_type);
+	/**
+	 * \brief ì´ê¸° ìµœëŒ€ ì´ì•Œ ê°œìˆ˜ë¥¼ ê°€ì§€ê³  ì˜´
+	 * \param _weapon_type ë¬´ê¸° ì¢…ë¥˜
+	 * \return ì´ì•Œ ìµœëŒ€ ê°œìˆ˜
+	 */
+    int Get_weapon_max_bullet_count(e_current_weapon_type _weapon_type);
 
-    // ¹«±â Á¾·ù¸¦ °¡Á®¿È
-	ABase_interaction* Get_weapon(e_current_weapon_type);
+    /**
+     * \brief í˜„ì¬ ì°©ìš© ì¤‘ì¸ ë¬´ê¸°ë¥¼ ê°–ê³ ì˜´
+     * \param _weapon_type ë¬´ê¸° ì¢…ë¥˜
+     * \return í˜„ì¬ ì°©ìš© ì¤‘ì¸ ë¬´ê¸°
+     */
+	ABase_interaction* Get_weapon(e_current_weapon_type _weapon_type);
 
-	// ------- UI °ü·Ã ÇÔ¼ö -------
+	// ------- UI ê´€ë ¨ í•¨ìˆ˜ -------
 
-	// ¹«±â¸¦ ¸Ê¿¡´Ù°¡ ¹ö¸²
-	void Drop(ABase_interaction*);
+	/**
+	 * \brief ë¬´ê¸°ë¥¼ ë§µì—ë‹¤ê°€ ë²„ë¦¼
+	 * \param _p_weapon ë²„ë¦´ ë¬´ê¸°
+	 */
+	void Drop(ABase_interaction* _p_weapon);
 };

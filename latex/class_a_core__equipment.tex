@@ -1,0 +1,176 @@
+\hypertarget{class_a_core__equipment}{}\doxysection{ACore\+\_\+equipment 클래스 참조}
+\label{class_a_core__equipment}\index{ACore\_equipment@{ACore\_equipment}}
+
+
+ACore\+\_\+equipment에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ACore\+\_\+equipment에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{데이터 필드}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_aba7d553b5d7fa6f275fca42724c77674}\label{class_a_base__interaction_aba7d553b5d7fa6f275fca42724c77674}} 
+class UStatic\+Mesh\+Component $\ast$ {\bfseries p\+\_\+static\+\_\+mesh\+\_\+comp} = nullptr
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_a5a12943cb9b5e0e66b87487c48d1cf73}\label{class_a_base__interaction_a5a12943cb9b5e0e66b87487c48d1cf73}} 
+class USkeletal\+Mesh\+Component $\ast$ {\bfseries p\+\_\+skeletal\+\_\+mesh\+\_\+comp} = nullptr
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_aa3d1be58fde823a9e9ff23e869046be7}\label{class_a_base__interaction_aa3d1be58fde823a9e9ff23e869046be7}} 
+class UAudio\+Component $\ast$ {\bfseries p\+\_\+audio\+\_\+comp} = nullptr
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_a66386665232593f45a425042ab1b1f87}\label{class_a_base__interaction_a66386665232593f45a425042ab1b1f87}} 
+FString {\bfseries object\+\_\+type}
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_a9ce0a46dab4dcd237313cfb306a5a9c2}\label{class_a_base__interaction_a9ce0a46dab4dcd237313cfb306a5a9c2}} 
+bool {\bfseries is\+\_\+player\+\_\+near} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_a_base__interaction_a4b591a51a5b9f4036c6ac0f825a0d24c}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_base__interaction_ae8350d113f0792e739426f2c467973f6}{Tick}} (float) override
+\item 
+void \mbox{\hyperlink{class_a_base__interaction_a3012c854325f6899196be653460886d2}{Init\+\_\+static\+\_\+mesh}} (FString, FName)
+\item 
+void \mbox{\hyperlink{class_a_base__interaction_ab85308d22b558af83ffd0ac975f84ace}{Init\+\_\+skeletal\+\_\+mesh}} (FString, FName)
+\item 
+void \mbox{\hyperlink{class_a_base__interaction_a3734bf93766cf19e1af02238e5fe7132}{Init\+\_\+audio}} ()
+\item 
+void \mbox{\hyperlink{class_a_base__interaction_ac58014606bce5e3097740a705523b710}{Init\+\_\+interaction\+\_\+\+UI}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 속성}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_ab5d358f21d83e5fef04f5d7df4ddb591}\label{class_a_base__interaction_ab5d358f21d83e5fef04f5d7df4ddb591}} 
+class UBox\+Component $\ast$ {\bfseries m\+\_\+box\+\_\+collider} = nullptr
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_ad0fa92b0fd60297dacf94f587719bc91}\label{class_a_base__interaction_ad0fa92b0fd60297dacf94f587719bc91}} 
+class UWidget\+Component $\ast$ {\bfseries mp\+\_\+interaction\+\_\+widget\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_base__interaction_ac9a91d924bbd738eb66fc26e262fb5ea}\label{class_a_base__interaction_ac9a91d924bbd738eb66fc26e262fb5ea}} 
+float {\bfseries m\+\_\+current\+\_\+time} = 0.f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_base__interaction_a4b591a51a5b9f4036c6ac0f825a0d24c}\label{class_a_base__interaction_a4b591a51a5b9f4036c6ac0f825a0d24c}} 
+\index{ACore\_equipment@{ACore\_equipment}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ACore\_equipment@{ACore\_equipment}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{28  \{}
+\DoxyCodeLine{29      Super::BeginPlay();}
+\DoxyCodeLine{30      Init\_interaction\_UI();}
+\DoxyCodeLine{31      m\_box\_collider-\/>BodyInstance.SetCollisionProfileName(\textcolor{stringliteral}{"{}Object"{}});}
+\DoxyCodeLine{32      m\_box\_collider-\/>BodyInstance.bNotifyRigidBodyCollision = \textcolor{keyword}{false};}
+\DoxyCodeLine{33  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_base__interaction_a3734bf93766cf19e1af02238e5fe7132}\label{class_a_base__interaction_a3734bf93766cf19e1af02238e5fe7132}} 
+\index{ACore\_equipment@{ACore\_equipment}!Init\_audio@{Init\_audio}}
+\index{Init\_audio@{Init\_audio}!ACore\_equipment@{ACore\_equipment}}
+\doxysubsubsection{\texorpdfstring{Init\_audio()}{Init\_audio()}}
+{\footnotesize\ttfamily void Init\+\_\+audio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{81  \{}
+\DoxyCodeLine{82      \textcolor{comment}{// 오디오 포인터에 대한 생성}}
+\DoxyCodeLine{83      p\_audio\_comp = CreateDefaultSubobject<UAudioComponent>(TEXT(\textcolor{stringliteral}{"{}Audio"{}}));}
+\DoxyCodeLine{84      p\_audio\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{85  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_base__interaction_ac58014606bce5e3097740a705523b710}\label{class_a_base__interaction_ac58014606bce5e3097740a705523b710}} 
+\index{ACore\_equipment@{ACore\_equipment}!Init\_interaction\_UI@{Init\_interaction\_UI}}
+\index{Init\_interaction\_UI@{Init\_interaction\_UI}!ACore\_equipment@{ACore\_equipment}}
+\doxysubsubsection{\texorpdfstring{Init\_interaction\_UI()}{Init\_interaction\_UI()}}
+{\footnotesize\ttfamily void Init\+\_\+interaction\+\_\+\+UI (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{88  \{}
+\DoxyCodeLine{89      \textcolor{keyword}{auto} custom\_game\_instance = Cast<UCustom\_game\_instance>(GetWorld()-\/>GetGameInstance());}
+\DoxyCodeLine{90      custom\_game\_instance-\/>dele\_update\_interaction\_widget\_comp.ExecuteIfBound(mp\_interaction\_widget\_comp, FString::Printf(TEXT(\textcolor{stringliteral}{"{}\%s 줍기"{}}), *object\_type));}
+\DoxyCodeLine{91  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_base__interaction_ab85308d22b558af83ffd0ac975f84ace}\label{class_a_base__interaction_ab85308d22b558af83ffd0ac975f84ace}} 
+\index{ACore\_equipment@{ACore\_equipment}!Init\_skeletal\_mesh@{Init\_skeletal\_mesh}}
+\index{Init\_skeletal\_mesh@{Init\_skeletal\_mesh}!ACore\_equipment@{ACore\_equipment}}
+\doxysubsubsection{\texorpdfstring{Init\_skeletal\_mesh()}{Init\_skeletal\_mesh()}}
+{\footnotesize\ttfamily void Init\+\_\+skeletal\+\_\+mesh (\begin{DoxyParamCaption}\item[{FString}]{\+\_\+path,  }\item[{FName}]{\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{68  \{}
+\DoxyCodeLine{69      \textcolor{comment}{// 메시 생성}}
+\DoxyCodeLine{70      p\_skeletal\_mesh\_comp = CreateDefaultSubobject<USkeletalMeshComponent>(\_name);}
+\DoxyCodeLine{71      p\_skeletal\_mesh\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73      \textcolor{comment}{// 경로로부터 메시 생성}}
+\DoxyCodeLine{74      ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*\_path);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76      \textcolor{keywordflow}{if} (MESH.Succeeded())}
+\DoxyCodeLine{77          p\_skeletal\_mesh\_comp-\/>SetSkeletalMesh(MESH.Object);}
+\DoxyCodeLine{78  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_base__interaction_a3012c854325f6899196be653460886d2}\label{class_a_base__interaction_a3012c854325f6899196be653460886d2}} 
+\index{ACore\_equipment@{ACore\_equipment}!Init\_static\_mesh@{Init\_static\_mesh}}
+\index{Init\_static\_mesh@{Init\_static\_mesh}!ACore\_equipment@{ACore\_equipment}}
+\doxysubsubsection{\texorpdfstring{Init\_static\_mesh()}{Init\_static\_mesh()}}
+{\footnotesize\ttfamily void Init\+\_\+static\+\_\+mesh (\begin{DoxyParamCaption}\item[{FString}]{\+\_\+path,  }\item[{FName}]{\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{55  \{}
+\DoxyCodeLine{56      \textcolor{comment}{// 메시 생성}}
+\DoxyCodeLine{57      p\_static\_mesh\_comp = CreateDefaultSubobject<UStaticMeshComponent>(\_name);}
+\DoxyCodeLine{58      p\_static\_mesh\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60      \textcolor{comment}{// 경로로부터 메시 생성}}
+\DoxyCodeLine{61      ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*\_path);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63      \textcolor{keywordflow}{if} (MESH.Succeeded())}
+\DoxyCodeLine{64          p\_static\_mesh\_comp-\/>SetStaticMesh(MESH.Object);}
+\DoxyCodeLine{65  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_base__interaction_ae8350d113f0792e739426f2c467973f6}\label{class_a_base__interaction_ae8350d113f0792e739426f2c467973f6}} 
+\index{ACore\_equipment@{ACore\_equipment}!Tick@{Tick}}
+\index{Tick@{Tick}!ACore\_equipment@{ACore\_equipment}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void Tick (\begin{DoxyParamCaption}\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{37  \{}
+\DoxyCodeLine{38      Super::Tick(\_delta\_time);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40      \textcolor{keywordflow}{if} (is\_player\_near)}
+\DoxyCodeLine{41          m\_current\_time += \_delta\_time;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43      \textcolor{keywordflow}{else}}
+\DoxyCodeLine{44          m\_current\_time = 0.f;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46      \textcolor{comment}{// 0.25초 지날 시 UI설정}}
+\DoxyCodeLine{47      \textcolor{keywordflow}{if} (m\_current\_time > 0.25f)}
+\DoxyCodeLine{48          mp\_interaction\_widget\_comp-\/>SetVisibility(\textcolor{keyword}{true});}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50      \textcolor{keywordflow}{else}}
+\DoxyCodeLine{51          mp\_interaction\_widget\_comp-\/>SetVisibility(\textcolor{keyword}{false});}
+\DoxyCodeLine{52  \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Farmable\+\_\+items/Core\+\_\+equipment.\+h\end{DoxyCompactItemize}

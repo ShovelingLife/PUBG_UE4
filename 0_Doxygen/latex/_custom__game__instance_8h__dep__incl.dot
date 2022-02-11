@@ -1,0 +1,21 @@
+digraph "D:/0_Projects/Unreal/PUBG_UE4/Source/PUBG_UE4/Custom_game_instance.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/PUBG\l_UE4/Custom_game_instance.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="게임 인스턴스 = 싱글톤 통용"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Characters\l/Core_vehicle.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_core__vehicle_8cpp.html",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Characters\l/Custom_player.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_custom__player_8cpp.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Characters\l/PUBG_gamemode.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_p_u_b_g__gamemode_8cpp.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/PUBG\l_UE4/Base_interaction.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_base__interaction_8cpp.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/PUBG\l_UE4/Custom_game_instance.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_custom__game__instance_8cpp.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/UI_PUBG\l/Item_Slot_UI.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_item___slot___u_i_8cpp.html",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/UI_PUBG\l/UI_manager.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_i__manager_8cpp.html",tooltip=" "];
+}

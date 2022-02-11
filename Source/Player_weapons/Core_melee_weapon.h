@@ -1,5 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+﻿/**
+ * \file Core_melee_weapon.h
+ *
+ * \brief 모든 근접 무기들은 이로부터 상속받음
+ *
+ * \ingroup Player_weapons
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -24,11 +31,19 @@ protected:
     virtual void BeginPlay() override;
 
 protected:
-    void Init(e_melee_weapon_type);
+    /**
+      * \brief 근접 무기 초기화
+      * \param _weapon_type 무기 종류
+     */
+    void Init(e_melee_weapon_type _weapon_type);
 
-    // �޽� �ʱ�ȭ
+    /**
+      * \brief 메쉬 초기화
+     */
     void Init_mesh();
 
-    // �ݶ��̴� ���� ����
+    /**
+      * \brief 콜라이더 정보 갱신
+     */
     void Update_collider();
 };

@@ -1,0 +1,34 @@
+\hypertarget{_player___u_i_8h_source}{}\doxysection{Player\+\_\+\+UI.\+h}
+\label{_player___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Player\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Player\_UI.h}}
+\mbox{\hyperlink{_player___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Player\_UI.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00016}00016 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00017}\mbox{\hyperlink{class_u_player___u_i}{00017}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_player___u_i}{UPlayer\_UI}} : public UUserWidget}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00018}00018 \{}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00019}00019     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00021}00021 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00023}\mbox{\hyperlink{class_u_player___u_i_a8107e614c329467e6771a476b4bbffe3}{00023}}     \mbox{\hyperlink{class_u_player___u_i_a8107e614c329467e6771a476b4bbffe3}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_member___state___u_i}{UMember\_State\_UI}}*   Member\_state\_UI; }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00026}\mbox{\hyperlink{class_u_player___u_i_a12408ea47b4afa2699777be04734e134}{00026}}     \mbox{\hyperlink{class_u_player___u_i_a12408ea47b4afa2699777be04734e134}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_player___state___u_i}{UPlayer\_State\_UI}}*   Player\_state\_UI;}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00027}00027     }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00029}\mbox{\hyperlink{class_u_player___u_i_a0d82724cc8b2e3d0e3d9cc151c159d03}{00029}}     \mbox{\hyperlink{class_u_player___u_i_a0d82724cc8b2e3d0e3d9cc151c159d03}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_kill_log___box___u_i}{UKillLog\_Box\_UI}}*    Kill\_log\_box\_UI;}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00030}00030     }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00032}\mbox{\hyperlink{class_u_player___u_i_a968a3e343047ec26b915f3d315378bc2}{00032}}     \mbox{\hyperlink{class_u_player___u_i_a968a3e343047ec26b915f3d315378bc2}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_mini_map___u_i}{UMiniMap\_UI}}*        Minimap\_UI;}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00033}00033     }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00035}\mbox{\hyperlink{class_u_player___u_i_a9fe0417f6ca718139578278f45831218}{00035}}     \mbox{\hyperlink{class_u_player___u_i_a9fe0417f6ca718139578278f45831218}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_current___weapon___u_i}{UCurrent\_Weapon\_UI}}* Current\_weapon\_UI;}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00037}00037 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00038}00038     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_current___weapon___u_i_a962bb3f8a457f20d3523c324a5b4c7c3}{NativeConstruct}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00040}00040     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_current___weapon___u_i_a9b929fdcc1255f7e46e07d0806f1864b}{NativeTick}}(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_player___u_i_8h_source_l00041}00041 \};}
+
+\end{DoxyCode}

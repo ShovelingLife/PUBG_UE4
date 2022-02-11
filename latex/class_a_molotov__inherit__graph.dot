@@ -1,0 +1,13 @@
+digraph "AMolotov"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{AMolotov\n||+ AMolotov()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node2 [label="{ACore_throwable_weapon\n|+ weapon_data\l+ weapon_type\l# p_grenade_particle\l|+ ACore_throwable_weapon()\l# BeginPlay()\l# Tick()\l# Init()\l# Init_mesh()\l# Update_collider()\l# Init_particle_system()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_core__throwable__weapon.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node3 [label="{ABase_interaction\n|+ p_static_mesh_comp\l+ p_skeletal_mesh_comp\l+ p_audio_comp\l+ object_type\l+ is_player_near\l# m_box_collider\l# mp_interaction_widget_comp\l# m_current_time\l|+ ABase_interaction()\l# BeginPlay()\l# Tick()\l# Init_static_mesh()\l# Init_skeletal_mesh()\l# Init_audio()\l# Init_interaction_UI()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_base__interaction.html",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node4 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

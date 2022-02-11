@@ -1,0 +1,85 @@
+\hypertarget{_u_i__manager_8h_source}{}\doxysection{UI\+\_\+manager.\+h}
+\label{_u_i__manager_8h_source}\index{Source/UI\_PUBG/UI\_manager.h@{Source/UI\_PUBG/UI\_manager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}UI\_manager.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }\mbox{\hyperlink{class_u_player___u_i}{UPlayer\_UI}};}
+\DoxyCodeLine{8 \textcolor{keyword}{class }\mbox{\hyperlink{class_u_item___slot___u_i}{UItem\_Slot\_UI}};}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 UCLASS()}
+\DoxyCodeLine{11 class UI\_PUBG\_API \mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}} : public AActor}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13     GENERATED\_BODY()}
+\DoxyCodeLine{14     }
+\DoxyCodeLine{15 \textcolor{keyword}{public}:    }
+\DoxyCodeLine{16     \textcolor{keyword}{static} TMap<int, UMaterial*> map\_main\_weapon\_ui\_mat; \textcolor{comment}{// 메인 무기 UI    }}
+\DoxyCodeLine{17     \textcolor{keyword}{static} TMap<int, UTexture*> map\_inventory\_weapon\_ui\_tex; \textcolor{comment}{// 인벤토리 무기 UI    }}
+\DoxyCodeLine{18     \textcolor{keyword}{static} TMap<int, UTexture*> map\_player\_ui\_tex; \textcolor{comment}{// 플레이어 UI}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{21     \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/ 현재 쓰이고있는 변수들 -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     \textcolor{comment}{// 최상위 UI 모든걸 포함}}
+\DoxyCodeLine{24     \mbox{\hyperlink{class_u_player___u_i}{UPlayer\_UI}}*             mp\_player\_UI;}
+\DoxyCodeLine{25     TSubclassOf<UPlayer\_UI> m\_bp\_player\_UI;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \textcolor{comment}{// 인벤토리}}
+\DoxyCodeLine{28     TSubclassOf<AActor> m\_inventory\_manager\_actor;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{comment}{// 상호작용 UI 관련}}
+\DoxyCodeLine{31     UPROPERTY(VisibleAnywhere, Category = Widget\_bp) TSubclassOf<UUserWidget> m\_interaction\_widget\_bp;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{comment}{// 메인 플레이어 UI 리소스 경로명}}
+\DoxyCodeLine{34     \textcolor{keyword}{const} TArray<FString> mk\_arr\_player\_UI\_tex\_path }
+\DoxyCodeLine{35     \{}
+\DoxyCodeLine{36         \textcolor{stringliteral}{"{}Single\_shot"{}},}
+\DoxyCodeLine{37         \textcolor{stringliteral}{"{}Burst\_shot"{}},}
+\DoxyCodeLine{38         \textcolor{stringliteral}{"{}Consecutive\_shot"{}},}
+\DoxyCodeLine{39     \};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{keyword}{const} FString mk\_default\_player\_UI\_path = \textcolor{stringliteral}{"{}/Game/UI/Player/State/"{}};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{public}:}
+\DoxyCodeLine{44     \textcolor{keyword}{class }\mbox{\hyperlink{class_a_inventory__manager}{AInventory\_manager}}* p\_inventory\_manager;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{public}:}
+\DoxyCodeLine{47     \mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}();}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{50     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{comment}{// 생성자 내 초기화 함수}}
+\DoxyCodeLine{53 \textcolor{keyword}{private}:}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{comment}{// 최상위 플레이어 UI 초기화}}
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} Init\_player\_UI();}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{comment}{// 상호작용 UI 초기화}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{void} Init\_interaction\_UI();}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{comment}{// 플레이어 UI를 띄움}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{void} Set\_player\_UI();}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     \textcolor{comment}{// 플레이어 인벤토리를 설정}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{void} Init\_player\_inventory();}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keywordtype}{void} Init\_inventory\_weapon\_UI\_tex();}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \textcolor{keywordtype}{void} Init\_main\_weapon\_UI\_mat();}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{comment}{// 플레이어 UI 초기화}}
+\DoxyCodeLine{72     \textcolor{keywordtype}{void} Init\_player\_UI\_tex();}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{keywordtype}{void} Set\_weapon\_UI();}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{public}:}
+\DoxyCodeLine{77     UFUNCTION()}
+\DoxyCodeLine{78     \textcolor{keywordtype}{void} Update\_interaction\_UI(\textcolor{keyword}{class} UWidgetComponent* \_widget\_comp, FString \_title);}
+\DoxyCodeLine{79 \};}
+
+\end{DoxyCode}

@@ -1,4 +1,4 @@
-#include "UI_manager.h"
+ï»¿#include "UI_manager.h"
 #include "Interaction_UI.h"
 #include "Inventory_list_UI.h"
 #include "Inventory_manager.h"
@@ -30,7 +30,7 @@ void AUI_manager::BeginPlay()
 {
     Super::BeginPlay();
     
-    // µ¨¸®°ÔÀÌÆ® ¹ÙÀÎµù
+    // ë¸ë¦¬ê²Œì´íŠ¸ ë°”ì¸ë”©
     auto p_custom_game_instance = Cast<UCustom_game_instance>(GetWorld()->GetGameInstance());
     p_custom_game_instance->dele_update_interaction_widget_comp.BindUFunction(this, "Update_interaction_UI");
 
@@ -49,7 +49,7 @@ void AUI_manager::Init_player_UI()
 
 void AUI_manager::Init_interaction_UI()
 {
-    // À§Á¬ ÄÄÆ÷³ÍÆ® ºí·çÇÁ¸°Æ® ÃÊ±âÈ­
+    // ìœ„ì ¯ ì»´í¬ë„ŒíŠ¸ ë¸”ë£¨í”„ë¦°íŠ¸ ì´ˆê¸°í™”
     auto widget_bp = ConstructorHelpers::FClassFinder<UInteraction_UI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_Interaction_UI.BP_Interaction_UI_C'"));
     m_interaction_widget_bp = widget_bp.Class;
 }
@@ -58,7 +58,7 @@ void AUI_manager::Init_player_UI_tex()
 {
     for (int i = 0; i < mk_arr_player_UI_tex_path.Num(); i++)
     {
-        // ¸®¼Ò½º¸¦ ºÒ·¯¿Â ÈÄ µ¥ÀÌÅÍ Å×ÀÌºí¿¡ ´ëÀÔ
+        // ë¦¬ì†ŒìŠ¤ë¥¼ ë¶ˆëŸ¬ì˜¨ í›„ ë°ì´í„° í…Œì´ë¸”ì— ëŒ€ì…
         FString player_ui_path = mk_default_player_UI_path + mk_arr_player_UI_tex_path[i] + "_icon";
         auto    player_ui_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*player_ui_path);
 
@@ -84,7 +84,7 @@ void AUI_manager::Init_inventory_weapon_UI_tex()
 {
     for (int i = 0; i < AData_table_manager::arr_weapon_data.Num(); i++)
     {
-        // ¸®¼Ò½º¸¦ ºÒ·¯¿Â ÈÄ µ¥ÀÌÅÍ Å×ÀÌºí¿¡ ´ëÀÔ
+        // ë¦¬ì†ŒìŠ¤ë¥¼ ë¶ˆëŸ¬ì˜¨ í›„ ë°ì´í„° í…Œì´ë¸”ì— ëŒ€ì…
         FString weapon_ui_path = "/Game/UI/Weapon_inventory_icon/" + AData_table_manager::arr_weapon_data[i].weapon_icon_path;
         auto    weapon_ui_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*weapon_ui_path);
 
@@ -97,7 +97,7 @@ void AUI_manager::Init_main_weapon_UI_mat()
 {
     for (int i = 0; i < AData_table_manager::arr_weapon_data.Num(); i++)
     {
-        // ¸®¼Ò½º¸¦ ºÒ·¯¿Â ÈÄ µ¥ÀÌÅÍ Å×ÀÌºí¿¡ ´ëÀÔ
+        // ë¦¬ì†ŒìŠ¤ë¥¼ ë¶ˆëŸ¬ì˜¨ í›„ ë°ì´í„° í…Œì´ë¸”ì— ëŒ€ì…
         FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_weapon_data[i].weapon_slot_icon_path;
         auto    weapon_ui_mat  = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
 
@@ -106,7 +106,7 @@ void AUI_manager::Init_main_weapon_UI_mat()
     }
     //for (int i = 0; i < MAX_OTHER_WEAPON_COUNT; i++)
     //{
-    //    // ¸®¼Ò½º¸¦ ºÒ·¯¿Â ÈÄ µ¥ÀÌÅÍ Å×ÀÌºí¿¡ ´ëÀÔ
+    //    // ë¦¬ì†ŒìŠ¤ë¥¼ ë¶ˆëŸ¬ì˜¨ í›„ ë°ì´í„° í…Œì´ë¸”ì— ëŒ€ì…
     //    FString weapon_ui_path = "/Game/UI/Weapon_icon/" + AData_table_manager::arr_other_weapon_data[i].weapon_slot_icon_path;
     //    auto    weapon_ui_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weapon_ui_path);
 
@@ -124,7 +124,7 @@ void AUI_manager::Set_weapon_UI()
 
 void AUI_manager::Update_interaction_UI(UWidgetComponent* _widget_comp, FString _type)
 {
-    // À§Á¬ ¼³Á¤
+    // ìœ„ì ¯ ì„¤ì •
     _widget_comp->SetWidgetSpace(EWidgetSpace::Screen);
     _widget_comp->SetRelativeLocation(FVector::ZeroVector);
     _widget_comp->SetWidgetClass(m_interaction_widget_bp);

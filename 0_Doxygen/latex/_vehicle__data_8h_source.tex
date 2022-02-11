@@ -1,0 +1,60 @@
+\hypertarget{_vehicle__data_8h_source}{}\doxysection{Vehicle\+\_\+data.\+h}
+\label{_vehicle__data_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Vehicle\_data.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Vehicle\_data.h}}
+\mbox{\hyperlink{_vehicle__data_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Engine/DataTable.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}Vehicle\_data.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00016}00016  }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00020}00020 USTRUCT(BlueprintType)}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00021}\mbox{\hyperlink{struct_fs__vehicle__data}{00021}} struct \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\_vehicle\_data}} : public FTableRowBase}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00022}00022 \{}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00023}00023     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00025}00025     }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00028}\mbox{\hyperlink{struct_fs__vehicle__data_ac571755f0db8fae27e0825eed59c8ff2}{00028}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FString type                      = "{}"{};}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00029}\mbox{\hyperlink{struct_fs__vehicle__data_a1dd8e9ebd9d0141d7b02b92cb0fb31b8}{00029}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FString mesh\_path                 = "{}"{};}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00030}\mbox{\hyperlink{struct_fs__vehicle__data_ac5fda186f997c4381f4fdcc8015ef982}{00030}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FString audio\_path                = "{}"{};}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00031}\mbox{\hyperlink{struct_fs__vehicle__data_ae6b59d9d766ff07c7caf051c3d467488}{00031}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector collider\_size             = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00032}\mbox{\hyperlink{struct_fs__vehicle__data_ad5eb631c2ad283cbc0e056f671f0427b}{00032}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector collider\_pos              = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00033}\mbox{\hyperlink{struct_fs__vehicle__data_a58424905906de768f7fb6bd09c44eac4}{00033}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector interaction\_collider\_size = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00034}\mbox{\hyperlink{struct_fs__vehicle__data_ab12e878820d83e6a43960e9b9f4df7f4}{00034}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector interaction\_collider\_pos  = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00039}\mbox{\hyperlink{struct_fs__vehicle__data_ae262c056fae72f8824800070b960aa79}{00039}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00040}\mbox{\hyperlink{struct_fs__vehicle__data_a93161a9f8e6bcb99bbab673600fec658}{00040}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector camera\_rotation = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00041}00041 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00045}\mbox{\hyperlink{struct_fs__vehicle__data_adb2ddf478af035e5838f5190a29cbb65}{00045}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_1\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00046}\mbox{\hyperlink{struct_fs__vehicle__data_ac12511ee18c68289ac9ea9c0555040ed}{00046}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_1\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00047}00047                      }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00051}\mbox{\hyperlink{struct_fs__vehicle__data_aace0b0384a027483f2fff653a9f4a1be}{00051}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_2\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00052}\mbox{\hyperlink{struct_fs__vehicle__data_a6bd4578393f7ded3484a19cca8501f58}{00052}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_2\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00053}00053                                        }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00057}\mbox{\hyperlink{struct_fs__vehicle__data_a6f4b527537a98fac31478f208c8a65d6}{00057}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_3\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00058}\mbox{\hyperlink{struct_fs__vehicle__data_a8758449fb3a7b56ee9aa7f9e5fd86ec5}{00058}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_3\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00059}00059                                       }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00063}\mbox{\hyperlink{struct_fs__vehicle__data_af3bc91524bc3f8991ac38820eb75c0ac}{00063}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_4\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00064}\mbox{\hyperlink{struct_fs__vehicle__data_a35efe0257451e618aaec4884d584912f}{00064}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) FVector seat\_4\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00065}00065 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00069}\mbox{\hyperlink{struct_fs__vehicle__data_a39fe083411484ee3d92ff247fc26e1a1}{00069}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) \textcolor{keywordtype}{float} spring\_arm\_length = 0.f;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00070}\mbox{\hyperlink{struct_fs__vehicle__data_a0494b5602e2d0bd61554b04e6b5296d6}{00070}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) \textcolor{keywordtype}{int}   max\_seater = 0;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00071}\mbox{\hyperlink{struct_fs__vehicle__data_a741796a921d4e05428e22bd10dffa04e}{00071}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) \textcolor{keywordtype}{int}   durability = 0;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00072}\mbox{\hyperlink{struct_fs__vehicle__data_a8b77aeaf645ff0c7e4bfff46b1c557f6}{00072}}     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data) \textcolor{keywordtype}{int}   speed             = 0;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00073}00073 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00074}\mbox{\hyperlink{struct_fs__vehicle__data_abfee27420f64707e68da8e24c14188ff}{00074}}     FString                     anim\_instance\_path = "{}"{};}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00075}\mbox{\hyperlink{struct_fs__vehicle__data_a107e5ff1032af71894a9adc23cd6bed6}{00075}}     std::pair<FVector, FVector> arr\_player\_seat\_pos[4];}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00076}00076 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00077}00077 public:}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00078}\mbox{\hyperlink{struct_fs__vehicle__data_a75feeaad7c167693db9dbfcdc1cc000b}{00078}}     \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\_vehicle\_data}}() = default;}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00079}00079 \};}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00080}00080 }
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00081}00081 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00082}\mbox{\hyperlink{class_a_vehicle__data}{00082}} class PUBG\_UE4\_API \mbox{\hyperlink{class_a_vehicle__data}{AVehicle\_data}} : public AActor}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00083}00083 \{}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00084}00084     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_vehicle__data_8h_source_l00085}00085 \};}
+
+\end{DoxyCode}

@@ -1,0 +1,101 @@
+\hypertarget{_sound__manager_8cpp_source}{}\doxysection{Sound\+\_\+manager.\+cpp}
+\label{_sound__manager_8cpp_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Sound\_manager.cpp@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Sound\_manager.cpp}}
+\mbox{\hyperlink{_sound__manager_8cpp}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_sound__manager_8h}{Sound\_manager.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00002}00002 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_data__table__manager_8h}{Data\_table\_manager.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}Components/AudioComponent.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Editor/EditorEngine.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}LevelEditor.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}Kismet/GameplayStatics.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}Sound/SoundBase.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00008}00008 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00009}\mbox{\hyperlink{class_a_sound__manager_a96424c7cc0b1784e4568669f4700e8cc}{00009}} \mbox{\hyperlink{class_a_sound__manager_a96424c7cc0b1784e4568669f4700e8cc}{ASound\_manager::ASound\_manager}}()}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00010}00010 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00011}00011     PrimaryActorTick.bCanEverTick = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00012}00012     \mbox{\hyperlink{class_a_sound__manager_ac13853ac0c4a42485e685403fa5e5bcb}{Init\_player\_audio}}();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00013}00013     \mbox{\hyperlink{class_a_sound__manager_a5e634877198ed3cdae1e40684321820e}{Init\_weapon\_audio}}();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00014}00014 \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00016}\mbox{\hyperlink{class_a_sound__manager_a0efbfa8e992f611813357866999a1793}{00016}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_sound__manager_a0efbfa8e992f611813357866999a1793}{ASound\_manager::BeginPlay}}()}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00017}00017 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00018}00018     Super::BeginPlay();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00019}00019 \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00021}\mbox{\hyperlink{class_a_sound__manager_af5c87b105f9e580a9cf8c52aece29ff3}{00021}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_sound__manager_af5c87b105f9e580a9cf8c52aece29ff3}{ASound\_manager::Tick}}(\textcolor{keywordtype}{float} DeltaTime)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00022}00022 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00023}00023     Super::Tick(DeltaTime);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00024}00024 \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00025}00025 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00026}\mbox{\hyperlink{class_a_sound__manager_ac13853ac0c4a42485e685403fa5e5bcb}{00026}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_sound__manager_ac13853ac0c4a42485e685403fa5e5bcb}{ASound\_manager::Init\_player\_audio}}()}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00027}00027 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00028}00028     \textcolor{comment}{// 무기 장착 사운드}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00029}00029     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_EQUIP\_SOUND(*(\mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{mk\_sound\_path}} + \textcolor{stringliteral}{"{}Gun\_pickup"{}}));}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00030}00030 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00031}00031     \textcolor{keywordflow}{if} (BP\_EQUIP\_SOUND.Succeeded())}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00032}00032         p\_weapon\_pickup\_sound = Cast<USoundBase>(BP\_EQUIP\_SOUND.Object);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00034}00034     \textcolor{comment}{// 무기 교체 사운드}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00035}00035     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_SWAP\_SOUND(*(\mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{mk\_sound\_path}} + \textcolor{stringliteral}{"{}Gun\_swap"{}}));}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00037}00037     \textcolor{keywordflow}{if} (BP\_SWAP\_SOUND.Succeeded())}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00038}00038         p\_weapon\_swap\_sound = Cast<USoundBase>(BP\_SWAP\_SOUND.Object);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00039}00039 \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00040}00040 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00041}\mbox{\hyperlink{class_a_sound__manager_a5e634877198ed3cdae1e40684321820e}{00041}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_sound__manager_a5e634877198ed3cdae1e40684321820e}{ASound\_manager::Init\_weapon\_audio}}()}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00042}00042 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00043}00043     \textcolor{comment}{// 총알 비어있는 사운드}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00044}00044     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_EMPTY\_AMMO\_SOUND(*(\mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{mk\_sound\_path}} + \textcolor{stringliteral}{"{}Empty\_shot"{}}));}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00045}00045 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00046}00046     \textcolor{keywordflow}{if} (BP\_EMPTY\_AMMO\_SOUND.Succeeded())}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00047}00047         p\_empty\_ammo\_sound = Cast<USoundBase>(BP\_EMPTY\_AMMO\_SOUND.Object);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00048}00048 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00049}00049     \textcolor{comment}{// 재장전 사운드}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00050}00050     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_RELOAD\_AMMO\_SOUND(*(\mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{mk\_sound\_path}} + \textcolor{stringliteral}{"{}Gun\_reload"{}}));}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00051}00051 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00052}00052     \textcolor{keywordflow}{if} (BP\_RELOAD\_AMMO\_SOUND.Succeeded())}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00053}00053         p\_reload\_sound = Cast<USoundBase>(BP\_RELOAD\_AMMO\_SOUND.Object);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00054}00054 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00055}00055     \textcolor{comment}{// 총알 발사 사운드}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00056}00056     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}{AData\_table\_manager::arr\_weapon\_data}}.Num(); i++)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00057}00057     \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00058}00058         ConstructorHelpers::FObjectFinder<USoundWave> BP\_SHOT\_SOUND(*(\mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{mk\_sound\_path}} + \mbox{\hyperlink{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}{AData\_table\_manager::arr\_weapon\_data}}[i].type + \textcolor{stringliteral}{"{}\_shot"{}}));}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00059}00059 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00060}00060         \textcolor{keywordflow}{if} (BP\_SHOT\_SOUND.Succeeded())}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00061}00061             p\_arr\_shot\_sound.Add(Cast<USoundBase>(BP\_SHOT\_SOUND.Object));}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00062}00062     \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00063}00063 \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00065}\mbox{\hyperlink{class_a_sound__manager_a22465b2fbbc4a4184a2684bbf9442a1f}{00065}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_sound__manager_a22465b2fbbc4a4184a2684bbf9442a1f}{ASound\_manager::Play\_weapon\_sound}}(UAudioComponent* \_p\_audio\_comp, \mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32}{e\_weapon\_sound\_type}} \_sound\_type, \textcolor{keywordtype}{int} \_weapon\_index)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00066}00066 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00067}00067     USoundBase* tmp\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00068}00068 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00069}00069     \textcolor{keywordflow}{switch} (\_sound\_type)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00070}00070     \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00071}00071     \textcolor{keywordflow}{case} \mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32afb416e6ebc3ee51dc5850412a203fe9f}{e\_weapon\_sound\_type::EMPTY\_AMMO}}: tmp\_sound = p\_empty\_ammo\_sound;              \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00072}00072     \textcolor{keywordflow}{case} \mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32afe92f0e834026a1c16e620212f2cc9a4}{e\_weapon\_sound\_type::SHOT}}:       tmp\_sound = p\_arr\_shot\_sound[\_weapon\_index]; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00073}00073     \textcolor{keywordflow}{case} \mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32a07d14e40a82f0a38be9b2d0e4f5f8278}{e\_weapon\_sound\_type::RELOAD}}:     tmp\_sound = p\_reload\_sound;                  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00074}00074     \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00075}00075     \_p\_audio\_comp-\/>SetSound(tmp\_sound);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00076}00076 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00077}00077     \textcolor{keywordflow}{if} (\_p\_audio\_comp-\/>Sound)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00078}00078         \_p\_audio\_comp-\/>Play();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00079}00079 \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00080}00080 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00081}\mbox{\hyperlink{class_a_sound__manager_a517771f1efc7f791c4a051573a3dd100}{00081}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_a_sound__manager_a517771f1efc7f791c4a051573a3dd100}{ASound\_manager::Play\_player\_sound}}(UAudioComponent* \_p\_audio\_comp, \mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387}{e\_player\_sound\_type}} \_sound\_type)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00082}00082 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00083}00083     USoundBase* tmp\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00084}00084 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00085}00085     \textcolor{keywordflow}{switch}(\_sound\_type)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00086}00086     \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00087}00087     \textcolor{keywordflow}{case} \mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387ab20905d2df4845f206e19c19fbc50c77}{e\_player\_sound\_type::ITEM\_FARM}}:    tmp\_sound = p\_item\_farm\_sound;     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00088}00088     \textcolor{keywordflow}{case} \mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387a80c6b11aca02b626cc429bf9114ecfdc}{e\_player\_sound\_type::WEAPON\_EQUIP}}: tmp\_sound = p\_weapon\_pickup\_sound; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00089}00089     \textcolor{keywordflow}{case} \mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387a8bea5f6c386532fb079d892474543245}{e\_player\_sound\_type::WEAPON\_SWAP}}:  tmp\_sound = p\_weapon\_swap\_sound;   \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00090}00090     \}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00091}00091     \_p\_audio\_comp-\/>SetSound(tmp\_sound);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00092}00092     }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00093}00093     \textcolor{keywordflow}{if} (\_p\_audio\_comp-\/>Sound)}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00094}00094         \_p\_audio\_comp-\/>Play();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8cpp_source_l00095}00095 \}}
+
+\end{DoxyCode}

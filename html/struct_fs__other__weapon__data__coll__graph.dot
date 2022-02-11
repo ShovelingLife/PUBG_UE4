@@ -1,0 +1,9 @@
+digraph "Fs_other_weapon_data"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Fs_other_weapon_data\n|+ type\l+ weapon_group\l+ audio_path\l+ particle_path\l+ collider_size\l+ collider_pos\l+ damage\l+ radius\l+ mesh_path\l|+ Fs_other_weapon_data()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{FTableRowBase\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

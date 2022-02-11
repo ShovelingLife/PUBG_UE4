@@ -1,0 +1,14 @@
+digraph "AData_table_manager::AData_table_manager"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="AData_table_manager\l::AData_table_manager",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AData_table_manager\l::Init_other_weapon_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_data__table__manager.html#a93fd99873cebb7f0245aae5b6230cdfd",tooltip="기타 무기 데이터 초기화"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="AData_table_manager\l::Init_vehicle_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_data__table__manager.html#a120c42fc319e16d65e50310bc2843d87",tooltip="차량 데이터 초기화"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="AData_table_manager\l::Init_weapon_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_data__table__manager.html#a5a43def28763871147f1610cfbdab761",tooltip="무기 데이터 초기화"];
+}

@@ -1,0 +1,8 @@
+digraph "그래픽컬한 클래스 계통도"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Fs_slot_item_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$struct_fs__slot__item__data.html",tooltip="아이템 슬롯 구조체"];
+}

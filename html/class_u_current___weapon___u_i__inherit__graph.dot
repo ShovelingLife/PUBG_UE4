@@ -1,0 +1,9 @@
+digraph "UCurrent_Weapon_UI"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{UCurrent_Weapon_UI\n|+ p_arr_img\l- mp_UI_manager\l- mk_gun_slot_size\l- mk_pistol_slot_size\l- mk_grenade_slot_size\l- mk_gun_slot_pos\l- mk_pistol_slot_pos\l- mk_grenade_slot_pos\l- mk_selected_color\l- mk_selected_no_ammo\l_color\l- mk_unselected_color\l- mk_unselected_no_ammo\l_color\l- mp_weapon_manager\l|+ UPROPERTY()\l+ UPROPERTY()\l+ UPROPERTY()\l+ UPROPERTY()\l+ UPROPERTY()\l# NativeConstruct()\l# NativeTick()\l- Init_arr_img()\l- Update_icon_visibility()\l- Update_icon_color()\l- Set_icon_UI()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{UUserWidget\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

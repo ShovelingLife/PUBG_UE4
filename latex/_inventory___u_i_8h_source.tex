@@ -1,0 +1,38 @@
+\hypertarget{_inventory___u_i_8h_source}{}\doxysection{Inventory\+\_\+\+UI.\+h}
+\label{_inventory___u_i_8h_source}\index{Source/UI\_PUBG/Inventory\_UI.h@{Source/UI\_PUBG/Inventory\_UI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Input/Events.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}Input/Reply.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}Inventory\_UI.generated.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{class }\mbox{\hyperlink{class_u_inventory__list___u_i}{UInventory\_list\_UI}};}
+\DoxyCodeLine{10 \textcolor{keyword}{class }\mbox{\hyperlink{class_u_character___slot___u_i}{UCharacter\_Slot\_UI}};}
+\DoxyCodeLine{11 \textcolor{keyword}{class }\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i}{UInventory\_Weapon\_Slot\_UI}};}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 UCLASS()}
+\DoxyCodeLine{14 class UI\_PUBG\_API \mbox{\hyperlink{class_u_inventory___u_i}{UInventory\_UI}} : public UUserWidget}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     GENERATED\_BODY()}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{private}:}
+\DoxyCodeLine{19     \textcolor{keyword}{class }\mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}* mp\_UI\_manager;}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \mbox{\hyperlink{class_u_character___slot___u_i}{UCharacter\_Slot\_UI}}*        Character\_Slot\_UI;}
+\DoxyCodeLine{23     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \mbox{\hyperlink{class_u_inventory__list___u_i}{UInventory\_list\_UI}}*        Inventory\_list\_UI;}
+\DoxyCodeLine{24     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \mbox{\hyperlink{class_u_inventory___weapon___slot___u_i}{UInventory\_Weapon\_Slot\_UI}}* Inventory\_Weapon\_Slot\_UI;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{keyword}{class }UCursor\_UI* p\_icon\_UI = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{29     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{32 \};}
+
+\end{DoxyCode}

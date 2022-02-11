@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/Player_weapons/Weapon_manager.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_weapon__manager_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Weapon_manager.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_weapon__manager_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;GameFramework/Actor.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="_my__enum_8h.html">PUBG_UE4/My_enum.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="_weapon__enum_8h.html">Weapon_enum.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;Weapon_manager.generated.h&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">class </span><a class="code hl_class" href="class_a_base__interaction.html">ABase_interaction</a>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span><a class="code hl_class" href="class_a_core__weapon.html">ACore_weapon</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span><a class="code hl_class" href="class_a_core__melee__weapon.html">ACore_melee_weapon</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">class </span><a class="code hl_class" href="class_a_core__throwable__weapon.html">ACore_throwable_weapon</a>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span>USceneComponent;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>UCLASS()</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html">   25</a></span>class PLAYER_WEAPONS_API <a class="code hl_class" href="class_a_weapon__manager.html">AWeapon_manager</a> : public AActor</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#aaa084b19e1b37eaedcfa97c466e5e564">   30</a></span>    <a class="code hl_function" href="class_a_weapon__manager.html#aaa084b19e1b37eaedcfa97c466e5e564">UPROPERTY</a>(EditAnywhere, Category = Scene_comp) USceneComponent* mp_scene_comp = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a0729a9bc1dbb3664cd38381bdb11a5f3">   32</a></span>    <span class="keyword">const</span> <span class="keywordtype">float</span> mk_reload_time          = 2.f;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a1ab9059b3cb75246c78ed2f147280de1">   33</a></span>    <span class="keywordtype">float</span>       m_current_reload_time   = 0.f;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#afaed4c12a0ba07f9fdf8c35802d5542c">   34</a></span>    <span class="keywordtype">float</span>       m_shoot_time            = 0.25f;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a7fb70414198e145984f2eee7aa54187f">   35</a></span>    <span class="keywordtype">float</span>       m_current_shoot_time    = 0.f;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a4ecd455afdc366c9e389fc1f132d8133">   36</a></span>    <span class="keywordtype">bool</span>        m_is_reloading          = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a079bc5fba08e1b4aa9a22554993581a4">   37</a></span>    <span class="keywordtype">bool</span>        m_is_interacting        = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a991ffb8018a8e966b1729b42ce7fc56d">   38</a></span>    <span class="keywordtype">bool</span>        m_is_changed_shoot_type = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#aaf3d43cc81dd473eaf52ec01402f6d87">   39</a></span>    <span class="keywordtype">bool</span>        m_is_shooting           = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a4544bc6b5675a77713e8de03dbe1f2d0">   43</a></span>    <a class="code hl_function" href="class_a_weapon__manager.html#a4544bc6b5675a77713e8de03dbe1f2d0">UPROPERTY</a>() <a class="code hl_class" href="class_a_core__weapon.html">ACore_weapon</a>*           p_first_gun  = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#ae4b96a4b16ac7facbbd17b111bd28c69">   44</a></span>    UPROPERTY() <a class="code hl_class" href="class_a_core__weapon.html">ACore_weapon</a>*           p_second_gun = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a6b71fe8e048acf67ea2ab059a6c74eb3">   45</a></span>    UPROPERTY() <a class="code hl_class" href="class_a_core__weapon.html">ACore_weapon</a>*           p_pistol     = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#abd144ccdeca209de79dfb1c04b22b3d2">   46</a></span>    UPROPERTY() <a class="code hl_class" href="class_a_core__melee__weapon.html">ACore_melee_weapon</a>*     p_melee      = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a15e8385ca30fed7dfad4c4d9613dd61f">   47</a></span>    UPROPERTY() <a class="code hl_class" href="class_a_core__throwable__weapon.html">ACore_throwable_weapon</a>* p_throwable  = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#ae3bc178b55bb6359b779a43597e28e21">   49</a></span>    <a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a> current_weapon_type = <a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a>::<a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693">NONE</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_a_weapon__manager.html#a896da2629a0e8288e6b26dc0fcc5723a">   50</a></span>    <span class="keywordtype">bool</span> arr_is_weapon_equipped[5]{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">public</span>: </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_class" href="class_a_weapon__manager.html">AWeapon_manager</a>();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> BeginPlay() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">public</span>: </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Tick(<span class="keywordtype">float</span> DeltaTime) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">/* \brief 착용 중인 무기를 체크함 */</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// 미구현상태</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordtype">void</span> Check_for_equipped_weapon();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">void</span> Update_current_equipped_weapon();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">void</span> Play_sound(<a class="code hl_enumeration" href="_my__enum_8h.html#a9c58b5149878c5626b46b7f81a392a32">e_weapon_sound_type</a> _sound_type);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a> Find_weapon_index(FString _direction, <span class="keywordtype">int</span> _start_index);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordtype">void</span> Attach_weapon(<a class="code hl_class" href="class_a_base__interaction.html">ABase_interaction</a>* _p_tmp_weapon, FString _socket_name);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordtype">void</span> Reset_weapon_after_detaching(<a class="code hl_class" href="class_a_base__interaction.html">ABase_interaction</a>* _weapon, FTransform _new_pos);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">void</span> Equip(AActor* _p_weapon);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">void</span> Shoot();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">void</span> Reload();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordtype">bool</span> Scroll_select(<span class="keywordtype">int</span> _pos);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordtype">void</span> Swap(<a class="code hl_class" href="class_a_base__interaction.html">ABase_interaction</a>* _current_weapon, AActor* _new_weapon, FString _socket_name);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="comment">/* \brief 착용 중인 무기를 체크함 */</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordtype">void</span> Change_shoot_mode();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">// 미구현 상태</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordtype">void</span> Change_aim_pose(<span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordtype">void</span> Check_if_reloading(<span class="keywordtype">float</span> _transcurred_reload_time);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordtype">void</span> Check_continously_shooting(<span class="keywordtype">float</span> _transcurred_shoot_time);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordtype">bool</span> Check_if_weapon_available(<a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a> _weapon_type);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="comment">// ------- 부착 관련 함수 -------</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordtype">int</span> Get_weapon_max_bullet_count(<a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a> _weapon_type);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <a class="code hl_class" href="class_a_base__interaction.html">ABase_interaction</a>* Get_weapon(<a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a> _weapon_type);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="comment">// ------- UI 관련 함수 -------</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordtype">void</span> Drop(<a class="code hl_class" href="class_a_base__interaction.html">ABase_interaction</a>* _p_weapon);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>};</div>
+<div class="ttc" id="a_my__enum_8h_html"><div class="ttname"><a href="_my__enum_8h.html">My_enum.h</a></div><div class="ttdoc">게임 내 쓰여질 열거형 관리</div></div>
+<div class="ttc" id="a_my__enum_8h_html_a9c58b5149878c5626b46b7f81a392a32"><div class="ttname"><a href="_my__enum_8h.html#a9c58b5149878c5626b46b7f81a392a32">e_weapon_sound_type</a></div><div class="ttdeci">e_weapon_sound_type</div><div class="ttdoc">총기 사운드 관련  EMPTY_AMMO 빈 탄창  SHOT 격발  RELOAD 장전</div><div class="ttdef"><b>Definition:</b> <a href="_my__enum_8h_source.html#l00102">My_enum.h:103</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html"><div class="ttname"><a href="_weapon__enum_8h.html">Weapon_enum.h</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a></div><div class="ttdeci">e_current_weapon_type</div><div class="ttdoc">현재 착용 중인 무기</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00016">Weapon_enum.h:17</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693">e_current_weapon_type::NONE</a></div><div class="ttdeci">@ NONE</div></div>
+<div class="ttc" id="aclass_a_base__interaction_html"><div class="ttname"><a href="class_a_base__interaction.html">ABase_interaction</a></div><div class="ttdef"><b>Definition:</b> <a href="_base__interaction_8h_source.html#l00024">Base_interaction.h:25</a></div></div>
+<div class="ttc" id="aclass_a_core__melee__weapon_html"><div class="ttname"><a href="class_a_core__melee__weapon.html">ACore_melee_weapon</a></div><div class="ttdef"><b>Definition:</b> <a href="_core__melee__weapon_8h_source.html#l00019">Core_melee_weapon.h:20</a></div></div>
+<div class="ttc" id="aclass_a_core__throwable__weapon_html"><div class="ttname"><a href="class_a_core__throwable__weapon.html">ACore_throwable_weapon</a></div><div class="ttdef"><b>Definition:</b> <a href="_core__throwable__weapon_8h_source.html#l00019">Core_throwable_weapon.h:20</a></div></div>
+<div class="ttc" id="aclass_a_core__weapon_html"><div class="ttname"><a href="class_a_core__weapon.html">ACore_weapon</a></div><div class="ttdef"><b>Definition:</b> <a href="_core__weapon_8h_source.html#l00024">Core_weapon.h:25</a></div></div>
+<div class="ttc" id="aclass_a_weapon__manager_html"><div class="ttname"><a href="class_a_weapon__manager.html">AWeapon_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_weapon__manager_8h_source.html#l00025">Weapon_manager.h:26</a></div></div>
+<div class="ttc" id="aclass_a_weapon__manager_html_a4544bc6b5675a77713e8de03dbe1f2d0"><div class="ttname"><a href="class_a_weapon__manager.html#a4544bc6b5675a77713e8de03dbe1f2d0">AWeapon_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY() ACore_weapon *p_first_gun</div><div class="ttdoc">현재 착용 중인 무기</div></div>
+<div class="ttc" id="aclass_a_weapon__manager_html_aaa084b19e1b37eaedcfa97c466e5e564"><div class="ttname"><a href="class_a_weapon__manager.html#aaa084b19e1b37eaedcfa97c466e5e564">AWeapon_manager::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(EditAnywhere, Category=Scene_comp) USceneComponent *mp_scene_comp</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_dcc969d45a76509c88cd02294e3cd918.html">Player_weapons</a></li><li class="navelem"><a class="el" href="_weapon__manager_8h.html">Weapon_manager.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

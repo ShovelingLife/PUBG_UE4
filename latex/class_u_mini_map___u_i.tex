@@ -1,0 +1,71 @@
+\hypertarget{class_u_mini_map___u_i}{}\doxysection{UMini\+Map\+\_\+\+UI 클래스 참조}
+\label{class_u_mini_map___u_i}\index{UMiniMap\_UI@{UMiniMap\_UI}}
+
+
+UMini\+Map\+\_\+\+UI에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+UMini\+Map\+\_\+\+UI에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_mini_map___u_i_a3d76dc4c3173b808bf732ab034ab68a0}\label{class_u_mini_map___u_i_a3d76dc4c3173b808bf732ab034ab68a0}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UText\+Block $\ast$Magnetic\+\_\+timer\+\_\+text
+\item 
+\mbox{\Hypertarget{class_u_mini_map___u_i_aa143836200908ea86a47814d3700d871}\label{class_u_mini_map___u_i_aa143836200908ea86a47814d3700d871}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UText\+Block $\ast$Phase\+\_\+text
+\item 
+\mbox{\Hypertarget{class_u_mini_map___u_i_ab968c90df65afb2bb6e903abc8903eee}\label{class_u_mini_map___u_i_ab968c90df65afb2bb6e903abc8903eee}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$Mini\+Map\+\_\+img
+\item 
+\mbox{\Hypertarget{class_u_mini_map___u_i_a8ef047594ffb5790582b92acbcb092d4}\label{class_u_mini_map___u_i_a8ef047594ffb5790582b92acbcb092d4}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$Warring\+\_\+img
+\item 
+\mbox{\Hypertarget{class_u_mini_map___u_i_afd156e81b35415ad6f7ab98e2a045e12}\label{class_u_mini_map___u_i_afd156e81b35415ad6f7ab98e2a045e12}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UProgress\+Bar $\ast$Magnetic\+\_\+field\+\_\+bar
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_u_mini_map___u_i_aa9dbac3f49162faac6a1c92888c53bf1}{Native\+Construct}} () override
+\item 
+void \mbox{\hyperlink{class_u_mini_map___u_i_a7e62254eab9c1cd4e670d27aa35b0457}{Native\+Tick}} (const FGeometry \&, float) override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_u_mini_map___u_i_aa9dbac3f49162faac6a1c92888c53bf1}\label{class_u_mini_map___u_i_aa9dbac3f49162faac6a1c92888c53bf1}} 
+\index{UMiniMap\_UI@{UMiniMap\_UI}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UMiniMap\_UI@{UMiniMap\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily void Native\+Construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{7 \{}
+\DoxyCodeLine{8     Super::NativeConstruct();}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_mini_map___u_i_a7e62254eab9c1cd4e670d27aa35b0457}\label{class_u_mini_map___u_i_a7e62254eab9c1cd4e670d27aa35b0457}} 
+\index{UMiniMap\_UI@{UMiniMap\_UI}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UMiniMap\_UI@{UMiniMap\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily void Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{\+\_\+my\+\_\+geometry,  }\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     Super::NativeTick(\_my\_geometry, \_delta\_time);}
+\DoxyCodeLine{15 \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+UI\+\_\+\+PUBG/Mini\+Map\+\_\+\+UI.\+h\item 
+Source/\+UI\+\_\+\+PUBG/Mini\+Map\+\_\+\+UI.\+cpp\end{DoxyCompactItemize}

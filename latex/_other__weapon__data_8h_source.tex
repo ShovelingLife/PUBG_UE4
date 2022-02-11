@@ -1,0 +1,68 @@
+\hypertarget{_other__weapon__data_8h_source}{}\doxysection{Other\+\_\+weapon\+\_\+data.\+h}
+\label{_other__weapon__data_8h_source}\index{Source/PUBG\_UE4/Other\_weapon\_data.h@{Source/PUBG\_UE4/Other\_weapon\_data.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Engine/DataTable.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}Other\_weapon\_data.generated.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{// CSV로부터 가지고올 기타 무기(투척류,근접) 정보 구조체}}
+\DoxyCodeLine{9 USTRUCT(BlueprintType)}
+\DoxyCodeLine{10 struct \mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\_other\_weapon\_data}} : public FTableRowBase}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     GENERATED\_BODY()}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{15         FString type = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{18         FString weapon\_group = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{21     FString audio\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{24     FString particle\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{27     FVector collider\_size = FVector::ZeroVector;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{30     FVector collider\_pos = FVector::ZeroVector;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{33     \textcolor{keywordtype}{float} damage = 0.f;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     UPROPERTY(BlueprintReadWrite, Category = Other\_weapon\_data)}
+\DoxyCodeLine{36         \textcolor{keywordtype}{float} radius = 0.f;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     FString mesh\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41     \mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\_other\_weapon\_data}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 UCLASS()}
+\DoxyCodeLine{46 class PUBG\_UE4\_API \mbox{\hyperlink{class_a_other__weapon__data}{AOther\_weapon\_data}} : public AActor}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48     GENERATED\_BODY()}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{50 \textcolor{keyword}{public}: }
+\DoxyCodeLine{51     \textcolor{comment}{// Sets default values for this actor's properties}}
+\DoxyCodeLine{52     \mbox{\hyperlink{class_a_other__weapon__data}{AOther\_weapon\_data}}();}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{55     \textcolor{comment}{// Called when the game starts or when spawned}}
+\DoxyCodeLine{56     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{public}: }
+\DoxyCodeLine{59     \textcolor{comment}{// Called every frame}}
+\DoxyCodeLine{60     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \};}
+
+\end{DoxyCode}

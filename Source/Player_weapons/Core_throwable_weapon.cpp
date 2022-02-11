@@ -1,4 +1,4 @@
-#include "Core_throwable_weapon.h"
+Ôªø#include "Core_throwable_weapon.h"
 #include "PUBG_UE4/Data_table_manager.h"
 #include "PUBG_UE4/Sound_manager.h"
 #include "Components/WidgetComponent.h"
@@ -14,13 +14,11 @@ ACore_throwable_weapon::ACore_throwable_weapon()
     PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
 void ACore_throwable_weapon::BeginPlay()
 {
     Super::BeginPlay();
 }
 
-// Called every frame
 void ACore_throwable_weapon::Tick(float _delta_time)
 {
     Super::Tick(_delta_time);
@@ -55,7 +53,7 @@ void ACore_throwable_weapon::Update_collider()
 
 void ACore_throwable_weapon::Init_particle_system()
 {
-    // √—±‚ ∞¸∑√
+    // Ï¥ùÍ∏∞ Í¥ÄÎ†®
     p_grenade_particle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
     p_grenade_particle->bAutoActivate = false;
     p_grenade_particle->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);

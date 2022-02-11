@@ -1,0 +1,13 @@
+digraph "D:/0_Projects/Unreal/PUBG_UE4/Source/Animations"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_74389ed8173ad57b461b9d623a1f3867 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,dashed,", label="Source", fontname="Helvetica", fontsize="10", URL="dir_74389ed8173ad57b461b9d623a1f3867.html"]
+  dir_0a0d59c77e579b1c91ea726c2a6093a5 [shape=box, label="Characters", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_0a0d59c77e579b1c91ea726c2a6093a5.html"];
+  dir_4943dd88a567d6386a90fef2197820ff [shape=box, label="Animations", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_4943dd88a567d6386a90fef2197820ff.html"];
+  }
+  dir_4943dd88a567d6386a90fef2197820ff->dir_0a0d59c77e579b1c91ea726c2a6093a5 [headlabel="2", labeldistance=1.5 headhref="dir_000001_000002.html"];
+}

@@ -1,0 +1,1088 @@
+\hypertarget{class_a_custom__player}{}\doxysection{ACustom\+\_\+player 클래스 참조}
+\label{class_a_custom__player}\index{ACustom\_player@{ACustom\_player}}
+
+
+{\ttfamily \#include $<$Custom\+\_\+player.\+h$>$}
+
+
+
+ACustom\+\_\+player에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ACustom\+\_\+player에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_custom__player_a5e7fea99c31f93fc04568ad90bee4b03}{UPROPERTY}} (Visible\+Anywhere, Category=Camera) USpring\+Arm\+Component $\ast$p\+\_\+spring\+\_\+arm\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_custom__player_ae312bff4a57b86dd203b68d18f86041e}{UPROPERTY}} (Visible\+Anywhere, Category=Camera) UCamera\+Component $\ast$p\+\_\+camera\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_custom__player_a977768a663b2064fe83193e853ea5d36}{ACustom\+\_\+player}} ()
+\item 
+void \mbox{\hyperlink{class_a_custom__player_a504d1c863edf243a203467bbdd8f5795}{Exit\+\_\+from\+\_\+vehicle}} (FVector \+\_\+exit\+\_\+location)
+\begin{DoxyCompactList}\small\item\em 플레이어가 차량에서 나감 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_weapon__manager}{AWeapon\+\_\+manager}} $\ast$ \mbox{\hyperlink{class_a_custom__player_a097b214e2b74b0b12b82f0ffadfd3674}{Get\+\_\+weapon\+\_\+manager}} ()
+\begin{DoxyCompactList}\small\item\em 무기 매니저를 갖고옴 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public 속성}
+\begin{DoxyCompactItemize}
+\item 
+FDele\+\_\+open\+\_\+inventory \mbox{\hyperlink{class_a_custom__player_a65b6cb97815c529d2632e60e306b5230}{dele\+\_\+open\+\_\+inventory}}
+\item 
+FDele\+\_\+close\+\_\+inventory \mbox{\hyperlink{class_a_custom__player_a3dd5ad2da4f743506c0c82a7556eb96c}{dele\+\_\+close\+\_\+inventory}}
+\item 
+\mbox{\hyperlink{_my__enum_8h_a74b234f4b37b35b879d4d83a37833065}{e\+\_\+player\+\_\+state}} \mbox{\hyperlink{class_a_custom__player_a6d177d5f0cc2f221720edba27bcc8a08}{current\+\_\+state}}
+\begin{DoxyCompactList}\small\item\em 플레이어 상태 관련 변수 \end{DoxyCompactList}\item 
+const float \mbox{\hyperlink{class_a_custom__player_a419201c4b85869abfeca5996d522a7b7}{k\+\_\+max\+\_\+health}} = 100.f
+\item 
+float \mbox{\hyperlink{class_a_custom__player_ab1105dca21f4f3d5754ff093482983a9}{current\+\_\+health}} = 100
+\item 
+float \mbox{\hyperlink{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}{current\+\_\+oxygen}} = 1.f
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_a3d60f5d36aab095c2fe5c1ca17ab0c94}{is\+\_\+sprinting}} = false
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_a85ecc9a834488f90a87255bba1e4df04}{is\+\_\+animation\+\_\+playing}} = false
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_a415d32d7a09a01c4a2a6e74576466b9d}{is\+\_\+aiming}} = false
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_a1c3cc9f82dffaff6d9e90df91b7e2a0f}{is\+\_\+weapon\+\_\+equipped}} = false
+\item 
+\mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}} \mbox{\hyperlink{class_a_custom__player_aaae839df80084dc09f13b2e701772c8a}{current\+\_\+seat\+\_\+type}} = \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0ab50339a10e1de285ac99d4c3990b8693}{e\+\_\+seat\+\_\+type\+::\+NONE}}
+\begin{DoxyCompactList}\small\item\em 차량 관련 변수 \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_a_custom__player_a8f488547ca079663ff5757388dbdf6e3}{is\+\_\+in\+\_\+vehicle}} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Private 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_custom__player_ad58848ba87ea9b14452e68806769866d}{UPROPERTY}} () \mbox{\hyperlink{class_a_sound__manager}{ASound\+\_\+manager}} $\ast$mp\+\_\+sound\+\_\+manager
+\begin{DoxyCompactList}\small\item\em 플레이어가 사용하는 변수 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_custom__player_a580813c96c016a66bb0922648f8d2d31}{UPROPERTY}} () \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\+\_\+manager}} $\ast$mp\+\_\+weapon\+\_\+manager
+\item 
+\mbox{\hyperlink{class_a_custom__player_ac072e187ee367550542786f17be5dede}{UPROPERTY}} () AActor $\ast$mp\+\_\+collided\+\_\+weapon
+\item 
+\mbox{\hyperlink{class_a_custom__player_a2c8c110a7eb437fba9d6bb8c7a1df79a}{UPROPERTY}} () \mbox{\hyperlink{class_a_core__vehicle}{ACore\+\_\+vehicle}} $\ast$mp\+\_\+collided\+\_\+vehicle
+\item 
+\mbox{\hyperlink{class_a_custom__player_aa3856153eda134ff0ed7be5ee2b151f1}{UPROPERTY}} (Visible\+Anywhere, Category=Audio) UAudio\+Component $\ast$mp\+\_\+audio\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_custom__player_aac16291a0d671a676d49266c70acc5c3}{UPROPERTY}} (Visible\+Anywhere, Category=Particle) UParticle\+System\+Component $\ast$mp\+\_\+particle
+\item 
+virtual void \mbox{\hyperlink{class_a_custom__player_a900a0d1fdce285fe748b341318805836}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_custom__player_a5e610ebd113adc82c1a6f9f882e1ed24}{Tick}} (float Delta\+Time) override
+\item 
+virtual void \mbox{\hyperlink{class_a_custom__player_a74fd8458f9a8a1b94ed17dc274b50a57}{Setup\+Player\+Input\+Component}} (class UInput\+Component $\ast$Player\+Input\+Component) override
+\item 
+void \mbox{\hyperlink{class_a_custom__player_a4e1ba64c2a1412fbca1d8788ed10e3ad}{Update\+\_\+player\+\_\+settings}} ()
+\begin{DoxyCompactList}\small\item\em 플레이어에 대한 정보 갱신 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a2101e0e45a47e6ec7e7c68386999b037}{Init\+\_\+camera\+\_\+comp}} ()
+\begin{DoxyCompactList}\small\item\em 카메라 컴포넌트 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_aa60d1861c069d4a8eefc4488addb060f}{Init\+\_\+mesh\+\_\+comp}} ()
+\begin{DoxyCompactList}\small\item\em 메시 컴포넌트 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a633d33c6566082967e978ae7a1284c59}{Init\+\_\+audio\+\_\+comp}} ()
+\begin{DoxyCompactList}\small\item\em 오디오 컴포넌트 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ac5e5b9ce83401bae32186fbd5a96d783}{Init\+\_\+anim\+\_\+instance}} ()
+\begin{DoxyCompactList}\small\item\em 애님 인스턴스 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_aa4bb6bd27e5699306d3cc6fd7f9582c3}{Init\+\_\+particle\+\_\+system}} ()
+\begin{DoxyCompactList}\small\item\em 파티클 시스템 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ae36784c9c842f212341059fd3ac7812e}{Check\+\_\+if\+\_\+moving}} ()
+\begin{DoxyCompactList}\small\item\em 플레이어 움직임 감지 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_adde10092856e5e33c87e63d8c904a073}{Check\+\_\+for\+\_\+object}} ()
+\begin{DoxyCompactList}\small\item\em 충돌한 오브젝트 확인 (아이템) (레이캐스트 \+: 플레이어 발 밑) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ae24be6c0768e22aa364abbcd6217c0d0}{Check\+\_\+if\+\_\+is\+\_\+vehicle\+\_\+near}} ()
+\begin{DoxyCompactList}\small\item\em 근처에 차량이 있는지 감지 (레이캐스트 \+: 플레이어 상체) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ab4655de234bb22c179b508abab813d65}{Try\+\_\+to\+\_\+interact}} ()
+\begin{DoxyCompactList}\small\item\em 상호 작용 중일 시 (무기 줍기/차량 탑승) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ae9c24af8b779e9b9e1954e73e7ad2f0f}{Begin\+\_\+interact}} ()
+\begin{DoxyCompactList}\small\item\em F키 눌렀을 시 상호 작용 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ae47a69f65264f64a7d28b9f389e1d77d}{End\+\_\+interact}} ()
+\begin{DoxyCompactList}\small\item\em F키를 뗐을 시 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ad5a4e9c81a33b5d9e15d12b37f97da42}{Move\+\_\+forward\+\_\+back}} (float)
+\begin{DoxyCompactList}\small\item\em 앞 뒤로 움직임 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a6b182b3120ffaa88d8e8a9aa5a5b3489}{Move\+\_\+left\+\_\+right}} (float)
+\begin{DoxyCompactList}\small\item\em 좌 우로 움직임 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a6b320608db1545d57a5ef387c6656887}{Look\+\_\+up}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 위 아래 카메라 전환 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_ac1dd85c6ba536b5023c26af2792a12e3}{Turn}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 좌우 카메라 전환 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a36001ba1654b9fad67e92cb22a05881b}{Custom\+\_\+jump}} ()
+\begin{DoxyCompactList}\small\item\em 점프 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a14c35c86c720d345e82d15749cc61391}{Custom\+\_\+crouch}} ()
+\begin{DoxyCompactList}\small\item\em 숙임 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_aaa7dbbdbf33ca7abfee24936838bf794}{Proning}} ()
+\begin{DoxyCompactList}\small\item\em 엎드림 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a4b11d03e1f0e85e722fc81ff4ef268fd}{Begin\+\_\+sprint}} ()
+\begin{DoxyCompactList}\small\item\em 뛰기 시작함 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a1a02148b6a1bb5ada7163dfe26b463b3}{End\+\_\+sprint}} ()
+\begin{DoxyCompactList}\small\item\em 뛰다 멈춤 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a98f6f8fefe88f7a3b2965e56e6b9b70c}{Open\+\_\+inventory}} ()
+\begin{DoxyCompactList}\small\item\em 인벤토리 열음/닫음 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a2e664f3fa44e97e0851c731434eba861}{Begin\+\_\+shooting}} ()
+\begin{DoxyCompactList}\small\item\em 사격 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_aaf1cf68c9cadca59895c7dd959e7674a}{End\+\_\+shooting}} ()
+\begin{DoxyCompactList}\small\item\em 사격 중지 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a66831fad8d84bf3e1d57e997c6f35de9}{Reload}} ()
+\begin{DoxyCompactList}\small\item\em 재장전 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a405a8d9365b0bb27e5ff78692efe147d}{Aim}} ()
+\begin{DoxyCompactList}\small\item\em 조준 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a064c4b15f0a5f75601111cb50b623385}{Change\+\_\+shoot\+\_\+mode}} ()
+\begin{DoxyCompactList}\small\item\em 격발 모드 변경 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a05eb740ff98d9d4f35f085d8c6bcad8b}{Swap\+\_\+scrolling\+\_\+up}} ()
+\begin{DoxyCompactList}\small\item\em 마우스 위로 스크롤 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a6a8efc1822dccab27a7d899d4fa25275}{Swap\+\_\+scrolling\+\_\+down}} ()
+\begin{DoxyCompactList}\small\item\em 마우스 아래로 스크롤 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a6fc5a03773be6d940682d229a307f86f}{Equip\+\_\+first\+\_\+weapon}} ()
+\begin{DoxyCompactList}\small\item\em 첫번째 무기 장착 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_aaf1632516fea3456532b2404bd816ec7}{Equip\+\_\+second\+\_\+weapon}} ()
+\begin{DoxyCompactList}\small\item\em 두번째 무기 장착 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a41c81489fc800db86a4cfa49b539d311}{Equip\+\_\+third\+\_\+weapon}} ()
+\begin{DoxyCompactList}\small\item\em 세번째 무기 장착 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a0a2f2618ed36081ab84d506afabd5caa}{Equip\+\_\+fourth\+\_\+weapon}} ()
+\begin{DoxyCompactList}\small\item\em 네번째 무기 장착 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_custom__player_a1d7254e20d42204ea18d218e8a074cc8}{Equip\+\_\+fifth\+\_\+weapon}} ()
+\begin{DoxyCompactList}\small\item\em 다섯번째 무기 장착 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private 속성}
+\begin{DoxyCompactItemize}
+\item 
+FVector \mbox{\hyperlink{class_a_custom__player_a3e9ec3fb161f8a3ea5b5da5f275198ac}{m\+\_\+direction\+\_\+up\+\_\+down}} = FVector\+::\+Zero\+Vector
+\begin{DoxyCompactList}\small\item\em 이동 관련 변수 \end{DoxyCompactList}\item 
+FVector \mbox{\hyperlink{class_a_custom__player_a5bffef7a8a1e64ca927a3e5d55212573}{m\+\_\+direction\+\_\+left\+\_\+right}} = FVector\+::\+Zero\+Vector
+\item 
+float \mbox{\hyperlink{class_a_custom__player_a0a81ebc7054213c0b1da4e4fc2495bdf}{m\+\_\+sprint\+\_\+time}} = 0.f
+\item 
+float \mbox{\hyperlink{class_a_custom__player_a9f30fc2581f4ae7a98609fbf9ed8246f}{m\+\_\+max\+\_\+sprint\+\_\+time}} = 0.\+5f
+\item 
+float \mbox{\hyperlink{class_a_custom__player_a5eb152975d8082212369c50ddb3704f9}{m\+\_\+sprint\+\_\+multiplier}} = 1.f
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_a33e9fcc7175a2efef4e30d4d951047b8}{m\+\_\+is\+\_\+moving}} = false
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_aa5b36ac75fe8143441f13c6e0ef78d88}{m\+\_\+is\+\_\+interacting}} = false
+\item 
+bool \mbox{\hyperlink{class_a_custom__player_a29bd9312149de3dec2b297e6cc8e38f7}{m\+\_\+is\+\_\+inventory\+\_\+opened}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00034}{34}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_custom__player_a977768a663b2064fe83193e853ea5d36}\label{class_a_custom__player_a977768a663b2064fe83193e853ea5d36}} 
+\index{ACustom\_player@{ACustom\_player}!ACustom\_player@{ACustom\_player}}
+\index{ACustom\_player@{ACustom\_player}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{ACustom\_player()}{ACustom\_player()}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+ACustom\+\_\+player (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00028}{28}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_custom__player_a405a8d9365b0bb27e5ff78692efe147d}\label{class_a_custom__player_a405a8d9365b0bb27e5ff78692efe147d}} 
+\index{ACustom\_player@{ACustom\_player}!Aim@{Aim}}
+\index{Aim@{Aim}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Aim()}{Aim()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Aim (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+조준 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00466}{466}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_custom__player_ae9c24af8b779e9b9e1954e73e7ad2f0f}\label{class_a_custom__player_ae9c24af8b779e9b9e1954e73e7ad2f0f}} 
+\index{ACustom\_player@{ACustom\_player}!Begin\_interact@{Begin\_interact}}
+\index{Begin\_interact@{Begin\_interact}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Begin\_interact()}{Begin\_interact()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Begin\+\_\+interact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+F키 눌렀을 시 상호 작용 
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00154}{154}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 4
+\mbox{\Hypertarget{class_a_custom__player_a2e664f3fa44e97e0851c731434eba861}\label{class_a_custom__player_a2e664f3fa44e97e0851c731434eba861}} 
+\index{ACustom\_player@{ACustom\_player}!Begin\_shooting@{Begin\_shooting}}
+\index{Begin\_shooting@{Begin\_shooting}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Begin\_shooting()}{Begin\_shooting()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Begin\+\_\+shooting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+사격 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00452}{452}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 5
+\mbox{\Hypertarget{class_a_custom__player_a4b11d03e1f0e85e722fc81ff4ef268fd}\label{class_a_custom__player_a4b11d03e1f0e85e722fc81ff4ef268fd}} 
+\index{ACustom\_player@{ACustom\_player}!Begin\_sprint@{Begin\_sprint}}
+\index{Begin\_sprint@{Begin\_sprint}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Begin\_sprint()}{Begin\_sprint()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Begin\+\_\+sprint (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+뛰기 시작함 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00424}{424}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 6
+\mbox{\Hypertarget{class_a_custom__player_a900a0d1fdce285fe748b341318805836}\label{class_a_custom__player_a900a0d1fdce285fe748b341318805836}} 
+\index{ACustom\_player@{ACustom\_player}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00040}{40}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a064c4b15f0a5f75601111cb50b623385}\label{class_a_custom__player_a064c4b15f0a5f75601111cb50b623385}} 
+\index{ACustom\_player@{ACustom\_player}!Change\_shoot\_mode@{Change\_shoot\_mode}}
+\index{Change\_shoot\_mode@{Change\_shoot\_mode}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Change\_shoot\_mode()}{Change\_shoot\_mode()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Change\+\_\+shoot\+\_\+mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+격발 모드 변경 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00493}{493}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 7
+\mbox{\Hypertarget{class_a_custom__player_adde10092856e5e33c87e63d8c904a073}\label{class_a_custom__player_adde10092856e5e33c87e63d8c904a073}} 
+\index{ACustom\_player@{ACustom\_player}!Check\_for\_object@{Check\_for\_object}}
+\index{Check\_for\_object@{Check\_for\_object}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Check\_for\_object()}{Check\_for\_object()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Check\+\_\+for\+\_\+object (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+충돌한 오브젝트 확인 (아이템) (레이캐스트 \+: 플레이어 발 밑) 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00233}{233}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 8
+\mbox{\Hypertarget{class_a_custom__player_ae24be6c0768e22aa364abbcd6217c0d0}\label{class_a_custom__player_ae24be6c0768e22aa364abbcd6217c0d0}} 
+\index{ACustom\_player@{ACustom\_player}!Check\_if\_is\_vehicle\_near@{Check\_if\_is\_vehicle\_near}}
+\index{Check\_if\_is\_vehicle\_near@{Check\_if\_is\_vehicle\_near}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Check\_if\_is\_vehicle\_near()}{Check\_if\_is\_vehicle\_near()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Check\+\_\+if\+\_\+is\+\_\+vehicle\+\_\+near (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+근처에 차량이 있는지 감지 (레이캐스트 \+: 플레이어 상체) 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00270}{270}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 9
+\mbox{\Hypertarget{class_a_custom__player_ae36784c9c842f212341059fd3ac7812e}\label{class_a_custom__player_ae36784c9c842f212341059fd3ac7812e}} 
+\index{ACustom\_player@{ACustom\_player}!Check\_if\_moving@{Check\_if\_moving}}
+\index{Check\_if\_moving@{Check\_if\_moving}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Check\_if\_moving()}{Check\_if\_moving()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Check\+\_\+if\+\_\+moving (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+플레이어 움직임 감지 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00149}{149}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 10
+\mbox{\Hypertarget{class_a_custom__player_a14c35c86c720d345e82d15749cc61391}\label{class_a_custom__player_a14c35c86c720d345e82d15749cc61391}} 
+\index{ACustom\_player@{ACustom\_player}!Custom\_crouch@{Custom\_crouch}}
+\index{Custom\_crouch@{Custom\_crouch}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Custom\_crouch()}{Custom\_crouch()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Custom\+\_\+crouch (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+숙임 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00365}{365}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 11
+\mbox{\Hypertarget{class_a_custom__player_a36001ba1654b9fad67e92cb22a05881b}\label{class_a_custom__player_a36001ba1654b9fad67e92cb22a05881b}} 
+\index{ACustom\_player@{ACustom\_player}!Custom\_jump@{Custom\_jump}}
+\index{Custom\_jump@{Custom\_jump}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Custom\_jump()}{Custom\_jump()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Custom\+\_\+jump (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+점프 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00356}{356}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 12
+\mbox{\Hypertarget{class_a_custom__player_ae47a69f65264f64a7d28b9f389e1d77d}\label{class_a_custom__player_ae47a69f65264f64a7d28b9f389e1d77d}} 
+\index{ACustom\_player@{ACustom\_player}!End\_interact@{End\_interact}}
+\index{End\_interact@{End\_interact}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{End\_interact()}{End\_interact()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+End\+\_\+interact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+F키를 뗐을 시 
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00159}{159}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 13
+\mbox{\Hypertarget{class_a_custom__player_aaf1cf68c9cadca59895c7dd959e7674a}\label{class_a_custom__player_aaf1cf68c9cadca59895c7dd959e7674a}} 
+\index{ACustom\_player@{ACustom\_player}!End\_shooting@{End\_shooting}}
+\index{End\_shooting@{End\_shooting}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{End\_shooting()}{End\_shooting()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+End\+\_\+shooting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+사격 중지 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00457}{457}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 14
+\mbox{\Hypertarget{class_a_custom__player_a1a02148b6a1bb5ada7163dfe26b463b3}\label{class_a_custom__player_a1a02148b6a1bb5ada7163dfe26b463b3}} 
+\index{ACustom\_player@{ACustom\_player}!End\_sprint@{End\_sprint}}
+\index{End\_sprint@{End\_sprint}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{End\_sprint()}{End\_sprint()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+End\+\_\+sprint (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+뛰다 멈춤 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00430}{430}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 15
+\mbox{\Hypertarget{class_a_custom__player_a1d7254e20d42204ea18d218e8a074cc8}\label{class_a_custom__player_a1d7254e20d42204ea18d218e8a074cc8}} 
+\index{ACustom\_player@{ACustom\_player}!Equip\_fifth\_weapon@{Equip\_fifth\_weapon}}
+\index{Equip\_fifth\_weapon@{Equip\_fifth\_weapon}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Equip\_fifth\_weapon()}{Equip\_fifth\_weapon()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Equip\+\_\+fifth\+\_\+weapon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+다섯번째 무기 장착 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00534}{534}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 16
+\mbox{\Hypertarget{class_a_custom__player_a6fc5a03773be6d940682d229a307f86f}\label{class_a_custom__player_a6fc5a03773be6d940682d229a307f86f}} 
+\index{ACustom\_player@{ACustom\_player}!Equip\_first\_weapon@{Equip\_first\_weapon}}
+\index{Equip\_first\_weapon@{Equip\_first\_weapon}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Equip\_first\_weapon()}{Equip\_first\_weapon()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Equip\+\_\+first\+\_\+weapon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+첫번째 무기 장착 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00510}{510}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 17
+\mbox{\Hypertarget{class_a_custom__player_a0a2f2618ed36081ab84d506afabd5caa}\label{class_a_custom__player_a0a2f2618ed36081ab84d506afabd5caa}} 
+\index{ACustom\_player@{ACustom\_player}!Equip\_fourth\_weapon@{Equip\_fourth\_weapon}}
+\index{Equip\_fourth\_weapon@{Equip\_fourth\_weapon}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Equip\_fourth\_weapon()}{Equip\_fourth\_weapon()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Equip\+\_\+fourth\+\_\+weapon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+네번째 무기 장착 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00528}{528}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 18
+\mbox{\Hypertarget{class_a_custom__player_aaf1632516fea3456532b2404bd816ec7}\label{class_a_custom__player_aaf1632516fea3456532b2404bd816ec7}} 
+\index{ACustom\_player@{ACustom\_player}!Equip\_second\_weapon@{Equip\_second\_weapon}}
+\index{Equip\_second\_weapon@{Equip\_second\_weapon}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Equip\_second\_weapon()}{Equip\_second\_weapon()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Equip\+\_\+second\+\_\+weapon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+두번째 무기 장착 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00516}{516}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 19
+\mbox{\Hypertarget{class_a_custom__player_a41c81489fc800db86a4cfa49b539d311}\label{class_a_custom__player_a41c81489fc800db86a4cfa49b539d311}} 
+\index{ACustom\_player@{ACustom\_player}!Equip\_third\_weapon@{Equip\_third\_weapon}}
+\index{Equip\_third\_weapon@{Equip\_third\_weapon}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Equip\_third\_weapon()}{Equip\_third\_weapon()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Equip\+\_\+third\+\_\+weapon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+세번째 무기 장착 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00522}{522}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 20
+\mbox{\Hypertarget{class_a_custom__player_a504d1c863edf243a203467bbdd8f5795}\label{class_a_custom__player_a504d1c863edf243a203467bbdd8f5795}} 
+\index{ACustom\_player@{ACustom\_player}!Exit\_from\_vehicle@{Exit\_from\_vehicle}}
+\index{Exit\_from\_vehicle@{Exit\_from\_vehicle}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Exit\_from\_vehicle()}{Exit\_from\_vehicle()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Exit\+\_\+from\+\_\+vehicle (\begin{DoxyParamCaption}\item[{FVector}]{\+\_\+exit\+\_\+location }\end{DoxyParamCaption})}
+
+
+
+플레이어가 차량에서 나감 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+exit\+\_\+location} & 나가는 위치 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00540}{540}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 21
+\mbox{\Hypertarget{class_a_custom__player_a097b214e2b74b0b12b82f0ffadfd3674}\label{class_a_custom__player_a097b214e2b74b0b12b82f0ffadfd3674}} 
+\index{ACustom\_player@{ACustom\_player}!Get\_weapon\_manager@{Get\_weapon\_manager}}
+\index{Get\_weapon\_manager@{Get\_weapon\_manager}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Get\_weapon\_manager()}{Get\_weapon\_manager()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\+\_\+manager}} $\ast$ ACustom\+\_\+player\+::\+Get\+\_\+weapon\+\_\+manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+무기 매니저를 갖고옴 
+
+\begin{DoxyReturn}{반환값}
+무기 매니저 
+\end{DoxyReturn}
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00290}{290}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 22
+\mbox{\Hypertarget{class_a_custom__player_ac5e5b9ce83401bae32186fbd5a96d783}\label{class_a_custom__player_ac5e5b9ce83401bae32186fbd5a96d783}} 
+\index{ACustom\_player@{ACustom\_player}!Init\_anim\_instance@{Init\_anim\_instance}}
+\index{Init\_anim\_instance@{Init\_anim\_instance}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Init\_anim\_instance()}{Init\_anim\_instance()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Init\+\_\+anim\+\_\+instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+애님 인스턴스 초기화 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00135}{135}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 23
+\mbox{\Hypertarget{class_a_custom__player_a633d33c6566082967e978ae7a1284c59}\label{class_a_custom__player_a633d33c6566082967e978ae7a1284c59}} 
+\index{ACustom\_player@{ACustom\_player}!Init\_audio\_comp@{Init\_audio\_comp}}
+\index{Init\_audio\_comp@{Init\_audio\_comp}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Init\_audio\_comp()}{Init\_audio\_comp()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Init\+\_\+audio\+\_\+comp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+오디오 컴포넌트 초기화 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00129}{129}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 24
+\mbox{\Hypertarget{class_a_custom__player_a2101e0e45a47e6ec7e7c68386999b037}\label{class_a_custom__player_a2101e0e45a47e6ec7e7c68386999b037}} 
+\index{ACustom\_player@{ACustom\_player}!Init\_camera\_comp@{Init\_camera\_comp}}
+\index{Init\_camera\_comp@{Init\_camera\_comp}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Init\_camera\_comp()}{Init\_camera\_comp()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Init\+\_\+camera\+\_\+comp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+카메라 컴포넌트 초기화 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00101}{101}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 25
+\mbox{\Hypertarget{class_a_custom__player_aa60d1861c069d4a8eefc4488addb060f}\label{class_a_custom__player_aa60d1861c069d4a8eefc4488addb060f}} 
+\index{ACustom\_player@{ACustom\_player}!Init\_mesh\_comp@{Init\_mesh\_comp}}
+\index{Init\_mesh\_comp@{Init\_mesh\_comp}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Init\_mesh\_comp()}{Init\_mesh\_comp()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Init\+\_\+mesh\+\_\+comp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+메시 컴포넌트 초기화 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00118}{118}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 26
+\mbox{\Hypertarget{class_a_custom__player_aa4bb6bd27e5699306d3cc6fd7f9582c3}\label{class_a_custom__player_aa4bb6bd27e5699306d3cc6fd7f9582c3}} 
+\index{ACustom\_player@{ACustom\_player}!Init\_particle\_system@{Init\_particle\_system}}
+\index{Init\_particle\_system@{Init\_particle\_system}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Init\_particle\_system()}{Init\_particle\_system()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Init\+\_\+particle\+\_\+system (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+파티클 시스템 초기화 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00144}{144}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 27
+\mbox{\Hypertarget{class_a_custom__player_a6b320608db1545d57a5ef387c6656887}\label{class_a_custom__player_a6b320608db1545d57a5ef387c6656887}} 
+\index{ACustom\_player@{ACustom\_player}!Look\_up@{Look\_up}}
+\index{Look\_up@{Look\_up}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Look\_up()}{Look\_up()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Look\+\_\+up (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+위 아래 카메라 전환 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 카메라 회전 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00344}{344}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 28
+\mbox{\Hypertarget{class_a_custom__player_ad5a4e9c81a33b5d9e15d12b37f97da42}\label{class_a_custom__player_ad5a4e9c81a33b5d9e15d12b37f97da42}} 
+\index{ACustom\_player@{ACustom\_player}!Move\_forward\_back@{Move\_forward\_back}}
+\index{Move\_forward\_back@{Move\_forward\_back}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Move\_forward\_back()}{Move\_forward\_back()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Move\+\_\+forward\+\_\+back (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+앞 뒤로 움직임 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00328}{328}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 29
+\mbox{\Hypertarget{class_a_custom__player_a6b182b3120ffaa88d8e8a9aa5a5b3489}\label{class_a_custom__player_a6b182b3120ffaa88d8e8a9aa5a5b3489}} 
+\index{ACustom\_player@{ACustom\_player}!Move\_left\_right@{Move\_left\_right}}
+\index{Move\_left\_right@{Move\_left\_right}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Move\_left\_right()}{Move\_left\_right()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Move\+\_\+left\+\_\+right (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+좌 우로 움직임 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00336}{336}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 30
+\mbox{\Hypertarget{class_a_custom__player_a98f6f8fefe88f7a3b2965e56e6b9b70c}\label{class_a_custom__player_a98f6f8fefe88f7a3b2965e56e6b9b70c}} 
+\index{ACustom\_player@{ACustom\_player}!Open\_inventory@{Open\_inventory}}
+\index{Open\_inventory@{Open\_inventory}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Open\_inventory()}{Open\_inventory()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Open\+\_\+inventory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+인벤토리 열음/닫음 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00437}{437}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 31
+\mbox{\Hypertarget{class_a_custom__player_aaa7dbbdbf33ca7abfee24936838bf794}\label{class_a_custom__player_aaa7dbbdbf33ca7abfee24936838bf794}} 
+\index{ACustom\_player@{ACustom\_player}!Proning@{Proning}}
+\index{Proning@{Proning}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Proning()}{Proning()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Proning (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+엎드림 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00396}{396}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 32
+\mbox{\Hypertarget{class_a_custom__player_a66831fad8d84bf3e1d57e997c6f35de9}\label{class_a_custom__player_a66831fad8d84bf3e1d57e997c6f35de9}} 
+\index{ACustom\_player@{ACustom\_player}!Reload@{Reload}}
+\index{Reload@{Reload}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Reload()}{Reload()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Reload (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+재장전 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00462}{462}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 33
+\mbox{\Hypertarget{class_a_custom__player_a74fd8458f9a8a1b94ed17dc274b50a57}\label{class_a_custom__player_a74fd8458f9a8a1b94ed17dc274b50a57}} 
+\index{ACustom\_player@{ACustom\_player}!SetupPlayerInputComponent@{SetupPlayerInputComponent}}
+\index{SetupPlayerInputComponent@{SetupPlayerInputComponent}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{SetupPlayerInputComponent()}{SetupPlayerInputComponent()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Setup\+Player\+Input\+Component (\begin{DoxyParamCaption}\item[{class UInput\+Component $\ast$}]{Player\+Input\+Component }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00060}{60}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 34
+\mbox{\Hypertarget{class_a_custom__player_a6a8efc1822dccab27a7d899d4fa25275}\label{class_a_custom__player_a6a8efc1822dccab27a7d899d4fa25275}} 
+\index{ACustom\_player@{ACustom\_player}!Swap\_scrolling\_down@{Swap\_scrolling\_down}}
+\index{Swap\_scrolling\_down@{Swap\_scrolling\_down}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Swap\_scrolling\_down()}{Swap\_scrolling\_down()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Swap\+\_\+scrolling\+\_\+down (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+마우스 아래로 스크롤 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00504}{504}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 35
+\mbox{\Hypertarget{class_a_custom__player_a05eb740ff98d9d4f35f085d8c6bcad8b}\label{class_a_custom__player_a05eb740ff98d9d4f35f085d8c6bcad8b}} 
+\index{ACustom\_player@{ACustom\_player}!Swap\_scrolling\_up@{Swap\_scrolling\_up}}
+\index{Swap\_scrolling\_up@{Swap\_scrolling\_up}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Swap\_scrolling\_up()}{Swap\_scrolling\_up()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Swap\+\_\+scrolling\+\_\+up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+마우스 위로 스크롤 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00498}{498}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 36
+\mbox{\Hypertarget{class_a_custom__player_a5e610ebd113adc82c1a6f9f882e1ed24}\label{class_a_custom__player_a5e610ebd113adc82c1a6f9f882e1ed24}} 
+\index{ACustom\_player@{ACustom\_player}!Tick@{Tick}}
+\index{Tick@{Tick}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00050}{50}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 37
+\mbox{\Hypertarget{class_a_custom__player_ab4655de234bb22c179b508abab813d65}\label{class_a_custom__player_ab4655de234bb22c179b508abab813d65}} 
+\index{ACustom\_player@{ACustom\_player}!Try\_to\_interact@{Try\_to\_interact}}
+\index{Try\_to\_interact@{Try\_to\_interact}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Try\_to\_interact()}{Try\_to\_interact()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Try\+\_\+to\+\_\+interact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+상호 작용 중일 시 (무기 줍기/차량 탑승) 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00305}{305}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 38
+\mbox{\Hypertarget{class_a_custom__player_ac1dd85c6ba536b5023c26af2792a12e3}\label{class_a_custom__player_ac1dd85c6ba536b5023c26af2792a12e3}} 
+\index{ACustom\_player@{ACustom\_player}!Turn@{Turn}}
+\index{Turn@{Turn}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Turn()}{Turn()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Turn (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+좌우 카메라 전환 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 카메라 회전 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00350}{350}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 39
+\mbox{\Hypertarget{class_a_custom__player_a4e1ba64c2a1412fbca1d8788ed10e3ad}\label{class_a_custom__player_a4e1ba64c2a1412fbca1d8788ed10e3ad}} 
+\index{ACustom\_player@{ACustom\_player}!Update\_player\_settings@{Update\_player\_settings}}
+\index{Update\_player\_settings@{Update\_player\_settings}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{Update\_player\_settings()}{Update\_player\_settings()}}
+{\footnotesize\ttfamily void ACustom\+\_\+player\+::\+Update\+\_\+player\+\_\+settings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+플레이어에 대한 정보 갱신 
+
+
+
+\mbox{\hyperlink{_custom__player_8cpp_source}{Custom\+\_\+player.\+cpp}} 파일의 \mbox{\hyperlink{_custom__player_8cpp_source_l00094}{94}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 40
+\mbox{\Hypertarget{class_a_custom__player_ac072e187ee367550542786f17be5dede}\label{class_a_custom__player_ac072e187ee367550542786f17be5dede}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [1/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_custom__player_a2c8c110a7eb437fba9d6bb8c7a1df79a}\label{class_a_custom__player_a2c8c110a7eb437fba9d6bb8c7a1df79a}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [2/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_custom__player_ad58848ba87ea9b14452e68806769866d}\label{class_a_custom__player_ad58848ba87ea9b14452e68806769866d}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [3/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+플레이어가 사용하는 변수 
+
+\mbox{\Hypertarget{class_a_custom__player_a580813c96c016a66bb0922648f8d2d31}\label{class_a_custom__player_a580813c96c016a66bb0922648f8d2d31}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [4/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_custom__player_aa3856153eda134ff0ed7be5ee2b151f1}\label{class_a_custom__player_aa3856153eda134ff0ed7be5ee2b151f1}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [5/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Audio} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_custom__player_ae312bff4a57b86dd203b68d18f86041e}\label{class_a_custom__player_ae312bff4a57b86dd203b68d18f86041e}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [6/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Camera} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_custom__player_a5e7fea99c31f93fc04568ad90bee4b03}\label{class_a_custom__player_a5e7fea99c31f93fc04568ad90bee4b03}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [7/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Camera} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_custom__player_aac16291a0d671a676d49266c70acc5c3}\label{class_a_custom__player_aac16291a0d671a676d49266c70acc5c3}} 
+\index{ACustom\_player@{ACustom\_player}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [8/8]}}
+{\footnotesize\ttfamily ACustom\+\_\+player\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Particle} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_a_custom__player_ab1105dca21f4f3d5754ff093482983a9}\label{class_a_custom__player_ab1105dca21f4f3d5754ff093482983a9}} 
+\index{ACustom\_player@{ACustom\_player}!current\_health@{current\_health}}
+\index{current\_health@{current\_health}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{current\_health}{current\_health}}
+{\footnotesize\ttfamily float ACustom\+\_\+player\+::current\+\_\+health = 100}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00075}{75}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}\label{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}} 
+\index{ACustom\_player@{ACustom\_player}!current\_oxygen@{current\_oxygen}}
+\index{current\_oxygen@{current\_oxygen}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{current\_oxygen}{current\_oxygen}}
+{\footnotesize\ttfamily float ACustom\+\_\+player\+::current\+\_\+oxygen = 1.f}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00076}{76}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_aaae839df80084dc09f13b2e701772c8a}\label{class_a_custom__player_aaae839df80084dc09f13b2e701772c8a}} 
+\index{ACustom\_player@{ACustom\_player}!current\_seat\_type@{current\_seat\_type}}
+\index{current\_seat\_type@{current\_seat\_type}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{current\_seat\_type}{current\_seat\_type}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}} ACustom\+\_\+player\+::current\+\_\+seat\+\_\+type = \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0ab50339a10e1de285ac99d4c3990b8693}{e\+\_\+seat\+\_\+type\+::\+NONE}}}
+
+
+
+차량 관련 변수 
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00085}{85}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a6d177d5f0cc2f221720edba27bcc8a08}\label{class_a_custom__player_a6d177d5f0cc2f221720edba27bcc8a08}} 
+\index{ACustom\_player@{ACustom\_player}!current\_state@{current\_state}}
+\index{current\_state@{current\_state}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{current\_state}{current\_state}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_my__enum_8h_a74b234f4b37b35b879d4d83a37833065}{e\+\_\+player\+\_\+state}} ACustom\+\_\+player\+::current\+\_\+state}
+
+
+
+플레이어 상태 관련 변수 
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00073}{73}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a3dd5ad2da4f743506c0c82a7556eb96c}\label{class_a_custom__player_a3dd5ad2da4f743506c0c82a7556eb96c}} 
+\index{ACustom\_player@{ACustom\_player}!dele\_close\_inventory@{dele\_close\_inventory}}
+\index{dele\_close\_inventory@{dele\_close\_inventory}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{dele\_close\_inventory}{dele\_close\_inventory}}
+{\footnotesize\ttfamily FDele\+\_\+close\+\_\+inventory ACustom\+\_\+player\+::dele\+\_\+close\+\_\+inventory}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00065}{65}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a65b6cb97815c529d2632e60e306b5230}\label{class_a_custom__player_a65b6cb97815c529d2632e60e306b5230}} 
+\index{ACustom\_player@{ACustom\_player}!dele\_open\_inventory@{dele\_open\_inventory}}
+\index{dele\_open\_inventory@{dele\_open\_inventory}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{dele\_open\_inventory}{dele\_open\_inventory}}
+{\footnotesize\ttfamily FDele\+\_\+open\+\_\+inventory ACustom\+\_\+player\+::dele\+\_\+open\+\_\+inventory}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00064}{64}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a415d32d7a09a01c4a2a6e74576466b9d}\label{class_a_custom__player_a415d32d7a09a01c4a2a6e74576466b9d}} 
+\index{ACustom\_player@{ACustom\_player}!is\_aiming@{is\_aiming}}
+\index{is\_aiming@{is\_aiming}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{is\_aiming}{is\_aiming}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::is\+\_\+aiming = false}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00079}{79}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a85ecc9a834488f90a87255bba1e4df04}\label{class_a_custom__player_a85ecc9a834488f90a87255bba1e4df04}} 
+\index{ACustom\_player@{ACustom\_player}!is\_animation\_playing@{is\_animation\_playing}}
+\index{is\_animation\_playing@{is\_animation\_playing}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{is\_animation\_playing}{is\_animation\_playing}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::is\+\_\+animation\+\_\+playing = false}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00078}{78}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a8f488547ca079663ff5757388dbdf6e3}\label{class_a_custom__player_a8f488547ca079663ff5757388dbdf6e3}} 
+\index{ACustom\_player@{ACustom\_player}!is\_in\_vehicle@{is\_in\_vehicle}}
+\index{is\_in\_vehicle@{is\_in\_vehicle}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{is\_in\_vehicle}{is\_in\_vehicle}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::is\+\_\+in\+\_\+vehicle = false}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00086}{86}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a3d60f5d36aab095c2fe5c1ca17ab0c94}\label{class_a_custom__player_a3d60f5d36aab095c2fe5c1ca17ab0c94}} 
+\index{ACustom\_player@{ACustom\_player}!is\_sprinting@{is\_sprinting}}
+\index{is\_sprinting@{is\_sprinting}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{is\_sprinting}{is\_sprinting}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::is\+\_\+sprinting = false}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00077}{77}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a1c3cc9f82dffaff6d9e90df91b7e2a0f}\label{class_a_custom__player_a1c3cc9f82dffaff6d9e90df91b7e2a0f}} 
+\index{ACustom\_player@{ACustom\_player}!is\_weapon\_equipped@{is\_weapon\_equipped}}
+\index{is\_weapon\_equipped@{is\_weapon\_equipped}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{is\_weapon\_equipped}{is\_weapon\_equipped}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::is\+\_\+weapon\+\_\+equipped = false}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00080}{80}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a419201c4b85869abfeca5996d522a7b7}\label{class_a_custom__player_a419201c4b85869abfeca5996d522a7b7}} 
+\index{ACustom\_player@{ACustom\_player}!k\_max\_health@{k\_max\_health}}
+\index{k\_max\_health@{k\_max\_health}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{k\_max\_health}{k\_max\_health}}
+{\footnotesize\ttfamily const float ACustom\+\_\+player\+::k\+\_\+max\+\_\+health = 100.f}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00074}{74}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a5bffef7a8a1e64ca927a3e5d55212573}\label{class_a_custom__player_a5bffef7a8a1e64ca927a3e5d55212573}} 
+\index{ACustom\_player@{ACustom\_player}!m\_direction\_left\_right@{m\_direction\_left\_right}}
+\index{m\_direction\_left\_right@{m\_direction\_left\_right}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_direction\_left\_right}{m\_direction\_left\_right}}
+{\footnotesize\ttfamily FVector ACustom\+\_\+player\+::m\+\_\+direction\+\_\+left\+\_\+right = FVector\+::\+Zero\+Vector\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00054}{54}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a3e9ec3fb161f8a3ea5b5da5f275198ac}\label{class_a_custom__player_a3e9ec3fb161f8a3ea5b5da5f275198ac}} 
+\index{ACustom\_player@{ACustom\_player}!m\_direction\_up\_down@{m\_direction\_up\_down}}
+\index{m\_direction\_up\_down@{m\_direction\_up\_down}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_direction\_up\_down}{m\_direction\_up\_down}}
+{\footnotesize\ttfamily FVector ACustom\+\_\+player\+::m\+\_\+direction\+\_\+up\+\_\+down = FVector\+::\+Zero\+Vector\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+이동 관련 변수 
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00053}{53}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_aa5b36ac75fe8143441f13c6e0ef78d88}\label{class_a_custom__player_aa5b36ac75fe8143441f13c6e0ef78d88}} 
+\index{ACustom\_player@{ACustom\_player}!m\_is\_interacting@{m\_is\_interacting}}
+\index{m\_is\_interacting@{m\_is\_interacting}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_is\_interacting}{m\_is\_interacting}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::m\+\_\+is\+\_\+interacting = false\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00059}{59}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a29bd9312149de3dec2b297e6cc8e38f7}\label{class_a_custom__player_a29bd9312149de3dec2b297e6cc8e38f7}} 
+\index{ACustom\_player@{ACustom\_player}!m\_is\_inventory\_opened@{m\_is\_inventory\_opened}}
+\index{m\_is\_inventory\_opened@{m\_is\_inventory\_opened}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_is\_inventory\_opened}{m\_is\_inventory\_opened}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::m\+\_\+is\+\_\+inventory\+\_\+opened = false\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00060}{60}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a33e9fcc7175a2efef4e30d4d951047b8}\label{class_a_custom__player_a33e9fcc7175a2efef4e30d4d951047b8}} 
+\index{ACustom\_player@{ACustom\_player}!m\_is\_moving@{m\_is\_moving}}
+\index{m\_is\_moving@{m\_is\_moving}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_is\_moving}{m\_is\_moving}}
+{\footnotesize\ttfamily bool ACustom\+\_\+player\+::m\+\_\+is\+\_\+moving = false\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00058}{58}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a9f30fc2581f4ae7a98609fbf9ed8246f}\label{class_a_custom__player_a9f30fc2581f4ae7a98609fbf9ed8246f}} 
+\index{ACustom\_player@{ACustom\_player}!m\_max\_sprint\_time@{m\_max\_sprint\_time}}
+\index{m\_max\_sprint\_time@{m\_max\_sprint\_time}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_max\_sprint\_time}{m\_max\_sprint\_time}}
+{\footnotesize\ttfamily float ACustom\+\_\+player\+::m\+\_\+max\+\_\+sprint\+\_\+time = 0.\+5f\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00056}{56}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a5eb152975d8082212369c50ddb3704f9}\label{class_a_custom__player_a5eb152975d8082212369c50ddb3704f9}} 
+\index{ACustom\_player@{ACustom\_player}!m\_sprint\_multiplier@{m\_sprint\_multiplier}}
+\index{m\_sprint\_multiplier@{m\_sprint\_multiplier}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_sprint\_multiplier}{m\_sprint\_multiplier}}
+{\footnotesize\ttfamily float ACustom\+\_\+player\+::m\+\_\+sprint\+\_\+multiplier = 1.f\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00057}{57}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_custom__player_a0a81ebc7054213c0b1da4e4fc2495bdf}\label{class_a_custom__player_a0a81ebc7054213c0b1da4e4fc2495bdf}} 
+\index{ACustom\_player@{ACustom\_player}!m\_sprint\_time@{m\_sprint\_time}}
+\index{m\_sprint\_time@{m\_sprint\_time}!ACustom\_player@{ACustom\_player}}
+\doxysubsubsection{\texorpdfstring{m\_sprint\_time}{m\_sprint\_time}}
+{\footnotesize\ttfamily float ACustom\+\_\+player\+::m\+\_\+sprint\+\_\+time = 0.f\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_custom__player_8h_source}{Custom\+\_\+player.\+h}} 파일의 \mbox{\hyperlink{_custom__player_8h_source_l00055}{55}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Characters/\mbox{\hyperlink{_custom__player_8h}{Custom\+\_\+player.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Characters/\mbox{\hyperlink{_custom__player_8cpp}{Custom\+\_\+player.\+cpp}}\end{DoxyCompactItemize}

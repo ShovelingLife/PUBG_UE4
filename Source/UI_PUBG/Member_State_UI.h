@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
@@ -14,25 +14,25 @@ class UI_PUBG_API UMember_State_UI : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-    // 1¹ø ÇÃ·¹ÀÌ¾î
+    // 1ë²ˆ í”Œë ˆì´ì–´
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name_player_1_text;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP_player_1_bar;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_1_state_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_1_ping_img;
 
-    // 2¹ø ÇÃ·¹ÀÌ¾î
+    // 2ë²ˆ í”Œë ˆì´ì–´
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name_player_2_text;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP_player_2_bar;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_2_state_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_2_ping_img;
 
-    // 3¹ø ÇÃ·¹ÀÌ¾î
+    // 3ë²ˆ í”Œë ˆì´ì–´
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name_player_3_text;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP_player_3_bar;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_3_state_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_3_ping_img;
 
-    // 4¹ø ÇÃ·¹ÀÌ¾î
+    // 4ë²ˆ í”Œë ˆì´ì–´
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name_player_4_text;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP_player_4_bar;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player_4_state_img;

@@ -1,0 +1,249 @@
+\hypertarget{class_u_current___weapon___u_i}{}\doxysection{UCurrent\+\_\+\+Weapon\+\_\+\+UI í´ë˜ìŠ¤ ì°¸ì¡°}
+\label{class_u_current___weapon___u_i}\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+
+
+UCurrent\+\_\+\+Weapon\+\_\+\+UIì— ëŒ€í•œ ìƒì† ë‹¤ì´ì–´ê·¸ë¨ \+: 
+% FIG 0
+
+
+UCurrent\+\_\+\+Weapon\+\_\+\+UIì— ëŒ€í•œ í˜‘ë ¥ ë‹¤ì´ì–´ê·¸ë¨\+:
+% FIG 1
+\doxysubsection*{Public ë©¤ë²„ í•¨ìˆ˜}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a9b4c930dceae2a3888ebb488903ba01c}\label{class_u_current___weapon___u_i_a9b4c930dceae2a3888ebb488903ba01c}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$First\+\_\+weapon\+\_\+img
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a40a518054195c77ff008a400734b14fc}\label{class_u_current___weapon___u_i_a40a518054195c77ff008a400734b14fc}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$Second\+\_\+weapon\+\_\+img
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_ad044cb110e374c0e3b1ee894d68f3a34}\label{class_u_current___weapon___u_i_ad044cb110e374c0e3b1ee894d68f3a34}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$Third\+\_\+weapon\+\_\+img
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_aa22d7b18541f287c8e62ce6e4c4562b9}\label{class_u_current___weapon___u_i_aa22d7b18541f287c8e62ce6e4c4562b9}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$Fourth\+\_\+weapon\+\_\+img
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a6642dfc4aef893b8bf7e658f53f54dd4}\label{class_u_current___weapon___u_i_a6642dfc4aef893b8bf7e658f53f54dd4}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) UImage $\ast$Fifth\+\_\+weapon\+\_\+img
+\end{DoxyCompactItemize}
+\doxysubsection*{ë°ì´í„° í•„ë“œ}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a12139fceb997f952f4c9823ec07e39b0}\label{class_u_current___weapon___u_i_a12139fceb997f952f4c9823ec07e39b0}} 
+TArray$<$ UImage $\ast$ $>$ {\bfseries p\+\_\+arr\+\_\+img}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected ë©¤ë²„ í•¨ìˆ˜}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_u_current___weapon___u_i_aa9dbac3f49162faac6a1c92888c53bf1}{Native\+Construct}} () override
+\item 
+void \mbox{\hyperlink{class_u_current___weapon___u_i_a7e62254eab9c1cd4e670d27aa35b0457}{Native\+Tick}} (const FGeometry \&, float) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Private ë©¤ë²„ í•¨ìˆ˜}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_u_current___weapon___u_i_aa28d711b1e4cb7a598384ea4a26f7eb6}{Init\+\_\+arr\+\_\+img}} ()
+\item 
+void \mbox{\hyperlink{class_u_current___weapon___u_i_a3eddebb3358c9c1ac37729de0940954b}{Update\+\_\+icon\+\_\+visibility}} ()
+\item 
+void \mbox{\hyperlink{class_u_current___weapon___u_i_af65709b81b5bfa1193f1370ae3093cd8}{Update\+\_\+icon\+\_\+color}} ()
+\item 
+void \mbox{\hyperlink{class_u_current___weapon___u_i_aaec3a12e703cb1dfaa50a47b46bdbfe2}{Set\+\_\+icon\+\_\+\+UI}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private ì†ì„±}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_aebd616e6683373908dc346b24cb2451e}\label{class_u_current___weapon___u_i_aebd616e6683373908dc346b24cb2451e}} 
+class \mbox{\hyperlink{class_a_u_i__manager}{AUI\+\_\+manager}} $\ast$ {\bfseries mp\+\_\+\+UI\+\_\+manager}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a768448de6c49b5d39e65a1af52a64327}\label{class_u_current___weapon___u_i_a768448de6c49b5d39e65a1af52a64327}} 
+const FVector {\bfseries mk\+\_\+gun\+\_\+slot\+\_\+size} \{ 200.f, 60.f, 0.f\}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a12a7766b241ab70147f78eba5e1edb10}\label{class_u_current___weapon___u_i_a12a7766b241ab70147f78eba5e1edb10}} 
+const FVector {\bfseries mk\+\_\+pistol\+\_\+slot\+\_\+size} \{ 85.f, 60.f, 0.f\}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_afb4a1c0cd3906b70bef3f9951003a35d}\label{class_u_current___weapon___u_i_afb4a1c0cd3906b70bef3f9951003a35d}} 
+const FVector {\bfseries mk\+\_\+grenade\+\_\+slot\+\_\+size} \{ 25.f, 30.f, 0.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_ae1e9bd1cf98d6ebf9a3e1b95585f5812}\label{class_u_current___weapon___u_i_ae1e9bd1cf98d6ebf9a3e1b95585f5812}} 
+const FVector {\bfseries mk\+\_\+gun\+\_\+slot\+\_\+pos} \{ 200.f, 60.f, 0.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_aefdc4dff5b944bd09c6fdb4f83646ec5}\label{class_u_current___weapon___u_i_aefdc4dff5b944bd09c6fdb4f83646ec5}} 
+const FVector {\bfseries mk\+\_\+pistol\+\_\+slot\+\_\+pos} \{ 85.f, 60.f, 0.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a95c70070df730e160269e920845bc875}\label{class_u_current___weapon___u_i_a95c70070df730e160269e920845bc875}} 
+const FVector {\bfseries mk\+\_\+grenade\+\_\+slot\+\_\+pos} \{ 25.f, 30.f, 0.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_ae49ea02a41d79bb3a8e0b71475f45510}\label{class_u_current___weapon___u_i_ae49ea02a41d79bb3a8e0b71475f45510}} 
+const FLinear\+Color {\bfseries mk\+\_\+selected\+\_\+color} \{ 1.f, 1.f, 1.f, 1.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a25a9f4a4d70d45527f6e52e4e38d1e8a}\label{class_u_current___weapon___u_i_a25a9f4a4d70d45527f6e52e4e38d1e8a}} 
+const FLinear\+Color {\bfseries mk\+\_\+selected\+\_\+no\+\_\+ammo\+\_\+color} \{ 1.f, 0.f, 0.f, 1.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a25b400bab970cc8e35bdaf5e340b9cd9}\label{class_u_current___weapon___u_i_a25b400bab970cc8e35bdaf5e340b9cd9}} 
+const FLinear\+Color {\bfseries mk\+\_\+unselected\+\_\+color} \{ 0.\+25f, 0.\+25f, 0.\+25f, 1.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a51c7a90d37bd7cc1edacd0380645088f}\label{class_u_current___weapon___u_i_a51c7a90d37bd7cc1edacd0380645088f}} 
+const FLinear\+Color {\bfseries mk\+\_\+unselected\+\_\+no\+\_\+ammo\+\_\+color} \{ 0.\+25f, 0.f, 0.f, 1.f \}
+\item 
+\mbox{\Hypertarget{class_u_current___weapon___u_i_ab19b9450428e337bbfb59fca7199f071}\label{class_u_current___weapon___u_i_ab19b9450428e337bbfb59fca7199f071}} 
+\mbox{\hyperlink{class_a_weapon__manager}{AWeapon\+\_\+manager}} $\ast$ {\bfseries mp\+\_\+weapon\+\_\+manager} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{ë©¤ë²„ í•¨ìˆ˜ ë¬¸ì„œí™”}
+\mbox{\Hypertarget{class_u_current___weapon___u_i_aa28d711b1e4cb7a598384ea4a26f7eb6}\label{class_u_current___weapon___u_i_aa28d711b1e4cb7a598384ea4a26f7eb6}} 
+\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}!Init\_arr\_img@{Init\_arr\_img}}
+\index{Init\_arr\_img@{Init\_arr\_img}!UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+\doxysubsubsection{\texorpdfstring{Init\_arr\_img()}{Init\_arr\_img()}}
+{\footnotesize\ttfamily void Init\+\_\+arr\+\_\+img (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{34 \{}
+\DoxyCodeLine{35     p\_arr\_img.Add(First\_weapon\_img);}
+\DoxyCodeLine{36     p\_arr\_img.Add(Second\_weapon\_img);}
+\DoxyCodeLine{37     p\_arr\_img.Add(Third\_weapon\_img);}
+\DoxyCodeLine{38     p\_arr\_img.Add(Fourth\_weapon\_img);}
+\DoxyCodeLine{39     p\_arr\_img.Add(Fifth\_weapon\_img);}
+\DoxyCodeLine{40 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_current___weapon___u_i_aa9dbac3f49162faac6a1c92888c53bf1}\label{class_u_current___weapon___u_i_aa9dbac3f49162faac6a1c92888c53bf1}} 
+\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily void Native\+Construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     Super::NativeConstruct();}
+\DoxyCodeLine{15 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a7e62254eab9c1cd4e670d27aa35b0457}\label{class_u_current___weapon___u_i_a7e62254eab9c1cd4e670d27aa35b0457}} 
+\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily void Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{\+\_\+my\+\_\+geometry,  }\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19     Super::NativeTick(\_my\_geometry, \_delta\_time);}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{keywordflow}{if} (!mp\_weapon\_manager)}
+\DoxyCodeLine{22         mp\_weapon\_manager = Cast<ACustom\_player>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))-\/>Get\_weapon\_manager();}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keywordflow}{if} (!mp\_UI\_manager)}
+\DoxyCodeLine{25         mp\_UI\_manager = Cast<AUI\_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI\_manager::StaticClass()));}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     Init\_arr\_img();}
+\DoxyCodeLine{28     Update\_icon\_visibility();}
+\DoxyCodeLine{29     Update\_icon\_color();}
+\DoxyCodeLine{30     Set\_icon\_UI();}
+\DoxyCodeLine{31 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_current___weapon___u_i_aaec3a12e703cb1dfaa50a47b46bdbfe2}\label{class_u_current___weapon___u_i_aaec3a12e703cb1dfaa50a47b46bdbfe2}} 
+\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}!Set\_icon\_UI@{Set\_icon\_UI}}
+\index{Set\_icon\_UI@{Set\_icon\_UI}!UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+\doxysubsubsection{\texorpdfstring{Set\_icon\_UI()}{Set\_icon\_UI()}}
+{\footnotesize\ttfamily void Set\+\_\+icon\+\_\+\+UI (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{87 \{}
+\DoxyCodeLine{88     \textcolor{keywordflow}{if} (!mp\_weapon\_manager \&\&}
+\DoxyCodeLine{89         !mp\_UI\_manager)}
+\DoxyCodeLine{90         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{91     }
+\DoxyCodeLine{92     \textcolor{keywordflow}{if} (mp\_weapon\_manager-\/>p\_first\_gun)}
+\DoxyCodeLine{93         First\_weapon\_img-\/>SetBrushFromMaterial(mp\_UI\_manager-\/>map\_main\_weapon\_ui\_mat[(\textcolor{keywordtype}{int})mp\_weapon\_manager-\/>p\_first\_gun-\/>weapon\_type]);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95     \textcolor{keywordflow}{if} (mp\_weapon\_manager-\/>p\_second\_gun)}
+\DoxyCodeLine{96         Second\_weapon\_img-\/>SetBrushFromMaterial(mp\_UI\_manager-\/>map\_main\_weapon\_ui\_mat[(\textcolor{keywordtype}{int})mp\_weapon\_manager-\/>p\_second\_gun-\/>weapon\_type]);}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \textcolor{keywordflow}{if} (mp\_weapon\_manager-\/>p\_pistol)}
+\DoxyCodeLine{99         Third\_weapon\_img-\/>SetBrushFromMaterial(mp\_UI\_manager-\/>map\_main\_weapon\_ui\_mat[(\textcolor{keywordtype}{int})mp\_weapon\_manager-\/>p\_pistol-\/>weapon\_type]);}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{102     \textcolor{comment}{//if (mp\_weapon\_manager-\/>p\_melee)}}
+\DoxyCodeLine{103     \textcolor{comment}{//\{}}
+\DoxyCodeLine{104     \textcolor{comment}{//    index = ((int)e\_weapon\_type::MAX) + ((int)mp\_weapon\_manager-\/>p\_melee-\/>weapon\_type);}}
+\DoxyCodeLine{105     \textcolor{comment}{//    Fourth\_weapon\_img-\/>SetBrushFromMaterial(mp\_UI\_manager-\/>map\_main\_weapon\_ui\_mat[index]);}}
+\DoxyCodeLine{106     \textcolor{comment}{//\}}}
+\DoxyCodeLine{108 \textcolor{comment}{}    \textcolor{comment}{//if (mp\_weapon\_manager-\/>p\_throwable)}}
+\DoxyCodeLine{109     \textcolor{comment}{//\{}}
+\DoxyCodeLine{110     \textcolor{comment}{//    index = ((int)e\_weapon\_type::MAX) + ((int)mp\_weapon\_manager-\/>p\_throwable-\/>weapon\_type);}}
+\DoxyCodeLine{111     \textcolor{comment}{//    Fifth\_weapon\_img-\/>SetBrushFromMaterial(mp\_UI\_manager-\/>map\_main\_weapon\_ui\_mat[index]);}}
+\DoxyCodeLine{112     \textcolor{comment}{//\}}}
+\DoxyCodeLine{113 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_current___weapon___u_i_af65709b81b5bfa1193f1370ae3093cd8}\label{class_u_current___weapon___u_i_af65709b81b5bfa1193f1370ae3093cd8}} 
+\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}!Update\_icon\_color@{Update\_icon\_color}}
+\index{Update\_icon\_color@{Update\_icon\_color}!UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+\doxysubsubsection{\texorpdfstring{Update\_icon\_color()}{Update\_icon\_color()}}
+{\footnotesize\ttfamily void Update\+\_\+icon\+\_\+color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{55 \{}
+\DoxyCodeLine{56     \textcolor{keywordflow}{if} (!mp\_weapon\_manager)}
+\DoxyCodeLine{57         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{comment}{// ÇöÀç ¼±ÅÃµÈ ¹«±â}}
+\DoxyCodeLine{60     e\_current\_weapon\_type current\_selected\_weapon = mp\_weapon\_manager-\/>current\_weapon\_type;}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{comment}{// ¼±ÅÃ ÇØÁ¦ ¹× Åº¾ËÀÌ ºñ¾îÀÖÀ» ½Ã}}
+\DoxyCodeLine{63     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 3; i++)}
+\DoxyCodeLine{64     \{}
+\DoxyCodeLine{65         \textcolor{keywordflow}{if} (mp\_weapon\_manager-\/>Get\_weapon\_max\_bullet\_count((e\_current\_weapon\_type)i) == 0)}
+\DoxyCodeLine{66             p\_arr\_img[i]-\/>SetColorAndOpacity(mk\_unselected\_no\_ammo\_color);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{69             p\_arr\_img[i]-\/>SetColorAndOpacity(mk\_unselected\_color);}
+\DoxyCodeLine{70     \}}
+\DoxyCodeLine{71     p\_arr\_img[3]-\/>SetColorAndOpacity(mk\_unselected\_color);}
+\DoxyCodeLine{72     p\_arr\_img[4]-\/>SetColorAndOpacity(mk\_unselected\_color);}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{comment}{// ¼±ÅÃÇÏ°í ÀÖÀ» ½Ã}}
+\DoxyCodeLine{75     \textcolor{keywordflow}{if}(current\_selected\_weapon != e\_current\_weapon\_type::NONE)}
+\DoxyCodeLine{76     \{}
+\DoxyCodeLine{77         \textcolor{comment}{// ¼±ÅÃ ¹× Åº¾ËÀÌ ºñ¾îÀÖÀ» ½Ã}}
+\DoxyCodeLine{78         \textcolor{keywordflow}{if} (mp\_weapon\_manager-\/>Get\_weapon\_max\_bullet\_count((e\_current\_weapon\_type)current\_selected\_weapon) == 0)}
+\DoxyCodeLine{79             p\_arr\_img[(int)current\_selected\_weapon]-\/>SetColorAndOpacity(mk\_selected\_no\_ammo\_color);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{82             p\_arr\_img[(int)current\_selected\_weapon]-\/>SetColorAndOpacity(mk\_selected\_color);}
+\DoxyCodeLine{83     \}}
+\DoxyCodeLine{84 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_current___weapon___u_i_a3eddebb3358c9c1ac37729de0940954b}\label{class_u_current___weapon___u_i_a3eddebb3358c9c1ac37729de0940954b}} 
+\index{UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}!Update\_icon\_visibility@{Update\_icon\_visibility}}
+\index{Update\_icon\_visibility@{Update\_icon\_visibility}!UCurrent\_Weapon\_UI@{UCurrent\_Weapon\_UI}}
+\doxysubsubsection{\texorpdfstring{Update\_icon\_visibility()}{Update\_icon\_visibility()}}
+{\footnotesize\ttfamily void Update\+\_\+icon\+\_\+visibility (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43 \{}
+\DoxyCodeLine{44     \textcolor{keywordflow}{if} (!mp\_weapon\_manager)}
+\DoxyCodeLine{45         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{46     }
+\DoxyCodeLine{47     First\_weapon\_img-\/>SetVisibility((mp\_weapon\_manager-\/>p\_first\_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);}
+\DoxyCodeLine{48     Second\_weapon\_img-\/>SetVisibility(mp\_weapon\_manager-\/>p\_second\_gun ? ESlateVisibility::Visible : ESlateVisibility::Hidden);}
+\DoxyCodeLine{49     Third\_weapon\_img-\/>SetVisibility((mp\_weapon\_manager-\/>p\_pistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);}
+\DoxyCodeLine{50     Fourth\_weapon\_img-\/>SetVisibility((mp\_weapon\_manager-\/>p\_melee)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);}
+\DoxyCodeLine{51     Fifth\_weapon\_img-\/>SetVisibility((mp\_weapon\_manager-\/>p\_throwable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);}
+\DoxyCodeLine{52 \}}
+
+\end{DoxyCode}
+
+
+ì´ í´ë˜ìŠ¤ì— ëŒ€í•œ ë¬¸ì„œí™” í˜ì´ì§€ëŠ” ë‹¤ìŒì˜ íŒŒì¼ë“¤ë¡œë¶€í„° ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+UI\+\_\+\+PUBG/Current\+\_\+\+Weapon\+\_\+\+UI.\+h\item 
+Source/\+UI\+\_\+\+PUBG/Current\+\_\+\+Weapon\+\_\+\+UI.\+cpp\end{DoxyCompactItemize}

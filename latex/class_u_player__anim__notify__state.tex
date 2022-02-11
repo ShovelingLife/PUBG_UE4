@@ -1,0 +1,62 @@
+\hypertarget{class_u_player__anim__notify__state}{}\doxysection{UPlayer\+\_\+anim\+\_\+notify\+\_\+state 클래스 참조}
+\label{class_u_player__anim__notify__state}\index{UPlayer\_anim\_notify\_state@{UPlayer\_anim\_notify\_state}}
+
+
+UPlayer\+\_\+anim\+\_\+notify\+\_\+state에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+UPlayer\+\_\+anim\+\_\+notify\+\_\+state에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Private 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_u_player__anim__notify__state_aacc0c2a55313ae91e8e625b7ce32abd4}{Notify\+Begin}} (USkeletal\+Mesh\+Component $\ast$, UAnim\+Sequence\+Base $\ast$, float) override
+\item 
+virtual void \mbox{\hyperlink{class_u_player__anim__notify__state_ab32751429379ad1240dbde8c4420e6c1}{Notify\+End}} (USkeletal\+Mesh\+Component $\ast$, UAnim\+Sequence\+Base $\ast$) override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_u_player__anim__notify__state_aacc0c2a55313ae91e8e625b7ce32abd4}\label{class_u_player__anim__notify__state_aacc0c2a55313ae91e8e625b7ce32abd4}} 
+\index{UPlayer\_anim\_notify\_state@{UPlayer\_anim\_notify\_state}!NotifyBegin@{NotifyBegin}}
+\index{NotifyBegin@{NotifyBegin}!UPlayer\_anim\_notify\_state@{UPlayer\_anim\_notify\_state}}
+\doxysubsubsection{\texorpdfstring{NotifyBegin()}{NotifyBegin()}}
+{\footnotesize\ttfamily void Notify\+Begin (\begin{DoxyParamCaption}\item[{USkeletal\+Mesh\+Component $\ast$}]{Mesh\+Comp,  }\item[{UAnim\+Sequence\+Base $\ast$}]{Animation,  }\item[{float}]{Total\+Duration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{5 \{}
+\DoxyCodeLine{6     Super::NotifyBegin(MeshComp, Animation, TotalDuration);}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8     \mbox{\hyperlink{class_a_custom__player}{ACustom\_player}}* player = Cast<ACustom\_player>(MeshComp-\/>GetOwner());}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10     \textcolor{keywordflow}{if} (player)}
+\DoxyCodeLine{11         player-\/>is\_animation\_playing = \textcolor{keyword}{true};}
+\DoxyCodeLine{12 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_player__anim__notify__state_ab32751429379ad1240dbde8c4420e6c1}\label{class_u_player__anim__notify__state_ab32751429379ad1240dbde8c4420e6c1}} 
+\index{UPlayer\_anim\_notify\_state@{UPlayer\_anim\_notify\_state}!NotifyEnd@{NotifyEnd}}
+\index{NotifyEnd@{NotifyEnd}!UPlayer\_anim\_notify\_state@{UPlayer\_anim\_notify\_state}}
+\doxysubsubsection{\texorpdfstring{NotifyEnd()}{NotifyEnd()}}
+{\footnotesize\ttfamily void Notify\+End (\begin{DoxyParamCaption}\item[{USkeletal\+Mesh\+Component $\ast$}]{Mesh\+Comp,  }\item[{UAnim\+Sequence\+Base $\ast$}]{Animation }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     Super::NotifyEnd(MeshComp, Animation);}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18     \mbox{\hyperlink{class_a_custom__player}{ACustom\_player}}* player = Cast<ACustom\_player>(MeshComp-\/>GetOwner());}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     \textcolor{keywordflow}{if} (player)}
+\DoxyCodeLine{21         player-\/>is\_animation\_playing = \textcolor{keyword}{false};}
+\DoxyCodeLine{22 \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Animations/Player\+\_\+anim\+\_\+notify\+\_\+state.\+h\item 
+Source/\+Animations/Player\+\_\+anim\+\_\+notify\+\_\+state.\+cpp\end{DoxyCompactItemize}

@@ -1,4 +1,4 @@
-#include "Data_table_manager.h"
+ï»¿#include "Data_table_manager.h"
 
 TArray<Fs_weapon_data>       AData_table_manager::arr_weapon_data;
 TArray<Fs_other_weapon_data> AData_table_manager::arr_other_weapon_data;
@@ -14,7 +14,7 @@ AData_table_manager::AData_table_manager()
 
 void AData_table_manager::Init_weapon_data()
 {
-    // CSV ·Îµå
+    // CSV ë¡œë“œ
     ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_DATA_TABLE(TEXT("/Game/Data/WEAPON_DATA_TABLE"));
 
     if (WEAPON_DATA_TABLE.Succeeded())
@@ -23,13 +23,13 @@ void AData_table_manager::Init_weapon_data()
     if (!mp_weapon_data_table)
         return;
 
-    // ¸ğµç ÀÌ¸§ °¡Á®¿À±â
+    // ëª¨ë“  ì´ë¦„ ê°€ì ¸ì˜¤ê¸°
     TArray<FName> arr_row_name = mp_weapon_data_table->GetRowNames();
     
-    // °®°í¿Â CSV·ÎºÎÅÍ µ¥ÀÌÅÍ ÇÒ´ç
+    // ê°–ê³ ì˜¨ CSVë¡œë¶€í„° ë°ì´í„° í• ë‹¹
     for (int i = 0; i < arr_row_name.Num(); i++)
     {
-        // row_name_arr ¾È¿¡ Á¤º¸ ¹× ¸íÄª
+        // row_name_arr ì•ˆì— ì •ë³´ ë° ëª…ì¹­
         auto p_row = mp_weapon_data_table->FindRow<Fs_weapon_data>(arr_row_name[i], arr_row_name[i].ToString());
 
         if (!p_row)
@@ -47,7 +47,7 @@ void AData_table_manager::Init_weapon_data()
 
 void AData_table_manager::Init_other_weapon_data()
 {
-    // CSV ·Îµå
+    // CSV ë¡œë“œ
     ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));
 
     if (OTHER_WEAPON_DATA_TABLE.Succeeded())
@@ -56,13 +56,13 @@ void AData_table_manager::Init_other_weapon_data()
     if (!mp_other_weapon_data_table)
         return;
 
-    // ¸ğµç ÀÌ¸§ °¡Á®¿À±â
+    // ëª¨ë“  ì´ë¦„ ê°€ì ¸ì˜¤ê¸°
     TArray<FName> arr_row_name = mp_other_weapon_data_table->GetRowNames();
 
-    // °®°í¿Â CSV·ÎºÎÅÍ µ¥ÀÌÅÍ ÇÒ´ç
+    // ê°–ê³ ì˜¨ CSVë¡œë¶€í„° ë°ì´í„° í• ë‹¹
     for (int i = 0; i < arr_row_name.Num(); i++)
     {
-        // row_name_arr ¾È¿¡ Á¤º¸ ¹× ¸íÄª
+        // row_name_arr ì•ˆì— ì •ë³´ ë° ëª…ì¹­
         auto p_row = mp_other_weapon_data_table->FindRow<Fs_other_weapon_data>(arr_row_name[i], arr_row_name[i].ToString());
 
         if (!p_row)
@@ -76,7 +76,7 @@ void AData_table_manager::Init_other_weapon_data()
 
 void AData_table_manager::Init_vehicle_data()
 {
-    // CSV ·Îµå
+    // CSV ë¡œë“œ
     ConstructorHelpers::FObjectFinder<UDataTable> VEHICLE_DATA_TABLE(TEXT("/Game/Data/VEHICLE_DATA_TABLE"));
 
     if (VEHICLE_DATA_TABLE.Succeeded())
@@ -85,14 +85,14 @@ void AData_table_manager::Init_vehicle_data()
     if (!mp_vehicle_data_table)
         return;
 
-    // ¸ğµç ÀÌ¸§ °¡Á®¿À±â
+    // ëª¨ë“  ì´ë¦„ ê°€ì ¸ì˜¤ê¸°
     TArray<FName> arr_row_name = mp_vehicle_data_table->GetRowNames();
     m_current_vehicle_count    = arr_row_name.Num();
 
-    // °®°í¿Â CSV·ÎºÎÅÍ µ¥ÀÌÅÍ ÇÒ´ç
+    // ê°–ê³ ì˜¨ CSVë¡œë¶€í„° ë°ì´í„° í• ë‹¹
     for (int i = 0; i < m_current_vehicle_count; i++)
     {
-        // row_name_arr ¾È¿¡ Á¤º¸ ¹× ¸íÄª
+        // row_name_arr ì•ˆì— ì •ë³´ ë° ëª…ì¹­
         auto p_row = mp_vehicle_data_table->FindRow<Fs_vehicle_data>(arr_row_name[i], arr_row_name[i].ToString());
 
         if (!p_row)
@@ -102,7 +102,7 @@ void AData_table_manager::Init_vehicle_data()
         data.mesh_path          = mk_vehicle_mesh_path + data.mesh_path;
         data.anim_instance_path = mk_anim_instance_path + data.type + "/BP_AnimInst_" + data.type;
 
-        // ÁÂ¼® Á¤º¸ ¹èÄ¡
+        // ì¢Œì„ ì •ë³´ ë°°ì¹˜
         data.arr_player_seat_pos[0] = { data.seat_1_player_location, data.seat_1_camera_location };
         data.arr_player_seat_pos[1] = { data.seat_2_player_location, data.seat_2_camera_location };
         data.arr_player_seat_pos[2] = { data.seat_3_player_location, data.seat_3_camera_location };

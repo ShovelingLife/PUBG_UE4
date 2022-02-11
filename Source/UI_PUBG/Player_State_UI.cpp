@@ -1,4 +1,4 @@
-#include "Player_State_UI.h"
+ï»¿#include "Player_State_UI.h"
 #include "UI_manager.h"
 #include "Characters/Custom_player.h"
 #include "Player_weapons/Core_weapon.h"
@@ -29,7 +29,7 @@ void UPlayer_State_UI::NativeTick(const FGeometry& _my_geometry, float _delta_ti
 
 void UPlayer_State_UI::Update_aim_UI()
 {
-    //// ?ìž„
+    //// ?ë¨¯ì—«
     //if (is_aiming)
     //{
     //    FWidgetTransform reticle_img_trans;
@@ -51,7 +51,7 @@ void UPlayer_State_UI::Update_bullet_count_UI()
     if (!p_weapon)
         return;
 
-    // ÇöÀç ¹× ÃÖ´ë ÃÑ¾Ë °³¼ö ¼³Á¤
+    // í˜„ìž¬ ë° ìµœëŒ€ ì´ì•Œ ê°œìˆ˜ ì„¤ì •
     if (p_weapon->IsA<ACore_weapon>())
     {
         auto p_gun = Cast<ACore_weapon>(p_weapon);
@@ -81,7 +81,7 @@ void UPlayer_State_UI::Update_shoot_mode()
 
 void UPlayer_State_UI::Update_oxygen_bar_UI(float _delta_time)
 {
-    // ÇöÀç ¶Ù°íÀÖÀ½
+    // í˜„ìž¬ ë›°ê³ ìžˆìŒ
     if      (p_player->is_sprinting &&
              p_player->current_oxygen > 0.f)
              p_player->current_oxygen -= 0.001f;

@@ -1,0 +1,146 @@
+\hypertarget{_core__vehicle_8h_source}{}\doxysection{Core\+\_\+vehicle.\+h}
+\label{_core__vehicle_8h_source}\index{Source/Characters/Core\_vehicle.h@{Source/Characters/Core\_vehicle.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Fill out your copyright notice in the Description page of Project Settings.}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}WheeledVehiclePawn.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}PUBG\_UE4/My\_enum.h"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}PUBG\_UE4/Data\_table\_manager.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}Core\_vehicle.generated.h"{}}}
+\DoxyCodeLine{10 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_custom__player}{ACustom\_player}};}
+\DoxyCodeLine{11 \textcolor{keyword}{class }APawn;}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 UCLASS()}
+\DoxyCodeLine{14 class CHARACTERS\_API \mbox{\hyperlink{class_a_core__vehicle}{ACore\_vehicle}} : public AWheeledVehiclePawn}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     GENERATED\_BODY()}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{19     \textcolor{comment}{// 컴포넌트들}}
+\DoxyCodeLine{20     UPROPERTY(VisibleAnywhere, Category = Camera)}
+\DoxyCodeLine{21         \textcolor{keyword}{class }USpringArmComponent* mp\_spring\_arm\_comp = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     UPROPERTY(VisibleAnywhere, Category = Camera)}
+\DoxyCodeLine{24         \textcolor{keyword}{class }UCameraComponent* mp\_camera\_comp = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{comment}{// 문짝 위치}}
+\DoxyCodeLine{27     UPROPERTY(EditAnywhere, Category = Door\_Pos)}
+\DoxyCodeLine{28     USceneComponent* first\_door\_pos\_comp;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     UPROPERTY(EditAnywhere, Category = Door\_Pos)}
+\DoxyCodeLine{31     USceneComponent* second\_door\_pos\_comp;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     UPROPERTY(EditAnywhere, Category = Door\_Pos)}
+\DoxyCodeLine{34     USceneComponent* third\_door\_pos\_comp;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     UPROPERTY(EditAnywhere, Category = Door\_Pos)}
+\DoxyCodeLine{37     USceneComponent* fourth\_door\_pos\_comp;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{comment}{// 좌석 위치}}
+\DoxyCodeLine{40     UPROPERTY(EditAnywhere, Category = Seat\_Pos)}
+\DoxyCodeLine{41     USceneComponent* first\_seat\_pos\_comp;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     UPROPERTY(EditAnywhere, Category = Seat\_Pos)}
+\DoxyCodeLine{44     USceneComponent* second\_seat\_pos\_comp;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     UPROPERTY(EditAnywhere, Category = Seat\_Pos)}
+\DoxyCodeLine{47     USceneComponent* third\_seat\_pos\_comp;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49     UPROPERTY(EditAnywhere, Category = Seat\_Pos)}
+\DoxyCodeLine{50     USceneComponent* fourth\_seat\_pos\_comp;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{comment}{// 기타 변수}}
+\DoxyCodeLine{53     UPROPERTY(VisibleAnywhere,Category = Seat\_pos)}
+\DoxyCodeLine{54         TMap<e\_seat\_type, FVector> m\_map\_seat\_pos;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     UPROPERTY(VisibleAnywhere, Category = Door\_pos)}
+\DoxyCodeLine{57         TMap<e\_seat\_type, FVector> m\_map\_door\_pos;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     TMap<e\_seat\_type, bool> m\_map\_empty\_seat}
+\DoxyCodeLine{60     \{}
+\DoxyCodeLine{61         \{ e\_seat\_type::FIRST, \textcolor{keyword}{false} \},}
+\DoxyCodeLine{62         \{ e\_seat\_type::SECOND,\textcolor{keyword}{false} \},}
+\DoxyCodeLine{63         \{ e\_seat\_type::THIRD, \textcolor{keyword}{false} \},}
+\DoxyCodeLine{64         \{ e\_seat\_type::FOURTH,\textcolor{keyword}{false} \},}
+\DoxyCodeLine{65         \{ e\_seat\_type::NONE,  \textcolor{keyword}{false} \}}
+\DoxyCodeLine{66     \};}
+\DoxyCodeLine{67     \mbox{\hyperlink{class_a_custom__player}{ACustom\_player}}*    m\_player;}
+\DoxyCodeLine{68     \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\_vehicle\_data}}    m\_vehicle\_data;}
+\DoxyCodeLine{69                        }
+\DoxyCodeLine{70     \textcolor{keyword}{const} FString      mk\_wheel\_path             = \textcolor{stringliteral}{"{}/Game/Blueprints/Vehicles/Wheel/"{}};}
+\DoxyCodeLine{71     FString            m\_mesh\_path               = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{72     \textcolor{keywordtype}{int}                m\_current\_player\_count    = 0;}
+\DoxyCodeLine{73     \textcolor{keywordtype}{bool}               m\_is\_player\_in\_first\_seat = \textcolor{keyword}{false};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{public}:}
+\DoxyCodeLine{76     UPROPERTY(VisibleAnywhere, Category = Widget\_component)}
+\DoxyCodeLine{77     \textcolor{keyword}{class }UWidgetComponent* mp\_interaction\_widget\_comp;}
+\DoxyCodeLine{78     \textcolor{keywordtype}{bool} is\_collided = \textcolor{keyword}{false};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{public}:}
+\DoxyCodeLine{81     \mbox{\hyperlink{class_a_core__vehicle}{ACore\_vehicle}}();}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{84     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} SetupPlayerInputComponent(\textcolor{keyword}{class} UInputComponent*) \textcolor{keyword}{override};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{95     \textcolor{keywordtype}{void} Init\_car\_pos\_component();}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{102     \textcolor{keywordtype}{void} Init(e\_vehicle\_type);}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104     \textcolor{keywordtype}{void} Init\_camera();}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106     \textcolor{keywordtype}{void} Init\_skeletal\_mesh();}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} Init\_wheeled\_component();}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     \textcolor{keywordtype}{void} Init\_car\_pos\_data();}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{comment}{// 차량 속성 관련 함수}}
+\DoxyCodeLine{113 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{114     \textcolor{comment}{// 플레이어가 차량에서 나감}}
+\DoxyCodeLine{115     \textcolor{keywordtype}{void} Player\_exit();}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \textcolor{comment}{// 가속}}
+\DoxyCodeLine{118     \textcolor{keywordtype}{void} Accelerate(\textcolor{keywordtype}{float});}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     \textcolor{comment}{// 브레이크}}
+\DoxyCodeLine{121     \textcolor{keywordtype}{void} Brake(\textcolor{keywordtype}{float});}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123     \textcolor{comment}{// 회전}}
+\DoxyCodeLine{124     \textcolor{keywordtype}{void} Handling(\textcolor{keywordtype}{float});}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     \textcolor{keywordtype}{void} Look\_up(\textcolor{keywordtype}{float});}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     \textcolor{keywordtype}{void} Turn(\textcolor{keywordtype}{float});}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130     \textcolor{keywordtype}{void} Check\_for\_door\_pos();}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     \textcolor{keywordtype}{void} Change\_to\_first\_seat() \{ \textcolor{keywordflow}{if} (!m\_player) \textcolor{keywordflow}{return};  Update\_player\_seat\_location(e\_seat\_type::FIRST); \}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134     \textcolor{keywordtype}{void} Change\_to\_second\_seat() \{ \textcolor{keywordflow}{if} (!m\_player) \textcolor{keywordflow}{return}; Update\_player\_seat\_location(e\_seat\_type::SECOND); \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136     \textcolor{keywordtype}{void} Change\_to\_third\_seat() \{ \textcolor{keywordflow}{if} (m\_vehicle\_data.max\_seater == 2 || !m\_player) \textcolor{keywordflow}{return}; Update\_player\_seat\_location(e\_seat\_type::THIRD); \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138     \textcolor{keywordtype}{void} Change\_to\_fourth\_seat() \{ \textcolor{keywordflow}{if} (m\_vehicle\_data.max\_seater == 2 || !m\_player) \textcolor{keywordflow}{return}; Update\_player\_seat\_location(e\_seat\_type::FOURTH); \}}
+\DoxyCodeLine{139     }
+\DoxyCodeLine{140     \textcolor{keywordtype}{void} Set\_player\_into\_seat\_location();}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{void} Update\_player\_seat\_location(e\_seat\_type);}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144     \textcolor{keywordtype}{void} Update\_car\_pos\_data();}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{keyword}{public}:}
+\DoxyCodeLine{147     \textcolor{comment}{// 탑승 가능 여부 확인}}
+\DoxyCodeLine{148     \textcolor{keywordtype}{bool} Check\_available\_seat(\mbox{\hyperlink{class_a_custom__player}{ACustom\_player}}*);}
+\DoxyCodeLine{149 \};}
+
+\end{DoxyCode}

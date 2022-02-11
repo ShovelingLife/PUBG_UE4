@@ -1,0 +1,21 @@
+digraph "ACore_attachment"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{ACore_attachment\n||}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node2 [label="{ABase_interaction\n|+ p_static_mesh_comp\l+ p_skeletal_mesh_comp\l+ p_audio_comp\l+ object_type\l+ is_player_near\l# m_box_collider\l# mp_interaction_widget_comp\l# m_current_time\l|+ ABase_interaction()\l# BeginPlay()\l# Tick()\l# Init_static_mesh()\l# Init_skeletal_mesh()\l# Init_audio()\l# Init_interaction_UI()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_base__interaction.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node3 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node4 [label="{ACore_barrel\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_core__barrel.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node5 [label="{ACore_forend\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_core__forend.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node6 [label="{ACore_grip\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_core__grip.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node7 [label="{ACore_sight\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_core__sight.html",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
+  Node8 [label="{ACore_stock\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$class_a_core__stock.html",tooltip=" "];
+}

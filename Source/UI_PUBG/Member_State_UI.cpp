@@ -1,4 +1,4 @@
-#include "Member_State_UI.h"
+﻿#include "Member_State_UI.h"
 #include "Character_Slot_UI.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"

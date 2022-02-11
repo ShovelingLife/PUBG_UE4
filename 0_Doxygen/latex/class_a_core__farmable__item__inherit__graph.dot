@@ -1,0 +1,23 @@
+digraph "ACore_farmable_item"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="ACore_farmable_item",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="ABase_interaction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_base__interaction.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="AActor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="AAdrenaline_syringe",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_adrenaline__syringe.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="ABandage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_bandage.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="ACrate_box",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_crate__box.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="AEnergy_drink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_energy__drink.html",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="AMedical_kit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_medical__kit.html",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="APainkillers",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_painkillers.html",tooltip=" "];
+}

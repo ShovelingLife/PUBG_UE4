@@ -32,7 +32,6 @@
      m_box_collider->BodyInstance.bNotifyRigidBodyCollision = false;
  }
 
- // Called every frame
  void ABase_interaction::Tick(float _delta_time)
  {
      Super::Tick(_delta_time);

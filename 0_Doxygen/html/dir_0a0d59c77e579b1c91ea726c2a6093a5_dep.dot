@@ -1,0 +1,17 @@
+digraph "D:/0_Projects/Unreal/PUBG_UE4/Source/Characters"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_74389ed8173ad57b461b9d623a1f3867 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,dashed,", label="Source", fontname="Helvetica", fontsize="10", URL="dir_74389ed8173ad57b461b9d623a1f3867.html"]
+  dir_81f16cdd936fcaf8cbca3e97fb61d968 [shape=box, label="PUBG_UE4", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_81f16cdd936fcaf8cbca3e97fb61d968.html"];
+  dir_dcc969d45a76509c88cd02294e3cd918 [shape=box, label="Player_weapons", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_dcc969d45a76509c88cd02294e3cd918.html"];
+  dir_aeba0538a7ee8ae862ac2366ae147e15 [shape=box, label="AI_PUBG", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_aeba0538a7ee8ae862ac2366ae147e15.html"];
+  dir_0a0d59c77e579b1c91ea726c2a6093a5 [shape=box, label="Characters", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_0a0d59c77e579b1c91ea726c2a6093a5.html"];
+  }
+  dir_0a0d59c77e579b1c91ea726c2a6093a5->dir_81f16cdd936fcaf8cbca3e97fb61d968 [headlabel="9", labeldistance=1.5 headhref="dir_000002_000005.html"];
+  dir_0a0d59c77e579b1c91ea726c2a6093a5->dir_aeba0538a7ee8ae862ac2366ae147e15 [headlabel="1", labeldistance=1.5 headhref="dir_000002_000000.html"];
+  dir_0a0d59c77e579b1c91ea726c2a6093a5->dir_dcc969d45a76509c88cd02294e3cd918 [headlabel="5", labeldistance=1.5 headhref="dir_000002_000004.html"];
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/Player_weapons/Weapon_enum.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_weapon__enum_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Weapon_enum.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_weapon__enum_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;GameFramework/Actor.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;Weapon_enum.generated.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">   16</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76a2c2624a5059934a947d6e25fe8332ade">FIRST</a> = 1,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76a2200becb80f0019c4a2ccecec350d0db">SECOND</a>,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ae1d320262834531ccce14809545d9301">PISTOL</a>,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ae83355135c37d83b1c8e9dde5b446151">MELEE</a>,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76aeba1243a5345e737e7fafd94eb4206e4">THROWABLE</a>,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693">NONE</a></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="_weapon__enum_8h.html#a384b9783545013985c47448c3fa9d958">   29</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="_weapon__enum_8h.html#a384b9783545013985c47448c3fa9d958">e_attachment_type</a> : uint8</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950">   68</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950">e_weapon_type</a> : uint8</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a517d42f048d2dd422533522c796aaf37">C7</a>,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950aee962ff056d86a34b8e31103c6220f98">LS80</a>,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950af31e1eef20f64733a18c538073e78396">M1</a>,</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a9555fe345642297869738ed17c9ebe87">Karos</a>,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a3ee2bf567d0f285e509227ea8cf12a7a">RogerLR220</a>,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a38de92970b16f236ff06fc65af527d55">Double_barrel</a>,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950afd4b2d175023601a5b9eb466c11a527b">SK12</a>,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950af1cfe7ee38d400de36d7d68421800a19">EON</a>,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a5e7b3ec577a708c8dd9045f86e3a75c9">PX_70</a>,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950af531ab65793ae23ef2af9be754f02008">Ayakashi</a>,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a4b1723f1cc6cad1502f558faf333c23d">VSS</a>,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950ad3118b33a7821fec427d62d23a490c57">RPG_17</a>,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950aecd03afff3ba51979312a1114f791d13">Crossbow</a>,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5">MAX</a></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>};</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5">  106</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5">e_throwable_weapon_type</a> : uint8</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>{</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a47db58d60f721322b7b991baf3bebeab">FRAGMENTATION1</a>,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5aca5342b5f554cb1544054d9f0fb2e6f1">FRAGMENTATION2</a>,</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a68e8d18427e0dabbc90d263f5628ff51">ILLUMINATION</a>,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a621cd4fd67b837a853671cb81ffba3b2">GRAY_SMOKE</a>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a4bf4108edb0a5e26816bc542777911af">RED_SMOKE</a>,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5ab35aa520560e8ba732d88600fc3889eb">STICK</a>,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a460f7b7876deb9dc70c9744810864f6f">MOLOTOV</a>,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5ae820e80be0d64824c494c03eb6754346">CLAYMORE</a>,</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5">MAX</a></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>};</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5">  124</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5">e_melee_weapon_type</a> : uint8</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>{</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5ad74461db15255d85a44ffd72419646b3">PAN</a> = (uint8)<a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a26a4b44a837bf97b972628509912b4a5">e_throwable_weapon_type::MAX</a>,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5ac03adc8ee08ac53a149afc5eccfb0b52">KNIFE</a>,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5">MAX</a></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>};</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20">  137</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20">e_gun_shoot_type</a></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>{</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20a0679273e201afd0bf57af3961f8a23b8">SINGLE</a>,</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20a9d2b6b239fcfd0ec88ac1ee2d87eb108">BURST</a>,</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20a9432e1da1da89110a17cc81a94940da3">CONSECUTIVE</a>,</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <a class="code hl_enumvalue" href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5">MAX</a></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>};</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>UCLASS()</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="class_a_weapon__enum.html">  146</a></span>class PLAYER_WEAPONS_API <a class="code hl_class" href="class_a_weapon__enum.html">AWeapon_enum</a> : public AActor</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>{</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>};</div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76">e_current_weapon_type</a></div><div class="ttdeci">e_current_weapon_type</div><div class="ttdoc">현재 착용 중인 무기</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00016">Weapon_enum.h:17</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76a2200becb80f0019c4a2ccecec350d0db"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76a2200becb80f0019c4a2ccecec350d0db">e_current_weapon_type::SECOND</a></div><div class="ttdeci">@ SECOND</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76a2c2624a5059934a947d6e25fe8332ade"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76a2c2624a5059934a947d6e25fe8332ade">e_current_weapon_type::FIRST</a></div><div class="ttdeci">@ FIRST</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693">e_current_weapon_type::NONE</a></div><div class="ttdeci">@ NONE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76ae1d320262834531ccce14809545d9301"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ae1d320262834531ccce14809545d9301">e_current_weapon_type::PISTOL</a></div><div class="ttdeci">@ PISTOL</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76ae83355135c37d83b1c8e9dde5b446151"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76ae83355135c37d83b1c8e9dde5b446151">e_current_weapon_type::MELEE</a></div><div class="ttdeci">@ MELEE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a30dd980bad3205e07d6f91ab4bdefa76aeba1243a5345e737e7fafd94eb4206e4"><div class="ttname"><a href="_weapon__enum_8h.html#a30dd980bad3205e07d6f91ab4bdefa76aeba1243a5345e737e7fafd94eb4206e4">e_current_weapon_type::THROWABLE</a></div><div class="ttdeci">@ THROWABLE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a384b9783545013985c47448c3fa9d958"><div class="ttname"><a href="_weapon__enum_8h.html#a384b9783545013985c47448c3fa9d958">e_attachment_type</a></div><div class="ttdeci">e_attachment_type</div><div class="ttdoc">부속품 종류</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00029">Weapon_enum.h:30</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a8b39fd60ce2f4a2befb8316470c74c20"><div class="ttname"><a href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20">e_gun_shoot_type</a></div><div class="ttdeci">e_gun_shoot_type</div><div class="ttdoc">총 격발 종류</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00137">Weapon_enum.h:138</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a8b39fd60ce2f4a2befb8316470c74c20a0679273e201afd0bf57af3961f8a23b8"><div class="ttname"><a href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20a0679273e201afd0bf57af3961f8a23b8">e_gun_shoot_type::SINGLE</a></div><div class="ttdeci">@ SINGLE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a8b39fd60ce2f4a2befb8316470c74c20a9432e1da1da89110a17cc81a94940da3"><div class="ttname"><a href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20a9432e1da1da89110a17cc81a94940da3">e_gun_shoot_type::CONSECUTIVE</a></div><div class="ttdeci">@ CONSECUTIVE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_a8b39fd60ce2f4a2befb8316470c74c20a9d2b6b239fcfd0ec88ac1ee2d87eb108"><div class="ttname"><a href="_weapon__enum_8h.html#a8b39fd60ce2f4a2befb8316470c74c20a9d2b6b239fcfd0ec88ac1ee2d87eb108">e_gun_shoot_type::BURST</a></div><div class="ttdeci">@ BURST</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950">e_weapon_type</a></div><div class="ttdeci">e_weapon_type</div><div class="ttdoc">총기 종류</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00068">Weapon_enum.h:69</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5">e_weapon_type::MAX</a></div><div class="ttdeci">@ MAX</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a38de92970b16f236ff06fc65af527d55"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a38de92970b16f236ff06fc65af527d55">e_weapon_type::Double_barrel</a></div><div class="ttdeci">@ Double_barrel</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a3ee2bf567d0f285e509227ea8cf12a7a"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a3ee2bf567d0f285e509227ea8cf12a7a">e_weapon_type::RogerLR220</a></div><div class="ttdeci">@ RogerLR220</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a4b1723f1cc6cad1502f558faf333c23d"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a4b1723f1cc6cad1502f558faf333c23d">e_weapon_type::VSS</a></div><div class="ttdeci">@ VSS</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a517d42f048d2dd422533522c796aaf37"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a517d42f048d2dd422533522c796aaf37">e_weapon_type::C7</a></div><div class="ttdeci">@ C7</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a5e7b3ec577a708c8dd9045f86e3a75c9"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a5e7b3ec577a708c8dd9045f86e3a75c9">e_weapon_type::PX_70</a></div><div class="ttdeci">@ PX_70</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950a9555fe345642297869738ed17c9ebe87"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950a9555fe345642297869738ed17c9ebe87">e_weapon_type::Karos</a></div><div class="ttdeci">@ Karos</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950ad3118b33a7821fec427d62d23a490c57"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950ad3118b33a7821fec427d62d23a490c57">e_weapon_type::RPG_17</a></div><div class="ttdeci">@ RPG_17</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950aecd03afff3ba51979312a1114f791d13"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950aecd03afff3ba51979312a1114f791d13">e_weapon_type::Crossbow</a></div><div class="ttdeci">@ Crossbow</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950aee962ff056d86a34b8e31103c6220f98"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950aee962ff056d86a34b8e31103c6220f98">e_weapon_type::LS80</a></div><div class="ttdeci">@ LS80</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950af1cfe7ee38d400de36d7d68421800a19"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950af1cfe7ee38d400de36d7d68421800a19">e_weapon_type::EON</a></div><div class="ttdeci">@ EON</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950af31e1eef20f64733a18c538073e78396"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950af31e1eef20f64733a18c538073e78396">e_weapon_type::M1</a></div><div class="ttdeci">@ M1</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950af531ab65793ae23ef2af9be754f02008"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950af531ab65793ae23ef2af9be754f02008">e_weapon_type::Ayakashi</a></div><div class="ttdeci">@ Ayakashi</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa3615b910a4cd80793cec84f572d9950afd4b2d175023601a5b9eb466c11a527b"><div class="ttname"><a href="_weapon__enum_8h.html#aa3615b910a4cd80793cec84f572d9950afd4b2d175023601a5b9eb466c11a527b">e_weapon_type::SK12</a></div><div class="ttdeci">@ SK12</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5">e_throwable_weapon_type</a></div><div class="ttdeci">e_throwable_weapon_type</div><div class="ttdoc">투척류 종류</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00106">Weapon_enum.h:107</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5a26a4b44a837bf97b972628509912b4a5"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a26a4b44a837bf97b972628509912b4a5">e_throwable_weapon_type::MAX</a></div><div class="ttdeci">@ MAX</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5a460f7b7876deb9dc70c9744810864f6f"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a460f7b7876deb9dc70c9744810864f6f">e_throwable_weapon_type::MOLOTOV</a></div><div class="ttdeci">@ MOLOTOV</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5a47db58d60f721322b7b991baf3bebeab"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a47db58d60f721322b7b991baf3bebeab">e_throwable_weapon_type::FRAGMENTATION1</a></div><div class="ttdeci">@ FRAGMENTATION1</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5a4bf4108edb0a5e26816bc542777911af"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a4bf4108edb0a5e26816bc542777911af">e_throwable_weapon_type::RED_SMOKE</a></div><div class="ttdeci">@ RED_SMOKE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5a621cd4fd67b837a853671cb81ffba3b2"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a621cd4fd67b837a853671cb81ffba3b2">e_throwable_weapon_type::GRAY_SMOKE</a></div><div class="ttdeci">@ GRAY_SMOKE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5a68e8d18427e0dabbc90d263f5628ff51"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5a68e8d18427e0dabbc90d263f5628ff51">e_throwable_weapon_type::ILLUMINATION</a></div><div class="ttdeci">@ ILLUMINATION</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5ab35aa520560e8ba732d88600fc3889eb"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5ab35aa520560e8ba732d88600fc3889eb">e_throwable_weapon_type::STICK</a></div><div class="ttdeci">@ STICK</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5aca5342b5f554cb1544054d9f0fb2e6f1"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5aca5342b5f554cb1544054d9f0fb2e6f1">e_throwable_weapon_type::FRAGMENTATION2</a></div><div class="ttdeci">@ FRAGMENTATION2</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aa9f9cc1045e03d268a562448168dd8e5ae820e80be0d64824c494c03eb6754346"><div class="ttname"><a href="_weapon__enum_8h.html#aa9f9cc1045e03d268a562448168dd8e5ae820e80be0d64824c494c03eb6754346">e_throwable_weapon_type::CLAYMORE</a></div><div class="ttdeci">@ CLAYMORE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aaaea9e76a9416ecf4a4336f5be161aa5"><div class="ttname"><a href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5">e_melee_weapon_type</a></div><div class="ttdeci">e_melee_weapon_type</div><div class="ttdoc">근접 무기 종류  PAN 후라이팬  KNIFE 칼</div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00124">Weapon_enum.h:125</a></div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aaaea9e76a9416ecf4a4336f5be161aa5ac03adc8ee08ac53a149afc5eccfb0b52"><div class="ttname"><a href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5ac03adc8ee08ac53a149afc5eccfb0b52">e_melee_weapon_type::KNIFE</a></div><div class="ttdeci">@ KNIFE</div></div>
+<div class="ttc" id="a_weapon__enum_8h_html_aaaea9e76a9416ecf4a4336f5be161aa5ad74461db15255d85a44ffd72419646b3"><div class="ttname"><a href="_weapon__enum_8h.html#aaaea9e76a9416ecf4a4336f5be161aa5ad74461db15255d85a44ffd72419646b3">e_melee_weapon_type::PAN</a></div><div class="ttdeci">@ PAN</div></div>
+<div class="ttc" id="aclass_a_weapon__enum_html"><div class="ttname"><a href="class_a_weapon__enum.html">AWeapon_enum</a></div><div class="ttdef"><b>Definition:</b> <a href="_weapon__enum_8h_source.html#l00146">Weapon_enum.h:147</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_dcc969d45a76509c88cd02294e3cd918.html">Player_weapons</a></li><li class="navelem"><a class="el" href="_weapon__enum_8h.html">Weapon_enum.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

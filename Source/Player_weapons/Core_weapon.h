@@ -1,3 +1,12 @@
+﻿/**
+ * \file Core_weapon.h
+ *
+ * \brief 모든 총기 무기들은 이로부터 상속받음
+ *
+ * \ingroup Player_weapons
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -17,16 +26,19 @@ class PLAYER_WEAPONS_API ACore_weapon : public ABase_interaction
 	GENERATED_BODY()
 	
 public:
-    // �Ѿ� ����
+    // 총알 관련
     UPROPERTY(VisibleAnywhere, Category = Bullet) ACore_bullet* p_bullet;
 
-    class ACore_gun_mag* p_gun_mag = nullptr;
+    // class ACore_gun_mag* p_gun_mag = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* p_gun_particle = nullptr;
 
     Fs_weapon_data   weapon_data;
     e_weapon_type    weapon_type    = e_weapon_type::MAX;
     e_gun_shoot_type gun_shoot_type = e_gun_shoot_type::SINGLE;
+
+public:
+    ACore_weapon();
 
 protected:
     virtual void BeginPlay() override;
@@ -37,22 +49,36 @@ protected:
 
     virtual void Tick(float DeltaTime) override;
 
-public:
-    ACore_weapon();
 
 protected:
-    void Init(e_weapon_type);
+    /**
+      * \brief 무기 초기화
+      * \param 무기 종류
+     */
+    void Init(e_weapon_type _weapon_type);
 
-    // �޽� �ʱ�ȭ
+    /**
+      * \brief 메쉬 초기화
+     */
     void Init_mesh();
 
-    // �ݶ��̴� ���� ����
+    /**
+      * \brief 콜라이더 정보 갱신
+     */
     void Update_collider();
 
-    // ź�� �ʱ�ȭ
+    /**
+      * \brief 탄알 초기화
+     */
     void Init_bullet();
 
+    /**
+      * \brief 파티클 시스템 초기화
+     */
     void Init_particle_system();
 
+    /**
+      * \brief 파티클 시스템 갱신
+     */
     void Update_particle_system();
 };

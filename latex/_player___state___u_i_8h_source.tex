@@ -1,0 +1,70 @@
+\hypertarget{_player___state___u_i_8h_source}{}\doxysection{Player\+\_\+\+State\+\_\+\+UI.\+h}
+\label{_player___state___u_i_8h_source}\index{Source/UI\_PUBG/Player\_State\_UI.h@{Source/UI\_PUBG/Player\_State\_UI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Player\_State\_UI.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }UProgressBar;}
+\DoxyCodeLine{8 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{9 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 UCLASS()}
+\DoxyCodeLine{12 class UI\_PUBG\_API \mbox{\hyperlink{class_u_player___state___u_i}{UPlayer\_State\_UI}} : public UUserWidget}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     GENERATED\_BODY()}
+\DoxyCodeLine{15     }
+\DoxyCodeLine{16 \textcolor{keyword}{private}:}
+\DoxyCodeLine{17     \textcolor{keyword}{class }\mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}* mp\_UI\_manager;}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{public}:}
+\DoxyCodeLine{20     \textcolor{comment}{// 체력 회복력(에너지드링크, 진통제바) 산소}}
+\DoxyCodeLine{21     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP\_bar;}
+\DoxyCodeLine{22     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Recovery\_bar;}
+\DoxyCodeLine{23     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Oxygen\_bar;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{comment}{// 장비 착용 여부 이미지 관련}}
+\DoxyCodeLine{26     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Backbag\_img;}
+\DoxyCodeLine{27     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Head\_img;}
+\DoxyCodeLine{28     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Bodyarmor\_img;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{comment}{// 버프 지속 여부 이미지 관련}}
+\DoxyCodeLine{31     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Speedup\_img;}
+\DoxyCodeLine{32     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Healing\_img;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{comment}{// 사용중인 총기 현황}}
+\DoxyCodeLine{35     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Magazine\_current\_text;}
+\DoxyCodeLine{36     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Magazine\_total\_text;}
+\DoxyCodeLine{37     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* BoltAction\_img;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{comment}{// 자세}}
+\DoxyCodeLine{40     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Posture\_img;}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{comment}{// 조준선 이미지}}
+\DoxyCodeLine{43     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Reticle\_img;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \textcolor{keyword}{class }\mbox{\hyperlink{class_a_custom__player}{ACustom\_player}}* p\_player;}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{48     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{public}:}
+\DoxyCodeLine{53     \textcolor{comment}{// 조준선 갱신}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{void} Update\_aim\_UI();}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{comment}{// 발사 방법 갱신}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{void} Update\_shoot\_mode();}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{comment}{// 총알 개수 갱신}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{void} Update\_bullet\_count\_UI();}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{comment}{// 산소 바 갱신}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{void} Update\_oxygen\_bar\_UI(\textcolor{keywordtype}{float});}
+\DoxyCodeLine{64 \};}
+
+\end{DoxyCode}

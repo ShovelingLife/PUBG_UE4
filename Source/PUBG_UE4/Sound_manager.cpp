@@ -1,4 +1,4 @@
-#include "Sound_manager.h"
+ï»¿#include "Sound_manager.h"
 #include "Data_table_manager.h"
 #include "Components/AudioComponent.h"
 #include "Editor/EditorEngine.h"
@@ -6,22 +6,18 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundBase.h"
 
-// Sets default values
 ASound_manager::ASound_manager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
     Init_player_audio();
     Init_weapon_audio();
 }
 
-// Called when the game starts or when spawned
 void ASound_manager::BeginPlay()
 {
     Super::BeginPlay();
 }
 
-// Called every frame
 void ASound_manager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -29,13 +25,13 @@ void ASound_manager::Tick(float DeltaTime)
 
 void ASound_manager::Init_player_audio()
 {
-    // ¹«±â ÀåÂø »ç¿îµå
+    // ë¬´ê¸° ì¥ì°© ì‚¬ìš´ë“œ
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_EQUIP_SOUND(*(mk_sound_path + "Gun_pickup"));
 
     if (BP_EQUIP_SOUND.Succeeded())
         p_weapon_pickup_sound = Cast<USoundBase>(BP_EQUIP_SOUND.Object);
 
-    // ¹«±â ±³Ã¼ »ç¿îµå
+    // ë¬´ê¸° êµì²´ ì‚¬ìš´ë“œ
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_SWAP_SOUND(*(mk_sound_path + "Gun_swap"));
 
     if (BP_SWAP_SOUND.Succeeded())
@@ -44,19 +40,19 @@ void ASound_manager::Init_player_audio()
 
 void ASound_manager::Init_weapon_audio()
 {
-    // ÃÑ¾Ë ºñ¾îÀÖ´Â »ç¿îµå
+    // ì´ì•Œ ë¹„ì–´ìˆëŠ” ì‚¬ìš´ë“œ
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_EMPTY_AMMO_SOUND(*(mk_sound_path + "Empty_shot"));
 
     if (BP_EMPTY_AMMO_SOUND.Succeeded())
         p_empty_ammo_sound = Cast<USoundBase>(BP_EMPTY_AMMO_SOUND.Object);
 
-    // ÀçÀåÀü »ç¿îµå
+    // ì¬ì¥ì „ ì‚¬ìš´ë“œ
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_RELOAD_AMMO_SOUND(*(mk_sound_path + "Gun_reload"));
 
     if (BP_RELOAD_AMMO_SOUND.Succeeded())
         p_reload_sound = Cast<USoundBase>(BP_RELOAD_AMMO_SOUND.Object);
 
-    // ÃÑ¾Ë ¹ß»ç »ç¿îµå
+    // ì´ì•Œ ë°œì‚¬ ì‚¬ìš´ë“œ
     for (int i = 0; i < AData_table_manager::arr_weapon_data.Num(); i++)
     {
         ConstructorHelpers::FObjectFinder<USoundWave> BP_SHOT_SOUND(*(mk_sound_path + AData_table_manager::arr_weapon_data[i].type + "_shot"));

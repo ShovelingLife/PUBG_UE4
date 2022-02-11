@@ -1,0 +1,64 @@
+\hypertarget{_core__weapon_8h_source}{}\doxysection{Core\+\_\+weapon.\+h}
+\label{_core__weapon_8h_source}\index{Source/Player\_weapons/Core\_weapon.h@{Source/Player\_weapons/Core\_weapon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}PUBG\_UE4/Base\_interaction.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Weapon\_enum.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}PUBG\_UE4/Data\_table\_manager.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}Core\_weapon.generated.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{class }UAudioComponent;}
+\DoxyCodeLine{10 \textcolor{keyword}{class }USoundBase;}
+\DoxyCodeLine{11 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_core__bullet}{ACore\_bullet}};}
+\DoxyCodeLine{12 \textcolor{keyword}{class }UParticleSystemComponent;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 UCLASS()}
+\DoxyCodeLine{15 class PLAYER\_WEAPONS\_API \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}} : public \mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     GENERATED\_BODY()}
+\DoxyCodeLine{18     }
+\DoxyCodeLine{19 \textcolor{keyword}{public}:}
+\DoxyCodeLine{20     \textcolor{comment}{// 총알 관련}}
+\DoxyCodeLine{21     UPROPERTY(VisibleAnywhere, Category = Bullet) \mbox{\hyperlink{class_a_core__bullet}{ACore\_bullet}}* p\_bullet;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     \textcolor{keyword}{class }ACore\_gun\_mag* p\_gun\_mag = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* p\_gun\_particle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \mbox{\hyperlink{struct_fs__weapon__data}{Fs\_weapon\_data}}   weapon\_data;}
+\DoxyCodeLine{28     e\_weapon\_type    weapon\_type    = e\_weapon\_type::MAX;}
+\DoxyCodeLine{29     e\_gun\_shoot\_type gun\_shoot\_type = e\_gun\_shoot\_type::SINGLE;}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NotifyActorBeginOverlap(AActor*) \textcolor{keyword}{override};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NotifyActorEndOverlap(AActor*) \textcolor{keyword}{override};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41     \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}();}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{44     \textcolor{keywordtype}{void} Init(e\_weapon\_type);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{comment}{// 메쉬 초기화}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{void} Init\_mesh();}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49     \textcolor{comment}{// 콜라이더 정보 갱신}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} Update\_collider();}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{comment}{// 탄알 초기화}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{void} Init\_bullet();}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keywordtype}{void} Init\_particle\_system();}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{keywordtype}{void} Update\_particle\_system();}
+\DoxyCodeLine{58 \};}
+
+\end{DoxyCode}

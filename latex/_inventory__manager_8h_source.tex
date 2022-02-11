@@ -1,0 +1,55 @@
+\hypertarget{_inventory__manager_8h_source}{}\doxysection{Inventory\+\_\+manager.\+h}
+\label{_inventory__manager_8h_source}\index{Source/UI\_PUBG/Inventory\_manager.h@{Source/UI\_PUBG/Inventory\_manager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Inventory\_manager.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }USceneComponent;}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 UCLASS()}
+\DoxyCodeLine{10 class UI\_PUBG\_API \mbox{\hyperlink{class_a_inventory__manager}{AInventory\_manager}} : public AActor}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     GENERATED\_BODY()}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{private}:}
+\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}* mp\_UI\_manager;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     UPROPERTY(EditAnywhere, Category = Scene\_comp) USceneComponent* mp\_scene\_comp = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{comment}{// UI 관련}}
+\DoxyCodeLine{20     TSubclassOf<UUserWidget> m\_inventory\_actor;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23     \textcolor{keyword}{class }\mbox{\hyperlink{class_u_inventory___u_i}{UInventory\_UI}}* p\_inventory\_UI;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{bool} is\_opened = \textcolor{keyword}{false};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     \mbox{\hyperlink{class_a_inventory__manager}{AInventory\_manager}}();}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{30     \textcolor{comment}{// Called when the game starts or when spawned}}
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{comment}{// 초기화 함수 모음}}
+\DoxyCodeLine{36 \textcolor{keyword}{private}:}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} Init\_inventory\_UI();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{comment}{// 인벤토리 위젯 초기화}}
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} Init\_inventory\_widget();}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{public}:}
+\DoxyCodeLine{43     \textcolor{comment}{// 인벤토리를 열음}}
+\DoxyCodeLine{44     UFUNCTION()}
+\DoxyCodeLine{45     \textcolor{keywordtype}{void} Open\_inventory();}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     UFUNCTION()}
+\DoxyCodeLine{48     \textcolor{keywordtype}{void} Close\_inventory();}
+\DoxyCodeLine{49 \};}
+
+\end{DoxyCode}

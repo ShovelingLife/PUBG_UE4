@@ -1,0 +1,110 @@
+\hypertarget{_inventory___weapon___slot___u_i_8h_source}{}\doxysection{Inventory\+\_\+\+Weapon\+\_\+\+Slot\+\_\+\+UI.\+h}
+\label{_inventory___weapon___slot___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Inventory\_Weapon\_Slot\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Inventory\_Weapon\_Slot\_UI.h}}
+\mbox{\hyperlink{_inventory___weapon___slot___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Input/Events.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_item___slot___u_i_8h}{Item\_Slot\_UI.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00016}00016 \textcolor{preprocessor}{\#include "{}Inventory\_Weapon\_Slot\_UI.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00018}00018 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}};}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00019}00019 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}};}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00021}00021 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00022}00022 \textcolor{keyword}{class }UCanvasPanel;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00023}00023 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00024}00024 \textcolor{keyword}{class }\mbox{\hyperlink{class_u_item___slot___u_i}{UItem\_Slot\_UI}};}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00025}00025 \textcolor{keyword}{class }UBorder;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00026}00026 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00027}00027 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00028}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i}{00028}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_inventory___weapon___slot___u_i}{UInventory\_Weapon\_Slot\_UI}} : public UUserWidget}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00029}00029 \{}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00030}00030     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00031}00031     }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00032}00032 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00034}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a7a1c20cd12969ab60e64b1877bb832fc}{00034}}     \mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a7a1c20cd12969ab60e64b1877bb832fc}{UPROPERTY}}() \mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}*     mp\_UI\_manager           = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00037}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a348af6442cb052f7ff21d7660fc076e9}{00037}}     UPROPERTY() \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}}* mp\_weapon\_manager       = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00038}00038 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00042}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_aef5717595a56c69c777a27402b366371}{00042}}     \mbox{\hyperlink{struct_fs__slot__item__data}{Fs\_slot\_item\_data}} m\_item\_data;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00043}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a7e34428d9bd3efc44501ff40ea53e7c1}{00043}}     \textcolor{keywordtype}{int}               m\_selected\_weapon\_index = 0;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00044}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ac124b3cf60d8c8d7c061db4486595e9f}{00044}}     \textcolor{keywordtype}{bool}              m\_is\_clicked            = false;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00045}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a73fa030716288a655ac0efeab6ea3d5e}{00045}}     \textcolor{keywordtype}{bool}              m\_is\_initialized        = false;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00046}00046 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00047}00047 public:}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00051}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_aa6f1bacf8782511ae2c8b55e200eb13f}{00051}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Highlight\_img;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00052}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ac1ff518f76b8cdfa2936f1e2ce5df594}{00052}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* Main\_canvas\_panel;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00053}00053              }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00057}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a03c524e8983be73f906e4acbeaac4124}{00057}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* First\_gun\_canvas\_panel;       }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00058}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ac6e14d64f48e6a70ecd23ff2f22762d0}{00058}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      First\_gun\_number\_background;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00059}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a46e5d5b351667ea543606770321f7855}{00059}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   First\_gun\_name\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00060}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a5e2de66b10660d26cdd8ace4148b7a04}{00060}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   First\_gun\_bullet\_type\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00061}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a6783ea24b7ee4be862e965dadb3e5e11}{00061}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   First\_gun\_current\_magazine\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00062}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ab5b78fe0d5e722f5b8118f550ce719a9}{00062}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   First\_gun\_max\_magazine\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00063}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a8aa5799b568b2d3d7fed9d93d5298520}{00063}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       First\_gun\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00068}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ac6bc2c55aa68e55503ef47b94f39f2be}{00068}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* Second\_gun\_canvas\_panel;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00069}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ac7e36519e10a11cc52668626a3f47f8d}{00069}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      Second\_gun\_number\_background;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00070}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ae9ecf2943f8992723605984a4b788837}{00070}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Second\_gun\_name\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00071}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_aead663b71e5463fe4aee01df655371ba}{00071}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Second\_gun\_bullet\_type\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00072}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a57cde2897b2048f0f40a7025ad1155a7}{00072}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Second\_gun\_current\_magazine\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00073}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_af4b0f2b1530a96b903c1bdd2305e48fc}{00073}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Second\_gun\_max\_magazine\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00074}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_adfefa7eb2ca9f9f45d53f5009389ff7a}{00074}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Second\_gun\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00075}00075 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00079}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_ad3cbb6a70e9355348ea3d5bf6c2467a9}{00079}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* Pistol\_canvas\_panel;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00080}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_abdba46701d5320d2e41c2c5524ae524d}{00080}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      Pistol\_number\_background;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00081}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_afa03dd5455903772cca60b7ef0c5c723}{00081}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Pistol\_name\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00082}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a18a9f6181ebae3a07747939595c0c6fa}{00082}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Pistol\_bullet\_type\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00083}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a79f7ee548af9149219cfd04d18407cc3}{00083}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Pistol\_current\_magazine\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00084}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a7097578ab8e7d67a3adf28549ea1d13f}{00084}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Pistol\_max\_magazine\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00085}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a3583a401ab9cacc52a2ea2ad89945aee}{00085}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Pistol\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00086}00086 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00090}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_af06ca71e4e39635f56e9adeb968777f7}{00090}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* Melee\_canvas\_panel;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00091}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a6271027fb5f7c97afc173b1a4f36bf47}{00091}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      Melee\_number\_background;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00092}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a1f87c03f20ed04742df252b6fbc3f77e}{00092}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Melee\_name\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00093}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a07f7954f9cbc7d8c1f5d18f4e5c9227b}{00093}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Melee\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00094}00094 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00098}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a427418ccb93d4a8cded3602cc053a723}{00098}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* Grenade\_canvas\_panel;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00099}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_acefd93419bb23eb1f0bfc5304def89d4}{00099}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      Grenade\_number\_background;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00100}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a0bd19fa87a73313f21a62586ad273217}{00100}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Grenade\_name\_txt;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00101}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_aac2097b37ced6240724338bd9aea3b4a}{00101}}     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Grenade\_slot\_img;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00102}00102 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00104}\mbox{\hyperlink{class_u_inventory___weapon___slot___u_i_a3c5758df21ea03702d95755dcf058a89}{00104}}     UPROPERTY(EditDefaultsOnly, Category = Item\_slot) TSubclassOf<\mbox{\hyperlink{class_u_item___slot___u_i}{UItem\_Slot\_UI}}> p\_item\_slot\_UI\_class;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00105}00105 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00106}00106 protected:}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00107}00107     \textcolor{keywordtype}{void} NativeConstruct() override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00108}00108 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00109}00109     \textcolor{keywordtype}{void} NativeTick(const FGeometry\&, \textcolor{keywordtype}{float}) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00110}00110 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00115}00115     virtual \textcolor{keywordtype}{void} NativeOnMouseLeave(const FPointerEvent\&) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00116}00116 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00123}00123     virtual FReply NativeOnMouseButtonDown(const FGeometry\& \_geometry, const FPointerEvent\& \_in\_mouse\_event) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00124}00124     }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00130}00130     virtual FReply NativeOnMouseButtonUp(const FGeometry\& \_geometry, const FPointerEvent\& \_in\_mouse\_event) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00131}00131 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00132}00132     virtual \textcolor{keywordtype}{void} NativeOnDragDetected(const FGeometry\& \_geometry, const FPointerEvent\& \_pointer\_event, class UDragDropOperation*\& \_operation) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00133}00133 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00134}00134     virtual \textcolor{keywordtype}{bool} NativeOnDrop(const FGeometry\& \_geometry, const FDragDropEvent\& \_pointer\_event, class UDragDropOperation* \_operation) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00135}00135 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00136}00136     virtual \textcolor{keywordtype}{void} NativeOnDragLeave(const FDragDropEvent\& InDragDropEvent, UDragDropOperation* InOperation) override;}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00137}00137 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00138}00138 private:}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00139}00139     \textcolor{keywordtype}{void} Update\_UI\_visibility();}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00140}00140 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00141}00141     \textcolor{keywordtype}{void} Update\_inventory\_weapon\_UI();}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00142}00142 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00143}00143     \textcolor{keywordtype}{void} Update\_weapon\_UI\_highlight\_img();}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00144}00144 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00145}00145     \textcolor{keywordtype}{void} Reset\_highlight\_img();}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00146}00146 }
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00147}00147 public:}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00148}00148     \textcolor{comment}{// 슬롯 초기화}}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00149}00149     UFUNCTION()}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00150}00150     \textcolor{keywordtype}{void} Set\_slot\_null();}
+\DoxyCodeLine{\Hypertarget{_inventory___weapon___slot___u_i_8h_source_l00151}00151 \};}
+
+\end{DoxyCode}

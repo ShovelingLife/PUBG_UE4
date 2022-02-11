@@ -1,0 +1,70 @@
+\hypertarget{class_u_player___u_i}{}\doxysection{UPlayer\+\_\+\+UI 클래스 참조}
+\label{class_u_player___u_i}\index{UPlayer\_UI@{UPlayer\_UI}}
+
+
+UPlayer\+\_\+\+UI에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+UPlayer\+\_\+\+UI에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_player___u_i_a0f5ee8541b352d9f14a4a43afb68e008}\label{class_u_player___u_i_a0f5ee8541b352d9f14a4a43afb68e008}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) class \mbox{\hyperlink{class_u_member___state___u_i}{UMember\+\_\+\+State\+\_\+\+UI}} $\ast$Member\+\_\+state\+\_\+\+UI
+\item 
+\mbox{\Hypertarget{class_u_player___u_i_a1091c7b1f4788ee0ccb2c5ce14d68a85}\label{class_u_player___u_i_a1091c7b1f4788ee0ccb2c5ce14d68a85}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) class \mbox{\hyperlink{class_u_player___state___u_i}{UPlayer\+\_\+\+State\+\_\+\+UI}} $\ast$Player\+\_\+state\+\_\+\+UI
+\item 
+\mbox{\Hypertarget{class_u_player___u_i_a2309c04edc9b0fa447ae366d5db91523}\label{class_u_player___u_i_a2309c04edc9b0fa447ae366d5db91523}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) class \mbox{\hyperlink{class_u_kill_log___box___u_i}{UKill\+Log\+\_\+\+Box\+\_\+\+UI}} $\ast$Kill\+\_\+log\+\_\+box\+\_\+\+UI
+\item 
+\mbox{\Hypertarget{class_u_player___u_i_a9ebed91bd616ea0b2019c60efda05dce}\label{class_u_player___u_i_a9ebed91bd616ea0b2019c60efda05dce}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) class \mbox{\hyperlink{class_u_mini_map___u_i}{UMini\+Map\+\_\+\+UI}} $\ast$Minimap\+\_\+\+UI
+\item 
+\mbox{\Hypertarget{class_u_player___u_i_a417651893085a312f33a48748de36beb}\label{class_u_player___u_i_a417651893085a312f33a48748de36beb}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) class \mbox{\hyperlink{class_u_current___weapon___u_i}{UCurrent\+\_\+\+Weapon\+\_\+\+UI}} $\ast$Current\+\_\+weapon\+\_\+\+UI
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_u_player___u_i_aa9dbac3f49162faac6a1c92888c53bf1}{Native\+Construct}} () override
+\item 
+void \mbox{\hyperlink{class_u_player___u_i_a7e62254eab9c1cd4e670d27aa35b0457}{Native\+Tick}} (const FGeometry \&, float) override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_u_player___u_i_aa9dbac3f49162faac6a1c92888c53bf1}\label{class_u_player___u_i_aa9dbac3f49162faac6a1c92888c53bf1}} 
+\index{UPlayer\_UI@{UPlayer\_UI}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UPlayer\_UI@{UPlayer\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily void Native\+Construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10     Super::NativeConstruct();}
+\DoxyCodeLine{11 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_player___u_i_a7e62254eab9c1cd4e670d27aa35b0457}\label{class_u_player___u_i_a7e62254eab9c1cd4e670d27aa35b0457}} 
+\index{UPlayer\_UI@{UPlayer\_UI}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UPlayer\_UI@{UPlayer\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily void Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{\+\_\+my\+\_\+geometry,  }\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15     Super::NativeTick(\_my\_geometry, \_delta\_time);}
+\DoxyCodeLine{16 \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+UI\+\_\+\+PUBG/Player\+\_\+\+UI.\+h\item 
+Source/\+UI\+\_\+\+PUBG/Player\+\_\+\+UI.\+cpp\end{DoxyCompactItemize}

@@ -1,3 +1,12 @@
+ï»¿/**
+ * \file Sound_manager.h
+ *
+ * \brief ì‚¬ìš´ë“œ ë§¤ë‹ˆì €
+ *
+ * \ingroup PUBG_UE4
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -18,36 +27,49 @@ private:
     const FString     mk_sound_path = "/Game/SFX/Gun_sounds/";
 
 public:
-    // ------- ¹«±â °ü·Ã »ç¿îµå -------
+    /**
+      * \brief ë¬´ê¸° ê´€ë ¨ ì‚¬ìš´ë“œ
+     */
     UPROPERTY(VisibleAnywhere, Category = Weapon_sound) TArray<USoundBase*> p_arr_shot_sound;
     UPROPERTY(VisibleAnywhere, Category = Weapon_sound) USoundBase*         p_empty_ammo_sound = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase*         p_reload_sound = nullptr;
 
-
-    // ------- ÇÃ·¹ÀÌ¾î ¹«±â »ç¿îµå °ü·Ã -------
+    /**
+      * \brief í”Œë ˆì´ì–´ ë¬´ê¸° ì‚¬ìš´ë“œ ê´€ë ¨
+     */
     UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* p_item_farm_sound = nullptr; 
     UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* p_weapon_pickup_sound = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* p_weapon_swap_sound = nullptr;
 
 private:
+    /**
+      * \brief ë¬´ê¸° ì˜¤ë””ì˜¤ ì´ˆê¸°í™”
+     */
     void Init_weapon_audio();
 
+    /**
+      * \brief í”Œë ˆì´ì–´ ì˜¤ë””ì˜¤ ì´ˆê¸°í™”
+     */
     void Init_player_audio();
 
 public:	
-	// Sets default values for this actor's properties
 	ASound_manager();
 
 protected:
-	// Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    // Called every frame
     virtual void Tick(float DeltaTime) override;
 
 public:
-    // ÄÄÆ÷³ÍÆ® / »ç¿îµå ÆÄÀÏ / ¹«±â Á¾·ù
-    void Play_weapon_sound(UAudioComponent*, e_weapon_sound_type, int _weapon_index = 0);
+    /**
+      * \brief ë¬´ê¸° ì˜¤ë””ì˜¤ ì¬ìƒ
+      * \param _p_audio_comp ì˜¤ë””ì˜¤ ì»´í¬ë„ŒíŠ¸ \param _sound_type ì‚¬ìš´ë“œ ì¢…ë¥˜ \param ì‚¬ìš´ë“œ ì¸ë±ìŠ¤
+     */
+    void Play_weapon_sound(UAudioComponent* _p_audio_comp, e_weapon_sound_type _sound_type, int _weapon_index = 0);
 
-    void Play_player_sound(UAudioComponent*, e_player_sound_type);
+    /**
+      * \brief í”Œë ˆì´ì–´ ì˜¤ë””ì˜¤ ì¬ìƒ
+      * \param _p_audio_comp ì˜¤ë””ì˜¤ ì»´í¬ë„ŒíŠ¸ \param _sound_type ì‚¬ìš´ë“œ ì¢…ë¥˜
+     */
+    void Play_player_sound(UAudioComponent* _p_audio_comp, e_player_sound_type _sound_type);
 };

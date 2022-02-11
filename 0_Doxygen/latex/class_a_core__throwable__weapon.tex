@@ -1,0 +1,212 @@
+\hypertarget{class_a_core__throwable__weapon}{}\doxysection{ACore\+\_\+throwable\+\_\+weapon 클래스 참조}
+\label{class_a_core__throwable__weapon}\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+
+
+{\ttfamily \#include $<$Core\+\_\+throwable\+\_\+weapon.\+h$>$}
+
+
+
+ACore\+\_\+throwable\+\_\+weapon에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ACore\+\_\+throwable\+\_\+weapon에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_core__throwable__weapon_ad7d0b95eb3232eba2ccb0d38954a2360}{ACore\+\_\+throwable\+\_\+weapon}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public 속성}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\+\_\+other\+\_\+weapon\+\_\+data}} \mbox{\hyperlink{class_a_core__throwable__weapon_a90e6918d339202a56f95f3d0fe8c77e3}{weapon\+\_\+data}}
+\item 
+\mbox{\hyperlink{_weapon__enum_8h_aa9f9cc1045e03d268a562448168dd8e5}{e\+\_\+throwable\+\_\+weapon\+\_\+type}} \mbox{\hyperlink{class_a_core__throwable__weapon_ab16a15d0bc7573d424d3d23ae9f496f7}{weapon\+\_\+type}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_core__throwable__weapon_ad1cbd16794042920c9ceaed29a08ce27}{UPROPERTY}} (Visible\+Anywhere, Category=Particle) class UParticle\+System\+Component $\ast$p\+\_\+grenade\+\_\+particle
+\item 
+virtual void \mbox{\hyperlink{class_a_core__throwable__weapon_a16fbbabd5e8d29d1801fe0973eabc637}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_core__throwable__weapon_aacad22b49037da2c3bb72c67cd637f20}{Tick}} (float) override
+\begin{DoxyCompactList}\small\item\em 플레이어가 접근했을 시 상호작용 UI 띄움 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__throwable__weapon_a832fc66745420499bc108914a056522d}{Init}} (\mbox{\hyperlink{_weapon__enum_8h_aa9f9cc1045e03d268a562448168dd8e5}{e\+\_\+throwable\+\_\+weapon\+\_\+type}} \+\_\+weapon\+\_\+type)
+\begin{DoxyCompactList}\small\item\em 투척류 무기 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__throwable__weapon_a89658242586325c8d0352e0f1d966d05}{Init\+\_\+mesh}} ()
+\begin{DoxyCompactList}\small\item\em 메쉬 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__throwable__weapon_adf339a3f9cc92bf12298732ea36b8622}{Update\+\_\+collider}} ()
+\begin{DoxyCompactList}\small\item\em 콜라이더 정보 갱신 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__throwable__weapon_a83c402f063d523adc0c8928728def36b}{Init\+\_\+particle\+\_\+system}} ()
+\begin{DoxyCompactList}\small\item\em 파티클 시스템 초기화 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{추가로 상속된 멤버들}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8h_source}{Core\+\_\+throwable\+\_\+weapon.\+h}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8h_source_l00019}{19}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_core__throwable__weapon_ad7d0b95eb3232eba2ccb0d38954a2360}\label{class_a_core__throwable__weapon_ad7d0b95eb3232eba2ccb0d38954a2360}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{ACore\_throwable\_weapon()}{ACore\_throwable\_weapon()}}
+{\footnotesize\ttfamily ACore\+\_\+throwable\+\_\+weapon\+::\+ACore\+\_\+throwable\+\_\+weapon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00012}{12}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_core__throwable__weapon_a16fbbabd5e8d29d1801fe0973eabc637}\label{class_a_core__throwable__weapon_a16fbbabd5e8d29d1801fe0973eabc637}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void ACore\+\_\+throwable\+\_\+weapon\+::\+Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{class_a_base__interaction_a3c413b14a687a65f05596e63fb0fc323}{ABase\+\_\+interaction}}(으)로부터 재구현되었습니다.
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00017}{17}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__throwable__weapon_a832fc66745420499bc108914a056522d}\label{class_a_core__throwable__weapon_a832fc66745420499bc108914a056522d}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!Init@{Init}}
+\index{Init@{Init}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily void ACore\+\_\+throwable\+\_\+weapon\+::\+Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_weapon__enum_8h_aa9f9cc1045e03d268a562448168dd8e5}{e\+\_\+throwable\+\_\+weapon\+\_\+type}}}]{\+\_\+weapon\+\_\+type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+투척류 무기 초기화 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+weapon\+\_\+type} & 무기 종류 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00027}{27}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_core__throwable__weapon_a89658242586325c8d0352e0f1d966d05}\label{class_a_core__throwable__weapon_a89658242586325c8d0352e0f1d966d05}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!Init\_mesh@{Init\_mesh}}
+\index{Init\_mesh@{Init\_mesh}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{Init\_mesh()}{Init\_mesh()}}
+{\footnotesize\ttfamily void ACore\+\_\+throwable\+\_\+weapon\+::\+Init\+\_\+mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+메쉬 초기화 
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00039}{39}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 4
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 5
+\mbox{\Hypertarget{class_a_core__throwable__weapon_a83c402f063d523adc0c8928728def36b}\label{class_a_core__throwable__weapon_a83c402f063d523adc0c8928728def36b}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!Init\_particle\_system@{Init\_particle\_system}}
+\index{Init\_particle\_system@{Init\_particle\_system}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{Init\_particle\_system()}{Init\_particle\_system()}}
+{\footnotesize\ttfamily void ACore\+\_\+throwable\+\_\+weapon\+::\+Init\+\_\+particle\+\_\+system (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+파티클 시스템 초기화 
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00054}{54}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 6
+\mbox{\Hypertarget{class_a_core__throwable__weapon_aacad22b49037da2c3bb72c67cd637f20}\label{class_a_core__throwable__weapon_aacad22b49037da2c3bb72c67cd637f20}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!Tick@{Tick}}
+\index{Tick@{Tick}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void ACore\+\_\+throwable\+\_\+weapon\+::\+Tick (\begin{DoxyParamCaption}\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+플레이어가 접근했을 시 상호작용 UI 띄움 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+delta\+\_\+time} & 프레임 초 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{class_a_base__interaction_a9ee707d83822b3d51095bce72ff2d3f0}{ABase\+\_\+interaction}}(으)로부터 재구현되었습니다.
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00022}{22}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__throwable__weapon_adf339a3f9cc92bf12298732ea36b8622}\label{class_a_core__throwable__weapon_adf339a3f9cc92bf12298732ea36b8622}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!Update\_collider@{Update\_collider}}
+\index{Update\_collider@{Update\_collider}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{Update\_collider()}{Update\_collider()}}
+{\footnotesize\ttfamily void ACore\+\_\+throwable\+\_\+weapon\+::\+Update\+\_\+collider (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+콜라이더 정보 갱신 
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8cpp_source}{Core\+\_\+throwable\+\_\+weapon.\+cpp}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8cpp_source_l00047}{47}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 7
+\mbox{\Hypertarget{class_a_core__throwable__weapon_ad1cbd16794042920c9ceaed29a08ce27}\label{class_a_core__throwable__weapon_ad1cbd16794042920c9ceaed29a08ce27}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}}
+{\footnotesize\ttfamily ACore\+\_\+throwable\+\_\+weapon\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Particle} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_a_core__throwable__weapon_a90e6918d339202a56f95f3d0fe8c77e3}\label{class_a_core__throwable__weapon_a90e6918d339202a56f95f3d0fe8c77e3}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!weapon\_data@{weapon\_data}}
+\index{weapon\_data@{weapon\_data}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{weapon\_data}{weapon\_data}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\+\_\+other\+\_\+weapon\+\_\+data}} ACore\+\_\+throwable\+\_\+weapon\+::weapon\+\_\+data}
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8h_source}{Core\+\_\+throwable\+\_\+weapon.\+h}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8h_source_l00027}{27}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__throwable__weapon_ab16a15d0bc7573d424d3d23ae9f496f7}\label{class_a_core__throwable__weapon_ab16a15d0bc7573d424d3d23ae9f496f7}} 
+\index{ACore\_throwable\_weapon@{ACore\_throwable\_weapon}!weapon\_type@{weapon\_type}}
+\index{weapon\_type@{weapon\_type}!ACore\_throwable\_weapon@{ACore\_throwable\_weapon}}
+\doxysubsubsection{\texorpdfstring{weapon\_type}{weapon\_type}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_weapon__enum_8h_aa9f9cc1045e03d268a562448168dd8e5}{e\+\_\+throwable\+\_\+weapon\+\_\+type}} ACore\+\_\+throwable\+\_\+weapon\+::weapon\+\_\+type}
+
+
+
+\mbox{\hyperlink{_core__throwable__weapon_8h_source}{Core\+\_\+throwable\+\_\+weapon.\+h}} 파일의 \mbox{\hyperlink{_core__throwable__weapon_8h_source_l00028}{28}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Player\+\_\+weapons/\mbox{\hyperlink{_core__throwable__weapon_8h}{Core\+\_\+throwable\+\_\+weapon.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Player\+\_\+weapons/\mbox{\hyperlink{_core__throwable__weapon_8cpp}{Core\+\_\+throwable\+\_\+weapon.\+cpp}}\end{DoxyCompactItemize}

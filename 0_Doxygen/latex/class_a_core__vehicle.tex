@@ -1,0 +1,774 @@
+\hypertarget{class_a_core__vehicle}{}\doxysection{ACore\+\_\+vehicle 클래스 참조}
+\label{class_a_core__vehicle}\index{ACore\_vehicle@{ACore\_vehicle}}
+
+
+{\ttfamily \#include $<$Core\+\_\+vehicle.\+h$>$}
+
+
+
+ACore\+\_\+vehicle에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ACore\+\_\+vehicle에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_ac7e26a4b976a4118967b89c534d99e3d}{UPROPERTY}} (Visible\+Anywhere, Category=Widget\+\_\+component) \mbox{\hyperlink{_base__interaction_8h_a295ed085e14fb2c8ec5323fc2aee5f99}{UWidget\+Component}} $\ast$mp\+\_\+interaction\+\_\+widget\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_accae6d924d342fbae43976dd9c30c308}{ACore\+\_\+vehicle}} ()
+\item 
+bool \mbox{\hyperlink{class_a_core__vehicle_ac626a332b79b79e7a1d9ec0d2d31f0d8}{Check\+\_\+available\+\_\+seat}} (\mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}} $\ast$\+\_\+p\+\_\+player)
+\begin{DoxyCompactList}\small\item\em 빈 좌석인지 확인 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public 속성}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_a_core__vehicle_a2f484539b06f4223947127162f78fc29}{is\+\_\+collided}} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a418e14993df69922e2726ff3a8291c34}{UPROPERTY}} (Visible\+Anywhere, Category=Camera) USpring\+Arm\+Component $\ast$mp\+\_\+spring\+\_\+arm\+\_\+comp
+\begin{DoxyCompactList}\small\item\em 차량 관련 컴포넌트들 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_core__vehicle_ab6de9b07937127ff92110bcc71186a7b}{UPROPERTY}} (Visible\+Anywhere, Category=Camera) UCamera\+Component $\ast$mp\+\_\+camera\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a62c9a65ab6f35ebb6dce74f273f8b365}{UPROPERTY}} (Edit\+Anywhere, Category=Door\+\_\+\+Pos) UScene\+Component $\ast$first\+\_\+door\+\_\+pos\+\_\+comp
+\begin{DoxyCompactList}\small\item\em 문짝 위치 컴포넌트들 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_core__vehicle_a0ef905034116e6818a2996a98ee5e22a}{UPROPERTY}} (Edit\+Anywhere, Category=Door\+\_\+\+Pos) UScene\+Component $\ast$second\+\_\+door\+\_\+pos\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a95ca4eaf368b85802afd5ac13d36e87c}{UPROPERTY}} (Edit\+Anywhere, Category=Door\+\_\+\+Pos) UScene\+Component $\ast$third\+\_\+door\+\_\+pos\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a0001336b33d7c9cb3bbf5a15c7a6ed2d}{UPROPERTY}} (Edit\+Anywhere, Category=Door\+\_\+\+Pos) UScene\+Component $\ast$fourth\+\_\+door\+\_\+pos\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a3a990dc01953928de11a94ed82a6abcc}{UPROPERTY}} (Edit\+Anywhere, Category=Seat\+\_\+\+Pos) UScene\+Component $\ast$first\+\_\+seat\+\_\+pos\+\_\+comp
+\begin{DoxyCompactList}\small\item\em 좌석 위치 컴포넌트들 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_core__vehicle_ae069d3de9a429f749977e0c8f2a37331}{UPROPERTY}} (Edit\+Anywhere, Category=Seat\+\_\+\+Pos) UScene\+Component $\ast$second\+\_\+seat\+\_\+pos\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a65300667ae67ed27f25423a0547661fa}{UPROPERTY}} (Edit\+Anywhere, Category=Seat\+\_\+\+Pos) UScene\+Component $\ast$third\+\_\+seat\+\_\+pos\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_a57a20048c50874f51aee46a7f9f4cd18}{UPROPERTY}} (Edit\+Anywhere, Category=Seat\+\_\+\+Pos) UScene\+Component $\ast$fourth\+\_\+seat\+\_\+pos\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_core__vehicle_acfda17576537c30b19ccc3bb823ac73b}{UPROPERTY}} (Visible\+Anywhere, Category=Seat\+\_\+pos) TMap$<$ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}}
+\begin{DoxyCompactList}\small\item\em 기타 변수들 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_core__vehicle_a8c03158a39285d01879ab4942784812d}{UPROPERTY}} (Visible\+Anywhere, Category=Door\+\_\+pos) TMap$<$ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}}
+\item 
+virtual void \mbox{\hyperlink{class_a_core__vehicle_a0857017591c2dfbbdd390c8cff162371}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_core__vehicle_a153656d04454eae0b789a8c4a7ed7aa6}{Tick}} (float) override
+\item 
+virtual void \mbox{\hyperlink{class_a_core__vehicle_af772c2fe92e48756753ccfa1c2f9bb7c}{Setup\+Player\+Input\+Component}} (class UInput\+Component $\ast$) override
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ac8216aa437b1c28cba6f88a5ece06a20}{Init}} (\mbox{\hyperlink{_my__enum_8h_adfe50428df4b7903dca11f98a28a6f90}{e\+\_\+vehicle\+\_\+type}} \+\_\+vehicle\+\_\+type\+\_\+index)
+\begin{DoxyCompactList}\small\item\em 차량 종류에 따라 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a6272a2c5dbe08aab73822ed9185c5ea2}{Init\+\_\+car\+\_\+pos\+\_\+component}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a3f0aeaed9e81e356d560b46532ed7312}{Init\+\_\+car\+\_\+pos\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em 자동차 문짝 및 좌석 위치 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a04797f0b52dbdd10dd12986319ace41d}{Update\+\_\+car\+\_\+pos\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em 자동차 문짝 및 좌석 위치 갱신 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a94463cecf3e4be14978df971e99c442d}{Init\+\_\+camera}} ()
+\begin{DoxyCompactList}\small\item\em 카메라 컴포넌트 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a6729095072ee512814c21356b5751bd1}{Init\+\_\+skeletal\+\_\+mesh}} ()
+\begin{DoxyCompactList}\small\item\em 차량 메시 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_aaa5be8e81b3b2cf9db11e25bd747ae85}{Init\+\_\+wheeled\+\_\+component}} ()
+\begin{DoxyCompactList}\small\item\em 차량 바퀴 컴포넌트 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a6f0e55db0f7936ac0eec81766b8f3d4d}{Player\+\_\+exit}} ()
+\begin{DoxyCompactList}\small\item\em 플레이어가 차량에서 나감 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ad782068a030f27973dc221d88ed04c39}{Accelerate}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 가속 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a6bf124a7e88fa3f2baee01de77a878d1}{Brake}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 브레이크 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_aaf777f64b61ff018fe7d53533e5b2f4c}{Handling}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 회전 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a586bf1014fa72e5c1e7bc0984a3c9e00}{Look\+\_\+up}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 카메라를 위 아래로 회전 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_af137eb3ecf8c02d4a9acf1a6002a68d8}{Turn}} (float \+\_\+value)
+\begin{DoxyCompactList}\small\item\em 카메라를 좌우로 회전 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a8f1fe5a9ceecdf9b04a4e5f948fa71c2}{Check\+\_\+for\+\_\+door\+\_\+pos}} ()
+\begin{DoxyCompactList}\small\item\em 어느 문 통해 들어갔는지 확인 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a0f95ba3f080fb0eebf818d6297096aae}{Set\+\_\+player\+\_\+into\+\_\+seat\+\_\+location}} ()
+\begin{DoxyCompactList}\small\item\em 플레이어를 좌석에 배치 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a644738786a38f3429c9557e1f28834cf}{Update\+\_\+player\+\_\+seat\+\_\+location}} (\mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}} \+\_\+seat\+\_\+type)
+\begin{DoxyCompactList}\small\item\em 차 안에서 플레이어의 위치를 업데이트 시킴 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_adbcb431637182f544cb666327c3ac349}{Change\+\_\+to\+\_\+first\+\_\+seat}} ()
+\begin{DoxyCompactList}\small\item\em 첫번째 좌석으로 이동 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_aa645f753d1393f5fbd692e321c76000d}{Change\+\_\+to\+\_\+second\+\_\+seat}} ()
+\begin{DoxyCompactList}\small\item\em 두번째 좌석으로 이동 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a04c781138396ebedda6d21f05c80d9ae}{Change\+\_\+to\+\_\+third\+\_\+seat}} ()
+\begin{DoxyCompactList}\small\item\em 세번째 좌석으로 이동 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a0e386cf02def2bd1194e523eb65440d4}{Change\+\_\+to\+\_\+fourth\+\_\+seat}} ()
+\begin{DoxyCompactList}\small\item\em 네번째 좌석으로 이동 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected 속성}
+\begin{DoxyCompactItemize}
+\item 
+FVector \mbox{\hyperlink{class_a_core__vehicle_a1c9f31b7a08ba209710e8865704ab3eb}{m\+\_\+map\+\_\+seat\+\_\+pos}}
+\item 
+FVector \mbox{\hyperlink{class_a_core__vehicle_ab08dd675a738f0a4c81925ed2b5daa87}{m\+\_\+map\+\_\+door\+\_\+pos}}
+\item 
+TMap$<$ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}}, bool $>$ \mbox{\hyperlink{class_a_core__vehicle_a036f4645b3d453ab35c013f08d3b4e9e}{m\+\_\+map\+\_\+empty\+\_\+seat}}
+\begin{DoxyCompactList}\small\item\em 차량 좌석 위치 변수 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}} $\ast$ \mbox{\hyperlink{class_a_core__vehicle_af1b9dec32af84128f08511ec380c639d}{m\+\_\+player}}
+\item 
+\mbox{\hyperlink{struct_fs__vehicle__data}{Fs\+\_\+vehicle\+\_\+data}} \mbox{\hyperlink{class_a_core__vehicle_a82a7d1f66cffbb9560b90f8052bc94ee}{m\+\_\+vehicle\+\_\+data}}
+\item 
+const FString \mbox{\hyperlink{class_a_core__vehicle_ab9da45f2a2e83f41937db64eb54735b6}{mk\+\_\+wheel\+\_\+path}} = \char`\"{}/Game/Blueprints/Vehicles/Wheel/\char`\"{}
+\item 
+FString \mbox{\hyperlink{class_a_core__vehicle_a7142931331d023f26adcd878184f528c}{m\+\_\+mesh\+\_\+path}} = \char`\"{}\char`\"{}
+\item 
+int \mbox{\hyperlink{class_a_core__vehicle_a5d3f4f4477c7c1ce42ab386eee5e0918}{m\+\_\+current\+\_\+player\+\_\+count}} = 0
+\item 
+bool \mbox{\hyperlink{class_a_core__vehicle_a300ab27e7c2c0d9a4050966e3a61e143}{m\+\_\+is\+\_\+player\+\_\+in\+\_\+first\+\_\+seat}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00025}{25}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_core__vehicle_accae6d924d342fbae43976dd9c30c308}\label{class_a_core__vehicle_accae6d924d342fbae43976dd9c30c308}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!ACore\_vehicle@{ACore\_vehicle}}
+\index{ACore\_vehicle@{ACore\_vehicle}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{ACore\_vehicle()}{ACore\_vehicle()}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+ACore\+\_\+vehicle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00020}{20}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_core__vehicle_ad782068a030f27973dc221d88ed04c39}\label{class_a_core__vehicle_ad782068a030f27973dc221d88ed04c39}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Accelerate@{Accelerate}}
+\index{Accelerate@{Accelerate}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Accelerate()}{Accelerate()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Accelerate (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+가속 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 가속 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00219}{219}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+\mbox{\Hypertarget{class_a_core__vehicle_a0857017591c2dfbbdd390c8cff162371}\label{class_a_core__vehicle_a0857017591c2dfbbdd390c8cff162371}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00027}{27}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a6bf124a7e88fa3f2baee01de77a878d1}\label{class_a_core__vehicle_a6bf124a7e88fa3f2baee01de77a878d1}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Brake@{Brake}}
+\index{Brake@{Brake}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Brake()}{Brake()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Brake (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+브레이크 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 브레이크 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00225}{225}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_core__vehicle_adbcb431637182f544cb666327c3ac349}\label{class_a_core__vehicle_adbcb431637182f544cb666327c3ac349}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Change\_to\_first\_seat@{Change\_to\_first\_seat}}
+\index{Change\_to\_first\_seat@{Change\_to\_first\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_first\_seat()}{Change\_to\_first\_seat()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Change\+\_\+to\+\_\+first\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+첫번째 좌석으로 이동 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00186}{186}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 4
+\mbox{\Hypertarget{class_a_core__vehicle_a0e386cf02def2bd1194e523eb65440d4}\label{class_a_core__vehicle_a0e386cf02def2bd1194e523eb65440d4}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Change\_to\_fourth\_seat@{Change\_to\_fourth\_seat}}
+\index{Change\_to\_fourth\_seat@{Change\_to\_fourth\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_fourth\_seat()}{Change\_to\_fourth\_seat()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Change\+\_\+to\+\_\+fourth\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+네번째 좌석으로 이동 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00201}{201}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 5
+\mbox{\Hypertarget{class_a_core__vehicle_aa645f753d1393f5fbd692e321c76000d}\label{class_a_core__vehicle_aa645f753d1393f5fbd692e321c76000d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Change\_to\_second\_seat@{Change\_to\_second\_seat}}
+\index{Change\_to\_second\_seat@{Change\_to\_second\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_second\_seat()}{Change\_to\_second\_seat()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Change\+\_\+to\+\_\+second\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+두번째 좌석으로 이동 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00191}{191}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 6
+\mbox{\Hypertarget{class_a_core__vehicle_a04c781138396ebedda6d21f05c80d9ae}\label{class_a_core__vehicle_a04c781138396ebedda6d21f05c80d9ae}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Change\_to\_third\_seat@{Change\_to\_third\_seat}}
+\index{Change\_to\_third\_seat@{Change\_to\_third\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_third\_seat()}{Change\_to\_third\_seat()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Change\+\_\+to\+\_\+third\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+세번째 좌석으로 이동 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00196}{196}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 7
+\mbox{\Hypertarget{class_a_core__vehicle_ac626a332b79b79e7a1d9ec0d2d31f0d8}\label{class_a_core__vehicle_ac626a332b79b79e7a1d9ec0d2d31f0d8}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Check\_available\_seat@{Check\_available\_seat}}
+\index{Check\_available\_seat@{Check\_available\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Check\_available\_seat()}{Check\_available\_seat()}}
+{\footnotesize\ttfamily bool ACore\+\_\+vehicle\+::\+Check\+\_\+available\+\_\+seat (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}} $\ast$}]{\+\_\+p\+\_\+player }\end{DoxyParamCaption})}
+
+
+
+빈 좌석인지 확인 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+p\+\_\+player} & 플레이어 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{반환값}
+boolean 탑승 여부 
+\end{DoxyReturn}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00330}{330}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 8
+\mbox{\Hypertarget{class_a_core__vehicle_a8f1fe5a9ceecdf9b04a4e5f948fa71c2}\label{class_a_core__vehicle_a8f1fe5a9ceecdf9b04a4e5f948fa71c2}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Check\_for\_door\_pos@{Check\_for\_door\_pos}}
+\index{Check\_for\_door\_pos@{Check\_for\_door\_pos}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Check\_for\_door\_pos()}{Check\_for\_door\_pos()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Check\+\_\+for\+\_\+door\+\_\+pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+어느 문 통해 들어갔는지 확인 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00247}{247}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 9
+\mbox{\Hypertarget{class_a_core__vehicle_aaf777f64b61ff018fe7d53533e5b2f4c}\label{class_a_core__vehicle_aaf777f64b61ff018fe7d53533e5b2f4c}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Handling@{Handling}}
+\index{Handling@{Handling}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Handling()}{Handling()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Handling (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+회전 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 회전 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00231}{231}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 10
+\mbox{\Hypertarget{class_a_core__vehicle_ac8216aa437b1c28cba6f88a5ece06a20}\label{class_a_core__vehicle_ac8216aa437b1c28cba6f88a5ece06a20}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Init@{Init}}
+\index{Init@{Init}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_my__enum_8h_adfe50428df4b7903dca11f98a28a6f90}{e\+\_\+vehicle\+\_\+type}}}]{\+\_\+vehicle\+\_\+type\+\_\+index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+차량 종류에 따라 초기화 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+vehicle\+\_\+type\+\_\+index} & 차량 종류 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00071}{71}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 11
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 12
+\mbox{\Hypertarget{class_a_core__vehicle_a94463cecf3e4be14978df971e99c442d}\label{class_a_core__vehicle_a94463cecf3e4be14978df971e99c442d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Init\_camera@{Init\_camera}}
+\index{Init\_camera@{Init\_camera}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Init\_camera()}{Init\_camera()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Init\+\_\+camera (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+카메라 컴포넌트 초기화 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00140}{140}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 13
+\mbox{\Hypertarget{class_a_core__vehicle_a6272a2c5dbe08aab73822ed9185c5ea2}\label{class_a_core__vehicle_a6272a2c5dbe08aab73822ed9185c5ea2}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Init\_car\_pos\_component@{Init\_car\_pos\_component}}
+\index{Init\_car\_pos\_component@{Init\_car\_pos\_component}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Init\_car\_pos\_component()}{Init\_car\_pos\_component()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Init\+\_\+car\+\_\+pos\+\_\+component (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+차량에 필요한 컴포넌트 초기화 해주는 함수 
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00081}{81}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 14
+\mbox{\Hypertarget{class_a_core__vehicle_a3f0aeaed9e81e356d560b46532ed7312}\label{class_a_core__vehicle_a3f0aeaed9e81e356d560b46532ed7312}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Init\_car\_pos\_data@{Init\_car\_pos\_data}}
+\index{Init\_car\_pos\_data@{Init\_car\_pos\_data}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Init\_car\_pos\_data()}{Init\_car\_pos\_data()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Init\+\_\+car\+\_\+pos\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+자동차 문짝 및 좌석 위치 초기화 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00106}{106}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 15
+\mbox{\Hypertarget{class_a_core__vehicle_a6729095072ee512814c21356b5751bd1}\label{class_a_core__vehicle_a6729095072ee512814c21356b5751bd1}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Init\_skeletal\_mesh@{Init\_skeletal\_mesh}}
+\index{Init\_skeletal\_mesh@{Init\_skeletal\_mesh}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Init\_skeletal\_mesh()}{Init\_skeletal\_mesh()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Init\+\_\+skeletal\+\_\+mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+차량 메시 초기화 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00155}{155}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 16
+\mbox{\Hypertarget{class_a_core__vehicle_aaa5be8e81b3b2cf9db11e25bd747ae85}\label{class_a_core__vehicle_aaa5be8e81b3b2cf9db11e25bd747ae85}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Init\_wheeled\_component@{Init\_wheeled\_component}}
+\index{Init\_wheeled\_component@{Init\_wheeled\_component}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Init\_wheeled\_component()}{Init\_wheeled\_component()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Init\+\_\+wheeled\+\_\+component (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+차량 바퀴 컴포넌트 초기화 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00177}{177}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 17
+\mbox{\Hypertarget{class_a_core__vehicle_a586bf1014fa72e5c1e7bc0984a3c9e00}\label{class_a_core__vehicle_a586bf1014fa72e5c1e7bc0984a3c9e00}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Look\_up@{Look\_up}}
+\index{Look\_up@{Look\_up}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Look\_up()}{Look\_up()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Look\+\_\+up (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+카메라를 위 아래로 회전 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 회전 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00237}{237}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 18
+\mbox{\Hypertarget{class_a_core__vehicle_a6f0e55db0f7936ac0eec81766b8f3d4d}\label{class_a_core__vehicle_a6f0e55db0f7936ac0eec81766b8f3d4d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Player\_exit@{Player\_exit}}
+\index{Player\_exit@{Player\_exit}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Player\_exit()}{Player\_exit()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Player\+\_\+exit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+플레이어가 차량에서 나감 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00209}{209}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 19
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 20
+\mbox{\Hypertarget{class_a_core__vehicle_a0f95ba3f080fb0eebf818d6297096aae}\label{class_a_core__vehicle_a0f95ba3f080fb0eebf818d6297096aae}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Set\_player\_into\_seat\_location@{Set\_player\_into\_seat\_location}}
+\index{Set\_player\_into\_seat\_location@{Set\_player\_into\_seat\_location}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Set\_player\_into\_seat\_location()}{Set\_player\_into\_seat\_location()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Set\+\_\+player\+\_\+into\+\_\+seat\+\_\+location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+플레이어를 좌석에 배치 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00305}{305}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 21
+\mbox{\Hypertarget{class_a_core__vehicle_af772c2fe92e48756753ccfa1c2f9bb7c}\label{class_a_core__vehicle_af772c2fe92e48756753ccfa1c2f9bb7c}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!SetupPlayerInputComponent@{SetupPlayerInputComponent}}
+\index{SetupPlayerInputComponent@{SetupPlayerInputComponent}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{SetupPlayerInputComponent()}{SetupPlayerInputComponent()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Setup\+Player\+Input\+Component (\begin{DoxyParamCaption}\item[{class UInput\+Component $\ast$}]{\+\_\+player\+\_\+input\+\_\+component }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00053}{53}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 22
+\mbox{\Hypertarget{class_a_core__vehicle_a153656d04454eae0b789a8c4a7ed7aa6}\label{class_a_core__vehicle_a153656d04454eae0b789a8c4a7ed7aa6}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Tick@{Tick}}
+\index{Tick@{Tick}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Tick (\begin{DoxyParamCaption}\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00037}{37}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 23
+\mbox{\Hypertarget{class_a_core__vehicle_af137eb3ecf8c02d4a9acf1a6002a68d8}\label{class_a_core__vehicle_af137eb3ecf8c02d4a9acf1a6002a68d8}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Turn@{Turn}}
+\index{Turn@{Turn}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Turn()}{Turn()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Turn (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+카메라를 좌우로 회전 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+value} & 회전 값 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00242}{242}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 24
+\mbox{\Hypertarget{class_a_core__vehicle_a04797f0b52dbdd10dd12986319ace41d}\label{class_a_core__vehicle_a04797f0b52dbdd10dd12986319ace41d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Update\_car\_pos\_data@{Update\_car\_pos\_data}}
+\index{Update\_car\_pos\_data@{Update\_car\_pos\_data}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Update\_car\_pos\_data()}{Update\_car\_pos\_data()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Update\+\_\+car\+\_\+pos\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+자동차 문짝 및 좌석 위치 갱신 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00123}{123}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 25
+\mbox{\Hypertarget{class_a_core__vehicle_a644738786a38f3429c9557e1f28834cf}\label{class_a_core__vehicle_a644738786a38f3429c9557e1f28834cf}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!Update\_player\_seat\_location@{Update\_player\_seat\_location}}
+\index{Update\_player\_seat\_location@{Update\_player\_seat\_location}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{Update\_player\_seat\_location()}{Update\_player\_seat\_location()}}
+{\footnotesize\ttfamily void ACore\+\_\+vehicle\+::\+Update\+\_\+player\+\_\+seat\+\_\+location (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}}}]{\+\_\+seat\+\_\+type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+차 안에서 플레이어의 위치를 업데이트 시킴 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+seat\+\_\+type} & 좌석 종류 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_core__vehicle_8cpp_source}{Core\+\_\+vehicle.\+cpp}} 파일의 \mbox{\hyperlink{_core__vehicle_8cpp_source_l00321}{321}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a62c9a65ab6f35ebb6dce74f273f8b365}\label{class_a_core__vehicle_a62c9a65ab6f35ebb6dce74f273f8b365}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [1/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Door\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+문짝 위치 컴포넌트들 
+
+\mbox{\Hypertarget{class_a_core__vehicle_a0001336b33d7c9cb3bbf5a15c7a6ed2d}\label{class_a_core__vehicle_a0001336b33d7c9cb3bbf5a15c7a6ed2d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [2/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Door\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_a0ef905034116e6818a2996a98ee5e22a}\label{class_a_core__vehicle_a0ef905034116e6818a2996a98ee5e22a}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [3/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Door\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_a95ca4eaf368b85802afd5ac13d36e87c}\label{class_a_core__vehicle_a95ca4eaf368b85802afd5ac13d36e87c}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [4/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Door\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_a3a990dc01953928de11a94ed82a6abcc}\label{class_a_core__vehicle_a3a990dc01953928de11a94ed82a6abcc}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [5/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Seat\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+좌석 위치 컴포넌트들 
+
+\mbox{\Hypertarget{class_a_core__vehicle_a57a20048c50874f51aee46a7f9f4cd18}\label{class_a_core__vehicle_a57a20048c50874f51aee46a7f9f4cd18}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [6/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Seat\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_ae069d3de9a429f749977e0c8f2a37331}\label{class_a_core__vehicle_ae069d3de9a429f749977e0c8f2a37331}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [7/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Seat\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_a65300667ae67ed27f25423a0547661fa}\label{class_a_core__vehicle_a65300667ae67ed27f25423a0547661fa}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [8/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Edit\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Seat\+\_\+Pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_ab6de9b07937127ff92110bcc71186a7b}\label{class_a_core__vehicle_ab6de9b07937127ff92110bcc71186a7b}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [9/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Camera} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_a418e14993df69922e2726ff3a8291c34}\label{class_a_core__vehicle_a418e14993df69922e2726ff3a8291c34}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [10/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Camera} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+차량 관련 컴포넌트들 
+
+\mbox{\Hypertarget{class_a_core__vehicle_a8c03158a39285d01879ab4942784812d}\label{class_a_core__vehicle_a8c03158a39285d01879ab4942784812d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [11/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Door\+\_\+pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_core__vehicle_acfda17576537c30b19ccc3bb823ac73b}\label{class_a_core__vehicle_acfda17576537c30b19ccc3bb823ac73b}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [12/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Seat\+\_\+pos} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+기타 변수들 
+
+\mbox{\Hypertarget{class_a_core__vehicle_ac7e26a4b976a4118967b89c534d99e3d}\label{class_a_core__vehicle_ac7e26a4b976a4118967b89c534d99e3d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [13/13]}}
+{\footnotesize\ttfamily ACore\+\_\+vehicle\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Widget\+\_\+component} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_a_core__vehicle_a2f484539b06f4223947127162f78fc29}\label{class_a_core__vehicle_a2f484539b06f4223947127162f78fc29}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!is\_collided@{is\_collided}}
+\index{is\_collided@{is\_collided}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{is\_collided}{is\_collided}}
+{\footnotesize\ttfamily bool ACore\+\_\+vehicle\+::is\+\_\+collided = false}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00079}{79}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a5d3f4f4477c7c1ce42ab386eee5e0918}\label{class_a_core__vehicle_a5d3f4f4477c7c1ce42ab386eee5e0918}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_current\_player\_count@{m\_current\_player\_count}}
+\index{m\_current\_player\_count@{m\_current\_player\_count}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_current\_player\_count}{m\_current\_player\_count}}
+{\footnotesize\ttfamily int ACore\+\_\+vehicle\+::m\+\_\+current\+\_\+player\+\_\+count = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00074}{74}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a300ab27e7c2c0d9a4050966e3a61e143}\label{class_a_core__vehicle_a300ab27e7c2c0d9a4050966e3a61e143}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_is\_player\_in\_first\_seat@{m\_is\_player\_in\_first\_seat}}
+\index{m\_is\_player\_in\_first\_seat@{m\_is\_player\_in\_first\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_is\_player\_in\_first\_seat}{m\_is\_player\_in\_first\_seat}}
+{\footnotesize\ttfamily bool ACore\+\_\+vehicle\+::m\+\_\+is\+\_\+player\+\_\+in\+\_\+first\+\_\+seat = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00075}{75}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_ab08dd675a738f0a4c81925ed2b5daa87}\label{class_a_core__vehicle_ab08dd675a738f0a4c81925ed2b5daa87}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_map\_door\_pos@{m\_map\_door\_pos}}
+\index{m\_map\_door\_pos@{m\_map\_door\_pos}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_map\_door\_pos}{m\_map\_door\_pos}}
+{\footnotesize\ttfamily FVector ACore\+\_\+vehicle\+::m\+\_\+map\+\_\+door\+\_\+pos\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00056}{56}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a036f4645b3d453ab35c013f08d3b4e9e}\label{class_a_core__vehicle_a036f4645b3d453ab35c013f08d3b4e9e}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_map\_empty\_seat@{m\_map\_empty\_seat}}
+\index{m\_map\_empty\_seat@{m\_map\_empty\_seat}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_map\_empty\_seat}{m\_map\_empty\_seat}}
+{\footnotesize\ttfamily TMap$<$\mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0}{e\+\_\+seat\+\_\+type}}, bool$>$ ACore\+\_\+vehicle\+::m\+\_\+map\+\_\+empty\+\_\+seat\hspace{0.3cm}{\ttfamily [protected]}}
+
+{\bfseries 초기값\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{        \{ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0a2c2624a5059934a947d6e25fe8332ade}{e\_seat\_type::FIRST}}, \textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0a2200becb80f0019c4a2ccecec350d0db}{e\_seat\_type::SECOND}},\textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0ac39efd068faa8bf1b4e348d7cd43c229}{e\_seat\_type::THIRD}}, \textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0aaef38e5b0d04b473224c173c168a271f}{e\_seat\_type::FOURTH}},\textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ \mbox{\hyperlink{_my__enum_8h_ad2899e3eb0e806c68c63e04ed11c5fb0ab50339a10e1de285ac99d4c3990b8693}{e\_seat\_type::NONE}},  \textcolor{keyword}{false} \}}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
+
+
+차량 좌석 위치 변수 
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00061}{61}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a1c9f31b7a08ba209710e8865704ab3eb}\label{class_a_core__vehicle_a1c9f31b7a08ba209710e8865704ab3eb}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_map\_seat\_pos@{m\_map\_seat\_pos}}
+\index{m\_map\_seat\_pos@{m\_map\_seat\_pos}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_map\_seat\_pos}{m\_map\_seat\_pos}}
+{\footnotesize\ttfamily FVector ACore\+\_\+vehicle\+::m\+\_\+map\+\_\+seat\+\_\+pos\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00055}{55}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a7142931331d023f26adcd878184f528c}\label{class_a_core__vehicle_a7142931331d023f26adcd878184f528c}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_mesh\_path@{m\_mesh\_path}}
+\index{m\_mesh\_path@{m\_mesh\_path}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_mesh\_path}{m\_mesh\_path}}
+{\footnotesize\ttfamily FString ACore\+\_\+vehicle\+::m\+\_\+mesh\+\_\+path = \char`\"{}\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00073}{73}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_af1b9dec32af84128f08511ec380c639d}\label{class_a_core__vehicle_af1b9dec32af84128f08511ec380c639d}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_player@{m\_player}}
+\index{m\_player@{m\_player}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_player}{m\_player}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}}$\ast$ ACore\+\_\+vehicle\+::m\+\_\+player\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00069}{69}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_a82a7d1f66cffbb9560b90f8052bc94ee}\label{class_a_core__vehicle_a82a7d1f66cffbb9560b90f8052bc94ee}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!m\_vehicle\_data@{m\_vehicle\_data}}
+\index{m\_vehicle\_data@{m\_vehicle\_data}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{m\_vehicle\_data}{m\_vehicle\_data}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\+\_\+vehicle\+\_\+data}} ACore\+\_\+vehicle\+::m\+\_\+vehicle\+\_\+data\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00070}{70}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_core__vehicle_ab9da45f2a2e83f41937db64eb54735b6}\label{class_a_core__vehicle_ab9da45f2a2e83f41937db64eb54735b6}} 
+\index{ACore\_vehicle@{ACore\_vehicle}!mk\_wheel\_path@{mk\_wheel\_path}}
+\index{mk\_wheel\_path@{mk\_wheel\_path}!ACore\_vehicle@{ACore\_vehicle}}
+\doxysubsubsection{\texorpdfstring{mk\_wheel\_path}{mk\_wheel\_path}}
+{\footnotesize\ttfamily const FString ACore\+\_\+vehicle\+::mk\+\_\+wheel\+\_\+path = \char`\"{}/Game/Blueprints/Vehicles/Wheel/\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_core__vehicle_8h_source}{Core\+\_\+vehicle.\+h}} 파일의 \mbox{\hyperlink{_core__vehicle_8h_source_l00072}{72}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Characters/\mbox{\hyperlink{_core__vehicle_8h}{Core\+\_\+vehicle.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+Characters/\mbox{\hyperlink{_core__vehicle_8cpp}{Core\+\_\+vehicle.\+cpp}}\end{DoxyCompactItemize}

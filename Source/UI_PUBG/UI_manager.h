@@ -1,3 +1,12 @@
+ï»¿/**
+ * \file UI_manager.h
+ *
+ * \brief UI ë§¤ë‹ˆì €
+ *
+ * \ingroup UI_PUBG
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,24 +22,26 @@ class UI_PUBG_API AUI_manager : public AActor
 	GENERATED_BODY()
 	
 public:    
-    static TMap<int, UMaterial*> map_main_weapon_ui_mat; // ¸ŞÀÎ ¹«±â UI    
-    static TMap<int, UTexture*> map_inventory_weapon_ui_tex; // ÀÎº¥Åä¸® ¹«±â UI    
-    static TMap<int, UTexture*> map_player_ui_tex; // ÇÃ·¹ÀÌ¾î UI
+    static TMap<int, UMaterial*> map_main_weapon_ui_mat;      // ë©”ì¸ ë¬´ê¸° UI    
+    static TMap<int, UTexture*>  map_inventory_weapon_ui_tex; // ì¸ë²¤í† ë¦¬ ë¬´ê¸° UI    
+    static TMap<int, UTexture*>  map_player_ui_tex;           // í”Œë ˆì´ì–´ UI
 
 private:
-    // ------- ÇöÀç ¾²ÀÌ°íÀÖ´Â º¯¼öµé -------
+    // ------- í˜„ì¬ ì“°ì´ê³ ìˆëŠ” ë³€ìˆ˜ë“¤ -------
 
-    // ÃÖ»óÀ§ UI ¸ğµç°É Æ÷ÇÔ
+    /** * \brief í”Œë ˆì´ì–´ UI */
     UPlayer_UI*             mp_player_UI;
+
+    /** * \brief í”Œë ˆì´ì–´ UI BP */
     TSubclassOf<UPlayer_UI> m_bp_player_UI;
 
-    // ÀÎº¥Åä¸®
+    /** * \brief ì¸ë²¤í† ë¦¬ */
     TSubclassOf<AActor> m_inventory_manager_actor;
 
-    // »óÈ£ÀÛ¿ë UI °ü·Ã
+    /** * \brief ìƒí˜¸ì‘ìš© UI ê´€ë ¨ */
     UPROPERTY(VisibleAnywhere, Category = Widget_bp) TSubclassOf<UUserWidget> m_interaction_widget_bp;
 
-    // ¸ŞÀÎ ÇÃ·¹ÀÌ¾î UI ¸®¼Ò½º °æ·Î¸í
+    /** * \brief ë©”ì¸ í”Œë ˆì´ì–´ UI ë¦¬ì†ŒìŠ¤ ê²½ë¡œëª… */
     const TArray<FString> mk_arr_player_UI_tex_path 
     {
         "Single_shot",
@@ -49,31 +60,52 @@ public:
 protected:
     virtual void BeginPlay() override;
 
-// »ı¼ºÀÚ ³» ÃÊ±âÈ­ ÇÔ¼ö
+// ìƒì„±ì ë‚´ ì´ˆê¸°í™” í•¨ìˆ˜
 private:
-
-    // ÃÖ»óÀ§ ÇÃ·¹ÀÌ¾î UI ÃÊ±âÈ­
+    /**
+     * \brief ìµœìƒìœ„ í”Œë ˆì´ì–´ UI ì´ˆê¸°í™”
+     */
     void Init_player_UI();
 
-    // »óÈ£ÀÛ¿ë UI ÃÊ±âÈ­
+    /**
+     * \brief ìƒí˜¸ì‘ìš© UI ì´ˆê¸°í™”
+     */
     void Init_interaction_UI();
 
-    // ÇÃ·¹ÀÌ¾î UI¸¦ ¶ç¿ò
+    /**
+     * \brief í”Œë ˆì´ì–´ UI ë„ì›€
+     */
     void Set_player_UI();
 
-    // ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸®¸¦ ¼³Á¤
+    /**
+     * \brief í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ ì„¤ì •
+     */
     void Init_player_inventory();
 
+    /**
+     * \brief ì¸ë²¤í† ë¦¬ ë¬´ê¸° UI ì´ˆê¸°í™”
+     */
     void Init_inventory_weapon_UI_tex();
 
+    /**
+     * \brief í”Œë ˆì´ì–´ ë¬´ê¸° ì„ íƒ UI ì´ˆê¸°í™”
+     */
     void Init_main_weapon_UI_mat();
 
-    // ÇÃ·¹ÀÌ¾î UI ÃÊ±âÈ­
+    /**
+     * \brief í”Œë ˆì´ì–´ UI ì´ˆê¸°í™”
+     */
     void Init_player_UI_tex();
 
+    /**
+     * \brief ë¯¸êµ¬í˜„ ìƒíƒœ
+     */
     void Set_weapon_UI();
 
 public:
+    /**
+     * \brief ìƒí˜¸ì‘ìš© UI ì—…ë°ì´íŠ¸ (ë¸ë¦¬ê²Œì´íŠ¸)
+     */
     UFUNCTION()
     void Update_interaction_UI(class UWidgetComponent* _widget_comp, FString _title);
 };

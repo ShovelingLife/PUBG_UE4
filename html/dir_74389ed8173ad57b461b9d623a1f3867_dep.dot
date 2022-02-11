@@ -1,0 +1,21 @@
+digraph "Source"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_74389ed8173ad57b461b9d623a1f3867 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,bold,", label="", fontname="Helvetica", fontsize="10", URL="dir_74389ed8173ad57b461b9d623a1f3867.html"]
+    dir_74389ed8173ad57b461b9d623a1f3867 [shape=plaintext, label="Source"];
+  dir_aeba0538a7ee8ae862ac2366ae147e15 [shape=box, label="AI_PUBG", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_aeba0538a7ee8ae862ac2366ae147e15.html"];
+  dir_4943dd88a567d6386a90fef2197820ff [shape=box, label="Animations", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_4943dd88a567d6386a90fef2197820ff.html"];
+  dir_0a0d59c77e579b1c91ea726c2a6093a5 [shape=box, label="Characters", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_0a0d59c77e579b1c91ea726c2a6093a5.html"];
+  dir_8af8318e17a45667d10fb00810797679 [shape=box, label="Farmable_items", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_8af8318e17a45667d10fb00810797679.html"];
+  dir_dcc969d45a76509c88cd02294e3cd918 [shape=box, label="Player_weapons", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_dcc969d45a76509c88cd02294e3cd918.html"];
+  dir_81f16cdd936fcaf8cbca3e97fb61d968 [shape=box, label="PUBG_UE4", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_81f16cdd936fcaf8cbca3e97fb61d968.html"];
+  dir_e35a5cc4dbc135015d6b14a4f5134acd [shape=box, label="Server_PUBG", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_e35a5cc4dbc135015d6b14a4f5134acd.html"];
+  dir_3cfedc8f52242e717edf16aab75ba81f [shape=box, label="UI_PUBG", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_3cfedc8f52242e717edf16aab75ba81f.html"];
+  }
+  dir_0a0d59c77e579b1c91ea726c2a6093a5->dir_dcc969d45a76509c88cd02294e3cd918 [headlabel="1", labeldistance=1.5 headhref="dir_000002_000004.html"];
+  dir_3cfedc8f52242e717edf16aab75ba81f->dir_dcc969d45a76509c88cd02294e3cd918 [headlabel="3", labeldistance=1.5 headhref="dir_000008_000004.html"];
+}

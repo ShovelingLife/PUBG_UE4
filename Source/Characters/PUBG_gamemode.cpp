@@ -1,4 +1,4 @@
-#include "PUBG_gamemode.h"
+﻿#include "PUBG_gamemode.h"
 #include "Custom_player.h"
 #include "Custom_player_controller.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"

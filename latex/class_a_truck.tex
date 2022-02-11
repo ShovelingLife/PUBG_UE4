@@ -1,0 +1,710 @@
+\hypertarget{class_a_truck}{}\doxysection{ATruck 클래스 참조}
+\label{class_a_truck}\index{ATruck@{ATruck}}
+
+
+ATruck에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ATruck에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_a_core__vehicle_abdc772e0f28772f8ae29b31cebefa501}{Check\+\_\+available\+\_\+seat}} (\mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}} $\ast$)
+\end{DoxyCompactItemize}
+\doxysubsection*{데이터 필드}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_ad0fa92b0fd60297dacf94f587719bc91}\label{class_a_core__vehicle_ad0fa92b0fd60297dacf94f587719bc91}} 
+class UWidget\+Component $\ast$ {\bfseries mp\+\_\+interaction\+\_\+widget\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a012f6f4e615ac80e898015e8715d84b8}\label{class_a_core__vehicle_a012f6f4e615ac80e898015e8715d84b8}} 
+bool {\bfseries is\+\_\+collided} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_a_core__vehicle_a4b591a51a5b9f4036c6ac0f825a0d24c}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_core__vehicle_ae8350d113f0792e739426f2c467973f6}{Tick}} (float) override
+\item 
+virtual void \mbox{\hyperlink{class_a_core__vehicle_af8bd87e44fa97844ddd8b83e73dd2581}{Setup\+Player\+Input\+Component}} (class UInput\+Component $\ast$) override
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a0c1b8ad634372c5359d22c4a681e0025}{Init\+\_\+car\+\_\+pos\+\_\+component}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a3768712eaa0e6b2bbf813fe4daf8d11d}{Init}} (e\+\_\+vehicle\+\_\+type)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a9735dd3225e607748bcde0ce2cf878a5}{Init\+\_\+camera}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a4abc4cfb16e2e4f3506b102fb1f70b57}{Init\+\_\+skeletal\+\_\+mesh}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a67d3dce9373ce66e25cf5ca71bb0c9fa}{Init\+\_\+wheeled\+\_\+component}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a853199b7b797929b7582c8393a524349}{Init\+\_\+car\+\_\+pos\+\_\+data}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ab5d3da7c210ad218c477e341ae2c24b8}{Player\+\_\+exit}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a8fcf00dca214f231c59b811e194e751a}{Accelerate}} (float)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a5e9096cdec891311b7f357c18a9925f4}{Brake}} (float)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a8f7827d92bb0c87311f5a8b9bab0a5df}{Handling}} (float)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a04b7870de7144be6a18869197354da68}{Look\+\_\+up}} (float)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a0d3ea275882d908ebe1095396dc3eb88}{Turn}} (float)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a109021606ffcc4ad480ae5700ebcf1bf}{Check\+\_\+for\+\_\+door\+\_\+pos}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ad7f06eb94b91c2f463a427c76386f58a}{Change\+\_\+to\+\_\+first\+\_\+seat}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ac0ee33df31f775a9786de591139ce8bd}{Change\+\_\+to\+\_\+second\+\_\+seat}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a83d3b2a89d96b39ea03de98b00115f1a}{Change\+\_\+to\+\_\+third\+\_\+seat}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ac9541c89ed8bcf88fbbaef1408b9f9c8}{Change\+\_\+to\+\_\+fourth\+\_\+seat}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_a558f81dceffc72a7246a4e63aeb7a90c}{Set\+\_\+player\+\_\+into\+\_\+seat\+\_\+location}} ()
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_ae58fe7e52187c8e6b43d871566273fa1}{Update\+\_\+player\+\_\+seat\+\_\+location}} (e\+\_\+seat\+\_\+type)
+\item 
+void \mbox{\hyperlink{class_a_core__vehicle_adf0517ed3b818c351595c2b144050701}{Update\+\_\+car\+\_\+pos\+\_\+data}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 속성}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_ace916602c914b28b6f2ef93204e9f54a}\label{class_a_core__vehicle_ace916602c914b28b6f2ef93204e9f54a}} 
+class USpring\+Arm\+Component $\ast$ {\bfseries mp\+\_\+spring\+\_\+arm\+\_\+comp} = nullptr
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_acabcd7c0035686c6a41d2be01f1a04c0}\label{class_a_core__vehicle_acabcd7c0035686c6a41d2be01f1a04c0}} 
+class UCamera\+Component $\ast$ {\bfseries mp\+\_\+camera\+\_\+comp} = nullptr
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_aa04b14165081889df01292edf55dedd0}\label{class_a_core__vehicle_aa04b14165081889df01292edf55dedd0}} 
+UScene\+Component $\ast$ {\bfseries first\+\_\+door\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_aab54ecbe8577e22a20b6633587e91ab3}\label{class_a_core__vehicle_aab54ecbe8577e22a20b6633587e91ab3}} 
+UScene\+Component $\ast$ {\bfseries second\+\_\+door\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a26c1af2e71148642d08ce3a6ff8d7d87}\label{class_a_core__vehicle_a26c1af2e71148642d08ce3a6ff8d7d87}} 
+UScene\+Component $\ast$ {\bfseries third\+\_\+door\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a656a2ce82672318cfd818378449db150}\label{class_a_core__vehicle_a656a2ce82672318cfd818378449db150}} 
+UScene\+Component $\ast$ {\bfseries fourth\+\_\+door\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a4ebc54328aa2ac1b76f3391beb7bb680}\label{class_a_core__vehicle_a4ebc54328aa2ac1b76f3391beb7bb680}} 
+UScene\+Component $\ast$ {\bfseries first\+\_\+seat\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a99a3640d64f3419ef0f72534e4aa1a27}\label{class_a_core__vehicle_a99a3640d64f3419ef0f72534e4aa1a27}} 
+UScene\+Component $\ast$ {\bfseries second\+\_\+seat\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a5d807bd53f819aec7ac5e976dd3136d3}\label{class_a_core__vehicle_a5d807bd53f819aec7ac5e976dd3136d3}} 
+UScene\+Component $\ast$ {\bfseries third\+\_\+seat\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a3136b574cd8ac261fbecbdcce1f42a42}\label{class_a_core__vehicle_a3136b574cd8ac261fbecbdcce1f42a42}} 
+UScene\+Component $\ast$ {\bfseries fourth\+\_\+seat\+\_\+pos\+\_\+comp}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a7b022286492173be4aa41d8df821a9f3}\label{class_a_core__vehicle_a7b022286492173be4aa41d8df821a9f3}} 
+TMap$<$ e\+\_\+seat\+\_\+type, FVector $>$ {\bfseries m\+\_\+map\+\_\+seat\+\_\+pos}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_ad8cfc4718942982a6ae1368eafdc0ccf}\label{class_a_core__vehicle_ad8cfc4718942982a6ae1368eafdc0ccf}} 
+TMap$<$ e\+\_\+seat\+\_\+type, FVector $>$ {\bfseries m\+\_\+map\+\_\+door\+\_\+pos}
+\item 
+TMap$<$ e\+\_\+seat\+\_\+type, bool $>$ \mbox{\hyperlink{class_a_core__vehicle_ab77c7b55380250a858fd7d74f44405fa}{m\+\_\+map\+\_\+empty\+\_\+seat}}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a09d557a2e1a6fca1eab98eb94546f57a}\label{class_a_core__vehicle_a09d557a2e1a6fca1eab98eb94546f57a}} 
+\mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}} $\ast$ {\bfseries m\+\_\+player}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a96d3fec83deff8c336b6d9711b628838}\label{class_a_core__vehicle_a96d3fec83deff8c336b6d9711b628838}} 
+\mbox{\hyperlink{struct_fs__vehicle__data}{Fs\+\_\+vehicle\+\_\+data}} {\bfseries m\+\_\+vehicle\+\_\+data}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a5cbd1e9b2c5f6bdcef447efb1ce15905}\label{class_a_core__vehicle_a5cbd1e9b2c5f6bdcef447efb1ce15905}} 
+const FString {\bfseries mk\+\_\+wheel\+\_\+path} = \char`\"{}/Game/Blueprints/Vehicles/Wheel/\char`\"{}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_ac999af65b930cb85a3c22eaa7be70608}\label{class_a_core__vehicle_ac999af65b930cb85a3c22eaa7be70608}} 
+FString {\bfseries m\+\_\+mesh\+\_\+path} = \char`\"{}\char`\"{}
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a929017149de76a94d45832a4d7043fa0}\label{class_a_core__vehicle_a929017149de76a94d45832a4d7043fa0}} 
+int {\bfseries m\+\_\+current\+\_\+player\+\_\+count} = 0
+\item 
+\mbox{\Hypertarget{class_a_core__vehicle_a240955d03afc69c7b72500d89d509ec8}\label{class_a_core__vehicle_a240955d03afc69c7b72500d89d509ec8}} 
+bool {\bfseries m\+\_\+is\+\_\+player\+\_\+in\+\_\+first\+\_\+seat} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_truck_a8dbcf5ff2f247abf11a6fc195808a642}\label{class_a_truck_a8dbcf5ff2f247abf11a6fc195808a642}} 
+\index{ATruck@{ATruck}!ATruck@{ATruck}}
+\index{ATruck@{ATruck}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{ATruck()}{ATruck()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_a_truck}{ATruck}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{7 \{}
+\DoxyCodeLine{8     \mbox{\hyperlink{class_a_core__vehicle_a3768712eaa0e6b2bbf813fe4daf8d11d}{Init}}(e\_vehicle\_type::Truck);}
+\DoxyCodeLine{9 \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_core__vehicle_a8fcf00dca214f231c59b811e194e751a}\label{class_a_core__vehicle_a8fcf00dca214f231c59b811e194e751a}} 
+\index{ATruck@{ATruck}!Accelerate@{Accelerate}}
+\index{Accelerate@{Accelerate}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Accelerate()}{Accelerate()}}
+{\footnotesize\ttfamily void Accelerate (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{220 \{}
+\DoxyCodeLine{221     \textcolor{keywordflow}{if} (m\_is\_player\_in\_first\_seat)}
+\DoxyCodeLine{222         GetVehicleMovementComponent()-\/>SetThrottleInput(\_value);}
+\DoxyCodeLine{223 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a4b591a51a5b9f4036c6ac0f825a0d24c}\label{class_a_core__vehicle_a4b591a51a5b9f4036c6ac0f825a0d24c}} 
+\index{ATruck@{ATruck}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{28 \{}
+\DoxyCodeLine{29     Super::BeginPlay();}
+\DoxyCodeLine{30     }
+\DoxyCodeLine{31     \textcolor{comment}{// 상호작용 UI 업데이트}}
+\DoxyCodeLine{32     \textcolor{keyword}{auto} custom\_game\_instance = Cast<UCustom\_game\_instance>(GetWorld()-\/>GetGameInstance());}
+\DoxyCodeLine{33     custom\_game\_instance-\/>dele\_update\_interaction\_widget\_comp.ExecuteIfBound(mp\_interaction\_widget\_comp, FString::Printf(TEXT(\textcolor{stringliteral}{"{}\%s 탑승하기"{}}), *m\_vehicle\_data.type));}
+\DoxyCodeLine{34 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a5e9096cdec891311b7f357c18a9925f4}\label{class_a_core__vehicle_a5e9096cdec891311b7f357c18a9925f4}} 
+\index{ATruck@{ATruck}!Brake@{Brake}}
+\index{Brake@{Brake}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Brake()}{Brake()}}
+{\footnotesize\ttfamily void Brake (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{226 \{}
+\DoxyCodeLine{227     \textcolor{keywordflow}{if} (m\_is\_player\_in\_first\_seat)}
+\DoxyCodeLine{228         GetVehicleMovementComponent()-\/>SetBrakeInput(\_value);}
+\DoxyCodeLine{229 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_ad7f06eb94b91c2f463a427c76386f58a}\label{class_a_core__vehicle_ad7f06eb94b91c2f463a427c76386f58a}} 
+\index{ATruck@{ATruck}!Change\_to\_first\_seat@{Change\_to\_first\_seat}}
+\index{Change\_to\_first\_seat@{Change\_to\_first\_seat}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_first\_seat()}{Change\_to\_first\_seat()}}
+{\footnotesize\ttfamily void Change\+\_\+to\+\_\+first\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{132 \{ \textcolor{keywordflow}{if} (!m\_player) \textcolor{keywordflow}{return};  Update\_player\_seat\_location(e\_seat\_type::FIRST); \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_ac9541c89ed8bcf88fbbaef1408b9f9c8}\label{class_a_core__vehicle_ac9541c89ed8bcf88fbbaef1408b9f9c8}} 
+\index{ATruck@{ATruck}!Change\_to\_fourth\_seat@{Change\_to\_fourth\_seat}}
+\index{Change\_to\_fourth\_seat@{Change\_to\_fourth\_seat}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_fourth\_seat()}{Change\_to\_fourth\_seat()}}
+{\footnotesize\ttfamily void Change\+\_\+to\+\_\+fourth\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{138 \{ \textcolor{keywordflow}{if} (m\_vehicle\_data.max\_seater == 2 || !m\_player) \textcolor{keywordflow}{return}; Update\_player\_seat\_location(e\_seat\_type::FOURTH); \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_ac0ee33df31f775a9786de591139ce8bd}\label{class_a_core__vehicle_ac0ee33df31f775a9786de591139ce8bd}} 
+\index{ATruck@{ATruck}!Change\_to\_second\_seat@{Change\_to\_second\_seat}}
+\index{Change\_to\_second\_seat@{Change\_to\_second\_seat}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_second\_seat()}{Change\_to\_second\_seat()}}
+{\footnotesize\ttfamily void Change\+\_\+to\+\_\+second\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{134 \{ \textcolor{keywordflow}{if} (!m\_player) \textcolor{keywordflow}{return}; Update\_player\_seat\_location(e\_seat\_type::SECOND); \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a83d3b2a89d96b39ea03de98b00115f1a}\label{class_a_core__vehicle_a83d3b2a89d96b39ea03de98b00115f1a}} 
+\index{ATruck@{ATruck}!Change\_to\_third\_seat@{Change\_to\_third\_seat}}
+\index{Change\_to\_third\_seat@{Change\_to\_third\_seat}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Change\_to\_third\_seat()}{Change\_to\_third\_seat()}}
+{\footnotesize\ttfamily void Change\+\_\+to\+\_\+third\+\_\+seat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{136 \{ \textcolor{keywordflow}{if} (m\_vehicle\_data.max\_seater == 2 || !m\_player) \textcolor{keywordflow}{return}; Update\_player\_seat\_location(e\_seat\_type::THIRD); \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_abdc772e0f28772f8ae29b31cebefa501}\label{class_a_core__vehicle_abdc772e0f28772f8ae29b31cebefa501}} 
+\index{ATruck@{ATruck}!Check\_available\_seat@{Check\_available\_seat}}
+\index{Check\_available\_seat@{Check\_available\_seat}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Check\_available\_seat()}{Check\_available\_seat()}}
+{\footnotesize\ttfamily bool Check\+\_\+available\+\_\+seat (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_a_custom__player}{ACustom\+\_\+player}} $\ast$}]{\+\_\+player }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{331 \{}
+\DoxyCodeLine{332     \textcolor{keywordflow}{if} (m\_current\_player\_count < m\_vehicle\_data.max\_seater -\/ 1)}
+\DoxyCodeLine{333     \{}
+\DoxyCodeLine{334         m\_player = \_player;}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336         \textcolor{comment}{// 빈 좌석 확인 후 위치 가져오기}}
+\DoxyCodeLine{337         Check\_for\_door\_pos();}
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339         \textcolor{keywordflow}{if} (!m\_map\_empty\_seat[\_player-\/>current\_seat\_type])}
+\DoxyCodeLine{340             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342         Set\_player\_into\_seat\_location();}
+\DoxyCodeLine{343         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{344     \}}
+\DoxyCodeLine{345     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{346 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a109021606ffcc4ad480ae5700ebcf1bf}\label{class_a_core__vehicle_a109021606ffcc4ad480ae5700ebcf1bf}} 
+\index{ATruck@{ATruck}!Check\_for\_door\_pos@{Check\_for\_door\_pos}}
+\index{Check\_for\_door\_pos@{Check\_for\_door\_pos}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Check\_for\_door\_pos()}{Check\_for\_door\_pos()}}
+{\footnotesize\ttfamily void Check\+\_\+for\+\_\+door\+\_\+pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{248 \{}
+\DoxyCodeLine{249     e\_seat\_type seat\_type = e\_seat\_type::NONE;}
+\DoxyCodeLine{250     \textcolor{keywordtype}{float} arr\_vec\_distance[4]\{ 0.f \};}
+\DoxyCodeLine{251     \textcolor{keywordtype}{bool}  is\_not\_near\_door = \textcolor{keyword}{false};}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253     \textcolor{comment}{// 벡터 확인}}
+\DoxyCodeLine{254     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < m\_vehicle\_data.max\_seater; i++)}
+\DoxyCodeLine{255     \{}
+\DoxyCodeLine{256         FVector player\_pos   = m\_player-\/>GetActorLocation();}
+\DoxyCodeLine{257         FVector car\_door\_pos = m\_map\_door\_pos[(e\_seat\_type)i];}
+\DoxyCodeLine{258         arr\_vec\_distance[i]  = FVector::Distance(player\_pos.GetAbs(), car\_door\_pos.GetAbs());}
+\DoxyCodeLine{259     \}}
+\DoxyCodeLine{260     \textcolor{comment}{// 문짝이 2개일 시}}
+\DoxyCodeLine{261     \textcolor{keywordflow}{if} (m\_vehicle\_data.max\_seater == 2)}
+\DoxyCodeLine{262     \{}
+\DoxyCodeLine{263         \textcolor{comment}{// 왼쪽 첫번째 좌석}}
+\DoxyCodeLine{264         \textcolor{keywordflow}{if}      (arr\_vec\_distance[0] < arr\_vec\_distance[1])}
+\DoxyCodeLine{265                  seat\_type = e\_seat\_type::FIRST;}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267         \textcolor{comment}{// 왼쪽 두번째 좌석}}
+\DoxyCodeLine{268         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (arr\_vec\_distance[1] < arr\_vec\_distance[0])}
+\DoxyCodeLine{269                  seat\_type = e\_seat\_type::SECOND;}
+\DoxyCodeLine{270     \}}
+\DoxyCodeLine{271     \textcolor{comment}{// 문짝이 4개일 시}}
+\DoxyCodeLine{272     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{273     \{}
+\DoxyCodeLine{274         \textcolor{comment}{// 왼쪽 첫번째 좌석}}
+\DoxyCodeLine{275         \textcolor{keywordflow}{if}      (arr\_vec\_distance[0] < arr\_vec\_distance[1] \&\&}
+\DoxyCodeLine{276                  arr\_vec\_distance[0] < arr\_vec\_distance[2] \&\&}
+\DoxyCodeLine{277                  arr\_vec\_distance[0] < arr\_vec\_distance[3])}
+\DoxyCodeLine{278                  seat\_type = e\_seat\_type::FIRST;}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280         \textcolor{comment}{// 왼쪽 두번째 좌석}}
+\DoxyCodeLine{281         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (arr\_vec\_distance[1] < arr\_vec\_distance[0] \&\&}
+\DoxyCodeLine{282                  arr\_vec\_distance[1] < arr\_vec\_distance[2] \&\&}
+\DoxyCodeLine{283                  arr\_vec\_distance[1] < arr\_vec\_distance[3])}
+\DoxyCodeLine{284                  seat\_type = e\_seat\_type::SECOND;}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286         \textcolor{comment}{// 오른쪽 첫번째 좌석}}
+\DoxyCodeLine{287         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (arr\_vec\_distance[2] < arr\_vec\_distance[3] \&\&}
+\DoxyCodeLine{288                  arr\_vec\_distance[2] < arr\_vec\_distance[0] \&\&}
+\DoxyCodeLine{289                  arr\_vec\_distance[2] < arr\_vec\_distance[1])}
+\DoxyCodeLine{290                  seat\_type = e\_seat\_type::THIRD;}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292         \textcolor{comment}{// 오른쪽 첫번째 좌석}}
+\DoxyCodeLine{293         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (arr\_vec\_distance[3] < arr\_vec\_distance[0] \&\&}
+\DoxyCodeLine{294                  arr\_vec\_distance[3] < arr\_vec\_distance[1] \&\&}
+\DoxyCodeLine{295                  arr\_vec\_distance[3] < arr\_vec\_distance[2])}
+\DoxyCodeLine{296                  seat\_type = e\_seat\_type::FOURTH;}
+\DoxyCodeLine{297     \}}
+\DoxyCodeLine{298     \textcolor{keywordflow}{if} (seat\_type != e\_seat\_type::NONE)}
+\DoxyCodeLine{299     \{}
+\DoxyCodeLine{300         m\_map\_empty\_seat[seat\_type] = \textcolor{keyword}{true};}
+\DoxyCodeLine{301         m\_player-\/>current\_seat\_type = seat\_type;}
+\DoxyCodeLine{302     \}}
+\DoxyCodeLine{303 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a8f7827d92bb0c87311f5a8b9bab0a5df}\label{class_a_core__vehicle_a8f7827d92bb0c87311f5a8b9bab0a5df}} 
+\index{ATruck@{ATruck}!Handling@{Handling}}
+\index{Handling@{Handling}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Handling()}{Handling()}}
+{\footnotesize\ttfamily void Handling (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{232 \{}
+\DoxyCodeLine{233     \textcolor{keywordflow}{if} (m\_is\_player\_in\_first\_seat)}
+\DoxyCodeLine{234         GetVehicleMovementComponent()-\/>SetSteeringInput(\_value);}
+\DoxyCodeLine{235 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a3768712eaa0e6b2bbf813fe4daf8d11d}\label{class_a_core__vehicle_a3768712eaa0e6b2bbf813fe4daf8d11d}} 
+\index{ATruck@{ATruck}!Init@{Init}}
+\index{Init@{Init}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily void Init (\begin{DoxyParamCaption}\item[{e\+\_\+vehicle\+\_\+type}]{\+\_\+vehicle\+\_\+type\+\_\+index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyParams}{매개변수}
+{\em 차량} & 종류 \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{72 \{}
+\DoxyCodeLine{73     AData\_table\_manager::arr\_vehicle\_data[(int)\_vehicle\_type\_index];}
+\DoxyCodeLine{74     Init\_skeletal\_mesh();}
+\DoxyCodeLine{75     Init\_camera();}
+\DoxyCodeLine{76     Init\_wheeled\_component();}
+\DoxyCodeLine{77     \mbox{\hyperlink{class_a_core__vehicle_a0c1b8ad634372c5359d22c4a681e0025}{Init\_car\_pos\_component}}();}
+\DoxyCodeLine{78     Init\_car\_pos\_data();}
+\DoxyCodeLine{79 \}}
+
+\end{DoxyCode}
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+\mbox{\Hypertarget{class_a_core__vehicle_a9735dd3225e607748bcde0ce2cf878a5}\label{class_a_core__vehicle_a9735dd3225e607748bcde0ce2cf878a5}} 
+\index{ATruck@{ATruck}!Init\_camera@{Init\_camera}}
+\index{Init\_camera@{Init\_camera}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Init\_camera()}{Init\_camera()}}
+{\footnotesize\ttfamily void Init\+\_\+camera (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{141 \{}
+\DoxyCodeLine{142     \textcolor{comment}{// 스프링 암 초기화 및 설정}}
+\DoxyCodeLine{143     mp\_spring\_arm\_comp = CreateDefaultSubobject<USpringArmComponent>(TEXT(\textcolor{stringliteral}{"{}Spring\_arm"{}}));}
+\DoxyCodeLine{144     mp\_spring\_arm\_comp-\/>SetupAttachment(GetMesh());}
+\DoxyCodeLine{145     mp\_spring\_arm\_comp-\/>TargetArmLength = m\_vehicle\_data.spring\_arm\_length;}
+\DoxyCodeLine{146     mp\_spring\_arm\_comp-\/>bUsePawnControlRotation = \textcolor{keyword}{true};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148     \textcolor{comment}{// 카메라 초기화 및 설정}}
+\DoxyCodeLine{149     mp\_camera\_comp = CreateDefaultSubobject<UCameraComponent>(TEXT(\textcolor{stringliteral}{"{}Camera"{}}));}
+\DoxyCodeLine{150     mp\_camera\_comp-\/>SetupAttachment(mp\_spring\_arm\_comp);}
+\DoxyCodeLine{151     mp\_camera\_comp-\/>SetRelativeRotation(FRotator::MakeFromEuler(m\_vehicle\_data.camera\_rotation));}
+\DoxyCodeLine{152     mp\_camera\_comp-\/>SetWorldLocation(m\_vehicle\_data.camera\_location);}
+\DoxyCodeLine{153 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a0c1b8ad634372c5359d22c4a681e0025}\label{class_a_core__vehicle_a0c1b8ad634372c5359d22c4a681e0025}} 
+\index{ATruck@{ATruck}!Init\_car\_pos\_component@{Init\_car\_pos\_component}}
+\index{Init\_car\_pos\_component@{Init\_car\_pos\_component}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Init\_car\_pos\_component()}{Init\_car\_pos\_component()}}
+{\footnotesize\ttfamily void Init\+\_\+car\+\_\+pos\+\_\+component (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+차량에 필요한 컴포넌트 초기화 해주는 함수 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{82 \{}
+\DoxyCodeLine{83     \textcolor{comment}{// 문짝 오브젝트 초기화}}
+\DoxyCodeLine{84     first\_door\_pos\_comp  = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}First\_Door\_pos"{}}));}
+\DoxyCodeLine{85     second\_door\_pos\_comp = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}Second\_Door\_pos"{}}));}
+\DoxyCodeLine{86     third\_door\_pos\_comp  = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}Third\_Door\_pos"{}}));}
+\DoxyCodeLine{87     fourth\_door\_pos\_comp = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}Fourth\_Door\_pos"{}}));}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     first\_door\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{90     second\_door\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{91     third\_door\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{92     fourth\_door\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{comment}{// 좌석 오브젝트 초기화}}
+\DoxyCodeLine{95     first\_seat\_pos\_comp  = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}First\_Seat\_pos"{}}));}
+\DoxyCodeLine{96     second\_seat\_pos\_comp = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}Second\_Seat\_pos"{}}));}
+\DoxyCodeLine{97     third\_seat\_pos\_comp  = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}Third\_Seat\_pos"{}}));}
+\DoxyCodeLine{98     fourth\_seat\_pos\_comp = CreateDefaultSubobject<USceneComponent>(TEXT(\textcolor{stringliteral}{"{}Fourth\_Seat\_pos"{}}));}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     first\_seat\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{101     second\_seat\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{102     third\_seat\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{103     fourth\_seat\_pos\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{104 \}}
+
+\end{DoxyCode}
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_core__vehicle_a853199b7b797929b7582c8393a524349}\label{class_a_core__vehicle_a853199b7b797929b7582c8393a524349}} 
+\index{ATruck@{ATruck}!Init\_car\_pos\_data@{Init\_car\_pos\_data}}
+\index{Init\_car\_pos\_data@{Init\_car\_pos\_data}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Init\_car\_pos\_data()}{Init\_car\_pos\_data()}}
+{\footnotesize\ttfamily void Init\+\_\+car\+\_\+pos\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{107 \{}
+\DoxyCodeLine{108     \textcolor{comment}{// 좌석 및 문짝 위치 초기화}}
+\DoxyCodeLine{109     m\_map\_door\_pos.Add(e\_seat\_type::FIRST, first\_door\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{110     m\_map\_door\_pos.Add(e\_seat\_type::SECOND, second\_door\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{111     m\_map\_seat\_pos.Add(e\_seat\_type::FIRST, first\_seat\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{112     m\_map\_seat\_pos.Add(e\_seat\_type::SECOND, second\_seat\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     \textcolor{keywordflow}{if}(m\_vehicle\_data.max\_seater == 4)}
+\DoxyCodeLine{115     \{}
+\DoxyCodeLine{116         m\_map\_door\_pos.Add(e\_seat\_type::THIRD, third\_door\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{117         m\_map\_door\_pos.Add(e\_seat\_type::FOURTH, fourth\_door\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{118         m\_map\_seat\_pos.Add(e\_seat\_type::THIRD, third\_seat\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{119         m\_map\_seat\_pos.Add(e\_seat\_type::FOURTH, fourth\_seat\_pos\_comp-\/>GetComponentLocation());}
+\DoxyCodeLine{120     \}}
+\DoxyCodeLine{121 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a4abc4cfb16e2e4f3506b102fb1f70b57}\label{class_a_core__vehicle_a4abc4cfb16e2e4f3506b102fb1f70b57}} 
+\index{ATruck@{ATruck}!Init\_skeletal\_mesh@{Init\_skeletal\_mesh}}
+\index{Init\_skeletal\_mesh@{Init\_skeletal\_mesh}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Init\_skeletal\_mesh()}{Init\_skeletal\_mesh()}}
+{\footnotesize\ttfamily void Init\+\_\+skeletal\+\_\+mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{156 \{}
+\DoxyCodeLine{157     \textcolor{comment}{// 경로로부터 메시 생성}}
+\DoxyCodeLine{158     ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*m\_vehicle\_data.mesh\_path);}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160     \textcolor{keywordflow}{if} (MESH.Succeeded())}
+\DoxyCodeLine{161         GetMesh()-\/>SetSkeletalMesh(MESH.Object);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     GetMesh()-\/>SetSimulatePhysics(\textcolor{keyword}{true});}
+\DoxyCodeLine{164     RootComponent = GetMesh();}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166     \textcolor{comment}{// 애님 인스턴스 초기화}}
+\DoxyCodeLine{167     \textcolor{keyword}{auto} anim\_instance = ConstructorHelpers::FClassFinder<UAnimInstance>(*m\_vehicle\_data.anim\_instance\_path);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169     \textcolor{keywordflow}{if} (anim\_instance.Succeeded())}
+\DoxyCodeLine{170         GetMesh()-\/>SetAnimInstanceClass(anim\_instance.Class);}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172     \textcolor{comment}{// 위젯 컴포넌트 초기화}}
+\DoxyCodeLine{173     mp\_interaction\_widget\_comp = CreateDefaultSubobject<UWidgetComponent>(TEXT(\textcolor{stringliteral}{"{}Interaction\_widget"{}}));}
+\DoxyCodeLine{174     mp\_interaction\_widget\_comp-\/>SetupAttachment(RootComponent);}
+\DoxyCodeLine{175 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a67d3dce9373ce66e25cf5ca71bb0c9fa}\label{class_a_core__vehicle_a67d3dce9373ce66e25cf5ca71bb0c9fa}} 
+\index{ATruck@{ATruck}!Init\_wheeled\_component@{Init\_wheeled\_component}}
+\index{Init\_wheeled\_component@{Init\_wheeled\_component}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Init\_wheeled\_component()}{Init\_wheeled\_component()}}
+{\footnotesize\ttfamily void Init\+\_\+wheeled\+\_\+component (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{178 \{}
+\DoxyCodeLine{179     UChaosWheeledVehicleMovementComponent* vehicle\_move\_comp = CastChecked<UChaosWheeledVehicleMovementComponent>(GetVehicleMovement());}
+\DoxyCodeLine{180      }
+\DoxyCodeLine{181     \textcolor{comment}{// 바퀴 설정}}
+\DoxyCodeLine{182     \textcolor{keyword}{auto} front\_wheel\_bp = ConstructorHelpers::FClassFinder<UChaosVehicleWheel>(*(mk\_wheel\_path + \textcolor{stringliteral}{"{}BP\_Front\_wheel"{}}));}
+\DoxyCodeLine{183     \textcolor{keyword}{auto} rear\_wheel\_bp  = ConstructorHelpers::FClassFinder<UChaosVehicleWheel>(*(mk\_wheel\_path + \textcolor{stringliteral}{"{}BP\_Rear\_wheel"{}}));}
+\DoxyCodeLine{184     \textcolor{keyword}{auto} float\_curve    = ConstructorHelpers::FObjectFinder<UCurveFloat>(*(mk\_wheel\_path + \textcolor{stringliteral}{"{}VehicleMovementComp\_ExternalCurve"{}}));}
+\DoxyCodeLine{185     }
+\DoxyCodeLine{186     \textcolor{comment}{// 예외처리}}
+\DoxyCodeLine{187     \textcolor{keywordflow}{if} (!front\_wheel\_bp.Succeeded() ||}
+\DoxyCodeLine{188         !rear\_wheel\_bp.Succeeded() ||}
+\DoxyCodeLine{189         !float\_curve.Succeeded())}
+\DoxyCodeLine{190         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     FChaosWheelSetup arr\_car\_wheels[4]\{ FChaosWheelSetup() \};}
+\DoxyCodeLine{193     arr\_car\_wheels[0].WheelClass = front\_wheel\_bp.Class;}
+\DoxyCodeLine{194     arr\_car\_wheels[1].WheelClass = front\_wheel\_bp.Class;}
+\DoxyCodeLine{195     arr\_car\_wheels[2].WheelClass = rear\_wheel\_bp.Class;}
+\DoxyCodeLine{196     arr\_car\_wheels[3].WheelClass = rear\_wheel\_bp.Class;}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198     arr\_car\_wheels[0].BoneName = \textcolor{stringliteral}{"{}Wheel\_Front\_Left"{}};}
+\DoxyCodeLine{199     arr\_car\_wheels[1].BoneName = \textcolor{stringliteral}{"{}Wheel\_Front\_Right"{}};}
+\DoxyCodeLine{200     arr\_car\_wheels[2].BoneName = \textcolor{stringliteral}{"{}Wheel\_Rear\_Left"{}};}
+\DoxyCodeLine{201     arr\_car\_wheels[3].BoneName = \textcolor{stringliteral}{"{}Wheel\_Rear\_Right"{}};}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 4; i++)}
+\DoxyCodeLine{204         vehicle\_move\_comp-\/>WheelSetups.Add(arr\_car\_wheels[i]);}
+\DoxyCodeLine{205     }
+\DoxyCodeLine{206     vehicle\_move\_comp-\/>EngineSetup.TorqueCurve.ExternalCurve = float\_curve.Object;}
+\DoxyCodeLine{207 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a04b7870de7144be6a18869197354da68}\label{class_a_core__vehicle_a04b7870de7144be6a18869197354da68}} 
+\index{ATruck@{ATruck}!Look\_up@{Look\_up}}
+\index{Look\_up@{Look\_up}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Look\_up()}{Look\_up()}}
+{\footnotesize\ttfamily void Look\+\_\+up (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{238 \{}
+\DoxyCodeLine{239     AddControllerPitchInput(\_value);}
+\DoxyCodeLine{240 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_ab5d3da7c210ad218c477e341ae2c24b8}\label{class_a_core__vehicle_ab5d3da7c210ad218c477e341ae2c24b8}} 
+\index{ATruck@{ATruck}!Player\_exit@{Player\_exit}}
+\index{Player\_exit@{Player\_exit}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Player\_exit()}{Player\_exit()}}
+{\footnotesize\ttfamily void Player\+\_\+exit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{210 \{}
+\DoxyCodeLine{211     \textcolor{comment}{// 플레이어 초기세팅으로}}
+\DoxyCodeLine{212     \textcolor{keyword}{auto} player\_controller = UGameplayStatics::GetPlayerController(\textcolor{keyword}{this}, 0);}
+\DoxyCodeLine{213     player\_controller-\/>Possess(m\_player);}
+\DoxyCodeLine{214     m\_map\_empty\_seat[m\_player-\/>current\_seat\_type] = \textcolor{keyword}{false};}
+\DoxyCodeLine{215     m\_player-\/>Exit\_from\_vehicle(m\_map\_door\_pos[m\_player-\/>current\_seat\_type]);}
+\DoxyCodeLine{216     m\_current\_player\_count-\/-\/;}
+\DoxyCodeLine{217 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a558f81dceffc72a7246a4e63aeb7a90c}\label{class_a_core__vehicle_a558f81dceffc72a7246a4e63aeb7a90c}} 
+\index{ATruck@{ATruck}!Set\_player\_into\_seat\_location@{Set\_player\_into\_seat\_location}}
+\index{Set\_player\_into\_seat\_location@{Set\_player\_into\_seat\_location}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Set\_player\_into\_seat\_location()}{Set\_player\_into\_seat\_location()}}
+{\footnotesize\ttfamily void Set\+\_\+player\+\_\+into\+\_\+seat\+\_\+location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{306 \{}
+\DoxyCodeLine{307     \textcolor{keyword}{auto} player\_controller = UGameplayStatics::GetPlayerController(\textcolor{keyword}{this}, 0);}
+\DoxyCodeLine{308     \textcolor{keyword}{auto} player\_collider   = m\_player-\/>GetCapsuleComponent();}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310     \textcolor{comment}{// 플레이어 세팅}}
+\DoxyCodeLine{311     m\_player-\/>AttachToActor(\textcolor{keyword}{this}, FAttachmentTransformRules::SnapToTargetNotIncludingScale);}
+\DoxyCodeLine{312     m\_player-\/>SetActorLocation(m\_map\_seat\_pos[m\_player-\/>current\_seat\_type]);}
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314     \textcolor{comment}{// 플레이어 콜라이더 세팅}}
+\DoxyCodeLine{315     player\_collider-\/>SetMobility(EComponentMobility::Static);}
+\DoxyCodeLine{316     player\_collider-\/>SetCollisionProfileName(\textcolor{stringliteral}{"{}OverlapAll"{}});}
+\DoxyCodeLine{317     player\_controller-\/>Possess(\textcolor{keyword}{this});}
+\DoxyCodeLine{318     m\_current\_player\_count++;}
+\DoxyCodeLine{319 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_af8bd87e44fa97844ddd8b83e73dd2581}\label{class_a_core__vehicle_af8bd87e44fa97844ddd8b83e73dd2581}} 
+\index{ATruck@{ATruck}!SetupPlayerInputComponent@{SetupPlayerInputComponent}}
+\index{SetupPlayerInputComponent@{SetupPlayerInputComponent}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{SetupPlayerInputComponent()}{SetupPlayerInputComponent()}}
+{\footnotesize\ttfamily void Setup\+Player\+Input\+Component (\begin{DoxyParamCaption}\item[{class UInput\+Component $\ast$}]{\+\_\+player\+\_\+input\+\_\+component }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{54 \{    }
+\DoxyCodeLine{55     Super::SetupPlayerInputComponent(InputComponent);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{comment}{// 운전석}}
+\DoxyCodeLine{58     InputComponent-\/>BindAxis(TEXT(\textcolor{stringliteral}{"{}Set\_throttle"{}}), \textcolor{keyword}{this}, \&ACore\_vehicle::Accelerate);}
+\DoxyCodeLine{59     InputComponent-\/>BindAxis(TEXT(\textcolor{stringliteral}{"{}Set\_brake"{}}),    \textcolor{keyword}{this}, \&ACore\_vehicle::Brake);}
+\DoxyCodeLine{60     InputComponent-\/>BindAxis(TEXT(\textcolor{stringliteral}{"{}Set\_steering"{}}), \textcolor{keyword}{this}, \&ACore\_vehicle::Handling);}
+\DoxyCodeLine{61     InputComponent-\/>BindAxis(TEXT(\textcolor{stringliteral}{"{}Look\_up"{}}),      \textcolor{keyword}{this}, \&ACore\_vehicle::Look\_up);}
+\DoxyCodeLine{62     InputComponent-\/>BindAxis(TEXT(\textcolor{stringliteral}{"{}Turn"{}}),         \textcolor{keyword}{this}, \&ACore\_vehicle::Turn);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     InputComponent-\/>BindAction(TEXT(\textcolor{stringliteral}{"{}Interact"{}}),              EInputEvent::IE\_Pressed, \textcolor{keyword}{this}, \&ACore\_vehicle::Player\_exit);}
+\DoxyCodeLine{65     InputComponent-\/>BindAction(TEXT(\textcolor{stringliteral}{"{}Change\_to\_first\_seat"{}}),  EInputEvent::IE\_Pressed, \textcolor{keyword}{this}, \&ACore\_vehicle::Change\_to\_first\_seat);}
+\DoxyCodeLine{66     InputComponent-\/>BindAction(TEXT(\textcolor{stringliteral}{"{}Change\_to\_second\_seat"{}}), EInputEvent::IE\_Pressed, \textcolor{keyword}{this}, \&ACore\_vehicle::Change\_to\_second\_seat);}
+\DoxyCodeLine{67     InputComponent-\/>BindAction(TEXT(\textcolor{stringliteral}{"{}Change\_to\_third\_seat"{}}),  EInputEvent::IE\_Pressed, \textcolor{keyword}{this}, \&ACore\_vehicle::Change\_to\_third\_seat);}
+\DoxyCodeLine{68     InputComponent-\/>BindAction(TEXT(\textcolor{stringliteral}{"{}Change\_to\_fourth\_seat"{}}), EInputEvent::IE\_Pressed, \textcolor{keyword}{this}, \&ACore\_vehicle::Change\_to\_fourth\_seat);}
+\DoxyCodeLine{69 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_ae8350d113f0792e739426f2c467973f6}\label{class_a_core__vehicle_ae8350d113f0792e739426f2c467973f6}} 
+\index{ATruck@{ATruck}!Tick@{Tick}}
+\index{Tick@{Tick}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void Tick (\begin{DoxyParamCaption}\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{38 \{}
+\DoxyCodeLine{39     Super::Tick(\_delta\_time);}
+\DoxyCodeLine{40     mp\_interaction\_widget\_comp-\/>SetVisibility(is\_collided);}
+\DoxyCodeLine{41     Update\_car\_pos\_data();}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{keywordflow}{if}(m\_player)}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45         \textcolor{keywordflow}{if} (m\_player-\/>current\_seat\_type == e\_seat\_type::FIRST)}
+\DoxyCodeLine{46             m\_is\_player\_in\_first\_seat = \textcolor{keyword}{true};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{49             m\_is\_player\_in\_first\_seat = \textcolor{keyword}{false};}
+\DoxyCodeLine{50     \}}
+\DoxyCodeLine{51 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_a0d3ea275882d908ebe1095396dc3eb88}\label{class_a_core__vehicle_a0d3ea275882d908ebe1095396dc3eb88}} 
+\index{ATruck@{ATruck}!Turn@{Turn}}
+\index{Turn@{Turn}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Turn()}{Turn()}}
+{\footnotesize\ttfamily void Turn (\begin{DoxyParamCaption}\item[{float}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{243 \{}
+\DoxyCodeLine{244     AddControllerYawInput(\_value);}
+\DoxyCodeLine{245 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_adf0517ed3b818c351595c2b144050701}\label{class_a_core__vehicle_adf0517ed3b818c351595c2b144050701}} 
+\index{ATruck@{ATruck}!Update\_car\_pos\_data@{Update\_car\_pos\_data}}
+\index{Update\_car\_pos\_data@{Update\_car\_pos\_data}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Update\_car\_pos\_data()}{Update\_car\_pos\_data()}}
+{\footnotesize\ttfamily void Update\+\_\+car\+\_\+pos\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{124 \{}
+\DoxyCodeLine{125     \textcolor{comment}{// 좌석 및 문짝 위치 업데이트}}
+\DoxyCodeLine{126     m\_map\_door\_pos[e\_seat\_type::FIRST]  = first\_door\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{127     m\_map\_door\_pos[e\_seat\_type::SECOND] = second\_door\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{128     m\_map\_seat\_pos[e\_seat\_type::FIRST]  = first\_seat\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{129     m\_map\_seat\_pos[e\_seat\_type::SECOND] = second\_seat\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     \textcolor{keywordflow}{if} (m\_vehicle\_data.max\_seater == 4)}
+\DoxyCodeLine{132     \{}
+\DoxyCodeLine{133         m\_map\_door\_pos[e\_seat\_type::THIRD] = third\_door\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{134         m\_map\_door\_pos[e\_seat\_type::FOURTH] = fourth\_door\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{135         m\_map\_seat\_pos[e\_seat\_type::THIRD] = third\_seat\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{136         m\_map\_seat\_pos[e\_seat\_type::FOURTH] = fourth\_seat\_pos\_comp-\/>GetComponentLocation();}
+\DoxyCodeLine{137     \}}
+\DoxyCodeLine{138 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_core__vehicle_ae58fe7e52187c8e6b43d871566273fa1}\label{class_a_core__vehicle_ae58fe7e52187c8e6b43d871566273fa1}} 
+\index{ATruck@{ATruck}!Update\_player\_seat\_location@{Update\_player\_seat\_location}}
+\index{Update\_player\_seat\_location@{Update\_player\_seat\_location}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{Update\_player\_seat\_location()}{Update\_player\_seat\_location()}}
+{\footnotesize\ttfamily void Update\+\_\+player\+\_\+seat\+\_\+location (\begin{DoxyParamCaption}\item[{e\+\_\+seat\+\_\+type}]{\+\_\+seat\+\_\+type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{322 \{}
+\DoxyCodeLine{323     \textcolor{keyword}{auto} player\_collider = m\_player-\/>GetCapsuleComponent();}
+\DoxyCodeLine{324     player\_collider-\/>SetMobility(EComponentMobility::Movable);}
+\DoxyCodeLine{325     m\_player-\/>current\_seat\_type = \_seat\_type;}
+\DoxyCodeLine{326     m\_player-\/>SetActorLocation(m\_map\_seat\_pos[\_seat\_type]);}
+\DoxyCodeLine{327     player\_collider-\/>SetMobility(EComponentMobility::Static);}
+\DoxyCodeLine{328 \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{필드 문서화}
+\mbox{\Hypertarget{class_a_core__vehicle_ab77c7b55380250a858fd7d74f44405fa}\label{class_a_core__vehicle_ab77c7b55380250a858fd7d74f44405fa}} 
+\index{ATruck@{ATruck}!m\_map\_empty\_seat@{m\_map\_empty\_seat}}
+\index{m\_map\_empty\_seat@{m\_map\_empty\_seat}!ATruck@{ATruck}}
+\doxysubsubsection{\texorpdfstring{m\_map\_empty\_seat}{m\_map\_empty\_seat}}
+{\footnotesize\ttfamily TMap$<$e\+\_\+seat\+\_\+type, bool$>$ m\+\_\+map\+\_\+empty\+\_\+seat\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [inherited]}}
+
+{\bfseries 초기값\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{        \{ e\_seat\_type::FIRST, \textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ e\_seat\_type::SECOND,\textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ e\_seat\_type::THIRD, \textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ e\_seat\_type::FOURTH,\textcolor{keyword}{false} \},}
+\DoxyCodeLine{        \{ e\_seat\_type::NONE,  \textcolor{keyword}{false} \}}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Characters/Truck.\+h\item 
+Source/\+Characters/Truck.\+cpp\end{DoxyCompactItemize}

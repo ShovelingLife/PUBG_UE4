@@ -1,0 +1,117 @@
+\hypertarget{class_u_inventory___u_i}{}\doxysection{UInventory\+\_\+\+UI 클래스 참조}
+\label{class_u_inventory___u_i}\index{UInventory\_UI@{UInventory\_UI}}
+
+
+{\ttfamily \#include $<$Inventory\+\_\+\+UI.\+h$>$}
+
+
+
+UInventory\+\_\+\+UI에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+UInventory\+\_\+\+UI에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_u_inventory___u_i_a8babdbd8f21eb8c7fe8f3dffba94990b}{UPROPERTY}} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) \mbox{\hyperlink{class_u_character___slot___u_i}{UCharacter\+\_\+\+Slot\+\_\+\+UI}} $\ast$Character\+\_\+\+Slot\+\_\+\+UI
+\item 
+\mbox{\hyperlink{class_u_inventory___u_i_a5ac37e34dbefc110859b491d9f84d850}{UPROPERTY}} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) \mbox{\hyperlink{class_u_inventory__list___u_i}{UInventory\+\_\+list\+\_\+\+UI}} $\ast$Inventory\+\_\+list\+\_\+\+UI
+\item 
+\mbox{\hyperlink{class_u_inventory___u_i_addaa2d190b421160f4a28315fa6b3817}{UPROPERTY}} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) \mbox{\hyperlink{class_u_inventory___weapon___slot___u_i}{UInventory\+\_\+\+Weapon\+\_\+\+Slot\+\_\+\+UI}} $\ast$Inventory\+\_\+\+Weapon\+\_\+\+Slot\+\_\+\+UI
+\end{DoxyCompactItemize}
+\doxysubsection*{Public 속성}
+\begin{DoxyCompactItemize}
+\item 
+class UCursor\+\_\+\+UI $\ast$ \mbox{\hyperlink{class_u_inventory___u_i_ac407322036a196276cf9c903f64026ca}{p\+\_\+icon\+\_\+\+UI}} = nullptr
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_u_inventory___u_i_a2ee4bbb3f4c8bb5fb3bd205d514a0eb5}{Native\+Construct}} () override
+\item 
+virtual void \mbox{\hyperlink{class_u_inventory___u_i_a07a54a647d2f8e4daeff2019aff49964}{Native\+Tick}} (const FGeometry \&, float) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Private 속성}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_a_u_i__manager}{AUI\+\_\+manager}} $\ast$ \mbox{\hyperlink{class_u_inventory___u_i_aedc65502ddf9325ef2a8cc27dc54d6e8}{mp\+\_\+\+UI\+\_\+manager}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_inventory___u_i_8h_source}{Inventory\+\_\+\+UI.\+h}} 파일의 \mbox{\hyperlink{_inventory___u_i_8h_source_l00014}{14}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_u_inventory___u_i_a2ee4bbb3f4c8bb5fb3bd205d514a0eb5}\label{class_u_inventory___u_i_a2ee4bbb3f4c8bb5fb3bd205d514a0eb5}} 
+\index{UInventory\_UI@{UInventory\_UI}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily void UInventory\+\_\+\+UI\+::\+Native\+Construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_inventory___u_i_8cpp_source}{Inventory\+\_\+\+UI.\+cpp}} 파일의 \mbox{\hyperlink{_inventory___u_i_8cpp_source_l00012}{12}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_u_inventory___u_i_a07a54a647d2f8e4daeff2019aff49964}\label{class_u_inventory___u_i_a07a54a647d2f8e4daeff2019aff49964}} 
+\index{UInventory\_UI@{UInventory\_UI}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily void UInventory\+\_\+\+UI\+::\+Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{\+\_\+geometry,  }\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_inventory___u_i_8cpp_source}{Inventory\+\_\+\+UI.\+cpp}} 파일의 \mbox{\hyperlink{_inventory___u_i_8cpp_source_l00020}{20}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_u_inventory___u_i_a8babdbd8f21eb8c7fe8f3dffba94990b}\label{class_u_inventory___u_i_a8babdbd8f21eb8c7fe8f3dffba94990b}} 
+\index{UInventory\_UI@{UInventory\_UI}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily UInventory\+\_\+\+UI\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Blueprint\+Read\+Write}]{,  }\item[{meta}]{ = {\ttfamily (BindWidget)} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_u_inventory___u_i_a5ac37e34dbefc110859b491d9f84d850}\label{class_u_inventory___u_i_a5ac37e34dbefc110859b491d9f84d850}} 
+\index{UInventory\_UI@{UInventory\_UI}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily UInventory\+\_\+\+UI\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Blueprint\+Read\+Write}]{,  }\item[{meta}]{ = {\ttfamily (BindWidget)} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_u_inventory___u_i_addaa2d190b421160f4a28315fa6b3817}\label{class_u_inventory___u_i_addaa2d190b421160f4a28315fa6b3817}} 
+\index{UInventory\_UI@{UInventory\_UI}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily UInventory\+\_\+\+UI\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Blueprint\+Read\+Write}]{,  }\item[{meta}]{ = {\ttfamily (BindWidget)} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_u_inventory___u_i_aedc65502ddf9325ef2a8cc27dc54d6e8}\label{class_u_inventory___u_i_aedc65502ddf9325ef2a8cc27dc54d6e8}} 
+\index{UInventory\_UI@{UInventory\_UI}!mp\_UI\_manager@{mp\_UI\_manager}}
+\index{mp\_UI\_manager@{mp\_UI\_manager}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{mp\_UI\_manager}{mp\_UI\_manager}}
+{\footnotesize\ttfamily class \mbox{\hyperlink{class_a_u_i__manager}{AUI\+\_\+manager}}$\ast$ UInventory\+\_\+\+UI\+::mp\+\_\+\+UI\+\_\+manager\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_inventory___u_i_8h_source}{Inventory\+\_\+\+UI.\+h}} 파일의 \mbox{\hyperlink{_inventory___u_i_8h_source_l00019}{19}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_u_inventory___u_i_ac407322036a196276cf9c903f64026ca}\label{class_u_inventory___u_i_ac407322036a196276cf9c903f64026ca}} 
+\index{UInventory\_UI@{UInventory\_UI}!p\_icon\_UI@{p\_icon\_UI}}
+\index{p\_icon\_UI@{p\_icon\_UI}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{p\_icon\_UI}{p\_icon\_UI}}
+{\footnotesize\ttfamily class UCursor\+\_\+\+UI$\ast$ UInventory\+\_\+\+UI\+::p\+\_\+icon\+\_\+\+UI = nullptr}
+
+
+
+\mbox{\hyperlink{_inventory___u_i_8h_source}{Inventory\+\_\+\+UI.\+h}} 파일의 \mbox{\hyperlink{_inventory___u_i_8h_source_l00026}{26}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+UI\+\_\+\+PUBG/\mbox{\hyperlink{_inventory___u_i_8h}{Inventory\+\_\+\+UI.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+UI\+\_\+\+PUBG/\mbox{\hyperlink{_inventory___u_i_8cpp}{Inventory\+\_\+\+UI.\+cpp}}\end{DoxyCompactItemize}

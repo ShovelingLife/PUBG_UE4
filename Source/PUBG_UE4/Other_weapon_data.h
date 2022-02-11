@@ -1,3 +1,12 @@
+Ôªø/**
+ * \file Other_weapon_data.h
+ *
+ * \brief Í∏∞ÌÉÄ Î¨¥Í∏∞ Îç∞Ïù¥ÌÑ∞
+ *
+ * \ingroup PUBG_UE4
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -5,58 +14,41 @@
 #include "Engine/DataTable.h"
 #include "Other_weapon_data.generated.h"
 
-// CSV∑Œ∫Œ≈Õ ∞°¡ˆ∞Ìø√ ±‚≈∏ π´±‚(≈ı√¥∑˘,±Ÿ¡¢) ¡§∫∏ ±∏¡∂√º
+/**
+  * \brief CSVÎ°úÎ∂ÄÌÑ∞ Í∞ÄÏßÄÍ≥†Ïò¨ Í∏∞ÌÉÄ Î¨¥Í∏∞(Ìà¨Ï≤ôÎ•ò,Í∑ºÏ†ë) Ï†ïÎ≥¥ Íµ¨Ï°∞Ï≤¥
+ */
 USTRUCT(BlueprintType)
 struct Fs_other_weapon_data : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-		FString type = "";
+	/**
+	  * \brief Í∏∞ÌÉÄ Ïª¥Ìè¨ÎÑåÌä∏ Í≤ΩÎ°ú Í¥ÄÎ†®
+	 */
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString type		  = "";
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString weapon_group  = "";
+    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString audio_path	  = "";
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString particle_path = "";
 
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-		FString weapon_group = "";
+	/**
+	  * \brief Ï∂©ÎèåÏ≤¥ Ïª¥Ìè¨ÎÑåÌä∏ Í¥ÄÎ†®
+	 */
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FVector collider_size = FVector::ZeroVector;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FVector collider_pos  = FVector::ZeroVector;
 
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FString audio_path = "";
-
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FString particle_path = "";
-
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FVector collider_size = FVector::ZeroVector;
-
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	FVector collider_pos = FVector::ZeroVector;
-
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-	float damage = 0.f;
-
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data)
-        float radius = 0.f;
-
+	/**
+	  * \brief Î¨¥Í∏∞ Ï†ïÎ≥¥ Í¥ÄÎ†®
+	 */
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float damage = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float radius = 0.f;
     FString mesh_path = "";
 
 public:
 	Fs_other_weapon_data() = default;
-
 };
 
 UCLASS()
 class PUBG_UE4_API AOther_weapon_data : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AOther_weapon_data();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	GENERATED_BODY()	
 };

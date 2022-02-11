@@ -1,0 +1,99 @@
+\hypertarget{_player___state___u_i_8cpp_source}{}\doxysection{Player\+\_\+\+State\+\_\+\+UI.\+cpp}
+\label{_player___state___u_i_8cpp_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Player\_State\_UI.cpp@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Player\_State\_UI.cpp}}
+\mbox{\hyperlink{_player___state___u_i_8cpp}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_player___state___u_i_8h}{Player\_State\_UI.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00002}00002 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_u_i__manager_8h}{UI\_manager.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_custom__player_8h}{Characters/Custom\_player.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00004}00004 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_core__weapon_8h}{Player\_weapons/Core\_weapon.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00005}00005 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_weapon__manager_8h}{Player\_weapons/Weapon\_manager.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00006}00006 \textcolor{preprocessor}{\#include "{}Components/ProgressBar.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00007}00007 \textcolor{preprocessor}{\#include "{}Components/Image.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00008}00008 \textcolor{preprocessor}{\#include "{}Components/TextBlock.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00009}00009 \textcolor{preprocessor}{\#include "{}Kismet/GameplayStatics.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00011}\mbox{\hyperlink{class_u_player___state___u_i_a5b92ebe80e11b2033638341c889433cf}{00011}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player___state___u_i_a5b92ebe80e11b2033638341c889433cf}{UPlayer\_State\_UI::NativeConstruct}}()}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00012}00012 \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00013}00013     Super::NativeConstruct();}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00014}00014     \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}} = Cast<ACustom\_player>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00015}00015 \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00017}\mbox{\hyperlink{class_u_player___state___u_i_a5301c2cca102ff9fe3186b388673f226}{00017}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player___state___u_i_a5301c2cca102ff9fe3186b388673f226}{UPlayer\_State\_UI::NativeTick}}(\textcolor{keyword}{const} FGeometry\& \_my\_geometry, \textcolor{keywordtype}{float} \_delta\_time)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00018}00018 \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00019}00019     Super::NativeTick(\_my\_geometry, \_delta\_time);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00021}00021     \textcolor{keywordflow}{if} (!mp\_UI\_manager)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00022}00022         mp\_UI\_manager = Cast<AUI\_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI\_manager::StaticClass()));}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00023}00023 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00024}00024     \mbox{\hyperlink{class_u_player___state___u_i_a92186933581be7cb8930a63b4ce4cddc}{Update\_aim\_UI}}();}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00025}00025     \mbox{\hyperlink{class_u_player___state___u_i_a133e9344c40df2d6ce1b575870495b00}{Update\_bullet\_count\_UI}}();}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00026}00026     \mbox{\hyperlink{class_u_player___state___u_i_aa7c90ad01d6fd5deef93e0df47085847}{Update\_shoot\_mode}}();}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00027}00027     \mbox{\hyperlink{class_u_player___state___u_i_a4baafc88b66d8b209be9ba6bd4b5c05c}{Update\_oxygen\_bar\_UI}}(\_delta\_time);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00028}00028 \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00030}\mbox{\hyperlink{class_u_player___state___u_i_a92186933581be7cb8930a63b4ce4cddc}{00030}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player___state___u_i_a92186933581be7cb8930a63b4ce4cddc}{UPlayer\_State\_UI::Update\_aim\_UI}}()}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00031}00031 \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00033}00033     \textcolor{comment}{//if (is\_aiming)}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00034}00034     \textcolor{comment}{//\{}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00035}00035     \textcolor{comment}{//    FWidgetTransform reticle\_img\_trans;}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00036}00036     \textcolor{comment}{//    float mouse\_posX = 0.f, mouse\_posY = 0.f;}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00037}00037     \textcolor{comment}{//    mp\_user\_ui-\/>Reticle\_img-\/>SetVisibility(ESlateVisibility::Visible);}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00038}00038     \textcolor{comment}{//    reticle\_img\_trans.Translation.Set(mouse\_posX, mouse\_posY);}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00039}00039     \textcolor{comment}{//    UGameplayStatics::GetPlayerController(GetWorld(), 0)-\/>GetMousePosition(mouse\_posX, mouse\_posY);}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00040}00040     \textcolor{comment}{//    mp\_user\_ui-\/>Reticle\_img-\/>SetRenderTransform(reticle\_img\_trans);}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00041}00041     \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00042}00042     \textcolor{comment}{//else}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00043}00043     \textcolor{comment}{//    mp\_user\_ui-\/>Reticle\_img-\/>SetVisibility(ESlateVisibility::Hidden);}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00044}00044 \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00045}00045 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00046}\mbox{\hyperlink{class_u_player___state___u_i_a133e9344c40df2d6ce1b575870495b00}{00046}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player___state___u_i_a133e9344c40df2d6ce1b575870495b00}{UPlayer\_State\_UI::Update\_bullet\_count\_UI}}()}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00047}00047 \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00048}00048     \textcolor{keyword}{auto} p\_weapon\_manager = \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a097b214e2b74b0b12b82f0ffadfd3674}{Get\_weapon\_manager}}();}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00049}00049     \textcolor{keyword}{auto} p\_weapon         = p\_weapon\_manager-\/>\mbox{\hyperlink{class_a_weapon__manager_a24bc84ec406d1277dd5561e8fdfd67b7}{Get\_weapon}}(p\_weapon\_manager-\/>current\_weapon\_type);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00050}00050 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00051}00051     \textcolor{keywordflow}{if} (!p\_weapon)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00052}00052         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00053}00053 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00054}00054     \textcolor{comment}{// 현재 및 최대 총알 개수 설정}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00055}00055     \textcolor{keywordflow}{if} (p\_weapon-\/>IsA<\mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}>())}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00056}00056     \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00057}00057         \textcolor{keyword}{auto} p\_gun = Cast<ACore\_weapon>(p\_weapon);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00058}00058         Magazine\_current\_text-\/>SetText(FText::FromString(FString::FromInt(p\_gun-\/>weapon\_data.current\_bullet\_count)));}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00059}00059         Magazine\_total\_text-\/>SetText(FText::FromString(FString::FromInt(p\_gun-\/>weapon\_data.max\_bullet\_count)));}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00060}00060     \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00061}00061 \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00062}00062 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00063}\mbox{\hyperlink{class_u_player___state___u_i_aa7c90ad01d6fd5deef93e0df47085847}{00063}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player___state___u_i_aa7c90ad01d6fd5deef93e0df47085847}{UPlayer\_State\_UI::Update\_shoot\_mode}}()}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00064}00064 \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00065}00065     \textcolor{keyword}{auto} p\_weapon\_manager = \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a097b214e2b74b0b12b82f0ffadfd3674}{Get\_weapon\_manager}}();}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00066}00066     \textcolor{keyword}{auto} p\_weapon         = p\_weapon\_manager-\/>\mbox{\hyperlink{class_a_weapon__manager_a24bc84ec406d1277dd5561e8fdfd67b7}{Get\_weapon}}(p\_weapon\_manager-\/>current\_weapon\_type);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00067}00067 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00068}00068     \textcolor{keywordflow}{if} (!p\_weapon)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00069}00069         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00070}00070 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00071}00071     \textcolor{keywordflow}{if} (mp\_UI\_manager \&\&}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00072}00072         p\_weapon-\/>IsA<\mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}>())}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00073}00073     \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00074}00074         \textcolor{keyword}{auto} p\_gun = Cast<ACore\_weapon>(p\_weapon);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00075}00075         BoltAction\_img-\/>SetVisibility(ESlateVisibility::Visible);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00076}00076         BoltAction\_img-\/>SetBrushFromTexture(Cast<UTexture2D>(mp\_UI\_manager-\/>map\_player\_ui\_tex[(\textcolor{keywordtype}{int})p\_gun-\/>gun\_shoot\_type]));}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00077}00077     \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00078}00078     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00079}00079         BoltAction\_img-\/>SetVisibility(ESlateVisibility::Hidden);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00080}00080 \}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00081}00081 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00082}\mbox{\hyperlink{class_u_player___state___u_i_a4baafc88b66d8b209be9ba6bd4b5c05c}{00082}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player___state___u_i_a4baafc88b66d8b209be9ba6bd4b5c05c}{UPlayer\_State\_UI::Update\_oxygen\_bar\_UI}}(\textcolor{keywordtype}{float} \_delta\_time)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00083}00083 \{}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00084}00084     \textcolor{comment}{// 현재 뛰고있음}}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00085}00085     \textcolor{keywordflow}{if}      (\mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a3d60f5d36aab095c2fe5c1ca17ab0c94}{is\_sprinting}} \&\&}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00086}00086              \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}{current\_oxygen}} > 0.f)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00087}00087              \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}{current\_oxygen}} -\/= 0.001f;}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00088}00088 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00089}00089     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!\mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a3d60f5d36aab095c2fe5c1ca17ab0c94}{is\_sprinting}} \&\&}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00090}00090               \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}{current\_oxygen}} < 1.f)}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00091}00091               \mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}{current\_oxygen}} += (\_delta\_time * 0.03);}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00092}00092 }
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00093}00093     Oxygen\_bar-\/>SetPercent(\mbox{\hyperlink{class_u_player___state___u_i_a3c4a80fbd66cf5fb3279f9f6d9921f2d}{p\_player}}-\/>\mbox{\hyperlink{class_a_custom__player_a32482a3ce2539d3d6df1d999c276b460}{current\_oxygen}});}
+\DoxyCodeLine{\Hypertarget{_player___state___u_i_8cpp_source_l00094}00094 \}}
+
+\end{DoxyCode}

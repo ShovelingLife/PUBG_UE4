@@ -1,4 +1,4 @@
-#include "Weapon_manager.h"
+ï»¿#include "Weapon_manager.h"
 #include "Core_bullet.h"
 #include "Core_melee_weapon.h"
 #include "Core_throwable_weapon.h"
@@ -36,6 +36,11 @@ void AWeapon_manager::Tick(float _delta_time)
     Check_for_equipped_weapon();
 }
 
+void AWeapon_manager::Check_for_equipped_weapon()
+{
+    //
+}
+
 void AWeapon_manager::Update_current_equipped_weapon()
 {
     arr_is_weapon_equipped[(int)e_current_weapon_type::FIRST]     = (p_first_gun  != nullptr);
@@ -47,35 +52,35 @@ void AWeapon_manager::Update_current_equipped_weapon()
 
 void AWeapon_manager::Play_sound(e_weapon_sound_type _sound_type)
 {
-    // ¿Àµğ¿À ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+    // ì˜¤ë””ì˜¤ ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
     UAudioComponent* p_audio_comp = nullptr;
     int              weapon_index = 0;
     
-    // Ã¹¹øÂ° ¹«±â
+    // ì²«ë²ˆì§¸ ë¬´ê¸°
     if (arr_is_weapon_equipped[0])
     {
         p_audio_comp = p_first_gun->p_audio_comp;
         weapon_index = (int)p_first_gun->weapon_type;
     }
-    // µÎ¹øÂ° ¹«±â
+    // ë‘ë²ˆì§¸ ë¬´ê¸°
     if (arr_is_weapon_equipped[1])
     {
         p_audio_comp = p_second_gun->p_audio_comp;
         weapon_index = (int)p_second_gun->weapon_type;
     }
-    // ¼¼¹øÂ° ¹«±â
+    // ì„¸ë²ˆì§¸ ë¬´ê¸°
     if (arr_is_weapon_equipped[2])
     {
         p_audio_comp = p_pistol->p_audio_comp;
         weapon_index = (int)p_pistol->weapon_type;
     }
-    // ³×¹øÂ° ¹«±â
+    // ë„¤ë²ˆì§¸ ë¬´ê¸°
     if (arr_is_weapon_equipped[3])
     {
         p_audio_comp = p_melee->p_audio_comp;
         weapon_index = (int)p_melee->weapon_type;
     }
-    // ´Ù¼¸¹øÂ° ¹«±â
+    // ë‹¤ì„¯ë²ˆì§¸ ë¬´ê¸°
     if (arr_is_weapon_equipped[4])
     {
         p_audio_comp = p_throwable->p_audio_comp;
@@ -90,7 +95,7 @@ void AWeapon_manager::Play_sound(e_weapon_sound_type _sound_type)
 
 e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int _start_index)
 {
-    // À§¿¡¼­ ¾Æ·¡
+    // ìœ„ì—ì„œ ì•„ë˜
     if (_direction == "down")
     {
         for (int i = _start_index; i > -1; i--)
@@ -99,7 +104,7 @@ e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int
                 return (e_current_weapon_type)i;
         }
     }
-    // ¾Æ·¡¿¡¼­ À§
+    // ì•„ë˜ì—ì„œ ìœ„
     else
     {
         for (int i = _start_index; i < 5; i++)
@@ -111,6 +116,81 @@ e_current_weapon_type AWeapon_manager::Find_weapon_index(FString _direction, int
     return e_current_weapon_type::NONE;
 }
 
+void AWeapon_manager::Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _socket_name)
+{
+    auto current_player_mesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
+    
+    // ì†Œì¼“ ê¸°ë°˜ ë¬´ê¸° ì¢…ë¥˜ íŒë³„ í›„ ë‹¤ìš´ìºìŠ¤íŒ…
+    if (_socket_name == "hand_gun_sock")
+    {
+        p_pistol            = Cast<ACore_weapon>(_p_tmp_weapon);
+        current_weapon_type = e_current_weapon_type::PISTOL;
+    }
+    else if (_socket_name == "first_gun_sock")
+    {
+        p_first_gun         = Cast<ACore_weapon>(_p_tmp_weapon);
+        current_weapon_type = e_current_weapon_type::FIRST;
+    }
+    else if (_socket_name == "second_gun_sock")
+    {
+        // ì¤‘ë³µ ë¬´ê¸° ë°©ì§€
+        if (p_first_gun != Cast<ACore_weapon>(_p_tmp_weapon))
+        {
+            p_second_gun        = Cast<ACore_weapon>(_p_tmp_weapon);
+            current_weapon_type = e_current_weapon_type::SECOND;
+        }
+    }
+    // íˆ¬ì²™ë¥˜/ê·¼ì ‘ë¬´ê¸°
+    else
+    {
+        if (_p_tmp_weapon->IsA<ACore_throwable_weapon>())
+        {
+            p_throwable         = Cast<ACore_throwable_weapon>(_p_tmp_weapon);
+            current_weapon_type = e_current_weapon_type::THROWABLE;
+        }
+        else if (_p_tmp_weapon->IsA<ACore_melee_weapon>())
+        {
+            p_melee             = Cast<ACore_melee_weapon>(_p_tmp_weapon);
+            current_weapon_type = e_current_weapon_type::MELEE;
+        }
+    }
+    USkeletalMeshComponent* p_skeletal_mesh_comp = _p_tmp_weapon->p_skeletal_mesh_comp;
+    UStaticMeshComponent*   p_static_mesh_comp   = _p_tmp_weapon->p_static_mesh_comp;
+
+    // ë¬´ê¸° ë©”ì‹œë¥¼ í”Œë ˆì´ì–´ ë©”ì‹œì— ë¶€ì°©
+    if      (p_skeletal_mesh_comp)
+             p_skeletal_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
+
+    else if (p_static_mesh_comp)
+             p_static_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
+
+    // ë¬´ê¸° ì˜¤ë¸Œì íŠ¸ë¥¼ ì¸ë²¤í† ë¦¬ ë§¤ë‹ˆì €ì— ë¶€ì°©
+    _p_tmp_weapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+}
+
+void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _weapon, FTransform _new_pos)
+{
+    USkeletalMeshComponent* p_skeletal_mesh_comp = _weapon->p_skeletal_mesh_comp;
+    UStaticMeshComponent*   p_static_mesh_comp   = _weapon->p_static_mesh_comp;
+    
+    // ì»´í¬ë„ŒíŠ¸ë¥¼ íƒˆì°© > í˜„ì¬ ë£¨íŠ¸ ì»´í¬ë„ŒíŠ¸ì— ë¶€ì°© > íŠ¸ëœìŠ¤í¼ ì´ˆê¸°í™”
+    if (p_skeletal_mesh_comp)
+    {
+        p_skeletal_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+        p_skeletal_mesh_comp->AttachToComponent(_weapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        p_skeletal_mesh_comp->ResetRelativeTransform();
+    }
+    else if (p_static_mesh_comp)
+    {
+        p_static_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+        p_static_mesh_comp->AttachToComponent(_weapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        p_static_mesh_comp->ResetRelativeTransform();
+    }
+    // í˜„ì¬ ë¬´ê¸°ë¥¼ íƒˆì°© í›„ ì›”ë“œì— ì†Œí™˜
+    _weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    _weapon->SetActorTransform(_new_pos);
+}
+
 void AWeapon_manager::Equip(AActor* _p_weapon)
 {
     ABase_interaction* tmp_collided_weapon = Cast<ABase_interaction>(_p_weapon);
@@ -118,10 +198,12 @@ void AWeapon_manager::Equip(AActor* _p_weapon)
     if (!tmp_collided_weapon)
         return;
 
-    // ÃÑ±â Á¾·ù
+    tmp_collided_weapon->is_player_near = false;
+
+    // ì´ê¸° ì¢…ë¥˜
     if (_p_weapon->IsA<ACore_weapon>())
     {
-        // ±ÇÃÑÀÏ ½Ã ¹«Á¶°Ç 3¹ø ½½·Ô
+        // ê¶Œì´ì¼ ì‹œ ë¬´ì¡°ê±´ 3ë²ˆ ìŠ¬ë¡¯
         if (Cast<ACore_weapon>(_p_weapon)->weapon_data.weapon_group_type == "Handgun")
         {
             if (!p_pistol)
@@ -130,35 +212,35 @@ void AWeapon_manager::Equip(AActor* _p_weapon)
             else
                 Swap(p_pistol, _p_weapon, "hand_gun_sock");
         }
-        // ±âÅ¸ ÃÑ±â 1,2¹ø ½½·Ô
+        // ê¸°íƒ€ ì´ê¸° 1,2ë²ˆ ìŠ¬ë¡¯
         else
         {
-            if (!p_first_gun) // Ã¹¹øÂ° ¹«±â°¡ ¾øÀ» ½Ã
+            if (!p_first_gun) // ì²«ë²ˆì§¸ ë¬´ê¸°ê°€ ì—†ì„ ì‹œ
                 Attach_weapon(tmp_collided_weapon, "first_gun_sock");
 
             else
             {
-                if (!p_second_gun) // µÎ¹øÂ° ¹«±â°¡ ¾øÀ» ½Ã
+                if (!p_second_gun) // ë‘ë²ˆì§¸ ë¬´ê¸°ê°€ ì—†ì„ ì‹œ
                     Attach_weapon(tmp_collided_weapon, "second_gun_sock");
 
                 else
                 {
-                    // Ã¹¹øÂ° ¹«±â ÀåÂøÁß
+                    // ì²«ë²ˆì§¸ ë¬´ê¸° ì¥ì°©ì¤‘
                     if      (current_weapon_type == e_current_weapon_type::FIRST)
                              Swap(p_first_gun, _p_weapon, "first_gun_sock");
 
-                    // µÎÂ° ¹«±â ÀåÂøÁß
+                    // ë‘ì§¸ ë¬´ê¸° ì¥ì°©ì¤‘
                     else if (current_weapon_type == e_current_weapon_type::SECOND)
                              Swap(p_second_gun, _p_weapon, "second_gun_sock");
                 }
             }
         }
     }
-    // ±ÙÁ¢ Á¾·ù
+    // ê·¼ì ‘ ì¢…ë¥˜
     else if (_p_weapon->IsA<ACore_melee_weapon>())
              Attach_weapon(tmp_collided_weapon, "equipped_weapon_pos_sock");
 
-    // ÅõÃ´·ù
+    // íˆ¬ì²™ë¥˜
     else if (_p_weapon->IsA<ACore_throwable_weapon>())
              Attach_weapon(tmp_collided_weapon, "equipped_weapon_pos_sock");
 }
@@ -176,7 +258,7 @@ void AWeapon_manager::Shoot()
         auto p_gun = Cast<ACore_weapon>(tmp_weapon);
         auto weapon_data = p_gun->weapon_data;
 
-        // ÃÑ¾Ë ºÎÁ·
+        // ì´ì•Œ ë¶€ì¡±
         if (weapon_data.current_bullet_count == 0)
         {
             if (weapon_data.current_bullet_count == 0)
@@ -187,11 +269,11 @@ void AWeapon_manager::Shoot()
 
             return;
         }
-        // »ç¿îµå Àû¿ë ¹× ÃÑ¾Ë 1°³ Â÷°¨
+        // ì‚¬ìš´ë“œ ì ìš© ë° ì´ì•Œ 1ê°œ ì°¨ê°
         weapon_data.current_bullet_count--;
         Play_sound(e_weapon_sound_type::SHOT);
 
-        // ·¹ÀÌÄ³½ºÆ® Àû¿ë
+        // ë ˆì´ìºìŠ¤íŠ¸ ì ìš©
         APlayerCameraManager* camera_manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
         FVector               begin_pos = p_gun->p_skeletal_mesh_comp->GetSocketLocation("Muzzle_socket");
         FVector               forward_vec = camera_manager->GetActorForwardVector() * 500;
@@ -206,7 +288,7 @@ void AWeapon_manager::Shoot()
 
         if (p_gun->p_bullet)
         {
-            // ÃÑ¾Ë È¸Àü°ª ¼öÁ¤ ¿ä¸Á
+            // ì´ì•Œ íšŒì „ê°’ ìˆ˜ì • ìš”ë§
             auto test_rotation = FRotator::MakeFromEuler(FVector(end_pos.X, bullet_rotation.Pitch, bullet_rotation.Yaw));
             test_rotation.Yaw += 100.f;
             bullet = GetWorld()->SpawnActor(p_gun->p_bullet->GetClass(), &begin_pos, &bullet_rotation);
@@ -218,7 +300,7 @@ void AWeapon_manager::Shoot()
         }
         //if(another_character)
 
-        // ÆÄÆ¼Å¬ Àû¿ë
+        // íŒŒí‹°í´ ì ìš©
         p_gun->p_gun_particle->Activate(true);
     }
 }
@@ -234,15 +316,15 @@ void AWeapon_manager::Reload()
         m_is_reloading   = true;
         auto weapon_data = p_gun->weapon_data;
 
-        // Çã¿ë ÃÑ¾Ë °³¼ö°¡ ¶È°°À» ½Ã
+        // í—ˆìš© ì´ì•Œ ê°œìˆ˜ê°€ ë˜‘ê°™ì„ ì‹œ
         if      (weapon_data.current_bullet_count == weapon_data.max_bullet_count)
                  return;
 
-        // Áß°£¿¡ ÀåÀü
+        // ì¤‘ê°„ì— ì¥ì „
         else if (weapon_data.current_bullet_count > 0)
                  result = weapon_data.max_bullet_count - weapon_data.current_bullet_count;
 
-        // ÀüÃ¼ ÃÑ¾Ë ¼Ò¸ğ ÈÄ ÀåÀü
+        // ì „ì²´ ì´ì•Œ ì†Œëª¨ í›„ ì¥ì „
         else
                  result = p_gun->weapon_data.max_bullet_count;
 
@@ -254,34 +336,34 @@ void AWeapon_manager::Reload()
 
 bool AWeapon_manager::Scroll_select(int _pos)
 {
-    // ÇöÀç ¹«±â ÀÎµ¦½º °®°í¿Í¼­ ¼±ÅÃ
+    // í˜„ì¬ ë¬´ê¸° ì¸ë±ìŠ¤ ê°–ê³ ì™€ì„œ ì„ íƒ
     e_current_weapon_type final_index   = e_current_weapon_type::NONE;
     int                   current_index = (int)current_weapon_type;
     int                   total_weapon  = -1;
 
     for (int i = 0; i < 5; i++)
     {
-        // ÇöÀç ÀåÂø ÁßÀÎ ¹«±â
+        // í˜„ì¬ ì¥ì°© ì¤‘ì¸ ë¬´ê¸°
         if (arr_is_weapon_equipped[i])
             total_weapon++;
     }
-    // ¹«±â°¡ 1°³ÀÏ ½Ã ¿Å±æ ÇÊ¿ä°¡ ¾øÀ½
+    // ë¬´ê¸°ê°€ 1ê°œì¼ ì‹œ ì˜®ê¸¸ í•„ìš”ê°€ ì—†ìŒ
     if (total_weapon == 0)
         return false;
 
-    // ¾Æ·¡·Î ½ºÅ©·Ñ
+    // ì•„ë˜ë¡œ ìŠ¤í¬ë¡¤
     if (_pos == -1)
     {
-        // ¸¶Áö¸· ¿ø¼Ò 0 µµ´Ş ½Ã
+        // ë§ˆì§€ë§‰ ì›ì†Œ 0 ë„ë‹¬ ì‹œ
         if (current_index == (int)e_current_weapon_type::FIRST)
             current_weapon_type = Find_weapon_index("down", (int)e_current_weapon_type::THROWABLE);
 
         else
         {
-            // ÇöÀç À§Ä¡¿¡¼­ Å½»ö
+            // í˜„ì¬ ìœ„ì¹˜ì—ì„œ íƒìƒ‰
             final_index = Find_weapon_index("down", current_index - 1);
 
-            // ¹ß°ßÇÏÁö ¸øÇÔ
+            // ë°œê²¬í•˜ì§€ ëª»í•¨
             if (final_index == e_current_weapon_type::NONE)
                 current_weapon_type = Find_weapon_index("down", (int)e_current_weapon_type::THROWABLE);
 
@@ -289,10 +371,10 @@ bool AWeapon_manager::Scroll_select(int _pos)
                 current_weapon_type = final_index;
         }
     }
-    // À§·Î ½ºÅ©·Ñ
+    // ìœ„ë¡œ ìŠ¤í¬ë¡¤
     else
     {
-        // ÇöÀç ¸¶Áö¸· ¿ø¼Ò¿¡ Á¢±Ù ÇÒ ½Ã
+        // í˜„ì¬ ë§ˆì§€ë§‰ ì›ì†Œì— ì ‘ê·¼ í•  ì‹œ
         if (current_index == (int)e_current_weapon_type::THROWABLE)
         {
             if (p_first_gun)
@@ -303,10 +385,10 @@ bool AWeapon_manager::Scroll_select(int _pos)
         }
         else
         {
-            // ÇöÀç À§Ä¡¿¡¼­ Å½»ö
+            // í˜„ì¬ ìœ„ì¹˜ì—ì„œ íƒìƒ‰
             final_index = Find_weapon_index("up", current_index + 1);
 
-            // ¹ß°ßÇÏÁö ¸øÇÔ
+            // ë°œê²¬í•˜ì§€ ëª»í•¨
             if (final_index == e_current_weapon_type::NONE)
                 current_weapon_type = Find_weapon_index("up", (int)e_current_weapon_type::FIRST);
 
@@ -331,34 +413,34 @@ void AWeapon_manager::Change_shoot_mode()
     if (!p_weapon)
         return;
 
-    // ÃÑ±âÀÏ ½Ã
+    // ì´ê¸°ì¼ ì‹œ
     if (p_weapon->IsA<ACore_weapon>())
     {
         auto p_gun = Cast<ACore_weapon>(p_weapon);
         FString weapon_group = p_gun->weapon_data.weapon_group_type;
 
-        // ´Ü¹ß/Á¡»ç/¿¬»ç °¡´É
+        // ë‹¨ë°œ/ì ì‚¬/ì—°ì‚¬ ê°€ëŠ¥
         if      (weapon_group == "Assault" ||
                  weapon_group == "SMG")
                  max_gun_shoot_type = (int)e_gun_shoot_type::CONSECUTIVE;
 
-        // ´Ü¹ß/Á¡»ç °¡´É
+        // ë‹¨ë°œ/ì ì‚¬ ê°€ëŠ¥
         else if (weapon_group == "Shotgun")
                  max_gun_shoot_type = (int)e_gun_shoot_type::BURST;
 
-        // ¿ÀÁ÷ ´Ü¹ß¸¸ °¡´É
+        // ì˜¤ì§ ë‹¨ë°œë§Œ ê°€ëŠ¥
         else if (weapon_group == "Handgun" ||
-                 weapon_group == "Sniper" ||
+                 weapon_group == "Sniper"  ||
                  weapon_group == "Special")
                  max_gun_shoot_type = (int)e_gun_shoot_type::SINGLE;
 
-        // °İ¹ß ¹æ½Ä º¯°æ
+        // ê²©ë°œ ë°©ì‹ ë³€ê²½
         int current_gun_shoot_type = (int)p_gun->gun_shoot_type;
 
         if      ((int)p_gun->gun_shoot_type < max_gun_shoot_type)
                  p_gun->gun_shoot_type = (e_gun_shoot_type)++current_gun_shoot_type;
 
-        // ÃÊ±âÈ­
+        // ì´ˆê¸°í™”
         else if ((int)p_gun->gun_shoot_type == max_gun_shoot_type)
                  p_gun->gun_shoot_type = e_gun_shoot_type::SINGLE;
     }
@@ -366,15 +448,15 @@ void AWeapon_manager::Change_shoot_mode()
 
 void AWeapon_manager::Change_aim_pose(int _type)
 {
-    
+    //
 }
 
-void AWeapon_manager::Check_if_reloading(float _delta_time)
+void AWeapon_manager::Check_if_reloading(float _transcurred_reload_time)
 {
-    // ÀçÀåÀü Áß
+    // ì¬ì¥ì „ ì¤‘
     if (m_is_reloading)
     {
-        m_current_reload_time += _delta_time;
+        m_current_reload_time += _transcurred_reload_time;
 
         if (m_current_reload_time > mk_reload_time)
         {
@@ -384,11 +466,11 @@ void AWeapon_manager::Check_if_reloading(float _delta_time)
     }
 }
 
-void AWeapon_manager::Check_continously_shooting(float _delta_time)
+void AWeapon_manager::Check_continously_shooting(float _transcurred_shoot_time)
 {
     if (m_is_shooting)
     {
-        m_current_shoot_time += _delta_time;
+        m_current_shoot_time += _transcurred_shoot_time;
 
         if (m_current_shoot_time > m_shoot_time)
         {
@@ -401,26 +483,13 @@ void AWeapon_manager::Check_continously_shooting(float _delta_time)
 
 bool AWeapon_manager::Check_if_weapon_available(e_current_weapon_type _weapon_type)
 {
-    bool can_switch = false;
+    auto p_weapon = Get_weapon(_weapon_type);
 
-    switch (_weapon_type)
-    {
-    case e_current_weapon_type::FIRST:     if (p_first_gun)  can_switch = true; break;
-    case e_current_weapon_type::SECOND:    if (p_second_gun) can_switch = true; break;
-    case e_current_weapon_type::PISTOL:    if (p_pistol)     can_switch = true; break;
-    case e_current_weapon_type::MELEE:     if (p_melee)      can_switch = true; break;
-    case e_current_weapon_type::THROWABLE: if (p_throwable)  can_switch = true; break;
-    }
-    // Âø¿ë °¡´ÉÇÏ´Ù¸é º¯°æ
-    if (can_switch)
-        current_weapon_type = _weapon_type;
+    if (p_weapon)
+        return true;
 
-    return can_switch;
-}
-
-void AWeapon_manager::Check_for_equipped_weapon()
-{
-    
+    else
+        return false;
 }
 
 int AWeapon_manager::Get_weapon_max_bullet_count(e_current_weapon_type _weapon_type)
@@ -435,81 +504,6 @@ int AWeapon_manager::Get_weapon_max_bullet_count(e_current_weapon_type _weapon_t
 
     else
         return 1;
-}
-
-void AWeapon_manager::Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _socket_name)
-{
-    auto current_player_mesh  = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-
-    // ¼ÒÄÏ ±â¹İ ¹«±â Á¾·ù ÆÇº° ÈÄ ´Ù¿îÄ³½ºÆÃ
-    if      (_socket_name == "hand_gun_sock")
-    {
-        p_pistol = Cast<ACore_weapon>(_p_tmp_weapon);
-        current_weapon_type = e_current_weapon_type::PISTOL;
-    }
-    else if (_socket_name == "first_gun_sock")
-    {
-        p_first_gun = Cast<ACore_weapon>(_p_tmp_weapon);
-        current_weapon_type = e_current_weapon_type::FIRST;
-    }
-    else if (_socket_name == "second_gun_sock")
-    {
-        // Áßº¹ ¹«±â ¹æÁö
-        if (p_first_gun != Cast<ACore_weapon>(_p_tmp_weapon))
-        {
-            p_second_gun = Cast<ACore_weapon>(_p_tmp_weapon);
-            current_weapon_type = e_current_weapon_type::SECOND;
-        }
-    }
-    // ÅõÃ´·ù/±ÙÁ¢¹«±â
-    else
-    {
-        if(_p_tmp_weapon->IsA<ACore_throwable_weapon>())
-        {
-            p_throwable = Cast<ACore_throwable_weapon>(_p_tmp_weapon);
-            current_weapon_type = e_current_weapon_type::THROWABLE;
-        }
-        else if (_p_tmp_weapon->IsA<ACore_melee_weapon>())
-        {
-            p_melee = Cast<ACore_melee_weapon>(_p_tmp_weapon);
-            current_weapon_type = e_current_weapon_type::MELEE;
-        }
-    }
-    USkeletalMeshComponent* p_skeletal_mesh_comp = _p_tmp_weapon->p_skeletal_mesh_comp;
-    UStaticMeshComponent*   p_static_mesh_comp   = _p_tmp_weapon->p_static_mesh_comp;
-
-    // ¹«±â ¸Ş½Ã¸¦ ÇÃ·¹ÀÌ¾î ¸Ş½Ã¿¡ ºÎÂø
-    if      (p_skeletal_mesh_comp)
-             p_skeletal_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
-
-    else if (p_static_mesh_comp)
-             p_static_mesh_comp->AttachToComponent(current_player_mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_socket_name);
-
-    // ¹«±â ¿ÀºêÁ§Æ®¸¦ ÀÎº¥Åä¸® ¸Å´ÏÀú¿¡ ºÎÂø
-    _p_tmp_weapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-}
-
-void AWeapon_manager::Reset_weapon_after_detaching(ABase_interaction* _current_weapon, FTransform _new_pos)
-{
-    USkeletalMeshComponent* p_skeletal_mesh_comp = _current_weapon->p_skeletal_mesh_comp;
-    UStaticMeshComponent*   p_static_mesh_comp   = _current_weapon->p_static_mesh_comp;
-
-    // ÄÄÆ÷³ÍÆ®¸¦ Å»Âø > ÇöÀç ·çÆ® ÄÄÆ÷³ÍÆ®¿¡ ºÎÂø > Æ®·£½ºÆû ÃÊ±âÈ­
-    if (p_skeletal_mesh_comp)
-    {
-        p_skeletal_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        p_skeletal_mesh_comp->AttachToComponent(_current_weapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        p_skeletal_mesh_comp->ResetRelativeTransform();
-    }
-    else if (p_static_mesh_comp)
-    {
-        p_static_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        p_static_mesh_comp->AttachToComponent(_current_weapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        p_static_mesh_comp->ResetRelativeTransform();
-    }
-    // ÇöÀç ¹«±â¸¦ Å»Âø ÈÄ ¿ùµå¿¡ ¼ÒÈ¯
-    _current_weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    _current_weapon->SetActorTransform(_new_pos);
 }
 
 ABase_interaction* AWeapon_manager::Get_weapon(e_current_weapon_type _weapon_type)
@@ -539,7 +533,7 @@ void AWeapon_manager::Drop(ABase_interaction* _p_weapon)
     FTransform new_location  = FTransform(player_rotation, final_location);
     Reset_weapon_after_detaching(_p_weapon, new_location);
 
-    // ÇöÀç º¸À¯ ÁßÀÎ ¹«±â¶û ºñ±³
+    // í˜„ì¬ ë³´ìœ  ì¤‘ì¸ ë¬´ê¸°ë‘ ë¹„êµ
     if      (_p_weapon == p_first_gun)
              p_first_gun = nullptr;
 

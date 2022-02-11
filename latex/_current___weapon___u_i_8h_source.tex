@@ -1,0 +1,71 @@
+\hypertarget{_current___weapon___u_i_8h_source}{}\doxysection{Current\+\_\+\+Weapon\+\_\+\+UI.\+h}
+\label{_current___weapon___u_i_8h_source}\index{Source/UI\_PUBG/Current\_Weapon\_UI.h@{Source/UI\_PUBG/Current\_Weapon\_UI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Current\_Weapon\_UI.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}};}
+\DoxyCodeLine{8 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 UCLASS()}
+\DoxyCodeLine{11 class UI\_PUBG\_API \mbox{\hyperlink{class_u_current___weapon___u_i}{UCurrent\_Weapon\_UI}} : public UUserWidget}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13     GENERATED\_BODY()}
+\DoxyCodeLine{14     }
+\DoxyCodeLine{15 \textcolor{keyword}{private}:}
+\DoxyCodeLine{16     \textcolor{keyword}{class }\mbox{\hyperlink{class_a_u_i__manager}{AUI\_manager}}* mp\_UI\_manager;}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{private}:}
+\DoxyCodeLine{19     \textcolor{comment}{// 슬롯 이미지 사이즈 관련}}
+\DoxyCodeLine{20     \textcolor{keyword}{const} FVector mk\_gun\_slot\_size    \{ 200.f, 60.f, 0.f\};}
+\DoxyCodeLine{21     \textcolor{keyword}{const} FVector mk\_pistol\_slot\_size \{  85.f, 60.f, 0.f\};}
+\DoxyCodeLine{22     \textcolor{keyword}{const} FVector mk\_grenade\_slot\_size\{  25.f, 30.f, 0.f \};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{comment}{// 슬롯 이미지 위치 관련}}
+\DoxyCodeLine{25     \textcolor{keyword}{const} FVector mk\_gun\_slot\_pos    \{ 200.f, 60.f, 0.f \};}
+\DoxyCodeLine{26     \textcolor{keyword}{const} FVector mk\_pistol\_slot\_pos \{  85.f, 60.f, 0.f \};}
+\DoxyCodeLine{27     \textcolor{keyword}{const} FVector mk\_grenade\_slot\_pos\{  25.f, 30.f, 0.f \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{comment}{// 슬롯 이미지 색상 관련}}
+\DoxyCodeLine{30     \textcolor{keyword}{const} FLinearColor mk\_selected\_color          \{   1.f,   1.f,   1.f, 1.f \};}
+\DoxyCodeLine{31     \textcolor{keyword}{const} FLinearColor mk\_selected\_no\_ammo\_color  \{   1.f,   0.f,   0.f, 1.f \};}
+\DoxyCodeLine{32     \textcolor{keyword}{const} FLinearColor mk\_unselected\_color        \{ 0.25f, 0.25f, 0.25f, 1.f \};}
+\DoxyCodeLine{33     \textcolor{keyword}{const} FLinearColor mk\_unselected\_no\_ammo\_color\{ 0.25f,   0.f,   0.f, 1.f \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{comment}{// 현재 착용 중인 무기}}
+\DoxyCodeLine{36     UPROPERTY(VisibleAnywhere, Category = Manager)}
+\DoxyCodeLine{37     \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}}* mp\_weapon\_manager = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{public}:}
+\DoxyCodeLine{40     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* First\_weapon\_img;}
+\DoxyCodeLine{41     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Second\_weapon\_img;}
+\DoxyCodeLine{42     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Third\_weapon\_img;}
+\DoxyCodeLine{43     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Fourth\_weapon\_img;}
+\DoxyCodeLine{44     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Fifth\_weapon\_img;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{comment}{// 현재 이미지 배열}}
+\DoxyCodeLine{47     TArray<UImage*> p\_arr\_img;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{private}:}
+\DoxyCodeLine{55     \textcolor{keywordtype}{void} Init\_arr\_img();}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{comment}{// UI 투명도 갱신}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{void} Update\_icon\_visibility();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{comment}{// UI 색상 갱신}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{void} Update\_icon\_color();}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     \textcolor{comment}{// UI 등록}}
+\DoxyCodeLine{64     \textcolor{keywordtype}{void} Set\_icon\_UI();}
+\DoxyCodeLine{65 \};}
+
+\end{DoxyCode}

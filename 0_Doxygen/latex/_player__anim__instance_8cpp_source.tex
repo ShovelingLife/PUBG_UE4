@@ -1,0 +1,44 @@
+\hypertarget{_player__anim__instance_8cpp_source}{}\doxysection{Player\+\_\+anim\+\_\+instance.\+cpp}
+\label{_player__anim__instance_8cpp_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Animations/Player\_anim\_instance.cpp@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Animations/Player\_anim\_instance.cpp}}
+\mbox{\hyperlink{_player__anim__instance_8cpp}{Ïù¥ ÌååÏùºÏùò Î¨∏ÏÑúÌôî ÌéòÏù¥ÏßÄÎ°ú Í∞ÄÍ∏∞}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00001}00001 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_player__anim__instance_8h}{Player\_anim\_instance.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00002}00002 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_custom__player_8h}{Characters/Custom\_player.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00003}00003 \textcolor{preprocessor}{\#include "{}GameFramework/CharacterMovementComponent.h"{}}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00004}00004 }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00005}\mbox{\hyperlink{class_u_player__anim__instance_aab510d5ef66be7d20c2e7d8183604862}{00005}} \mbox{\hyperlink{class_u_player__anim__instance_aab510d5ef66be7d20c2e7d8183604862}{UPlayer\_anim\_instance::UPlayer\_anim\_instance}}()}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00006}00006 \{}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00007}00007 }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00008}00008 \}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00009}00009 }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00010}\mbox{\hyperlink{class_u_player__anim__instance_aa4da510ea9d5daacfb0942c387b0b14f}{00010}} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_u_player__anim__instance_aa4da510ea9d5daacfb0942c387b0b14f}{UPlayer\_anim\_instance::NativeUpdateAnimation}}(\textcolor{keywordtype}{float} \_delta\_seconds)}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00011}00011 \{}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00012}00012     Super::NativeUpdateAnimation(\_delta\_seconds);}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00014}00014     \mbox{\hyperlink{class_a_custom__player}{ACustom\_player}}* player = Cast<ACustom\_player>(TryGetPawnOwner());}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00015}00015     \textcolor{comment}{//AAI\_character* ai = Cast<AAI\_character>(owning\_pawn);}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00017}00017     \textcolor{comment}{// ƒ≥∏Ø≈Õ∞° ≥Œ¿Ã æ∆¥“ Ω√}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00018}00018     \textcolor{keywordflow}{if} (player)}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00019}00019     \{}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00020}00020         \textcolor{comment}{// ∞™ ¿˚øÎ}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00021}00021         \textcolor{keywordflow}{if} (player-\/>\mbox{\hyperlink{class_a_custom__player_a8f488547ca079663ff5757388dbdf6e3}{is\_in\_vehicle}})}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00022}00022             \mbox{\hyperlink{class_u_player__anim__instance_af65a15e1e19b968a9d7342b8cd8ccda6}{player\_state}} = e\_player\_animation\_state::IDLE;}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00023}00023 }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00024}00024         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00025}00025             \mbox{\hyperlink{class_u_player__anim__instance_af65a15e1e19b968a9d7342b8cd8ccda6}{player\_state}} = (\mbox{\hyperlink{_player__anim__instance_8h_a55be22f70313de113dc8ac86c9ffa95f}{e\_player\_animation\_state}})player-\/>\mbox{\hyperlink{class_a_custom__player_a6d177d5f0cc2f221720edba27bcc8a08}{current\_state}};}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00026}00026         }
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00027}00027         \mbox{\hyperlink{class_u_player__anim__instance_ad54c5c365567017c25dcdda25618abfe}{speed}} = player-\/>GetCharacterMovement()-\/>MaxWalkSpeed + player-\/>GetInputAxisValue(TEXT(\textcolor{stringliteral}{"{}Up\_down"{}}));}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00028}00028         \mbox{\hyperlink{class_u_player__anim__instance_a615831cd0e38319d756d3c8f69ea010f}{is\_weapon\_equipped}} = player-\/>\mbox{\hyperlink{class_a_custom__player_a1c3cc9f82dffaff6d9e90df91b7e2a0f}{is\_weapon\_equipped}};}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00029}00029     \}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00031}00031     \textcolor{comment}{//else if (ai)}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00032}00032     \textcolor{comment}{//\{}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00033}00033     \textcolor{comment}{//    GEngine-\/>AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("{}Enemy animation entered : \%d"{}), player\_state));}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00034}00034     \textcolor{comment}{//    // Set values}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00035}00035     \textcolor{comment}{//    player\_state = ai-\/>current\_state;}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00036}00036     \textcolor{comment}{//    speed = ai-\/>GetCharacterMovement()-\/>MaxWalkSpeed + ai-\/>GetInputAxisValue(TEXT("{}Up\_down"{}));}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00037}00037     \textcolor{comment}{//    is\_weapon\_equipped = ai-\/>is\_weapon\_equipped;}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00038}00038     \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{_player__anim__instance_8cpp_source_l00039}00039 \}}
+
+\end{DoxyCode}

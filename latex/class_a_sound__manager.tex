@@ -1,0 +1,212 @@
+\hypertarget{class_a_sound__manager}{}\doxysection{ASound\+\_\+manager í´ë˜ìŠ¤ ì°¸ì¡°}
+\label{class_a_sound__manager}\index{ASound\_manager@{ASound\_manager}}
+
+
+ASound\+\_\+managerì— ëŒ€í•œ ìƒì† ë‹¤ì´ì–´ê·¸ë¨ \+: 
+% FIG 0
+
+
+ASound\+\_\+managerì— ëŒ€í•œ í˜‘ë ¥ ë‹¤ì´ì–´ê·¸ë¨\+:
+% FIG 1
+\doxysubsection*{Public ë©¤ë²„ í•¨ìˆ˜}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a912b8bb8f7b51ce3407f07582a7b7b43}\label{class_a_sound__manager_a912b8bb8f7b51ce3407f07582a7b7b43}} 
+{\bfseries UPROPERTY} (Visible\+Anywhere, Category=Weapon\+\_\+sound) TArray$<$ USound\+Base $\ast$ $>$ p\+\_\+arr\+\_\+shot\+\_\+sound
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a07be09ce37615e8d44d313ac9317ea07}\label{class_a_sound__manager_a07be09ce37615e8d44d313ac9317ea07}} 
+{\bfseries UPROPERTY} (Visible\+Anywhere, Category=Weapon\+\_\+sound) USound\+Base $\ast$p\+\_\+empty\+\_\+ammo\+\_\+sound
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a3f74d656baca5f32f0af0ae89f4372fd}\label{class_a_sound__manager_a3f74d656baca5f32f0af0ae89f4372fd}} 
+{\bfseries UPROPERTY} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+reload\+\_\+sound
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a60238d76b1b401b42f6d958cc2c3e6b5}\label{class_a_sound__manager_a60238d76b1b401b42f6d958cc2c3e6b5}} 
+{\bfseries UPROPERTY} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+item\+\_\+farm\+\_\+sound
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a90ce7a5265349d540c3fa65500dd4a9b}\label{class_a_sound__manager_a90ce7a5265349d540c3fa65500dd4a9b}} 
+{\bfseries UPROPERTY} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+weapon\+\_\+pickup\+\_\+sound
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a4f7645c29302fd1e55e420de4495feeb}\label{class_a_sound__manager_a4f7645c29302fd1e55e420de4495feeb}} 
+{\bfseries UPROPERTY} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+weapon\+\_\+swap\+\_\+sound
+\item 
+void \mbox{\hyperlink{class_a_sound__manager_a18c4892cd77b711a7be9ff3fdd820951}{Play\+\_\+weapon\+\_\+sound}} (UAudio\+Component $\ast$, e\+\_\+weapon\+\_\+sound\+\_\+type, int \+\_\+weapon\+\_\+index=0)
+\item 
+void \mbox{\hyperlink{class_a_sound__manager_a620585222a5a8c3bba42f0d419cc7a12}{Play\+\_\+player\+\_\+sound}} (UAudio\+Component $\ast$, e\+\_\+player\+\_\+sound\+\_\+type)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected ë©¤ë²„ í•¨ìˆ˜}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_a_sound__manager_a4b591a51a5b9f4036c6ac0f825a0d24c}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_sound__manager_a2fb3c0ec625280bd51ca1c64770ae425}{Tick}} (float Delta\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Private ë©¤ë²„ í•¨ìˆ˜}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_a_sound__manager_a20f25b11c22795e176ff32a9e66219bd}{Init\+\_\+weapon\+\_\+audio}} ()
+\item 
+void \mbox{\hyperlink{class_a_sound__manager_abbb4f7a485a529b08b8e5f45d91b8e32}{Init\+\_\+player\+\_\+audio}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private ì†ì„±}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_a_sound__manager_a7178af49459c7b0395b6a1e1156e2615}\label{class_a_sound__manager_a7178af49459c7b0395b6a1e1156e2615}} 
+const FString {\bfseries mk\+\_\+sound\+\_\+path} = \char`\"{}/Game/SFX/Gun\+\_\+sounds/\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{ìƒì„±ì \& ì†Œë©¸ì ë¬¸ì„œí™”}
+\mbox{\Hypertarget{class_a_sound__manager_adfe8587e16544a7f2e0ac2be2eb56440}\label{class_a_sound__manager_adfe8587e16544a7f2e0ac2be2eb56440}} 
+\index{ASound\_manager@{ASound\_manager}!ASound\_manager@{ASound\_manager}}
+\index{ASound\_manager@{ASound\_manager}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{ASound\_manager()}{ASound\_manager()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_a_sound__manager}{ASound\+\_\+manager}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     \textcolor{comment}{// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.}}
+\DoxyCodeLine{13     PrimaryActorTick.bCanEverTick = \textcolor{keyword}{true};}
+\DoxyCodeLine{14     Init\_player\_audio();}
+\DoxyCodeLine{15     Init\_weapon\_audio();}
+\DoxyCodeLine{16 \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{ë©¤ë²„ í•¨ìˆ˜ ë¬¸ì„œí™”}
+\mbox{\Hypertarget{class_a_sound__manager_a4b591a51a5b9f4036c6ac0f825a0d24c}\label{class_a_sound__manager_a4b591a51a5b9f4036c6ac0f825a0d24c}} 
+\index{ASound\_manager@{ASound\_manager}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{21     Super::BeginPlay();}
+\DoxyCodeLine{22 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_sound__manager_abbb4f7a485a529b08b8e5f45d91b8e32}\label{class_a_sound__manager_abbb4f7a485a529b08b8e5f45d91b8e32}} 
+\index{ASound\_manager@{ASound\_manager}!Init\_player\_audio@{Init\_player\_audio}}
+\index{Init\_player\_audio@{Init\_player\_audio}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_player\_audio()}{Init\_player\_audio()}}
+{\footnotesize\ttfamily void Init\+\_\+player\+\_\+audio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{31 \{}
+\DoxyCodeLine{32     \textcolor{comment}{// ¹«±â ÀåÂø »ç¿îµå}}
+\DoxyCodeLine{33     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_EQUIP\_SOUND(*(mk\_sound\_path + \textcolor{stringliteral}{"{}Gun\_pickup"{}}));}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{keywordflow}{if} (BP\_EQUIP\_SOUND.Succeeded())}
+\DoxyCodeLine{36         p\_weapon\_pickup\_sound = Cast<USoundBase>(BP\_EQUIP\_SOUND.Object);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \textcolor{comment}{// ¹«±â ±³Ã¼ »ç¿îµå}}
+\DoxyCodeLine{39     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_SWAP\_SOUND(*(mk\_sound\_path + \textcolor{stringliteral}{"{}Gun\_swap"{}}));}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{keywordflow}{if} (BP\_SWAP\_SOUND.Succeeded())}
+\DoxyCodeLine{42         p\_weapon\_swap\_sound = Cast<USoundBase>(BP\_SWAP\_SOUND.Object);}
+\DoxyCodeLine{43 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_sound__manager_a20f25b11c22795e176ff32a9e66219bd}\label{class_a_sound__manager_a20f25b11c22795e176ff32a9e66219bd}} 
+\index{ASound\_manager@{ASound\_manager}!Init\_weapon\_audio@{Init\_weapon\_audio}}
+\index{Init\_weapon\_audio@{Init\_weapon\_audio}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_weapon\_audio()}{Init\_weapon\_audio()}}
+{\footnotesize\ttfamily void Init\+\_\+weapon\+\_\+audio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{46 \{}
+\DoxyCodeLine{47     \textcolor{comment}{// ÃÑ¾Ë ºñ¾îÀÖ´Â »ç¿îµå}}
+\DoxyCodeLine{48     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_EMPTY\_AMMO\_SOUND(*(mk\_sound\_path + \textcolor{stringliteral}{"{}Empty\_shot"{}}));}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keywordflow}{if} (BP\_EMPTY\_AMMO\_SOUND.Succeeded())}
+\DoxyCodeLine{51         p\_empty\_ammo\_sound = Cast<USoundBase>(BP\_EMPTY\_AMMO\_SOUND.Object);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{comment}{// ÀçÀåÀü »ç¿îµå}}
+\DoxyCodeLine{54     \textcolor{keyword}{static} ConstructorHelpers::FObjectFinder<USoundWave> BP\_RELOAD\_AMMO\_SOUND(*(mk\_sound\_path + \textcolor{stringliteral}{"{}Gun\_reload"{}}));}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordflow}{if} (BP\_RELOAD\_AMMO\_SOUND.Succeeded())}
+\DoxyCodeLine{57         p\_reload\_sound = Cast<USoundBase>(BP\_RELOAD\_AMMO\_SOUND.Object);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{comment}{// ÃÑ¾Ë ¹ß»ç »ç¿îµå}}
+\DoxyCodeLine{60     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < AData\_table\_manager::arr\_weapon\_data.Num(); i++)}
+\DoxyCodeLine{61     \{}
+\DoxyCodeLine{62         ConstructorHelpers::FObjectFinder<USoundWave> BP\_SHOT\_SOUND(*(mk\_sound\_path + AData\_table\_manager::arr\_weapon\_data[i].type + \textcolor{stringliteral}{"{}\_shot"{}}));}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64         \textcolor{keywordflow}{if} (BP\_SHOT\_SOUND.Succeeded())}
+\DoxyCodeLine{65             p\_arr\_shot\_sound.Add(Cast<USoundBase>(BP\_SHOT\_SOUND.Object));}
+\DoxyCodeLine{66     \}}
+\DoxyCodeLine{67 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_sound__manager_a620585222a5a8c3bba42f0d419cc7a12}\label{class_a_sound__manager_a620585222a5a8c3bba42f0d419cc7a12}} 
+\index{ASound\_manager@{ASound\_manager}!Play\_player\_sound@{Play\_player\_sound}}
+\index{Play\_player\_sound@{Play\_player\_sound}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Play\_player\_sound()}{Play\_player\_sound()}}
+{\footnotesize\ttfamily void Play\+\_\+player\+\_\+sound (\begin{DoxyParamCaption}\item[{UAudio\+Component $\ast$}]{\+\_\+p\+\_\+audio\+\_\+comp,  }\item[{e\+\_\+player\+\_\+sound\+\_\+type}]{\+\_\+sound\+\_\+type }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{86 \{}
+\DoxyCodeLine{87     USoundBase* tmp\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     \textcolor{keywordflow}{switch}(\_sound\_type)}
+\DoxyCodeLine{90     \{}
+\DoxyCodeLine{91     \textcolor{keywordflow}{case} e\_player\_sound\_type::ITEM\_FARM:    tmp\_sound = p\_item\_farm\_sound;     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{92     \textcolor{keywordflow}{case} e\_player\_sound\_type::WEAPON\_EQUIP: tmp\_sound = p\_weapon\_pickup\_sound; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{93     \textcolor{keywordflow}{case} e\_player\_sound\_type::WEAPON\_SWAP:  tmp\_sound = p\_weapon\_swap\_sound;   \textcolor{keywordflow}{break};}
+\DoxyCodeLine{94     \}}
+\DoxyCodeLine{95     \_p\_audio\_comp-\/>SetSound(tmp\_sound);}
+\DoxyCodeLine{96     }
+\DoxyCodeLine{97     \textcolor{keywordflow}{if} (\_p\_audio\_comp-\/>Sound)}
+\DoxyCodeLine{98         \_p\_audio\_comp-\/>Play();}
+\DoxyCodeLine{99 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_sound__manager_a18c4892cd77b711a7be9ff3fdd820951}\label{class_a_sound__manager_a18c4892cd77b711a7be9ff3fdd820951}} 
+\index{ASound\_manager@{ASound\_manager}!Play\_weapon\_sound@{Play\_weapon\_sound}}
+\index{Play\_weapon\_sound@{Play\_weapon\_sound}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Play\_weapon\_sound()}{Play\_weapon\_sound()}}
+{\footnotesize\ttfamily void Play\+\_\+weapon\+\_\+sound (\begin{DoxyParamCaption}\item[{UAudio\+Component $\ast$}]{\+\_\+p\+\_\+audio\+\_\+comp,  }\item[{e\+\_\+weapon\+\_\+sound\+\_\+type}]{\+\_\+sound\+\_\+type,  }\item[{int}]{\+\_\+weapon\+\_\+index = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{70 \{}
+\DoxyCodeLine{71     USoundBase* tmp\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keywordflow}{switch} (\_sound\_type)}
+\DoxyCodeLine{74     \{}
+\DoxyCodeLine{75     \textcolor{keywordflow}{case} e\_weapon\_sound\_type::EMPTY\_AMMO: tmp\_sound = p\_empty\_ammo\_sound;              \textcolor{keywordflow}{break};}
+\DoxyCodeLine{76     \textcolor{keywordflow}{case} e\_weapon\_sound\_type::SHOT:       tmp\_sound = p\_arr\_shot\_sound[\_weapon\_index]; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{77     \textcolor{keywordflow}{case} e\_weapon\_sound\_type::RELOAD:     tmp\_sound = p\_reload\_sound;                  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79     \_p\_audio\_comp-\/>SetSound(tmp\_sound);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     \textcolor{keywordflow}{if} (\_p\_audio\_comp-\/>Sound)}
+\DoxyCodeLine{82         \_p\_audio\_comp-\/>Play();}
+\DoxyCodeLine{83 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_a_sound__manager_a2fb3c0ec625280bd51ca1c64770ae425}\label{class_a_sound__manager_a2fb3c0ec625280bd51ca1c64770ae425}} 
+\index{ASound\_manager@{ASound\_manager}!Tick@{Tick}}
+\index{Tick@{Tick}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{26 \{}
+\DoxyCodeLine{27     Super::Tick(DeltaTime);}
+\DoxyCodeLine{28 \}}
+
+\end{DoxyCode}
+
+
+ì´ í´ë˜ìŠ¤ì— ëŒ€í•œ ë¬¸ì„œí™” í˜ì´ì§€ëŠ” ë‹¤ìŒì˜ íŒŒì¼ë“¤ë¡œë¶€í„° ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+PUBG\+\_\+\+UE4/Sound\+\_\+manager.\+h\item 
+Source/\+PUBG\+\_\+\+UE4/Sound\+\_\+manager.\+cpp\end{DoxyCompactItemize}

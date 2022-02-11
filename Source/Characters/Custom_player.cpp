@@ -54,7 +54,7 @@ void ACustom_player::Tick(float _delta_time)
     Check_if_is_vehicle_near();
     //Play_walk_sound();
     Check_for_object();
-    Try_to_get_collided_component();
+    Try_to_interact();
 }
 
 void ACustom_player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -236,6 +236,7 @@ void ACustom_player::Check_for_object()
     FVector    begin_pos = GetMesh()->GetSocketLocation("detect_object_ray_sock");
     FVector    end_pos = begin_pos + direction;
     FHitResult hit_result;
+    bool       is_collided = false;
 
     GetWorld()->LineTraceSingleByProfile(hit_result, begin_pos, end_pos, "Object");
 
@@ -245,38 +246,23 @@ void ACustom_player::Check_for_object()
     if (hitted_actor)
     {
         // 충돌한 오브젝트가 무기일 시
-        if (hitted_actor->IsA<ACore_weapon>() ||
+        if (hitted_actor->IsA<ACore_weapon>()           ||
             hitted_actor->IsA<ACore_throwable_weapon>() ||
             hitted_actor->IsA<ACore_melee_weapon>())
         {
+            is_collided = true;
             mp_collided_weapon = hitted_actor;
-            Set_item_UI(true);
         }
+        if (auto p_obj = Cast<ABase_interaction>(hitted_actor))
+            p_obj->is_player_near = true;
     }
     else
-        Set_item_UI(false);
-}
-
-void ACustom_player::Try_to_get_collided_component()
-{
-    if (m_is_interacting)
     {
-        // 무기랑 충돌 시
+        // 무기 접근 후 벗어남
         if (mp_collided_weapon)
         {
-            mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_EQUIP);
-            mp_weapon_manager->Equip(mp_collided_weapon);
-            Set_item_UI(false);
-        }
-        if (mp_collided_vehicle)
-        {
-            //  차량 탑승 상태
-            if (mp_collided_vehicle->Check_available_seat(this))
-            {
-                mp_collided_vehicle->is_collided = false;
-                is_in_vehicle = true;
-            }
-            mp_collided_vehicle = nullptr;
+            Cast<ABase_interaction>(mp_collided_weapon)->is_player_near = false;
+            mp_collided_weapon = nullptr;
         }
     }
 }
@@ -316,13 +302,27 @@ void ACustom_player::Check_if_is_vehicle_near()
     }
 }
 
-void ACustom_player::Custom_jump()
+void ACustom_player::Try_to_interact()
 {
-    if (current_state == e_player_state::CROUCH ||
-        current_state == e_player_state::PRONING)
-        return;
-
-    Jump();
+    if (m_is_interacting)
+    {
+        // 무기랑 충돌 시
+        if (mp_collided_weapon)
+        {
+            mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_EQUIP);
+            mp_weapon_manager->Equip(mp_collided_weapon);
+        }
+        if (mp_collided_vehicle)
+        {
+            //  차량 탑승 상태
+            if (mp_collided_vehicle->Check_available_seat(this))
+            {
+                mp_collided_vehicle->is_collided = false;
+                is_in_vehicle = true;
+            }
+            mp_collided_vehicle = nullptr;
+        }
+    }
 }
 
 void ACustom_player::Move_forward_back(float _value)
@@ -351,6 +351,15 @@ void ACustom_player::Turn(float _value)
 {
     if (!m_is_inventory_opened)
         AddControllerYawInput(_value);
+}
+
+void ACustom_player::Custom_jump()
+{
+    if (current_state == e_player_state::CROUCH ||
+        current_state == e_player_state::PRONING)
+        return;
+
+    Jump();
 }
 
 void ACustom_player::Custom_crouch()
@@ -423,6 +432,21 @@ void ACustom_player::End_sprint()
     current_state                        = e_player_state::IDLE;
     m_sprint_multiplier                  = 1;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
+}
+
+void ACustom_player::Open_inventory()
+{
+    if (!m_is_inventory_opened)
+    {
+        dele_open_inventory.ExecuteIfBound();
+        m_is_inventory_opened = true;
+    }
+    else
+    {
+        p_spring_arm_comp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
+        dele_close_inventory.ExecuteIfBound();
+        m_is_inventory_opened = false;
+    }
 }
 
 void ACustom_player::Begin_shooting()
@@ -513,18 +537,6 @@ void ACustom_player::Equip_fifth_weapon()
         mp_sound_manager->Play_player_sound(mp_audio_comp, e_player_sound_type::WEAPON_SWAP);
 }
 
-void ACustom_player::Set_item_UI(bool _is_player_near)
-{
-    // 현재 무기가 있을 시
-    if (mp_collided_weapon)
-    {
-        Cast<ABase_interaction>(mp_collided_weapon)->is_player_near = _is_player_near;
-
-        if (!_is_player_near)
-            mp_collided_weapon = nullptr;
-    }
-}
-
 void ACustom_player::Exit_from_vehicle(FVector _exit_location)
 {
     // 플레이어 충돌체 관련
@@ -539,19 +551,4 @@ void ACustom_player::Exit_from_vehicle(FVector _exit_location)
     SetActorLocation(_exit_location);
     p_spring_arm_comp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-}
-
-void ACustom_player::Open_inventory()
-{
-    if (!m_is_inventory_opened)
-    {
-        dele_open_inventory.ExecuteIfBound();
-        m_is_inventory_opened = true;
-    }
-    else
-    {
-        p_spring_arm_comp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
-        dele_close_inventory.ExecuteIfBound();
-        m_is_inventory_opened = false;
-    }
 }

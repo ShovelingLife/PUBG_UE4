@@ -1,0 +1,63 @@
+\hypertarget{_core__weapon_8h_source}{}\doxysection{Core\+\_\+weapon.\+h}
+\label{_core__weapon_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Player\_weapons/Core\_weapon.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Player\_weapons/Core\_weapon.h}}
+\mbox{\hyperlink{_core__weapon_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_base__interaction_8h}{PUBG\_UE4/Base\_interaction.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_weapon__enum_8h}{Weapon\_enum.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_data__table__manager_8h}{PUBG\_UE4/Data\_table\_manager.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00016}00016 \textcolor{preprocessor}{\#include "{}Core\_weapon.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00018}00018 \textcolor{keyword}{class }UAudioComponent;}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00019}00019 \textcolor{keyword}{class }USoundBase;}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00020}00020 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_core__bullet}{ACore\_bullet}};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00021}00021 \textcolor{keyword}{class }UParticleSystemComponent;}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00023}00023 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00024}\mbox{\hyperlink{class_a_core__weapon}{00024}} class PLAYER\_WEAPONS\_API \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}} : public \mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00025}00025 \{}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00026}00026     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00027}00027     }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00028}00028 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00029}00029     \textcolor{comment}{// 총알 관련}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00030}\mbox{\hyperlink{class_a_core__weapon_a4fac7332116f5663935f4d4913c98b00}{00030}}     \mbox{\hyperlink{class_a_core__weapon_a4fac7332116f5663935f4d4913c98b00}{UPROPERTY}}(VisibleAnywhere, Category = Bullet) \mbox{\hyperlink{class_a_core__bullet}{ACore\_bullet}}* p\_bullet;}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00031}00031 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00032}00032     \textcolor{comment}{// class ACore\_gun\_mag* p\_gun\_mag = nullptr;}}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00034}\mbox{\hyperlink{class_a_core__weapon_ab10207f0d362d6ec67459e64f677da47}{00034}}     \mbox{\hyperlink{class_a_core__weapon_ab10207f0d362d6ec67459e64f677da47}{UPROPERTY}}(VisibleAnywhere, Category = Particle) UParticleSystemComponent* p\_gun\_particle = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00036}\mbox{\hyperlink{class_a_core__weapon_afe5dc001a2d41e5175b8c79653f66f0f}{00036}}     \mbox{\hyperlink{struct_fs__weapon__data}{Fs\_weapon\_data}}   \mbox{\hyperlink{class_a_core__weapon_afe5dc001a2d41e5175b8c79653f66f0f}{weapon\_data}};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00037}\mbox{\hyperlink{class_a_core__weapon_a0dd6bd8a3bd82e797ad8fafd3c76d6dc}{00037}}     \mbox{\hyperlink{_weapon__enum_8h_aa3615b910a4cd80793cec84f572d9950}{e\_weapon\_type}}    weapon\_type    = \mbox{\hyperlink{_weapon__enum_8h_aa3615b910a4cd80793cec84f572d9950a26a4b44a837bf97b972628509912b4a5}{e\_weapon\_type::MAX}};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00038}\mbox{\hyperlink{class_a_core__weapon_a4db4759d92e8354b2064fc48f0aa84be}{00038}}     \mbox{\hyperlink{_weapon__enum_8h_a8b39fd60ce2f4a2befb8316470c74c20}{e\_gun\_shoot\_type}} gun\_shoot\_type = \mbox{\hyperlink{_weapon__enum_8h_a8b39fd60ce2f4a2befb8316470c74c20a0679273e201afd0bf57af3961f8a23b8}{e\_gun\_shoot\_type::SINGLE}};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00039}00039 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00040}00040 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00041}00041     \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}();}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00042}00042 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00043}00043 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00044}00044     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00045}00045 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00046}00046     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NotifyActorBeginOverlap(AActor*) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00047}00047 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00048}00048     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} NotifyActorEndOverlap(AActor*) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00049}00049 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00050}00050     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00051}00051 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00052}00052 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00053}00053 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00058}00058     \textcolor{keywordtype}{void} Init(\mbox{\hyperlink{_weapon__enum_8h_aa3615b910a4cd80793cec84f572d9950}{e\_weapon\_type}} \_weapon\_type);}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00059}00059 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00063}00063     \textcolor{keywordtype}{void} Init\_mesh();}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00064}00064 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00068}00068     \textcolor{keywordtype}{void} Update\_collider();}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00073}00073     \textcolor{keywordtype}{void} Init\_bullet();}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00074}00074 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00078}00078     \textcolor{keywordtype}{void} Init\_particle\_system();}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00079}00079 }
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00083}00083     \textcolor{keywordtype}{void} Update\_particle\_system();}
+\DoxyCodeLine{\Hypertarget{_core__weapon_8h_source_l00084}00084 \};}
+
+\end{DoxyCode}

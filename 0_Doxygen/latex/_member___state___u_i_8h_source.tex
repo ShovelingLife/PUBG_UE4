@@ -1,0 +1,51 @@
+\hypertarget{_member___state___u_i_8h_source}{}\doxysection{Member\+\_\+\+State\+\_\+\+UI.\+h}
+\label{_member___state___u_i_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Member\_State\_UI.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/UI\_PUBG/Member\_State\_UI.h}}
+\mbox{\hyperlink{_member___state___u_i_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00001}00001 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00003}00003 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00004}00004 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00005}00005 \textcolor{preprocessor}{\#include "{}Member\_State\_UI.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00006}00006 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00007}00007 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00008}00008 \textcolor{keyword}{class }UProgressBar;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00009}00009 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00011}00011 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00012}\mbox{\hyperlink{class_u_member___state___u_i}{00012}} class UI\_PUBG\_API \mbox{\hyperlink{class_u_member___state___u_i}{UMember\_State\_UI}} : public UUserWidget}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00013}00013 \{}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00014}00014     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00015}00015     }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00016}00016 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00017}00017     \textcolor{comment}{// 1번 플레이어}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00018}\mbox{\hyperlink{class_u_member___state___u_i_a14e69de50cb5bf6d75d1530af15a138c}{00018}}     \mbox{\hyperlink{class_u_member___state___u_i_a14e69de50cb5bf6d75d1530af15a138c}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name\_player\_1\_text;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00019}\mbox{\hyperlink{class_u_member___state___u_i_a022f4002e3806b27e322569e5120a286}{00019}}     \mbox{\hyperlink{class_u_member___state___u_i_a022f4002e3806b27e322569e5120a286}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP\_player\_1\_bar;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00020}\mbox{\hyperlink{class_u_member___state___u_i_ac1a88df0f02443ad7ca72fbd92ccac68}{00020}}     \mbox{\hyperlink{class_u_member___state___u_i_ac1a88df0f02443ad7ca72fbd92ccac68}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_1\_state\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00021}\mbox{\hyperlink{class_u_member___state___u_i_a4edf3b8b5990af9223b9cd5965dc8b02}{00021}}     \mbox{\hyperlink{class_u_member___state___u_i_a4edf3b8b5990af9223b9cd5965dc8b02}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_1\_ping\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00023}00023     \textcolor{comment}{// 2번 플레이어}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00024}\mbox{\hyperlink{class_u_member___state___u_i_a91ebb66730a560973134466c1c59a8db}{00024}}     \mbox{\hyperlink{class_u_member___state___u_i_a91ebb66730a560973134466c1c59a8db}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name\_player\_2\_text;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00025}\mbox{\hyperlink{class_u_member___state___u_i_af8f0319546f803cd8c18bcf45fb93ca7}{00025}}     \mbox{\hyperlink{class_u_member___state___u_i_af8f0319546f803cd8c18bcf45fb93ca7}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP\_player\_2\_bar;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00026}\mbox{\hyperlink{class_u_member___state___u_i_ae4113354df339a94684054d328a87a30}{00026}}     \mbox{\hyperlink{class_u_member___state___u_i_ae4113354df339a94684054d328a87a30}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_2\_state\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00027}\mbox{\hyperlink{class_u_member___state___u_i_aec07db0207aaa9ed315f11e028693f28}{00027}}     \mbox{\hyperlink{class_u_member___state___u_i_aec07db0207aaa9ed315f11e028693f28}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_2\_ping\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00028}00028 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00029}00029     \textcolor{comment}{// 3번 플레이어}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00030}\mbox{\hyperlink{class_u_member___state___u_i_aaf552379e9c5c59a4542dd70658f7d9c}{00030}}     \mbox{\hyperlink{class_u_member___state___u_i_aaf552379e9c5c59a4542dd70658f7d9c}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name\_player\_3\_text;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00031}\mbox{\hyperlink{class_u_member___state___u_i_a3bd85e82c0ea0a3c7b84b1083d24eab5}{00031}}     \mbox{\hyperlink{class_u_member___state___u_i_a3bd85e82c0ea0a3c7b84b1083d24eab5}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP\_player\_3\_bar;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00032}\mbox{\hyperlink{class_u_member___state___u_i_a8958ef303ebd14f23c09439c350d7f3d}{00032}}     \mbox{\hyperlink{class_u_member___state___u_i_a8958ef303ebd14f23c09439c350d7f3d}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_3\_state\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00033}\mbox{\hyperlink{class_u_member___state___u_i_a814146b2b23a1bdb48b8f2ce2aab5eb8}{00033}}     \mbox{\hyperlink{class_u_member___state___u_i_a814146b2b23a1bdb48b8f2ce2aab5eb8}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_3\_ping\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00034}00034 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00035}00035     \textcolor{comment}{// 4번 플레이어}}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00036}\mbox{\hyperlink{class_u_member___state___u_i_a8b90795be052fbb57bb6688d46752a08}{00036}}     \mbox{\hyperlink{class_u_member___state___u_i_a8b90795be052fbb57bb6688d46752a08}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Name\_player\_4\_text;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00037}\mbox{\hyperlink{class_u_member___state___u_i_a13d556d93ccfd4a328f265656efb7416}{00037}}     \mbox{\hyperlink{class_u_member___state___u_i_a13d556d93ccfd4a328f265656efb7416}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP\_player\_4\_bar;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00038}\mbox{\hyperlink{class_u_member___state___u_i_aa96500af9e390bb158187ac48e7869c6}{00038}}     \mbox{\hyperlink{class_u_member___state___u_i_aa96500af9e390bb158187ac48e7869c6}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_4\_state\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00039}\mbox{\hyperlink{class_u_member___state___u_i_af591b34e8084d1224bcd8b9487c7a5fb}{00039}}     \mbox{\hyperlink{class_u_member___state___u_i_af591b34e8084d1224bcd8b9487c7a5fb}{UPROPERTY}}(BlueprintReadWrite, meta = (BindWidget)) UImage*       Player\_4\_ping\_img;}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00040}00040 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00041}00041 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00042}00042     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00044}00044     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_member___state___u_i_8h_source_l00045}00045 \};}
+
+\end{DoxyCode}

@@ -1,0 +1,30 @@
+digraph "ACore_vehicle::SetupPlayerInputComponent"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ACore_vehicle::SetupPlayer\lInputComponent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ACore_vehicle::Accelerate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#ad782068a030f27973dc221d88ed04c39",tooltip="가속"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ACore_vehicle::Brake",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a6bf124a7e88fa3f2baee01de77a878d1",tooltip="브레이크"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ACore_vehicle::Change\l_to_first_seat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#adbcb431637182f544cb666327c3ac349",tooltip="첫번째 좌석으로 이동"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="ACore_vehicle::Change\l_to_fourth_seat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a0e386cf02def2bd1194e523eb65440d4",tooltip="네번째 좌석으로 이동"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="ACore_vehicle::Change\l_to_second_seat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#aa645f753d1393f5fbd692e321c76000d",tooltip="두번째 좌석으로 이동"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="ACore_vehicle::Change\l_to_third_seat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a04c781138396ebedda6d21f05c80d9ae",tooltip="세번째 좌석으로 이동"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="ACore_vehicle::Handling",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#aaf777f64b61ff018fe7d53533e5b2f4c",tooltip="회전"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="ACore_vehicle::Look_up",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a586bf1014fa72e5c1e7bc0984a3c9e00",tooltip="카메라를 위 아래로 회전"];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="ACore_vehicle::Player_exit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#a6f0e55db0f7936ac0eec81766b8f3d4d",tooltip="플레이어가 차량에서 나감"];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="ACustom_player::Exit\l_from_vehicle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_custom__player.html#a504d1c863edf243a203467bbdd8f5795",tooltip="플레이어가 차량에서 나감"];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="ACore_vehicle::Turn",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_a_core__vehicle.html#af137eb3ecf8c02d4a9acf1a6002a68d8",tooltip="카메라를 좌우로 회전"];
+}

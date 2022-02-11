@@ -105,17 +105,17 @@ void ACore_vehicle::Init_car_pos_component()
 
 void ACore_vehicle::Init_car_pos_data()
 {
-    // 좌석 및 문짝 위치 초기화
-    m_map_door_pos.Add(e_seat_type::FIRST, first_door_pos_comp->GetComponentLocation());
+    m_map_door_pos.Add(e_seat_type::FIRST,  first_door_pos_comp->GetComponentLocation());
     m_map_door_pos.Add(e_seat_type::SECOND, second_door_pos_comp->GetComponentLocation());
-    m_map_seat_pos.Add(e_seat_type::FIRST, first_seat_pos_comp->GetComponentLocation());
+    m_map_seat_pos.Add(e_seat_type::FIRST,  first_seat_pos_comp->GetComponentLocation());
     m_map_seat_pos.Add(e_seat_type::SECOND, second_seat_pos_comp->GetComponentLocation());
 
+    // 문 4개있는 차량일 시
     if(m_vehicle_data.max_seater == 4)
     {
-        m_map_door_pos.Add(e_seat_type::THIRD, third_door_pos_comp->GetComponentLocation());
+        m_map_door_pos.Add(e_seat_type::THIRD,  third_door_pos_comp->GetComponentLocation());
         m_map_door_pos.Add(e_seat_type::FOURTH, fourth_door_pos_comp->GetComponentLocation());
-        m_map_seat_pos.Add(e_seat_type::THIRD, third_seat_pos_comp->GetComponentLocation());
+        m_map_seat_pos.Add(e_seat_type::THIRD,  third_seat_pos_comp->GetComponentLocation());
         m_map_seat_pos.Add(e_seat_type::FOURTH, fourth_seat_pos_comp->GetComponentLocation());
     }
 }
@@ -185,7 +185,7 @@ void ACore_vehicle::Init_wheeled_component()
     
     // 예외처리
     if (!front_wheel_bp.Succeeded() ||
-        !rear_wheel_bp.Succeeded() ||
+        !rear_wheel_bp.Succeeded()  ||
         !float_curve.Succeeded())
         return;
 
@@ -327,16 +327,16 @@ void ACore_vehicle::Update_player_seat_location(e_seat_type _seat_type)
     player_collider->SetMobility(EComponentMobility::Static);
 }
 
-bool ACore_vehicle::Check_available_seat(ACustom_player* _player)
+bool ACore_vehicle::Check_available_seat(ACustom_player* _p_player)
 {
     if (m_current_player_count < m_vehicle_data.max_seater - 1)
     {
-        m_player = _player;
+        m_player = _p_player;
 
         // 빈 좌석 확인 후 위치 가져오기
         Check_for_door_pos();
 
-        if (!m_map_empty_seat[_player->current_seat_type])
+        if (!m_map_empty_seat[_p_player->current_seat_type])
             return false;
 
         Set_player_into_seat_location();

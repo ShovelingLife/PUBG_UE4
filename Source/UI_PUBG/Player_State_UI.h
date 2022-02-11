@@ -1,3 +1,12 @@
+ï»¿/**
+ * \file Player_State_UI.h
+ *
+ * \brief í˜„ì¬ í”Œë ˆì´ì–´ ìƒíƒœ UI
+ *
+ * \ingroup UI_PUBG
+ *
+ * \author ShovelingLife
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,6 +16,7 @@
 class UProgressBar;
 class UImage;
 class UTextBlock;
+class AUI_manager;
 
 UCLASS()
 class UI_PUBG_API UPlayer_State_UI : public UUserWidget
@@ -14,32 +24,41 @@ class UI_PUBG_API UPlayer_State_UI : public UUserWidget
 	GENERATED_BODY()
 	
 private:
-    class AUI_manager* mp_UI_manager;
+    /** \brief UI ë§¤ë‹ˆì € */
+    UPROPERTY() AUI_manager* mp_UI_manager;
 
 public:
-    // Ã¼·Â È¸º¹·Â(¿¡³ÊÁöµå¸µÅ©, ÁøÅëÁ¦¹Ù) »ê¼Ò
+    /**
+      * \brief ì²´ë ¥ íšŒë³µë ¥(ì—ë„ˆì§€ë“œë§í¬, ì§„í†µì œë°”) ì‚°ì†Œ
+     */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP_bar;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Recovery_bar;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Oxygen_bar;
 
-    // Àåºñ Âø¿ë ¿©ºÎ ÀÌ¹ÌÁö °ü·Ã
+    /**
+      * \brief ì¥ë¹„ ì°©ìš© ì—¬ë¶€ ì´ë¯¸ì§€ ê´€ë ¨
+     */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Backbag_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Head_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Bodyarmor_img;
 
-    // ¹öÇÁ Áö¼Ó ¿©ºÎ ÀÌ¹ÌÁö °ü·Ã
+    /**
+      * \brief ë²„í”„ ì§€ì† ì—¬ë¶€ ì´ë¯¸ì§€ ê´€ë ¨
+     */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Speedup_img;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Healing_img;
 
-    // »ç¿ëÁßÀÎ ÃÑ±â ÇöÈ²
+    /**
+      * \brief ì‚¬ìš©ì¤‘ì¸ ì´ê¸° í˜„í™©
+     */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Magazine_current_text;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Magazine_total_text;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* BoltAction_img;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     BoltAction_img;
 
-    // ÀÚ¼¼
+    /** \brief ìì„¸ */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Posture_img;
 
-    // Á¶ÁØ¼± ÀÌ¹ÌÁö
+    /** \brief ì¡°ì¤€ì„  ì´ë¯¸ì§€ */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Reticle_img;
 
     class ACustom_player* p_player;
@@ -50,15 +69,23 @@ protected:
 	void NativeTick(const FGeometry&, float) override;
 
 public:
-    // Á¶ÁØ¼± °»½Å
+    /**
+      * \brief ì¡°ì¤€ì„  ê°±ì‹  
+     */
     void Update_aim_UI();
 
-    // ¹ß»ç ¹æ¹ı °»½Å
+    /**
+      * \brief ë°œì‚¬ ë°©ë²• UI ê°±ì‹ 
+     */
     void Update_shoot_mode();
 
-    // ÃÑ¾Ë °³¼ö °»½Å
+    /**
+      * \brief ì´ì•Œ ê°œìˆ˜ UI ê°±ì‹ 
+     */
     void Update_bullet_count_UI();
 
-    // »ê¼Ò ¹Ù °»½Å
+    /**
+      * \brief ì‚°ì†Œ ë°” UI ê°±ì‹ 
+     */
     void Update_oxygen_bar_UI(float);
 };

@@ -1,0 +1,47 @@
+digraph "D:/0_Projects/Unreal/PUBG_UE4/Source/Characters/PUBG_gamemode.cpp"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="D:/0_Projects/Unreal\l/PUBG_UE4/Source/Characters\l/PUBG_gamemode.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="PUBG_gamemode.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_p_u_b_g__gamemode_8h.html",tooltip="캐릭터 컨트롤러 관련"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="CoreMinimal.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="GameFramework/GameModeBase.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="PUBG_gamemode.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="Custom_player.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_custom__player_8h.html",tooltip="캐릭터 클래스 관련"];
+  Node6 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="PUBG_UE4/My_enum.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_my__enum_8h.html",tooltip="게임 내 쓰여질 열거형 관리"];
+  Node7 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="GameFramework/Actor.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="My_enum.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node6 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="GameFramework/Character.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node6 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="Custom_player.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="Custom_player_controller.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_custom__player__controller_8h.html",tooltip="ĳ���� ��Ʈ�ѷ� ����"];
+  Node12 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node13 [label="GameFramework/PlayerController.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node12 -> Node14 [color="midnightblue",fontsize="10",style="solid"];
+  Node14 [label="Custom_player_controller.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node15 [color="midnightblue",fontsize="10",style="solid"];
+  Node15 [label="Blueprint/WidgetBlueprint\lLibrary.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node16 [color="midnightblue",fontsize="10",style="solid"];
+  Node16 [label="PUBG_UE4/Custom_game\l_instance.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_custom__game__instance_8h.html",tooltip="게임 인스턴스 = 싱글톤 통용"];
+  Node16 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid"];
+  Node17 [label="Engine/GameInstance.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node16 -> Node18 [color="midnightblue",fontsize="10",style="solid"];
+  Node18 [label="Custom_game_instance.generated.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node19 [color="midnightblue",fontsize="10",style="solid"];
+  Node19 [label="Kismet/GameplayStatics.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

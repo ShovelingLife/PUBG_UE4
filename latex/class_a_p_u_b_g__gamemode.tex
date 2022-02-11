@@ -1,0 +1,55 @@
+\hypertarget{class_a_p_u_b_g__gamemode}{}\doxysection{APUBG\+\_\+gamemode 클래스 참조}
+\label{class_a_p_u_b_g__gamemode}\index{APUBG\_gamemode@{APUBG\_gamemode}}
+
+
+APUBG\+\_\+gamemode에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+APUBG\+\_\+gamemode에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_a_p_u_b_g__gamemode_acab2fcd331d55b8a8bc227c9e8987fca}{Start\+Play}} () override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_p_u_b_g__gamemode_a225cc5def65d0b5c2e214337dbc63963}\label{class_a_p_u_b_g__gamemode_a225cc5def65d0b5c2e214337dbc63963}} 
+\index{APUBG\_gamemode@{APUBG\_gamemode}!APUBG\_gamemode@{APUBG\_gamemode}}
+\index{APUBG\_gamemode@{APUBG\_gamemode}!APUBG\_gamemode@{APUBG\_gamemode}}
+\doxysubsubsection{\texorpdfstring{APUBG\_gamemode()}{APUBG\_gamemode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_a_p_u_b_g__gamemode}{APUBG\+\_\+gamemode}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10     DefaultPawnClass      = ACustom\_player::StaticClass();}
+\DoxyCodeLine{11     PlayerControllerClass = ACustom\_player\_controller::StaticClass();}
+\DoxyCodeLine{12 \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_p_u_b_g__gamemode_acab2fcd331d55b8a8bc227c9e8987fca}\label{class_a_p_u_b_g__gamemode_acab2fcd331d55b8a8bc227c9e8987fca}} 
+\index{APUBG\_gamemode@{APUBG\_gamemode}!StartPlay@{StartPlay}}
+\index{StartPlay@{StartPlay}!APUBG\_gamemode@{APUBG\_gamemode}}
+\doxysubsubsection{\texorpdfstring{StartPlay()}{StartPlay()}}
+{\footnotesize\ttfamily void Start\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     Super::StartPlay();}
+\DoxyCodeLine{17     UWidgetBlueprintLibrary::SetInputMode\_GameOnly(GetWorld()-\/>GetFirstPlayerController());}
+\DoxyCodeLine{18 \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Characters/PUBG\+\_\+gamemode.\+h\item 
+Source/\+Characters/PUBG\+\_\+gamemode.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,238 @@
+\hypertarget{class_a_sound__manager}{}\doxysection{ASound\+\_\+manager 클래스 참조}
+\label{class_a_sound__manager}\index{ASound\_manager@{ASound\_manager}}
+
+
+{\ttfamily \#include $<$Sound\+\_\+manager.\+h$>$}
+
+
+
+ASound\+\_\+manager에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ASound\+\_\+manager에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_sound__manager_a0666ea01d6b0b7e459d50294b754f06f}{UPROPERTY}} (Visible\+Anywhere, Category=Weapon\+\_\+sound) TArray$<$ USound\+Base $\ast$ $>$ p\+\_\+arr\+\_\+shot\+\_\+sound
+\begin{DoxyCompactList}\small\item\em 무기 관련 사운드 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_sound__manager_a9bd7059ba4fb02ba328b38ad07b9c2ef}{UPROPERTY}} (Visible\+Anywhere, Category=Weapon\+\_\+sound) USound\+Base $\ast$p\+\_\+empty\+\_\+ammo\+\_\+sound
+\item 
+\mbox{\hyperlink{class_a_sound__manager_ac483392258046201a8c60a82b64b8fa5}{UPROPERTY}} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+reload\+\_\+sound
+\item 
+\mbox{\hyperlink{class_a_sound__manager_a129294978b94ac50292110e92de99a5b}{UPROPERTY}} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+item\+\_\+farm\+\_\+sound
+\begin{DoxyCompactList}\small\item\em 플레이어 무기 사운드 관련 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_sound__manager_a652db77bfe2118aec57611cbe78261fe}{UPROPERTY}} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+weapon\+\_\+pickup\+\_\+sound
+\item 
+\mbox{\hyperlink{class_a_sound__manager_aaf121f263537fc774a91bd7e81a57828}{UPROPERTY}} (Visible\+Anywhere, Category=Player\+\_\+sound) USound\+Base $\ast$p\+\_\+weapon\+\_\+swap\+\_\+sound
+\item 
+\mbox{\hyperlink{class_a_sound__manager_a96424c7cc0b1784e4568669f4700e8cc}{ASound\+\_\+manager}} ()
+\item 
+void \mbox{\hyperlink{class_a_sound__manager_a22465b2fbbc4a4184a2684bbf9442a1f}{Play\+\_\+weapon\+\_\+sound}} (UAudio\+Component $\ast$\+\_\+p\+\_\+audio\+\_\+comp, \mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32}{e\+\_\+weapon\+\_\+sound\+\_\+type}} \+\_\+sound\+\_\+type, int \+\_\+weapon\+\_\+index=0)
+\begin{DoxyCompactList}\small\item\em 무기 오디오 재생 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_sound__manager_a517771f1efc7f791c4a051573a3dd100}{Play\+\_\+player\+\_\+sound}} (UAudio\+Component $\ast$\+\_\+p\+\_\+audio\+\_\+comp, \mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387}{e\+\_\+player\+\_\+sound\+\_\+type}} \+\_\+sound\+\_\+type)
+\begin{DoxyCompactList}\small\item\em 플레이어 오디오 재생 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_a_sound__manager_a0efbfa8e992f611813357866999a1793}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_sound__manager_af5c87b105f9e580a9cf8c52aece29ff3}{Tick}} (float Delta\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Private 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_a_sound__manager_a5e634877198ed3cdae1e40684321820e}{Init\+\_\+weapon\+\_\+audio}} ()
+\begin{DoxyCompactList}\small\item\em 무기 오디오 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_sound__manager_ac13853ac0c4a42485e685403fa5e5bcb}{Init\+\_\+player\+\_\+audio}} ()
+\begin{DoxyCompactList}\small\item\em 플레이어 오디오 초기화 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private 속성}
+\begin{DoxyCompactItemize}
+\item 
+const FString \mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{mk\+\_\+sound\+\_\+path}} = \char`\"{}/Game/SFX/Gun\+\_\+sounds/\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_sound__manager_8h_source}{Sound\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_sound__manager_8h_source_l00022}{22}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_sound__manager_a96424c7cc0b1784e4568669f4700e8cc}\label{class_a_sound__manager_a96424c7cc0b1784e4568669f4700e8cc}} 
+\index{ASound\_manager@{ASound\_manager}!ASound\_manager@{ASound\_manager}}
+\index{ASound\_manager@{ASound\_manager}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{ASound\_manager()}{ASound\_manager()}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+ASound\+\_\+manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00009}{9}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_sound__manager_a0efbfa8e992f611813357866999a1793}\label{class_a_sound__manager_a0efbfa8e992f611813357866999a1793}} 
+\index{ASound\_manager@{ASound\_manager}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void ASound\+\_\+manager\+::\+Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00016}{16}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_sound__manager_ac13853ac0c4a42485e685403fa5e5bcb}\label{class_a_sound__manager_ac13853ac0c4a42485e685403fa5e5bcb}} 
+\index{ASound\_manager@{ASound\_manager}!Init\_player\_audio@{Init\_player\_audio}}
+\index{Init\_player\_audio@{Init\_player\_audio}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_player\_audio()}{Init\_player\_audio()}}
+{\footnotesize\ttfamily void ASound\+\_\+manager\+::\+Init\+\_\+player\+\_\+audio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+플레이어 오디오 초기화 
+
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00026}{26}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_sound__manager_a5e634877198ed3cdae1e40684321820e}\label{class_a_sound__manager_a5e634877198ed3cdae1e40684321820e}} 
+\index{ASound\_manager@{ASound\_manager}!Init\_weapon\_audio@{Init\_weapon\_audio}}
+\index{Init\_weapon\_audio@{Init\_weapon\_audio}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_weapon\_audio()}{Init\_weapon\_audio()}}
+{\footnotesize\ttfamily void ASound\+\_\+manager\+::\+Init\+\_\+weapon\+\_\+audio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+무기 오디오 초기화 
+
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00041}{41}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 4
+\mbox{\Hypertarget{class_a_sound__manager_a517771f1efc7f791c4a051573a3dd100}\label{class_a_sound__manager_a517771f1efc7f791c4a051573a3dd100}} 
+\index{ASound\_manager@{ASound\_manager}!Play\_player\_sound@{Play\_player\_sound}}
+\index{Play\_player\_sound@{Play\_player\_sound}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Play\_player\_sound()}{Play\_player\_sound()}}
+{\footnotesize\ttfamily void ASound\+\_\+manager\+::\+Play\+\_\+player\+\_\+sound (\begin{DoxyParamCaption}\item[{UAudio\+Component $\ast$}]{\+\_\+p\+\_\+audio\+\_\+comp,  }\item[{\mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387}{e\+\_\+player\+\_\+sound\+\_\+type}}}]{\+\_\+sound\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+플레이어 오디오 재생 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+p\+\_\+audio\+\_\+comp} & 오디오 컴포넌트\\
+\hline
+{\em \+\_\+sound\+\_\+type} & 사운드 종류 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00081}{81}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_sound__manager_a22465b2fbbc4a4184a2684bbf9442a1f}\label{class_a_sound__manager_a22465b2fbbc4a4184a2684bbf9442a1f}} 
+\index{ASound\_manager@{ASound\_manager}!Play\_weapon\_sound@{Play\_weapon\_sound}}
+\index{Play\_weapon\_sound@{Play\_weapon\_sound}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Play\_weapon\_sound()}{Play\_weapon\_sound()}}
+{\footnotesize\ttfamily void ASound\+\_\+manager\+::\+Play\+\_\+weapon\+\_\+sound (\begin{DoxyParamCaption}\item[{UAudio\+Component $\ast$}]{\+\_\+p\+\_\+audio\+\_\+comp,  }\item[{\mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32}{e\+\_\+weapon\+\_\+sound\+\_\+type}}}]{\+\_\+sound\+\_\+type,  }\item[{int}]{\+\_\+weapon\+\_\+index = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+무기 오디오 재생 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+p\+\_\+audio\+\_\+comp} & 오디오 컴포넌트\\
+\hline
+{\em \+\_\+sound\+\_\+type} & 사운드 종류\\
+\hline
+{\em 사운드} & 인덱스 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00065}{65}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_sound__manager_af5c87b105f9e580a9cf8c52aece29ff3}\label{class_a_sound__manager_af5c87b105f9e580a9cf8c52aece29ff3}} 
+\index{ASound\_manager@{ASound\_manager}!Tick@{Tick}}
+\index{Tick@{Tick}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void ASound\+\_\+manager\+::\+Tick (\begin{DoxyParamCaption}\item[{float}]{Delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{_sound__manager_8cpp_source}{Sound\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_sound__manager_8cpp_source_l00021}{21}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_sound__manager_a129294978b94ac50292110e92de99a5b}\label{class_a_sound__manager_a129294978b94ac50292110e92de99a5b}} 
+\index{ASound\_manager@{ASound\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Player\+\_\+sound} }\end{DoxyParamCaption})}
+
+
+
+플레이어 무기 사운드 관련 
+
+\mbox{\Hypertarget{class_a_sound__manager_ac483392258046201a8c60a82b64b8fa5}\label{class_a_sound__manager_ac483392258046201a8c60a82b64b8fa5}} 
+\index{ASound\_manager@{ASound\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Player\+\_\+sound} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_sound__manager_a652db77bfe2118aec57611cbe78261fe}\label{class_a_sound__manager_a652db77bfe2118aec57611cbe78261fe}} 
+\index{ASound\_manager@{ASound\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Player\+\_\+sound} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_sound__manager_aaf121f263537fc774a91bd7e81a57828}\label{class_a_sound__manager_aaf121f263537fc774a91bd7e81a57828}} 
+\index{ASound\_manager@{ASound\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Player\+\_\+sound} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_sound__manager_a0666ea01d6b0b7e459d50294b754f06f}\label{class_a_sound__manager_a0666ea01d6b0b7e459d50294b754f06f}} 
+\index{ASound\_manager@{ASound\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Weapon\+\_\+sound} }\end{DoxyParamCaption})}
+
+
+
+무기 관련 사운드 
+
+\mbox{\Hypertarget{class_a_sound__manager_a9bd7059ba4fb02ba328b38ad07b9c2ef}\label{class_a_sound__manager_a9bd7059ba4fb02ba328b38ad07b9c2ef}} 
+\index{ASound\_manager@{ASound\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily ASound\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Weapon\+\_\+sound} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}\label{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}} 
+\index{ASound\_manager@{ASound\_manager}!mk\_sound\_path@{mk\_sound\_path}}
+\index{mk\_sound\_path@{mk\_sound\_path}!ASound\_manager@{ASound\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_sound\_path}{mk\_sound\_path}}
+{\footnotesize\ttfamily const FString ASound\+\_\+manager\+::mk\+\_\+sound\+\_\+path = \char`\"{}/Game/SFX/Gun\+\_\+sounds/\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_sound__manager_8h_source}{Sound\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_sound__manager_8h_source_l00027}{27}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+PUBG\+\_\+\+UE4/\mbox{\hyperlink{_sound__manager_8h}{Sound\+\_\+manager.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+PUBG\+\_\+\+UE4/\mbox{\hyperlink{_sound__manager_8cpp}{Sound\+\_\+manager.\+cpp}}\end{DoxyCompactItemize}

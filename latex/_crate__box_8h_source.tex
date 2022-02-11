@@ -1,0 +1,50 @@
+\hypertarget{_crate__box_8h_source}{}\doxysection{Crate\+\_\+box.\+h}
+\label{_crate__box_8h_source}\index{Source/Farmable\_items/Crate\_box.h@{Source/Farmable\_items/Crate\_box.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Fill out your copyright notice in the Description page of Project Settings.}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}Core\_farmable\_item.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}Crate\_box.generated.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{12 UCLASS()}
+\DoxyCodeLine{13 class FARMABLE\_ITEMS\_API \mbox{\hyperlink{class_a_crate__box}{ACrate\_box}} : public \mbox{\hyperlink{class_a_core__farmable__item}{ACore\_farmable\_item}}}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15     GENERATED\_BODY()}
+\DoxyCodeLine{16     }
+\DoxyCodeLine{17     UPROPERTY(VisibleAnywhere, Category = Mesh)}
+\DoxyCodeLine{18         \textcolor{keyword}{class }UStaticMeshComponent* mp\_parachute\_mesh = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     UPROPERTY(VisibleAnywhere, Category = Mesh)}
+\DoxyCodeLine{21         \textcolor{keyword}{class }UParticleSystemComponent* mp\_particle\_component = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     \textcolor{keywordtype}{float} m\_current\_time             = 0.f;}
+\DoxyCodeLine{24     \textcolor{keyword}{const} \textcolor{keywordtype}{float} mk\_max\_particle\_time = 15.f;}
+\DoxyCodeLine{25     \textcolor{keywordtype}{bool}  m\_is\_particle\_ended        = \textcolor{keyword}{false};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28     \mbox{\hyperlink{class_a_crate__box}{ACrate\_box}}();}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{31     \textcolor{comment}{// Called every frame}}
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{private}:}
+\DoxyCodeLine{35     \textcolor{comment}{// 이펙트 초기화}}
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} Init\_vfx();}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \textcolor{comment}{// 메쉬 초기화}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{void} Init\_meshes();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{comment}{// 콜라이더 업데이트}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{void} Update\_collider();}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{public}:}
+\DoxyCodeLine{45     UFUNCTION()}
+\DoxyCodeLine{46     \textcolor{keywordtype}{void} Turn\_off\_after\_landing(\textcolor{keyword}{class} UPrimitiveComponent* HitComp, AActor* OtherActor, \textcolor{keyword}{class} UPrimitiveComponent* OtherComp, FVector NormalImpulse, \textcolor{keyword}{const} FHitResult\& Hit);}
+\DoxyCodeLine{47 \};}
+
+\end{DoxyCode}

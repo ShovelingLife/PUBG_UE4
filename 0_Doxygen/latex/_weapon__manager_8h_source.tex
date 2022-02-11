@@ -1,0 +1,105 @@
+\hypertarget{_weapon__manager_8h_source}{}\doxysection{Weapon\+\_\+manager.\+h}
+\label{_weapon__manager_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Player\_weapons/Weapon\_manager.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/Player\_weapons/Weapon\_manager.h}}
+\mbox{\hyperlink{_weapon__manager_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_my__enum_8h}{PUBG\_UE4/My\_enum.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_weapon__enum_8h}{Weapon\_enum.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00016}00016 \textcolor{preprocessor}{\#include "{}Weapon\_manager.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00018}00018 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00019}00019 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00020}00020 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_core__melee__weapon}{ACore\_melee\_weapon}};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00021}00021 \textcolor{keyword}{class }\mbox{\hyperlink{class_a_core__throwable__weapon}{ACore\_throwable\_weapon}};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00022}00022 \textcolor{keyword}{class }USceneComponent;}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00023}00023 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00024}00024 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00025}\mbox{\hyperlink{class_a_weapon__manager}{00025}} class PLAYER\_WEAPONS\_API \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}} : public AActor}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00026}00026 \{}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00027}00027     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00028}00028 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00029}00029 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00030}\mbox{\hyperlink{class_a_weapon__manager_aaa084b19e1b37eaedcfa97c466e5e564}{00030}}     \mbox{\hyperlink{class_a_weapon__manager_aaa084b19e1b37eaedcfa97c466e5e564}{UPROPERTY}}(EditAnywhere, Category = Scene\_comp) USceneComponent* mp\_scene\_comp = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00031}00031 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00032}\mbox{\hyperlink{class_a_weapon__manager_a0729a9bc1dbb3664cd38381bdb11a5f3}{00032}}     \textcolor{keyword}{const} \textcolor{keywordtype}{float} mk\_reload\_time          = 2.f;}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00033}\mbox{\hyperlink{class_a_weapon__manager_a1ab9059b3cb75246c78ed2f147280de1}{00033}}     \textcolor{keywordtype}{float}       m\_current\_reload\_time   = 0.f;}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00034}\mbox{\hyperlink{class_a_weapon__manager_afaed4c12a0ba07f9fdf8c35802d5542c}{00034}}     \textcolor{keywordtype}{float}       m\_shoot\_time            = 0.25f;}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00035}\mbox{\hyperlink{class_a_weapon__manager_a7fb70414198e145984f2eee7aa54187f}{00035}}     \textcolor{keywordtype}{float}       m\_current\_shoot\_time    = 0.f;}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00036}\mbox{\hyperlink{class_a_weapon__manager_a4ecd455afdc366c9e389fc1f132d8133}{00036}}     \textcolor{keywordtype}{bool}        m\_is\_reloading          = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00037}\mbox{\hyperlink{class_a_weapon__manager_a079bc5fba08e1b4aa9a22554993581a4}{00037}}     \textcolor{keywordtype}{bool}        m\_is\_interacting        = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00038}\mbox{\hyperlink{class_a_weapon__manager_a991ffb8018a8e966b1729b42ce7fc56d}{00038}}     \textcolor{keywordtype}{bool}        m\_is\_changed\_shoot\_type = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00039}\mbox{\hyperlink{class_a_weapon__manager_aaf3d43cc81dd473eaf52ec01402f6d87}{00039}}     \textcolor{keywordtype}{bool}        m\_is\_shooting           = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00040}00040 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00041}00041 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00043}\mbox{\hyperlink{class_a_weapon__manager_a4544bc6b5675a77713e8de03dbe1f2d0}{00043}}     \mbox{\hyperlink{class_a_weapon__manager_a4544bc6b5675a77713e8de03dbe1f2d0}{UPROPERTY}}() \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}*          p\_first\_gun  = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00044}\mbox{\hyperlink{class_a_weapon__manager_ae4b96a4b16ac7facbbd17b111bd28c69}{00044}}     UPROPERTY() \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}*           p\_second\_gun = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00045}\mbox{\hyperlink{class_a_weapon__manager_a6b71fe8e048acf67ea2ab059a6c74eb3}{00045}}     UPROPERTY() \mbox{\hyperlink{class_a_core__weapon}{ACore\_weapon}}*           p\_pistol     = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00046}\mbox{\hyperlink{class_a_weapon__manager_abd144ccdeca209de79dfb1c04b22b3d2}{00046}}     UPROPERTY() \mbox{\hyperlink{class_a_core__melee__weapon}{ACore\_melee\_weapon}}*       p\_melee      = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00047}\mbox{\hyperlink{class_a_weapon__manager_a15e8385ca30fed7dfad4c4d9613dd61f}{00047}}     UPROPERTY() \mbox{\hyperlink{class_a_core__throwable__weapon}{ACore\_throwable\_weapon}}* p\_throwable    = \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00048}00048 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00049}\mbox{\hyperlink{class_a_weapon__manager_ae3bc178b55bb6359b779a43597e28e21}{00049}}     \mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76}{e\_current\_weapon\_type}} current\_weapon\_type = \mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76}{e\_current\_weapon\_type}}::\mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76ab50339a10e1de285ac99d4c3990b8693}{NONE}};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00050}\mbox{\hyperlink{class_a_weapon__manager_a896da2629a0e8288e6b26dc0fcc5723a}{00050}}     \textcolor{keywordtype}{bool} arr\_is\_weapon\_equipped[5]\{ \textcolor{keyword}{false} \};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00051}00051 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00052}00052 \textcolor{keyword}{public}: }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00053}00053     \mbox{\hyperlink{class_a_weapon__manager}{AWeapon\_manager}}();}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00054}00054 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00055}00055 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00056}00056     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00057}00057 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00058}00058 \textcolor{keyword}{public}: }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00059}00059     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00061}00061 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00062}00062     \textcolor{comment}{/* \(\backslash\)brief 착용 중인 무기를 체크함 */}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00063}00063     \textcolor{comment}{// 미구현상태}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00064}00064     \textcolor{keywordtype}{void} Check\_for\_equipped\_weapon();}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00065}00065     }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00070}00070     \textcolor{keywordtype}{void} Update\_current\_equipped\_weapon();}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00071}00071     }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00076}00076     \textcolor{keywordtype}{void} Play\_sound(\mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32}{e\_weapon\_sound\_type}} \_sound\_type);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00077}00077 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00084}00084     \mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76}{e\_current\_weapon\_type}} Find\_weapon\_index(FString \_direction, \textcolor{keywordtype}{int} \_start\_index);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00085}00085 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00091}00091     \textcolor{keywordtype}{void} Attach\_weapon(\mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}* \_p\_tmp\_weapon, FString \_socket\_name);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00092}00092 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00099}00099     \textcolor{keywordtype}{void} Reset\_weapon\_after\_detaching(\mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}* \_weapon, FTransform \_new\_pos);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00100}00100 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00101}00101 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00106}00106     \textcolor{keywordtype}{void} Equip(AActor* \_p\_weapon);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00107}00107 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00109}00109     \textcolor{keywordtype}{void} Shoot();}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00110}00110 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00112}00112     \textcolor{keywordtype}{void} Reload();}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00113}00113 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00119}00119     \textcolor{keywordtype}{bool} Scroll\_select(\textcolor{keywordtype}{int} \_pos);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00120}00120 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00127}00127     \textcolor{keywordtype}{void} Swap(\mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}* \_current\_weapon, AActor* \_new\_weapon, FString \_socket\_name);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00128}00128 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00129}00129     \textcolor{comment}{/* \(\backslash\)brief 착용 중인 무기를 체크함 */}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00130}00130     \textcolor{keywordtype}{void} Change\_shoot\_mode();}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00131}00131 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00132}00132     \textcolor{comment}{// 미구현 상태}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00133}00133     \textcolor{keywordtype}{void} Change\_aim\_pose(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00134}00134 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00139}00139     \textcolor{keywordtype}{void} Check\_if\_reloading(\textcolor{keywordtype}{float} \_transcurred\_reload\_time);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00140}00140 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00145}00145     \textcolor{keywordtype}{void} Check\_continously\_shooting(\textcolor{keywordtype}{float} \_transcurred\_shoot\_time);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00146}00146 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00152}00152     \textcolor{keywordtype}{bool} Check\_if\_weapon\_available(\mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76}{e\_current\_weapon\_type}} \_weapon\_type);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00153}00153 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00154}00154     \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/ 부착 관련 함수 -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00155}00155 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00161}00161     \textcolor{keywordtype}{int} Get\_weapon\_max\_bullet\_count(\mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76}{e\_current\_weapon\_type}} \_weapon\_type);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00162}00162 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00168}00168     \mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}* Get\_weapon(\mbox{\hyperlink{_weapon__enum_8h_a30dd980bad3205e07d6f91ab4bdefa76}{e\_current\_weapon\_type}} \_weapon\_type);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00169}00169 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00170}00170     \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/ UI 관련 함수 -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00171}00171 }
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00176}00176     \textcolor{keywordtype}{void} Drop(\mbox{\hyperlink{class_a_base__interaction}{ABase\_interaction}}* \_p\_weapon);}
+\DoxyCodeLine{\Hypertarget{_weapon__manager_8h_source_l00177}00177 \};}
+
+\end{DoxyCode}

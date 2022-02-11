@@ -1,0 +1,53 @@
+\hypertarget{_sound__manager_8h_source}{}\doxysection{Sound\+\_\+manager.\+h}
+\label{_sound__manager_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Sound\_manager.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Sound\_manager.h}}
+\mbox{\hyperlink{_sound__manager_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_data__table__manager_8h}{Data\_table\_manager.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00015}00015 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_my__enum_8h}{My\_enum.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00016}00016 \textcolor{preprocessor}{\#include "{}Sound\_manager.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00018}00018 \textcolor{keyword}{class }USoundBase;}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00019}00019 \textcolor{keyword}{class }UAudioComponent;}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00021}00021 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00022}\mbox{\hyperlink{class_a_sound__manager}{00022}} class PUBG\_UE4\_API \mbox{\hyperlink{class_a_sound__manager}{ASound\_manager}} : public AActor}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00023}00023 \{}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00024}00024     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00025}00025 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00026}00026 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00027}\mbox{\hyperlink{class_a_sound__manager_a5e2e41a622ea66d3760d89b59616362e}{00027}}     \textcolor{keyword}{const} FString     mk\_sound\_path = \textcolor{stringliteral}{"{}/Game/SFX/Gun\_sounds/"{}};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00028}00028 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00029}00029 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00033}\mbox{\hyperlink{class_a_sound__manager_a0666ea01d6b0b7e459d50294b754f06f}{00033}}     \mbox{\hyperlink{class_a_sound__manager_a0666ea01d6b0b7e459d50294b754f06f}{UPROPERTY}}(VisibleAnywhere, Category = Weapon\_sound) TArray<USoundBase*> p\_arr\_shot\_sound;}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00034}\mbox{\hyperlink{class_a_sound__manager_a9bd7059ba4fb02ba328b38ad07b9c2ef}{00034}}     \mbox{\hyperlink{class_a_sound__manager_a9bd7059ba4fb02ba328b38ad07b9c2ef}{UPROPERTY}}(VisibleAnywhere, Category = Weapon\_sound) USoundBase*         p\_empty\_ammo\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00035}\mbox{\hyperlink{class_a_sound__manager_ac483392258046201a8c60a82b64b8fa5}{00035}}     \mbox{\hyperlink{class_a_sound__manager_ac483392258046201a8c60a82b64b8fa5}{UPROPERTY}}(VisibleAnywhere, Category = Player\_sound) USoundBase*         p\_reload\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00040}\mbox{\hyperlink{class_a_sound__manager_a129294978b94ac50292110e92de99a5b}{00040}}     \mbox{\hyperlink{class_a_sound__manager_a129294978b94ac50292110e92de99a5b}{UPROPERTY}}(VisibleAnywhere, Category = Player\_sound) USoundBase* p\_item\_farm\_sound = \textcolor{keyword}{nullptr}; }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00041}\mbox{\hyperlink{class_a_sound__manager_a652db77bfe2118aec57611cbe78261fe}{00041}}     \mbox{\hyperlink{class_a_sound__manager_a652db77bfe2118aec57611cbe78261fe}{UPROPERTY}}(VisibleAnywhere, Category = Player\_sound) USoundBase* p\_weapon\_pickup\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00042}\mbox{\hyperlink{class_a_sound__manager_aaf121f263537fc774a91bd7e81a57828}{00042}}     \mbox{\hyperlink{class_a_sound__manager_aaf121f263537fc774a91bd7e81a57828}{UPROPERTY}}(VisibleAnywhere, Category = Player\_sound) USoundBase* p\_weapon\_swap\_sound = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00044}00044 \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00048}00048     \textcolor{keywordtype}{void} Init\_weapon\_audio();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00049}00049 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00053}00053     \textcolor{keywordtype}{void} Init\_player\_audio();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00054}00054 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00055}00055 \textcolor{keyword}{public}: }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00056}00056     \mbox{\hyperlink{class_a_sound__manager}{ASound\_manager}}();}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00057}00057 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00058}00058 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00059}00059     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} BeginPlay() \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00060}00060 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00061}00061     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Tick(\textcolor{keywordtype}{float} DeltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00062}00062 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00063}00063 \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00068}00068     \textcolor{keywordtype}{void} Play\_weapon\_sound(UAudioComponent* \_p\_audio\_comp, \mbox{\hyperlink{_my__enum_8h_a9c58b5149878c5626b46b7f81a392a32}{e\_weapon\_sound\_type}} \_sound\_type, \textcolor{keywordtype}{int} \_weapon\_index = 0);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00074}00074     \textcolor{keywordtype}{void} Play\_player\_sound(UAudioComponent* \_p\_audio\_comp, \mbox{\hyperlink{_my__enum_8h_a8689bd30a94d552a37e9d2cce8041387}{e\_player\_sound\_type}} \_sound\_type);}
+\DoxyCodeLine{\Hypertarget{_sound__manager_8h_source_l00075}00075 \};}
+
+\end{DoxyCode}

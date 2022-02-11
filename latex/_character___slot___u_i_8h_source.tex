@@ -1,0 +1,48 @@
+\hypertarget{_character___slot___u_i_8h_source}{}\doxysection{Character\+\_\+\+Slot\+\_\+\+UI.\+h}
+\label{_character___slot___u_i_8h_source}\index{Source/UI\_PUBG/Character\_Slot\_UI.h@{Source/UI\_PUBG/Character\_Slot\_UI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Character\_Slot\_UI.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{8 \textcolor{keyword}{class }UProgressBar;}
+\DoxyCodeLine{9 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 UCLASS()}
+\DoxyCodeLine{12 class UI\_PUBG\_API \mbox{\hyperlink{class_u_character___slot___u_i}{UCharacter\_Slot\_UI}} : public UUserWidget}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     GENERATED\_BODY()}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{public}:}
+\DoxyCodeLine{17     \textcolor{comment}{// 장비 관련}}
+\DoxyCodeLine{18     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Head\_slot\_img;}
+\DoxyCodeLine{19     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Backbag\_slot\_img;}
+\DoxyCodeLine{20     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Belt\_slot\_img;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{comment}{// 가방 여유 게이지바}}
+\DoxyCodeLine{23     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Backbag\_free\_space\_bar;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{comment}{// 방탄복 관련}}
+\DoxyCodeLine{26     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     Bodyarmor\_slot\_img;}
+\DoxyCodeLine{27     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     Armor\_icon\_img;}
+\DoxyCodeLine{28     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* Armor\_durability\_text;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{comment}{// 스킨 관련}}
+\DoxyCodeLine{31     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Hat\_slot\_img;}
+\DoxyCodeLine{32     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Mask\_slot\_img;}
+\DoxyCodeLine{33     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Coat\_slot\_img;}
+\DoxyCodeLine{34     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Shirts\_slot\_img;}
+\DoxyCodeLine{35     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Pants\_slot\_img;}
+\DoxyCodeLine{36     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* Shoes\_slot\_img;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{39     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{42 \};}
+
+\end{DoxyCode}

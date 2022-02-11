@@ -1,0 +1,33 @@
+\hypertarget{_custom__game__instance_8h_source}{}\doxysection{Custom\+\_\+game\+\_\+instance.\+h}
+\label{_custom__game__instance_8h_source}\index{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Custom\_game\_instance.h@{D:/0\_Projects/Unreal/PUBG\_UE4/Source/PUBG\_UE4/Custom\_game\_instance.h}}
+\mbox{\hyperlink{_custom__game__instance_8h}{이 파일의 문서화 페이지로 가기}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00010}00010 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00012}00012 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00013}00013 \textcolor{preprocessor}{\#include "{}Engine/GameInstance.h"{}}}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00014}00014 \textcolor{preprocessor}{\#include "{}Custom\_game\_instance.generated.h"{}}}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00016}00016 \textcolor{keyword}{class }\mbox{\hyperlink{_base__interaction_8h_a295ed085e14fb2c8ec5323fc2aee5f99}{UWidgetComponent}};}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00018}00018 DECLARE\_DELEGATE\_TwoParams(FDele\_update\_interaction\_widget\_comp, \mbox{\hyperlink{_base__interaction_8h_a295ed085e14fb2c8ec5323fc2aee5f99}{UWidgetComponent}}*, FString)}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00019}00019 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00023}00023 UCLASS()}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00024}00024 class PUBG\_UE4\_API UCustom\_game\_instance : public UGameInstance}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00025}00025 \{}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00026}00026     GENERATED\_BODY()}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00027}00027 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00028}00028 public:}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00032}00032     UPROPERTY() class \mbox{\hyperlink{class_a_sound__manager}{ASound\_manager}}* p\_sound\_manager;}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00033}00033     FDele\_update\_interaction\_widget\_comp  dele\_update\_interaction\_widget\_comp;}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00034}00034 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00035}00035 public:}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00036}00036     UCustom\_game\_instance();}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00038}00038 protected:}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00039}00039     virtual \textcolor{keywordtype}{void} OnStart() override;}
+\DoxyCodeLine{\Hypertarget{_custom__game__instance_8h_source_l00040}00040 \};}
+
+\end{DoxyCode}

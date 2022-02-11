@@ -1,0 +1,34 @@
+\hypertarget{_mini_map___u_i_8h_source}{}\doxysection{Mini\+Map\+\_\+\+UI.\+h}
+\label{_mini_map___u_i_8h_source}\index{Source/UI\_PUBG/MiniMap\_UI.h@{Source/UI\_PUBG/MiniMap\_UI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}MiniMap\_UI.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{class }UTextBlock;}
+\DoxyCodeLine{8 \textcolor{keyword}{class }UImage;}
+\DoxyCodeLine{9 \textcolor{keyword}{class }UProgressBar;}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 UCLASS()}
+\DoxyCodeLine{12 class UI\_PUBG\_API \mbox{\hyperlink{class_u_mini_map___u_i}{UMiniMap\_UI}} : public UUserWidget}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     GENERATED\_BODY()}
+\DoxyCodeLine{15     }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{public}:}
+\DoxyCodeLine{18     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Magnetic\_timer\_text;}
+\DoxyCodeLine{19     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   Phase\_text;}
+\DoxyCodeLine{20     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       MiniMap\_img;}
+\DoxyCodeLine{21     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       Warring\_img;}
+\DoxyCodeLine{22     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Magnetic\_field\_bar;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{25     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{28 \};}
+
+\end{DoxyCode}

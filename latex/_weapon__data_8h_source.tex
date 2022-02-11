@@ -1,0 +1,66 @@
+\hypertarget{_weapon__data_8h_source}{}\doxysection{Weapon\+\_\+data.\+h}
+\label{_weapon__data_8h_source}\index{Source/PUBG\_UE4/Weapon\_data.h@{Source/PUBG\_UE4/Weapon\_data.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Engine/DataTable.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}Weapon\_data.generated.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{// CSV로부터 가지고올 무기 정보 구조체}}
+\DoxyCodeLine{9 USTRUCT()}
+\DoxyCodeLine{10 struct \mbox{\hyperlink{struct_fs__weapon__data}{Fs\_weapon\_data}} : public FTableRowBase}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     GENERATED\_BODY(BlueprintType)}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{15     FString type = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{18         FString weapon\_group\_type = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{21         FString mesh\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{24         FString weapon\_icon\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{27         FString weapon\_slot\_icon\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{30         FString bullet\_mesh\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{33         FString mag\_mesh\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{36         FVector collider\_size = FVector::ZeroVector;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{39         FVector collider\_pos = FVector::ZeroVector;}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{42         \textcolor{keywordtype}{int}     max\_bullet\_count = 0;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{45         \textcolor{keywordtype}{int}     damage = 0;}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     FString UI\_material\_bp\_path      = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{48     FString bullet\_bp\_path           = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int}     current\_max\_bullet\_count = 0;}
+\DoxyCodeLine{50     \textcolor{keywordtype}{int}     current\_bullet\_count     = 0;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{public}:}
+\DoxyCodeLine{53     \mbox{\hyperlink{struct_fs__weapon__data}{Fs\_weapon\_data}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{54 \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 UCLASS()}
+\DoxyCodeLine{57 class PUBG\_UE4\_API \mbox{\hyperlink{class_a_weapon__data}{AWeapon\_data}} : public AActor}
+\DoxyCodeLine{58 \{}
+\DoxyCodeLine{59     GENERATED\_BODY()}
+\DoxyCodeLine{60 \};}
+
+\end{DoxyCode}

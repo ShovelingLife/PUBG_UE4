@@ -1,0 +1,300 @@
+\hypertarget{class_a_data__table__manager}{}\doxysection{AData\+\_\+table\+\_\+manager 클래스 참조}
+\label{class_a_data__table__manager}\index{AData\_table\_manager@{AData\_table\_manager}}
+
+
+{\ttfamily \#include $<$Data\+\_\+table\+\_\+manager.\+h$>$}
+
+
+
+AData\+\_\+table\+\_\+manager에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+AData\+\_\+table\+\_\+manager에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_data__table__manager_a8f148461a77cf13c4aa9f0b2c0f20541}{AData\+\_\+table\+\_\+manager}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{정적 Public 속성}
+\begin{DoxyCompactItemize}
+\item 
+static TArray$<$ \mbox{\hyperlink{struct_fs__weapon__data}{Fs\+\_\+weapon\+\_\+data}} $>$ \mbox{\hyperlink{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}{arr\+\_\+weapon\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em 게임 오브젝트 데이터 배열 (static) \end{DoxyCompactList}\item 
+static TArray$<$ \mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\+\_\+other\+\_\+weapon\+\_\+data}} $>$ \mbox{\hyperlink{class_a_data__table__manager_a849ad15c17f660feb4cd9ca0df58ba06}{arr\+\_\+other\+\_\+weapon\+\_\+data}}
+\item 
+static TArray$<$ \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\+\_\+vehicle\+\_\+data}} $>$ \mbox{\hyperlink{class_a_data__table__manager_a52a4a7487abd30f0f5497881cbbf8eb8}{arr\+\_\+vehicle\+\_\+data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_data__table__manager_a94110bacd306219adbaf2f933f5a5352}{UPROPERTY}} (Visible\+Anywhere) UData\+Table $\ast$mp\+\_\+weapon\+\_\+data\+\_\+table
+\begin{DoxyCompactList}\small\item\em 무기 데이터 관련 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_data__table__manager_a093b07fc7255dbf74957bfbd1ca0d9a7}{UPROPERTY}} (Visible\+Anywhere) UData\+Table $\ast$mp\+\_\+other\+\_\+weapon\+\_\+data\+\_\+table
+\begin{DoxyCompactList}\small\item\em 기타 무기 (투척류/근접) 데이터 관련 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_data__table__manager_aa44cae0f8e37fb34aea3fbcd8c97c578}{UPROPERTY}} (Visible\+Anywhere) UData\+Table $\ast$mp\+\_\+vehicle\+\_\+data\+\_\+table
+\begin{DoxyCompactList}\small\item\em 차량 데이터 관련 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_data__table__manager_a5a43def28763871147f1610cfbdab761}{Init\+\_\+weapon\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em 무기 데이터 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_data__table__manager_a93fd99873cebb7f0245aae5b6230cdfd}{Init\+\_\+other\+\_\+weapon\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em 기타 무기 데이터 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_data__table__manager_a120c42fc319e16d65e50310bc2843d87}{Init\+\_\+vehicle\+\_\+data}} ()
+\begin{DoxyCompactList}\small\item\em 차량 데이터 초기화 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private 속성}
+\begin{DoxyCompactItemize}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_ad48f97de5b1d23a43509702f139dfdf3}{mk\+\_\+weapon\+\_\+mesh\+\_\+path}} = \char`\"{}/Game/Advance\+Weapon\+Pack/Mesh/Weapon/\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_a687f2aaa9512cbccc41c0e8d6365af4c}{mk\+\_\+bullet\+\_\+bp\+\_\+path}} = \char`\"{}/Game/Blueprints/Weapons/Ammo/BP\+\_\+\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_a65205cd03890315f1395a817b801746f}{mk\+\_\+rendertarget\+\_\+mesh\+\_\+path}} = \char`\"{}/Game/Materials/Weapon\+\_\+\+UI/UI\+\_\+material\+\_\+\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_a9b41aff8a2ce04879cac2b2e4e14d377}{mk\+\_\+weapon\+\_\+sound\+\_\+path}} = \char`\"{}/Game/SFX/Gun\+\_\+sounds/\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_a0863bfd4c893e96e766c24cda01342f7}{mk\+\_\+other\+\_\+weapon\+\_\+mesh\+\_\+path}} = \char`\"{}/Game/Items/Weapons/\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_a34571dcd876edb5dc9a2c09d7c0a45d6}{mk\+\_\+vehicle\+\_\+mesh\+\_\+path}} = \char`\"{}/Game/\mbox{\hyperlink{class_characters}{Characters}}/Vehicles/Skeletons/\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_a13c7c72d722e8c2075566e683a5cb8a7}{mk\+\_\+anim\+\_\+instance\+\_\+path}} = \char`\"{}/Game/Blueprints/Vehicles/\char`\"{}
+\item 
+const FString \mbox{\hyperlink{class_a_data__table__manager_aad74de6c2fb0540e02fef1db75713c9e}{mk\+\_\+vehicle\+\_\+sound\+\_\+path}} = \char`\"{}\char`\"{}
+\item 
+int \mbox{\hyperlink{class_a_data__table__manager_ad8d74dcf317ae2ced3e83789894bda79}{m\+\_\+current\+\_\+vehicle\+\_\+count}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00021}{21}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_data__table__manager_a8f148461a77cf13c4aa9f0b2c0f20541}\label{class_a_data__table__manager_a8f148461a77cf13c4aa9f0b2c0f20541}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!AData\_table\_manager@{AData\_table\_manager}}
+\index{AData\_table\_manager@{AData\_table\_manager}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{AData\_table\_manager()}{AData\_table\_manager()}}
+{\footnotesize\ttfamily AData\+\_\+table\+\_\+manager\+::\+AData\+\_\+table\+\_\+manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8cpp_source}{Data\+\_\+table\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_data__table__manager_8cpp_source_l00008}{8}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_data__table__manager_a93fd99873cebb7f0245aae5b6230cdfd}\label{class_a_data__table__manager_a93fd99873cebb7f0245aae5b6230cdfd}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!Init\_other\_weapon\_data@{Init\_other\_weapon\_data}}
+\index{Init\_other\_weapon\_data@{Init\_other\_weapon\_data}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_other\_weapon\_data()}{Init\_other\_weapon\_data()}}
+{\footnotesize\ttfamily void AData\+\_\+table\+\_\+manager\+::\+Init\+\_\+other\+\_\+weapon\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+기타 무기 데이터 초기화 
+
+
+
+\mbox{\hyperlink{_data__table__manager_8cpp_source}{Data\+\_\+table\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_data__table__manager_8cpp_source_l00048}{48}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_data__table__manager_a120c42fc319e16d65e50310bc2843d87}\label{class_a_data__table__manager_a120c42fc319e16d65e50310bc2843d87}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!Init\_vehicle\_data@{Init\_vehicle\_data}}
+\index{Init\_vehicle\_data@{Init\_vehicle\_data}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_vehicle\_data()}{Init\_vehicle\_data()}}
+{\footnotesize\ttfamily void AData\+\_\+table\+\_\+manager\+::\+Init\+\_\+vehicle\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+차량 데이터 초기화 
+
+
+
+\mbox{\hyperlink{_data__table__manager_8cpp_source}{Data\+\_\+table\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_data__table__manager_8cpp_source_l00077}{77}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 4
+\mbox{\Hypertarget{class_a_data__table__manager_a5a43def28763871147f1610cfbdab761}\label{class_a_data__table__manager_a5a43def28763871147f1610cfbdab761}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!Init\_weapon\_data@{Init\_weapon\_data}}
+\index{Init\_weapon\_data@{Init\_weapon\_data}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{Init\_weapon\_data()}{Init\_weapon\_data()}}
+{\footnotesize\ttfamily void AData\+\_\+table\+\_\+manager\+::\+Init\+\_\+weapon\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+무기 데이터 초기화 
+
+
+
+\mbox{\hyperlink{_data__table__manager_8cpp_source}{Data\+\_\+table\+\_\+manager.\+cpp}} 파일의 \mbox{\hyperlink{_data__table__manager_8cpp_source_l00015}{15}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 5
+\mbox{\Hypertarget{class_a_data__table__manager_a093b07fc7255dbf74957bfbd1ca0d9a7}\label{class_a_data__table__manager_a093b07fc7255dbf74957bfbd1ca0d9a7}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily AData\+\_\+table\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+기타 무기 (투척류/근접) 데이터 관련 
+
+\mbox{\Hypertarget{class_a_data__table__manager_aa44cae0f8e37fb34aea3fbcd8c97c578}\label{class_a_data__table__manager_aa44cae0f8e37fb34aea3fbcd8c97c578}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily AData\+\_\+table\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+차량 데이터 관련 
+
+\mbox{\Hypertarget{class_a_data__table__manager_a94110bacd306219adbaf2f933f5a5352}\label{class_a_data__table__manager_a94110bacd306219adbaf2f933f5a5352}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily AData\+\_\+table\+\_\+manager\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+무기 데이터 관련 
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_a_data__table__manager_a849ad15c17f660feb4cd9ca0df58ba06}\label{class_a_data__table__manager_a849ad15c17f660feb4cd9ca0df58ba06}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!arr\_other\_weapon\_data@{arr\_other\_weapon\_data}}
+\index{arr\_other\_weapon\_data@{arr\_other\_weapon\_data}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{arr\_other\_weapon\_data}{arr\_other\_weapon\_data}}
+{\footnotesize\ttfamily TArray$<$ \mbox{\hyperlink{struct_fs__other__weapon__data}{Fs\+\_\+other\+\_\+weapon\+\_\+data}} $>$ AData\+\_\+table\+\_\+manager\+::arr\+\_\+other\+\_\+weapon\+\_\+data\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00030}{30}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a52a4a7487abd30f0f5497881cbbf8eb8}\label{class_a_data__table__manager_a52a4a7487abd30f0f5497881cbbf8eb8}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!arr\_vehicle\_data@{arr\_vehicle\_data}}
+\index{arr\_vehicle\_data@{arr\_vehicle\_data}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{arr\_vehicle\_data}{arr\_vehicle\_data}}
+{\footnotesize\ttfamily TArray$<$ \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\+\_\+vehicle\+\_\+data}} $>$ AData\+\_\+table\+\_\+manager\+::arr\+\_\+vehicle\+\_\+data\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00031}{31}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}\label{class_a_data__table__manager_a070d0ea99ad4ea83de8f98678bfdb63e}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!arr\_weapon\_data@{arr\_weapon\_data}}
+\index{arr\_weapon\_data@{arr\_weapon\_data}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{arr\_weapon\_data}{arr\_weapon\_data}}
+{\footnotesize\ttfamily TArray$<$ \mbox{\hyperlink{struct_fs__weapon__data}{Fs\+\_\+weapon\+\_\+data}} $>$ AData\+\_\+table\+\_\+manager\+::arr\+\_\+weapon\+\_\+data\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+게임 오브젝트 데이터 배열 (static) 
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00029}{29}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_ad8d74dcf317ae2ced3e83789894bda79}\label{class_a_data__table__manager_ad8d74dcf317ae2ced3e83789894bda79}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!m\_current\_vehicle\_count@{m\_current\_vehicle\_count}}
+\index{m\_current\_vehicle\_count@{m\_current\_vehicle\_count}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{m\_current\_vehicle\_count}{m\_current\_vehicle\_count}}
+{\footnotesize\ttfamily int AData\+\_\+table\+\_\+manager\+::m\+\_\+current\+\_\+vehicle\+\_\+count = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00059}{59}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a13c7c72d722e8c2075566e683a5cb8a7}\label{class_a_data__table__manager_a13c7c72d722e8c2075566e683a5cb8a7}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_anim\_instance\_path@{mk\_anim\_instance\_path}}
+\index{mk\_anim\_instance\_path@{mk\_anim\_instance\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_anim\_instance\_path}{mk\_anim\_instance\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+anim\+\_\+instance\+\_\+path = \char`\"{}/Game/Blueprints/Vehicles/\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00057}{57}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a687f2aaa9512cbccc41c0e8d6365af4c}\label{class_a_data__table__manager_a687f2aaa9512cbccc41c0e8d6365af4c}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_bullet\_bp\_path@{mk\_bullet\_bp\_path}}
+\index{mk\_bullet\_bp\_path@{mk\_bullet\_bp\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_bullet\_bp\_path}{mk\_bullet\_bp\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+bullet\+\_\+bp\+\_\+path = \char`\"{}/Game/Blueprints/Weapons/Ammo/BP\+\_\+\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00040}{40}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a0863bfd4c893e96e766c24cda01342f7}\label{class_a_data__table__manager_a0863bfd4c893e96e766c24cda01342f7}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_other\_weapon\_mesh\_path@{mk\_other\_weapon\_mesh\_path}}
+\index{mk\_other\_weapon\_mesh\_path@{mk\_other\_weapon\_mesh\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_other\_weapon\_mesh\_path}{mk\_other\_weapon\_mesh\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+other\+\_\+weapon\+\_\+mesh\+\_\+path = \char`\"{}/Game/Items/Weapons/\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00049}{49}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a65205cd03890315f1395a817b801746f}\label{class_a_data__table__manager_a65205cd03890315f1395a817b801746f}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_rendertarget\_mesh\_path@{mk\_rendertarget\_mesh\_path}}
+\index{mk\_rendertarget\_mesh\_path@{mk\_rendertarget\_mesh\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_rendertarget\_mesh\_path}{mk\_rendertarget\_mesh\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+rendertarget\+\_\+mesh\+\_\+path = \char`\"{}/Game/Materials/Weapon\+\_\+\+UI/UI\+\_\+material\+\_\+\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00041}{41}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a34571dcd876edb5dc9a2c09d7c0a45d6}\label{class_a_data__table__manager_a34571dcd876edb5dc9a2c09d7c0a45d6}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_vehicle\_mesh\_path@{mk\_vehicle\_mesh\_path}}
+\index{mk\_vehicle\_mesh\_path@{mk\_vehicle\_mesh\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_vehicle\_mesh\_path}{mk\_vehicle\_mesh\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+vehicle\+\_\+mesh\+\_\+path = \char`\"{}/Game/\mbox{\hyperlink{class_characters}{Characters}}/Vehicles/Skeletons/\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00056}{56}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_aad74de6c2fb0540e02fef1db75713c9e}\label{class_a_data__table__manager_aad74de6c2fb0540e02fef1db75713c9e}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_vehicle\_sound\_path@{mk\_vehicle\_sound\_path}}
+\index{mk\_vehicle\_sound\_path@{mk\_vehicle\_sound\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_vehicle\_sound\_path}{mk\_vehicle\_sound\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+vehicle\+\_\+sound\+\_\+path = \char`\"{}\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00058}{58}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_ad48f97de5b1d23a43509702f139dfdf3}\label{class_a_data__table__manager_ad48f97de5b1d23a43509702f139dfdf3}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_weapon\_mesh\_path@{mk\_weapon\_mesh\_path}}
+\index{mk\_weapon\_mesh\_path@{mk\_weapon\_mesh\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_weapon\_mesh\_path}{mk\_weapon\_mesh\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+weapon\+\_\+mesh\+\_\+path = \char`\"{}/Game/Advance\+Weapon\+Pack/Mesh/Weapon/\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00039}{39}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_data__table__manager_a9b41aff8a2ce04879cac2b2e4e14d377}\label{class_a_data__table__manager_a9b41aff8a2ce04879cac2b2e4e14d377}} 
+\index{AData\_table\_manager@{AData\_table\_manager}!mk\_weapon\_sound\_path@{mk\_weapon\_sound\_path}}
+\index{mk\_weapon\_sound\_path@{mk\_weapon\_sound\_path}!AData\_table\_manager@{AData\_table\_manager}}
+\doxysubsubsection{\texorpdfstring{mk\_weapon\_sound\_path}{mk\_weapon\_sound\_path}}
+{\footnotesize\ttfamily const FString AData\+\_\+table\+\_\+manager\+::mk\+\_\+weapon\+\_\+sound\+\_\+path = \char`\"{}/Game/SFX/Gun\+\_\+sounds/\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\mbox{\hyperlink{_data__table__manager_8h_source}{Data\+\_\+table\+\_\+manager.\+h}} 파일의 \mbox{\hyperlink{_data__table__manager_8h_source_l00042}{42}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+PUBG\+\_\+\+UE4/\mbox{\hyperlink{_data__table__manager_8h}{Data\+\_\+table\+\_\+manager.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+PUBG\+\_\+\+UE4/\mbox{\hyperlink{_data__table__manager_8cpp}{Data\+\_\+table\+\_\+manager.\+cpp}}\end{DoxyCompactItemize}

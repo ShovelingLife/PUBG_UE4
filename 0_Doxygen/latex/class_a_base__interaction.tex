@@ -1,0 +1,261 @@
+\hypertarget{class_a_base__interaction}{}\doxysection{ABase\+\_\+interaction 클래스 참조}
+\label{class_a_base__interaction}\index{ABase\_interaction@{ABase\_interaction}}
+
+
+{\ttfamily \#include $<$Base\+\_\+interaction.\+h$>$}
+
+
+
+ABase\+\_\+interaction에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+ABase\+\_\+interaction에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_base__interaction_a84c712fe964bcf6c953384eb9e10b2a0}{UPROPERTY}} (Visible\+Anywhere, Category=Mesh) UStatic\+Mesh\+Component $\ast$p\+\_\+static\+\_\+mesh\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_base__interaction_a2af715122a5b19097e2c51910821f159}{UPROPERTY}} (Visible\+Anywhere, Category=Mesh) USkeletal\+Mesh\+Component $\ast$p\+\_\+skeletal\+\_\+mesh\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_base__interaction_aede571e83584c1c6c495fb67b0b17cdc}{UPROPERTY}} (Visible\+Anywhere, Category=Sound) UAudio\+Component $\ast$p\+\_\+audio\+\_\+comp
+\item 
+\mbox{\hyperlink{class_a_base__interaction_a12061e2201091824a7e7dbc834dd6a66}{ABase\+\_\+interaction}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public 속성}
+\begin{DoxyCompactItemize}
+\item 
+FString \mbox{\hyperlink{class_a_base__interaction_ac27ac5d9408844e83941d7be64c5bc76}{object\+\_\+type}}
+\item 
+bool \mbox{\hyperlink{class_a_base__interaction_a22d41a582b75ce4a1b490af79f01c6f4}{is\+\_\+player\+\_\+near}} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_base__interaction_aab94f72d921c39418686da83751a94b4}{UPROPERTY}} (Visible\+Anywhere, Category=Collider) UBox\+Component $\ast$m\+\_\+box\+\_\+collider
+\item 
+\mbox{\hyperlink{class_a_base__interaction_a2b2949a565efdb2893889071e0ec160c}{UPROPERTY}} (Visible\+Anywhere, Category=Widget) \mbox{\hyperlink{_base__interaction_8h_a295ed085e14fb2c8ec5323fc2aee5f99}{UWidget\+Component}} $\ast$mp\+\_\+interaction\+\_\+widget\+\_\+comp
+\item 
+virtual void \mbox{\hyperlink{class_a_base__interaction_a3c413b14a687a65f05596e63fb0fc323}{Begin\+Play}} () override
+\item 
+virtual void \mbox{\hyperlink{class_a_base__interaction_a9ee707d83822b3d51095bce72ff2d3f0}{Tick}} (float \+\_\+delta\+\_\+time) override
+\begin{DoxyCompactList}\small\item\em 플레이어가 접근했을 시 상호작용 UI 띄움 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_base__interaction_aeb1fffec40b3b1ed9aa79fb79d78ae2e}{Init\+\_\+static\+\_\+mesh}} (FString \+\_\+path, FName \+\_\+name)
+\begin{DoxyCompactList}\small\item\em 스태틱 메시 컴포넌트 초기화 (무기,아이템) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_base__interaction_acb1820b6681080ae7233659ae0c41f73}{Init\+\_\+skeletal\+\_\+mesh}} (FString \+\_\+path, FName \+\_\+name)
+\begin{DoxyCompactList}\small\item\em 스켈레탈 메시 컴포넌트 초기화 (캐릭터,차량) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_base__interaction_ae533364f1664a8375c0543451ffad7b2}{Init\+\_\+audio}} ()
+\begin{DoxyCompactList}\small\item\em 오디오 컴포넌트 초기화 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_base__interaction_a5d059d63a21dd1c54ba7d28778744e29}{Init\+\_\+interaction\+\_\+\+UI}} ()
+\begin{DoxyCompactList}\small\item\em 상호작용 UI 초기화 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected 속성}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{class_a_base__interaction_a0b5edd15e7842f36629f7f1696e240c2}{m\+\_\+current\+\_\+time}} = 0.f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{상세한 설명}
+
+
+\mbox{\hyperlink{_base__interaction_8h_source}{Base\+\_\+interaction.\+h}} 파일의 \mbox{\hyperlink{_base__interaction_8h_source_l00024}{24}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{생성자 \& 소멸자 문서화}
+\mbox{\Hypertarget{class_a_base__interaction_a12061e2201091824a7e7dbc834dd6a66}\label{class_a_base__interaction_a12061e2201091824a7e7dbc834dd6a66}} 
+\index{ABase\_interaction@{ABase\_interaction}!ABase\_interaction@{ABase\_interaction}}
+\index{ABase\_interaction@{ABase\_interaction}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{ABase\_interaction()}{ABase\_interaction()}}
+{\footnotesize\ttfamily ABase\+\_\+interaction\+::\+ABase\+\_\+interaction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00013}{13}} 번째 라인에서 정의되었습니다.
+
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_a_base__interaction_a3c413b14a687a65f05596e63fb0fc323}\label{class_a_base__interaction_a3c413b14a687a65f05596e63fb0fc323}} 
+\index{ABase\_interaction@{ABase\_interaction}!BeginPlay@{BeginPlay}}
+\index{BeginPlay@{BeginPlay}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{BeginPlay()}{BeginPlay()}}
+{\footnotesize\ttfamily void ABase\+\_\+interaction\+::\+Begin\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\mbox{\hyperlink{class_a_core__farmable__item_aead440907f390068fc11f4618b79654f}{ACore\+\_\+farmable\+\_\+item}}, \mbox{\hyperlink{class_a_core__melee__weapon_a17c8669dfb3290f5545fe4640c5c092b}{ACore\+\_\+melee\+\_\+weapon}}, \mbox{\hyperlink{class_a_core__throwable__weapon_a16fbbabd5e8d29d1801fe0973eabc637}{ACore\+\_\+throwable\+\_\+weapon}}, \mbox{\hyperlink{class_a_core__weapon_acad166a79ff54a043dc0a8d31da3d080}{ACore\+\_\+weapon}}에서 재구현되었습니다.
+
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00027}{27}} 번째 라인에서 정의되었습니다.
+
+이 함수 내부에서 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 2
+\mbox{\Hypertarget{class_a_base__interaction_ae533364f1664a8375c0543451ffad7b2}\label{class_a_base__interaction_ae533364f1664a8375c0543451ffad7b2}} 
+\index{ABase\_interaction@{ABase\_interaction}!Init\_audio@{Init\_audio}}
+\index{Init\_audio@{Init\_audio}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{Init\_audio()}{Init\_audio()}}
+{\footnotesize\ttfamily void ABase\+\_\+interaction\+::\+Init\+\_\+audio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+오디오 컴포넌트 초기화 
+
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00079}{79}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 3
+\mbox{\Hypertarget{class_a_base__interaction_a5d059d63a21dd1c54ba7d28778744e29}\label{class_a_base__interaction_a5d059d63a21dd1c54ba7d28778744e29}} 
+\index{ABase\_interaction@{ABase\_interaction}!Init\_interaction\_UI@{Init\_interaction\_UI}}
+\index{Init\_interaction\_UI@{Init\_interaction\_UI}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{Init\_interaction\_UI()}{Init\_interaction\_UI()}}
+{\footnotesize\ttfamily void ABase\+\_\+interaction\+::\+Init\+\_\+interaction\+\_\+\+UI (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+상호작용 UI 초기화 
+
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00086}{86}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 4
+\mbox{\Hypertarget{class_a_base__interaction_acb1820b6681080ae7233659ae0c41f73}\label{class_a_base__interaction_acb1820b6681080ae7233659ae0c41f73}} 
+\index{ABase\_interaction@{ABase\_interaction}!Init\_skeletal\_mesh@{Init\_skeletal\_mesh}}
+\index{Init\_skeletal\_mesh@{Init\_skeletal\_mesh}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{Init\_skeletal\_mesh()}{Init\_skeletal\_mesh()}}
+{\footnotesize\ttfamily void ABase\+\_\+interaction\+::\+Init\+\_\+skeletal\+\_\+mesh (\begin{DoxyParamCaption}\item[{FString}]{\+\_\+path,  }\item[{FName}]{\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+스켈레탈 메시 컴포넌트 초기화 (캐릭터,차량) 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+path} & 메시 경로 \+\_\+name 변수 명칭 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00066}{66}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 5
+\mbox{\Hypertarget{class_a_base__interaction_aeb1fffec40b3b1ed9aa79fb79d78ae2e}\label{class_a_base__interaction_aeb1fffec40b3b1ed9aa79fb79d78ae2e}} 
+\index{ABase\_interaction@{ABase\_interaction}!Init\_static\_mesh@{Init\_static\_mesh}}
+\index{Init\_static\_mesh@{Init\_static\_mesh}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{Init\_static\_mesh()}{Init\_static\_mesh()}}
+{\footnotesize\ttfamily void ABase\+\_\+interaction\+::\+Init\+\_\+static\+\_\+mesh (\begin{DoxyParamCaption}\item[{FString}]{\+\_\+path,  }\item[{FName}]{\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+스태틱 메시 컴포넌트 초기화 (무기,아이템) 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+path} & 메시 경로 \+\_\+name 변수 명칭 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00053}{53}} 번째 라인에서 정의되었습니다.
+
+이 함수를 호출하는 함수들에 대한 그래프입니다.\+:
+% FIG 6
+\mbox{\Hypertarget{class_a_base__interaction_a9ee707d83822b3d51095bce72ff2d3f0}\label{class_a_base__interaction_a9ee707d83822b3d51095bce72ff2d3f0}} 
+\index{ABase\_interaction@{ABase\_interaction}!Tick@{Tick}}
+\index{Tick@{Tick}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{Tick()}{Tick()}}
+{\footnotesize\ttfamily void ABase\+\_\+interaction\+::\+Tick (\begin{DoxyParamCaption}\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+플레이어가 접근했을 시 상호작용 UI 띄움 
+
+
+\begin{DoxyParams}{매개변수}
+{\em \+\_\+delta\+\_\+time} & 프레임 초 \\
+\hline
+\end{DoxyParams}
+
+
+\mbox{\hyperlink{class_a_core__farmable__item_a73a5fd1241d5bb701a59ed389c8829b1}{ACore\+\_\+farmable\+\_\+item}}, \mbox{\hyperlink{class_a_core__weapon_aa539297a603385dd48cdd60f1e651116}{ACore\+\_\+weapon}}, \mbox{\hyperlink{class_a_crate__box_a3327e5bc43f74fdc9db2e7201daff234}{ACrate\+\_\+box}}, \mbox{\hyperlink{class_a_core__throwable__weapon_aacad22b49037da2c3bb72c67cd637f20}{ACore\+\_\+throwable\+\_\+weapon}}에서 재구현되었습니다.
+
+
+
+\mbox{\hyperlink{_base__interaction_8cpp_source}{Base\+\_\+interaction.\+cpp}} 파일의 \mbox{\hyperlink{_base__interaction_8cpp_source_l00035}{35}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_base__interaction_aab94f72d921c39418686da83751a94b4}\label{class_a_base__interaction_aab94f72d921c39418686da83751a94b4}} 
+\index{ABase\_interaction@{ABase\_interaction}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily ABase\+\_\+interaction\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Collider} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_a_base__interaction_a2af715122a5b19097e2c51910821f159}\label{class_a_base__interaction_a2af715122a5b19097e2c51910821f159}} 
+\index{ABase\_interaction@{ABase\_interaction}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily ABase\+\_\+interaction\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Mesh} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_base__interaction_a84c712fe964bcf6c953384eb9e10b2a0}\label{class_a_base__interaction_a84c712fe964bcf6c953384eb9e10b2a0}} 
+\index{ABase\_interaction@{ABase\_interaction}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily ABase\+\_\+interaction\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Mesh} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_base__interaction_aede571e83584c1c6c495fb67b0b17cdc}\label{class_a_base__interaction_aede571e83584c1c6c495fb67b0b17cdc}} 
+\index{ABase\_interaction@{ABase\_interaction}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily ABase\+\_\+interaction\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Sound} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_a_base__interaction_a2b2949a565efdb2893889071e0ec160c}\label{class_a_base__interaction_a2b2949a565efdb2893889071e0ec160c}} 
+\index{ABase\_interaction@{ABase\_interaction}!UPROPERTY@{UPROPERTY}}
+\index{UPROPERTY@{UPROPERTY}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{UPROPERTY()}{UPROPERTY()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily ABase\+\_\+interaction\+::\+UPROPERTY (\begin{DoxyParamCaption}\item[{Visible\+Anywhere}]{,  }\item[{Category}]{ = {\ttfamily Widget} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\doxysubsection{멤버 데이터 문서화}
+\mbox{\Hypertarget{class_a_base__interaction_a22d41a582b75ce4a1b490af79f01c6f4}\label{class_a_base__interaction_a22d41a582b75ce4a1b490af79f01c6f4}} 
+\index{ABase\_interaction@{ABase\_interaction}!is\_player\_near@{is\_player\_near}}
+\index{is\_player\_near@{is\_player\_near}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{is\_player\_near}{is\_player\_near}}
+{\footnotesize\ttfamily bool ABase\+\_\+interaction\+::is\+\_\+player\+\_\+near = false}
+
+
+
+\mbox{\hyperlink{_base__interaction_8h_source}{Base\+\_\+interaction.\+h}} 파일의 \mbox{\hyperlink{_base__interaction_8h_source_l00040}{40}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_base__interaction_a0b5edd15e7842f36629f7f1696e240c2}\label{class_a_base__interaction_a0b5edd15e7842f36629f7f1696e240c2}} 
+\index{ABase\_interaction@{ABase\_interaction}!m\_current\_time@{m\_current\_time}}
+\index{m\_current\_time@{m\_current\_time}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{m\_current\_time}{m\_current\_time}}
+{\footnotesize\ttfamily float ABase\+\_\+interaction\+::m\+\_\+current\+\_\+time = 0.f\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\mbox{\hyperlink{_base__interaction_8h_source}{Base\+\_\+interaction.\+h}} 파일의 \mbox{\hyperlink{_base__interaction_8h_source_l00032}{32}} 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{class_a_base__interaction_ac27ac5d9408844e83941d7be64c5bc76}\label{class_a_base__interaction_ac27ac5d9408844e83941d7be64c5bc76}} 
+\index{ABase\_interaction@{ABase\_interaction}!object\_type@{object\_type}}
+\index{object\_type@{object\_type}!ABase\_interaction@{ABase\_interaction}}
+\doxysubsubsection{\texorpdfstring{object\_type}{object\_type}}
+{\footnotesize\ttfamily FString ABase\+\_\+interaction\+::object\+\_\+type}
+
+
+
+\mbox{\hyperlink{_base__interaction_8h_source}{Base\+\_\+interaction.\+h}} 파일의 \mbox{\hyperlink{_base__interaction_8h_source_l00039}{39}} 번째 라인에서 정의되었습니다.
+
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+PUBG\+\_\+\+UE4/\mbox{\hyperlink{_base__interaction_8h}{Base\+\_\+interaction.\+h}}\item 
+D\+:/0\+\_\+\+Projects/\+Unreal/\+PUBG\+\_\+\+UE4/\+Source/\+PUBG\+\_\+\+UE4/\mbox{\hyperlink{_base__interaction_8cpp}{Base\+\_\+interaction.\+cpp}}\end{DoxyCompactItemize}

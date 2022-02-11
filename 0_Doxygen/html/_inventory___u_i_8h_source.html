@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PUBG_UE4: D:/0_Projects/Unreal/PUBG_UE4/Source/UI_PUBG/Inventory_UI.h 소스 파일</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="PUBG_UE4.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">PUBG_UE4
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_inventory___u_i_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Inventory_UI.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_inventory___u_i_8h.html">이 파일의 문서화 페이지로 가기</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;CoreMinimal.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;Blueprint/UserWidget.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;Input/Events.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;Input/Reply.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;Inventory_UI.generated.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">class </span><a class="code hl_class" href="class_u_inventory__list___u_i.html">UInventory_list_UI</a>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">class </span><a class="code hl_class" href="class_u_character___slot___u_i.html">UCharacter_Slot_UI</a>;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">class </span><a class="code hl_class" href="class_u_inventory___weapon___slot___u_i.html">UInventory_Weapon_Slot_UI</a>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>UCLASS()</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="class_u_inventory___u_i.html">   14</a></span>class UI_PUBG_API <a class="code hl_class" href="class_u_inventory___u_i.html">UInventory_UI</a> : public UUserWidget</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    GENERATED_BODY()</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_u_inventory___u_i.html#aedc65502ddf9325ef2a8cc27dc54d6e8">   19</a></span>    <span class="keyword">class </span><a class="code hl_class" href="class_a_u_i__manager.html">AUI_manager</a>* <a class="code hl_variable" href="class_u_inventory___u_i.html#aedc65502ddf9325ef2a8cc27dc54d6e8">mp_UI_manager</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_u_inventory___u_i.html#a8babdbd8f21eb8c7fe8f3dffba94990b">   22</a></span>    <a class="code hl_function" href="class_u_inventory___u_i.html#a8babdbd8f21eb8c7fe8f3dffba94990b">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) <a class="code hl_class" href="class_u_character___slot___u_i.html">UCharacter_Slot_UI</a>*        Character_Slot_UI;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_u_inventory___u_i.html#a5ac37e34dbefc110859b491d9f84d850">   23</a></span>    <a class="code hl_function" href="class_u_inventory___u_i.html#a5ac37e34dbefc110859b491d9f84d850">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) <a class="code hl_class" href="class_u_inventory__list___u_i.html">UInventory_list_UI</a>*        Inventory_list_UI;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="class_u_inventory___u_i.html#addaa2d190b421160f4a28315fa6b3817">   24</a></span>    <a class="code hl_function" href="class_u_inventory___u_i.html#addaa2d190b421160f4a28315fa6b3817">UPROPERTY</a>(BlueprintReadWrite, meta = (BindWidget)) <a class="code hl_class" href="class_u_inventory___weapon___slot___u_i.html">UInventory_Weapon_Slot_UI</a>* Inventory_Weapon_Slot_UI;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_u_inventory___u_i.html#ac407322036a196276cf9c903f64026ca">   26</a></span>    <span class="keyword">class </span>UCursor_UI* p_icon_UI = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> NativeConstruct() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> NativeTick(<span class="keyword">const</span> FGeometry&amp;, <span class="keywordtype">float</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+<div class="ttc" id="aclass_a_u_i__manager_html"><div class="ttname"><a href="class_a_u_i__manager.html">AUI_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="_u_i__manager_8h_source.html#l00020">UI_manager.h:21</a></div></div>
+<div class="ttc" id="aclass_u_character___slot___u_i_html"><div class="ttname"><a href="class_u_character___slot___u_i.html">UCharacter_Slot_UI</a></div><div class="ttdef"><b>Definition:</b> <a href="_character___slot___u_i_8h_source.html#l00012">Character_Slot_UI.h:13</a></div></div>
+<div class="ttc" id="aclass_u_inventory___u_i_html"><div class="ttname"><a href="class_u_inventory___u_i.html">UInventory_UI</a></div><div class="ttdef"><b>Definition:</b> <a href="_inventory___u_i_8h_source.html#l00014">Inventory_UI.h:15</a></div></div>
+<div class="ttc" id="aclass_u_inventory___u_i_html_a5ac37e34dbefc110859b491d9f84d850"><div class="ttname"><a href="class_u_inventory___u_i.html#a5ac37e34dbefc110859b491d9f84d850">UInventory_UI::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(BlueprintReadWrite, meta=(BindWidget)) UInventory_list_UI *Inventory_list_UI</div></div>
+<div class="ttc" id="aclass_u_inventory___u_i_html_a8babdbd8f21eb8c7fe8f3dffba94990b"><div class="ttname"><a href="class_u_inventory___u_i.html#a8babdbd8f21eb8c7fe8f3dffba94990b">UInventory_UI::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(BlueprintReadWrite, meta=(BindWidget)) UCharacter_Slot_UI *Character_Slot_UI</div></div>
+<div class="ttc" id="aclass_u_inventory___u_i_html_addaa2d190b421160f4a28315fa6b3817"><div class="ttname"><a href="class_u_inventory___u_i.html#addaa2d190b421160f4a28315fa6b3817">UInventory_UI::UPROPERTY</a></div><div class="ttdeci">UPROPERTY(BlueprintReadWrite, meta=(BindWidget)) UInventory_Weapon_Slot_UI *Inventory_Weapon_Slot_UI</div></div>
+<div class="ttc" id="aclass_u_inventory___u_i_html_aedc65502ddf9325ef2a8cc27dc54d6e8"><div class="ttname"><a href="class_u_inventory___u_i.html#aedc65502ddf9325ef2a8cc27dc54d6e8">UInventory_UI::mp_UI_manager</a></div><div class="ttdeci">class AUI_manager * mp_UI_manager</div><div class="ttdef"><b>Definition:</b> <a href="_inventory___u_i_8h_source.html#l00019">Inventory_UI.h:19</a></div></div>
+<div class="ttc" id="aclass_u_inventory___weapon___slot___u_i_html"><div class="ttname"><a href="class_u_inventory___weapon___slot___u_i.html">UInventory_Weapon_Slot_UI</a></div><div class="ttdef"><b>Definition:</b> <a href="_inventory___weapon___slot___u_i_8h_source.html#l00028">Inventory_Weapon_Slot_UI.h:29</a></div></div>
+<div class="ttc" id="aclass_u_inventory__list___u_i_html"><div class="ttname"><a href="class_u_inventory__list___u_i.html">UInventory_list_UI</a></div><div class="ttdef"><b>Definition:</b> <a href="_inventory__list___u_i_8h_source.html#l00025">Inventory_list_UI.h:26</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_3cfedc8f52242e717edf16aab75ba81f.html">UI_PUBG</a></li><li class="navelem"><a class="el" href="_inventory___u_i_8h.html">Inventory_UI.h</a></li>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

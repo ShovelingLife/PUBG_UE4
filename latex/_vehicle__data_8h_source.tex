@@ -1,0 +1,97 @@
+\hypertarget{_vehicle__data_8h_source}{}\doxysection{Vehicle\+\_\+data.\+h}
+\label{_vehicle__data_8h_source}\index{Source/PUBG\_UE4/Vehicle\_data.h@{Source/PUBG\_UE4/Vehicle\_data.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Fill out your copyright notice in the Description page of Project Settings.}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}GameFramework/Actor.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}Engine/DataTable.h"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}Vehicle\_data.generated.h"{}}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{comment}{// CSV로부터 가지고올 차량 정보 구조체}}
+\DoxyCodeLine{11 USTRUCT(BlueprintType)}
+\DoxyCodeLine{12 struct \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\_vehicle\_data}} : public FTableRowBase}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     GENERATED\_BODY()}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_name)}
+\DoxyCodeLine{17     FString type = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_path)}
+\DoxyCodeLine{20         FString mesh\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     FString anim\_instance\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_path)}
+\DoxyCodeLine{25         FString audio\_path = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_collider)}
+\DoxyCodeLine{28         FVector collider\_size = FVector::ZeroVector;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_collider)}
+\DoxyCodeLine{31         FVector collider\_pos = FVector::ZeroVector;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_interaction\_collider)}
+\DoxyCodeLine{34         FVector interaction\_collider\_size = FVector::ZeroVector;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_interaction\_collider)}
+\DoxyCodeLine{37         FVector interaction\_collider\_pos = FVector::ZeroVector;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_camera)}
+\DoxyCodeLine{40         FVector camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_camera)}
+\DoxyCodeLine{43         FVector camera\_rotation = FVector::ZeroVector;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_1\_player)}
+\DoxyCodeLine{46         FVector seat\_1\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_1\_camera)}
+\DoxyCodeLine{49         FVector seat\_1\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_2\_player)}
+\DoxyCodeLine{52         FVector seat\_2\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_2\_camera)}
+\DoxyCodeLine{55         FVector seat\_2\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_3\_player)}
+\DoxyCodeLine{58         FVector seat\_3\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_3\_camera)}
+\DoxyCodeLine{61         FVector seat\_3\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_4\_player)}
+\DoxyCodeLine{64         FVector seat\_4\_player\_location = FVector::ZeroVector;}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_seat\_4\_camera)}
+\DoxyCodeLine{67         FVector seat\_4\_camera\_location = FVector::ZeroVector;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_camera)}
+\DoxyCodeLine{70         \textcolor{keywordtype}{float} spring\_arm\_length = 0.f;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     UPROPERTY(BlueprintReadWrite, Category = Vehicle\_data\_variable)}
+\DoxyCodeLine{73         \textcolor{keywordtype}{int}     max\_seater = 0;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{76         \textcolor{keywordtype}{int}     durability = 0;}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     UPROPERTY(BlueprintReadWrite, Category = Weapon\_data\_variable)}
+\DoxyCodeLine{79         \textcolor{keywordtype}{int}     speed = 0;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     std::pair<FVector, FVector> arr\_player\_seat\_pos[4];}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{public}:}
+\DoxyCodeLine{84     \mbox{\hyperlink{struct_fs__vehicle__data}{Fs\_vehicle\_data}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{85 \};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 UCLASS()}
+\DoxyCodeLine{88 class PUBG\_UE4\_API \mbox{\hyperlink{class_a_vehicle__data}{AVehicle\_data}} : public AActor}
+\DoxyCodeLine{89 \{}
+\DoxyCodeLine{90     GENERATED\_BODY()}
+\DoxyCodeLine{91 \};}
+
+\end{DoxyCode}

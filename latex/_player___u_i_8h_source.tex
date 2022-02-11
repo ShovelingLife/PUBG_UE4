@@ -1,0 +1,29 @@
+\hypertarget{_player___u_i_8h_source}{}\doxysection{Player\+\_\+\+UI.\+h}
+\label{_player___u_i_8h_source}\index{Source/UI\_PUBG/Player\_UI.h@{Source/UI\_PUBG/Player\_UI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}CoreMinimal.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Blueprint/UserWidget.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Player\_UI.generated.h"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 UCLASS()}
+\DoxyCodeLine{8 class UI\_PUBG\_API \mbox{\hyperlink{class_u_player___u_i}{UPlayer\_UI}} : public UUserWidget}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10     GENERATED\_BODY()}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{public}:}
+\DoxyCodeLine{13     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_member___state___u_i}{UMember\_State\_UI}}*   Member\_state\_UI; }
+\DoxyCodeLine{14     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_player___state___u_i}{UPlayer\_State\_UI}}*   Player\_state\_UI;}
+\DoxyCodeLine{15     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_kill_log___box___u_i}{UKillLog\_Box\_UI}}*    Kill\_log\_box\_UI;}
+\DoxyCodeLine{16     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_mini_map___u_i}{UMiniMap\_UI}}*        Minimap\_UI;}
+\DoxyCodeLine{17     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) \textcolor{keyword}{class }\mbox{\hyperlink{class_u_current___weapon___u_i}{UCurrent\_Weapon\_UI}}* Current\_weapon\_UI;}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{20     \textcolor{keywordtype}{void} NativeConstruct() \textcolor{keyword}{override};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} NativeTick(\textcolor{keyword}{const} FGeometry\&, \textcolor{keywordtype}{float}) \textcolor{keyword}{override};}
+\DoxyCodeLine{23 \};}
+
+\end{DoxyCode}

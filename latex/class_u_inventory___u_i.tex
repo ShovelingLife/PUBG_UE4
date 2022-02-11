@@ -1,0 +1,79 @@
+\hypertarget{class_u_inventory___u_i}{}\doxysection{UInventory\+\_\+\+UI 클래스 참조}
+\label{class_u_inventory___u_i}\index{UInventory\_UI@{UInventory\_UI}}
+
+
+UInventory\+\_\+\+UI에 대한 상속 다이어그램 \+: 
+% FIG 0
+
+
+UInventory\+\_\+\+UI에 대한 협력 다이어그램\+:
+% FIG 1
+\doxysubsection*{Public 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_inventory___u_i_a5be7c85dbfbaf74a49543f1c0a719f30}\label{class_u_inventory___u_i_a5be7c85dbfbaf74a49543f1c0a719f30}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) \mbox{\hyperlink{class_u_character___slot___u_i}{UCharacter\+\_\+\+Slot\+\_\+\+UI}} $\ast$Character\+\_\+\+Slot\+\_\+\+UI
+\item 
+\mbox{\Hypertarget{class_u_inventory___u_i_ae78f02d2b0ee5f134adb2efb0e3617c6}\label{class_u_inventory___u_i_ae78f02d2b0ee5f134adb2efb0e3617c6}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) \mbox{\hyperlink{class_u_inventory__list___u_i}{UInventory\+\_\+list\+\_\+\+UI}} $\ast$Inventory\+\_\+list\+\_\+\+UI
+\item 
+\mbox{\Hypertarget{class_u_inventory___u_i_a297df24ee7e35cf4bf512aa0245e42db}\label{class_u_inventory___u_i_a297df24ee7e35cf4bf512aa0245e42db}} 
+{\bfseries UPROPERTY} (Blueprint\+Read\+Write, meta=(Bind\+Widget)) \mbox{\hyperlink{class_u_inventory___weapon___slot___u_i}{UInventory\+\_\+\+Weapon\+\_\+\+Slot\+\_\+\+UI}} $\ast$Inventory\+\_\+\+Weapon\+\_\+\+Slot\+\_\+\+UI
+\end{DoxyCompactItemize}
+\doxysubsection*{데이터 필드}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_inventory___u_i_a7356ec3ddd02c3c78d4632cb8c8a9004}\label{class_u_inventory___u_i_a7356ec3ddd02c3c78d4632cb8c8a9004}} 
+class UCursor\+\_\+\+UI $\ast$ {\bfseries p\+\_\+icon\+\_\+\+UI} = nullptr
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected 멤버 함수}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_u_inventory___u_i_aa9dbac3f49162faac6a1c92888c53bf1}{Native\+Construct}} () override
+\item 
+virtual void \mbox{\hyperlink{class_u_inventory___u_i_a7e62254eab9c1cd4e670d27aa35b0457}{Native\+Tick}} (const FGeometry \&, float) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Private 속성}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_u_inventory___u_i_aebd616e6683373908dc346b24cb2451e}\label{class_u_inventory___u_i_aebd616e6683373908dc346b24cb2451e}} 
+class \mbox{\hyperlink{class_a_u_i__manager}{AUI\+\_\+manager}} $\ast$ {\bfseries mp\+\_\+\+UI\+\_\+manager}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{멤버 함수 문서화}
+\mbox{\Hypertarget{class_u_inventory___u_i_aa9dbac3f49162faac6a1c92888c53bf1}\label{class_u_inventory___u_i_aa9dbac3f49162faac6a1c92888c53bf1}} 
+\index{UInventory\_UI@{UInventory\_UI}!NativeConstruct@{NativeConstruct}}
+\index{NativeConstruct@{NativeConstruct}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeConstruct()}{NativeConstruct()}}
+{\footnotesize\ttfamily void Native\+Construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     Super::NativeConstruct();}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16     \textcolor{keywordflow}{if} (!mp\_UI\_manager)}
+\DoxyCodeLine{17         mp\_UI\_manager = Cast<AUI\_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI\_manager::StaticClass()));}
+\DoxyCodeLine{18 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_u_inventory___u_i_a7e62254eab9c1cd4e670d27aa35b0457}\label{class_u_inventory___u_i_a7e62254eab9c1cd4e670d27aa35b0457}} 
+\index{UInventory\_UI@{UInventory\_UI}!NativeTick@{NativeTick}}
+\index{NativeTick@{NativeTick}!UInventory\_UI@{UInventory\_UI}}
+\doxysubsubsection{\texorpdfstring{NativeTick()}{NativeTick()}}
+{\footnotesize\ttfamily void Native\+Tick (\begin{DoxyParamCaption}\item[{const FGeometry \&}]{\+\_\+geometry,  }\item[{float}]{\+\_\+delta\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{21 \{}
+\DoxyCodeLine{22     Super::NativeTick(\_geometry, \_delta\_time);}
+\DoxyCodeLine{23 \}}
+
+\end{DoxyCode}
+
+
+이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+UI\+\_\+\+PUBG/Inventory\+\_\+\+UI.\+h\item 
+Source/\+UI\+\_\+\+PUBG/Inventory\+\_\+\+UI.\+cpp\end{DoxyCompactItemize}

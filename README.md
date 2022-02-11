@@ -15,6 +15,9 @@
 #### &#x2B1B; UML 파일 draw.io) 프로젝트 폴더 내 0_Diagrams
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Class(클래스), SEQUENCE(시퀀스), MODULES(모듈 맵), 필요시 클라 서버 분리
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; https://app.diagrams.net/
+#### &#x2B1B; 백업 파일) 프로젝트 폴더 내 0_BACKUP
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; 키 맵핑 파일, Doxygen파일
+#### &#x2B1B; Doxygen 파일) 프로젝트 폴더 내 0_Doxygen
 #### &#x2B1B; 구현 예정 트렐로)
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x25AA; https://trello.com/b/34tauMdQ/ue4pubg
 </br>
