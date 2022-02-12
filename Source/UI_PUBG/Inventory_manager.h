@@ -14,6 +14,7 @@
 #include "Inventory_manager.generated.h"
 
 class USceneComponent;
+class UInventory_list_UI;
 
 UCLASS()
 class UI_PUBG_API AInventory_manager : public AActor

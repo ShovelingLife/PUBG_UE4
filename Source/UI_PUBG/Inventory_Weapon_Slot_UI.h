@@ -17,7 +17,6 @@
 
 class AUI_manager;
 class AWeapon_manager;
-
 class UImage;
 class UCanvasPanel;
 class UTextBlock;
@@ -31,10 +30,10 @@ class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
 	
 private:
     /** \brief UI 매니저 */
-    UPROPERTY() AUI_manager*     mp_UI_manager           = nullptr;
+    UPROPERTY() AUI_manager*     mp_UI_manager     = nullptr;
 
     /** \brief 무기 매니저 */
-    UPROPERTY() AWeapon_manager* mp_weapon_manager       = nullptr;
+    UPROPERTY() AWeapon_manager* mp_weapon_manager = nullptr;
 
     /**
       * \brief 현재 쓰여지는 변수
@@ -42,7 +41,6 @@ private:
     Fs_slot_item_data m_item_data;
     int               m_selected_weapon_index = 0;
     bool              m_is_clicked            = false;
-    bool              m_is_initialized        = false;
 
 public:
     /**
@@ -136,6 +134,9 @@ protected:
     virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 private:
+    /**
+      * \brief UI 상태 업데이트
+     */
     void Update_UI_visibility();
 
     void Update_inventory_weapon_UI();

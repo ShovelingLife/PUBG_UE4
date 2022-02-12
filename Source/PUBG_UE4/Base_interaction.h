@@ -17,7 +17,7 @@ class UAudioComponent;
 class UBoxComponent;
 class USceneComponent;
 class USkeletalMeshComponent;
-class UStaticMeshComponent
+class UStaticMeshComponent;
 class UWidgetComponent;
 
 UCLASS()

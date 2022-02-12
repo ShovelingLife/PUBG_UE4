@@ -71,6 +71,7 @@ enum class e_vehicle_type
 /**
   * \brief 좌석 종류
  */
+UENUM()
 enum class e_seat_type
 {
     FIRST,

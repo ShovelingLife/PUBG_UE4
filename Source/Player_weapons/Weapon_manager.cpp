@@ -521,9 +521,11 @@ ABase_interaction* AWeapon_manager::Get_weapon(e_current_weapon_type _weapon_typ
     return tmp_weapon;
 }
 
-void AWeapon_manager::Drop(ABase_interaction* _p_weapon)
+void AWeapon_manager::Drop(e_current_weapon_type _weapon_type)
 {
-    if (!_p_weapon)
+    auto p_weapon = Get_weapon(_weapon_type);
+
+    if (!p_weapon)
         return;
 
     FVector  final_location  = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
@@ -531,21 +533,19 @@ void AWeapon_manager::Drop(ABase_interaction* _p_weapon)
     final_location.Y        += 75.f;
     final_location.Z         = 20.f;
     FTransform new_location  = FTransform(player_rotation, final_location);
-    Reset_weapon_after_detaching(_p_weapon, new_location);
+    Reset_weapon_after_detaching(p_weapon, new_location);
+    Set_null(_weapon_type);
+}
 
+void AWeapon_manager::Set_null(e_current_weapon_type _weapon_type)
+{
     // 현재 보유 중인 무기랑 비교
-    if      (_p_weapon == p_first_gun)
-             p_first_gun = nullptr;
-
-    else if (_p_weapon == p_second_gun)
-             p_second_gun = nullptr;
-
-    else if (_p_weapon == p_pistol)
-             p_pistol = nullptr;
-
-    else if (_p_weapon == p_melee)
-             p_melee = nullptr;
-
-    else if (_p_weapon == p_throwable)
-             p_throwable = nullptr;
+    switch (_weapon_type)
+    {
+    case e_current_weapon_type::FIRST:     p_first_gun  = nullptr; break;
+    case e_current_weapon_type::SECOND:    p_second_gun = nullptr; break;
+    case e_current_weapon_type::PISTOL:    p_pistol     = nullptr; break;
+    case e_current_weapon_type::MELEE:     p_melee      = nullptr; break;
+    case e_current_weapon_type::THROWABLE: p_throwable  = nullptr; break;
+    }
 }

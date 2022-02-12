@@ -1,9 +1,0 @@
-digraph "AWeapon_manager"
-{
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{AWeapon_manager\n|+ current_weapon_type\l+ arr_is_weapon_equipped\l+ is_shooting\l- mk_reload_time\l- m_current_reload_time\l- m_shoot_time\l- m_current_shoot_time\l- m_is_reloading\l- m_is_interacting\l- m_is_changed_shoot_type\l- m_is_shooting\l|+ UPROPERTY()\l+ UPROPERTY()\l+ UPROPERTY()\l+ UPROPERTY()\l+ UPROPERTY()\l+ AWeapon_manager()\l+ Tick()\l+ Equip()\l+ Shoot()\l+ Reload()\l그리고 10개 더...\l# BeginPlay()\l- UPROPERTY()\l- Check_for_equipped\l_weapon()\l- Update_current_equipped\l_weapon()\l- Play_sound()\l- Find_weapon_index()\l- Attach_weapon()\l- Reset_weapon_after\l_detaching()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
-  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
-  Node2 [label="{AActor\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
-}

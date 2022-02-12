@@ -1,8 +1,0 @@
-digraph "그래픽컬한 클래스 계통도"
-{
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="�÷��̾�",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_xC7_xC3_xB7_xB9_xC0_xCC_xBE_xEE.html",tooltip=" "];
-}

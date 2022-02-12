@@ -1,9 +1,0 @@
-digraph "Fs_vehicle_data"
-{
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{Fs_vehicle_data\n|+ type\l+ mesh_path\l+ anim_instance_path\l+ audio_path\l+ collider_size\l+ collider_pos\l+ interaction_collider_size\l+ interaction_collider_pos\l+ camera_location\l+ camera_rotation\l그리고 13개 더...\l|+ Fs_vehicle_data()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
-  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal"];
-  Node2 [label="{FTableRowBase\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
-}

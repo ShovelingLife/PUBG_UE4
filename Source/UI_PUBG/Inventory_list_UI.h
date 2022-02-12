@@ -13,8 +13,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Inventory_list_UI.generated.h"
 
-DECLARE_DELEGATE(FDele_set_weapon_slot_null)
-
 class UImage;
 class UListView;
 class USizeBox;
@@ -28,7 +26,7 @@ class UI_PUBG_API UInventory_list_UI : public UUserWidget
 
 private:
     UPROPERTY() UItem_Slot_UI* p_slot_obj;
-    float m_world_size_box_width = 0.f;
+    float m_world_size_box_width     = 0.f;
     float m_inventory_size_box_width = 0.f;
 
 public:
@@ -47,7 +45,6 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*    Separator_img;
 
     UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItem_Slot_UI> p_item_slot_UI_class;
-    FDele_set_weapon_slot_null dele_set_weapon_slot_null;
 
 protected:
     virtual void NativeConstruct() override;

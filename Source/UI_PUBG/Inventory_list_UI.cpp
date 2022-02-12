@@ -33,8 +33,7 @@ FReply UInventory_list_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, c
     {
         Highlight_img->SetVisibility(ESlateVisibility::Hidden);
 
-        if (p_slot_obj &&
-            p_slot_obj->IsSelected())
+        if (p_slot_obj)
         {
             auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
             return reply.NativeReply;
@@ -75,8 +74,7 @@ void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const 
     auto p_slot         = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
     FVector2D mouse_pos = _geometry.AbsoluteToLocal(_in_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
     
-    if (!p_slot ||
-        !p_slot_obj)
+    if (!p_slot)
         return;
 
     // 슬롯 설정
@@ -109,8 +107,8 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
         mouse_pos.X < 325.f)
     {
         p_slot_UI->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
+        p_slot_UI->dele_set_weapon_slot_null.ExecuteIfBound();
         World_list_view->AddItem(p_slot_UI);
-        dele_set_weapon_slot_null.ExecuteIfBound();
     }
     // 인벤토리 리스트에 드롭
     else
@@ -119,8 +117,8 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
             return false;
 
         p_slot_UI->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
+        p_slot_UI->dele_set_weapon_slot_null.ExecuteIfBound();
         Inventory_list_view->AddItem(p_slot_UI);
-        dele_set_weapon_slot_null.ExecuteIfBound();
     }
     return true;
 }

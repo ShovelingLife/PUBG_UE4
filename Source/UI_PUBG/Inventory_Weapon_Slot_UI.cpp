@@ -26,24 +26,18 @@ void UInventory_Weapon_Slot_UI::NativeConstruct()
 }
 
 void UInventory_Weapon_Slot_UI::NativeTick(const FGeometry& _my_geometry, float _delta_time)
-
 {
     Super::NativeTick(_my_geometry, _delta_time);
 
-    if (!m_is_initialized)
-    {
-        auto p_inventory_manager = Cast<AInventory_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
-
-        if (p_inventory_manager)
-            p_inventory_manager->p_inventory_UI->Inventory_list_UI->dele_set_weapon_slot_null.BindUFunction(this, "Set_slot_null");
-
+    if (!mp_weapon_manager)
         mp_weapon_manager = Cast<ACustom_player>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->Get_weapon_manager();
-        mp_UI_manager     = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
-        m_is_initialized  = true;
-    }
+
+    if (!mp_UI_manager)
+        mp_UI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
+
     Update_UI_visibility();
     Update_inventory_weapon_UI();
-    Update_weapon_UI_highlight_img();
+    Update_weapon_UI_highlight_img(); 
 }
 
 void UInventory_Weapon_Slot_UI::NativeOnMouseLeave(const FPointerEvent& _in_mouse_event)
@@ -97,7 +91,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _geom
     // 오른쪽 클릭 / 맵에다가 무기를 버림
     else if (_in_mouse_event.IsMouseButtonDown(EKeys::RightMouseButton))
     {
-        mp_weapon_manager->Drop(mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index));
+        mp_weapon_manager->Drop((e_current_weapon_type)m_selected_weapon_index);
         Reset_highlight_img();
     }
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
@@ -126,6 +120,7 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _geometry,
 
     // 슬롯 설정
     p_slot->item_data = m_item_data;
+    p_slot->dele_set_weapon_slot_null.BindUFunction(this, "Set_slot_null");
     p_slot->Priority = 1;
     p_slot->Set_as_cursor(mouse_pos);
 
@@ -177,7 +172,7 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
     Second_gun_name_txt->SetVisibility((mp_weapon_manager->p_second_gun)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Second_gun_bullet_type_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Second_gun_current_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Second_gun_max_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Second_gun_max_magazine_txt->SetVisibility((mp_weapon_manager->p_second_gun)     ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Second_gun_number_background->SetVisibility((mp_weapon_manager->p_second_gun)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
     // 세번째 무기
@@ -185,7 +180,7 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
     Pistol_name_txt->SetVisibility((mp_weapon_manager->p_pistol)             ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Pistol_bullet_type_txt->SetVisibility((mp_weapon_manager->p_pistol)      ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Pistol_current_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    Pistol_max_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    Pistol_max_magazine_txt->SetVisibility((mp_weapon_manager->p_pistol)     ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     Pistol_number_background->SetVisibility((mp_weapon_manager->p_pistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
     // 네번째 무기
@@ -201,6 +196,10 @@ void UInventory_Weapon_Slot_UI::Update_UI_visibility()
 
 void UInventory_Weapon_Slot_UI::Update_inventory_weapon_UI()
 {
+    if (!mp_UI_manager ||
+        !mp_weapon_manager)
+        return;
+
     // 첫번째 무기
     if(auto p_first_gun = mp_weapon_manager->p_first_gun)
     {
@@ -299,14 +298,10 @@ void UInventory_Weapon_Slot_UI::Reset_highlight_img()
 
 void UInventory_Weapon_Slot_UI::Set_slot_null()
 {
-    switch (m_selected_weapon_index)
-    {
-    case 1: mp_weapon_manager->p_first_gun  = nullptr; break;
-    case 2: mp_weapon_manager->p_second_gun = nullptr; break;
-    case 3: mp_weapon_manager->p_pistol     = nullptr; break;
-    case 4: mp_weapon_manager->p_melee      = nullptr; break;
-    case 5: mp_weapon_manager->p_throwable  = nullptr; break;
-    }
+    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, "Set_slot_null");
+    if (mp_weapon_manager)
+        mp_weapon_manager->Set_null((e_current_weapon_type)m_selected_weapon_index);
+
     m_selected_weapon_index = 0;
     Reset_highlight_img();
 }

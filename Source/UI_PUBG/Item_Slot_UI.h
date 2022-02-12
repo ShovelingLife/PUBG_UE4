@@ -15,6 +15,7 @@
 #include "Item_Slot_UI.generated.h" 
 
 DECLARE_DELEGATE_OneParam(FDele_check_for_slot, UObject*)
+DECLARE_DELEGATE(FDele_set_weapon_slot_null)
 
 class UImage;
 class UTextBlock;
@@ -59,8 +60,9 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Name_txt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Count_txt;
 
-    FDele_check_for_slot dele_check_for_slot;
-    Fs_slot_item_data    item_data;
+    FDele_check_for_slot       dele_check_for_slot;
+    FDele_set_weapon_slot_null dele_set_weapon_slot_null;
+    Fs_slot_item_data          item_data;
 
 protected:    
     virtual void NativeConstruct() override;

@@ -172,7 +172,9 @@ public:
 
 	/**
 	 * \brief 무기를 맵에다가 버림
-	 * \param _p_weapon 버릴 무기
+	 * \param _weapon_type 버릴 무기 종류
 	 */
-	void Drop(ABase_interaction* _p_weapon);
+	void Drop(e_current_weapon_type _weapon_type);
+
+	void Set_null(e_current_weapon_type _weapon_type);
 };
