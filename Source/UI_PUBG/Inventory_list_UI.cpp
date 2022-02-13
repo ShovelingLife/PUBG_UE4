@@ -1,6 +1,9 @@
 ﻿#include "Inventory_list_UI.h"
 #include "Item_slot_UI.h"
 #include "Custom_drag_drop_operation.h"
+#include "Characters/Custom_player.h"
+#include "PUBG_UE4/Base_interaction.h"
+#include "Player_weapons/Weapon_manager.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
@@ -22,6 +25,9 @@ void UInventory_list_UI::NativeConstruct()
 void UInventory_list_UI::NativeTick(const FGeometry& _geometry, float _delta_time)
 {
     Super::NativeTick(_geometry, _delta_time);
+
+    if (!mp_weapon_manager)
+        mp_weapon_manager = Cast<ACustom_player>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->Get_weapon_manager();
 }
 
 FReply UInventory_list_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event)
@@ -33,13 +39,9 @@ FReply UInventory_list_UI::NativeOnMouseButtonDown(const FGeometry& _geometry, c
     {
         Highlight_img->SetVisibility(ESlateVisibility::Hidden);
 
-        if (p_slot_obj)
-        {
-            auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
-            return reply.NativeReply;
-        }
     }
-    return FReply::Handled();
+    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
+    return reply.NativeReply;
 }
 
 FReply UInventory_list_UI::NativeOnMouseMove(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event)
@@ -74,11 +76,15 @@ void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const 
     auto p_slot         = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
     FVector2D mouse_pos = _geometry.AbsoluteToLocal(_in_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
     
-    if (!p_slot)
+    if (!p_slot ||
+        !p_slot_obj)
         return;
 
     // 슬롯 설정
+    p_slot->p_dragged_item = p_slot_obj->p_dragged_item;
     p_slot->item_data = p_slot_obj->item_data;
+    p_slot->dele_set_weapon_slot_null.BindUFunction(this, "Delete_from_list");
+    p_slot->dele_swap_weapon_slot.BindUFunction(this, "Swap_weapon_slot");
     p_slot->Priority  = 1;
     p_slot->Set_as_cursor(mouse_pos);
 
@@ -94,11 +100,17 @@ void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const 
 bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _in_mouse_event, UDragDropOperation* _operation)
 {
     auto p_drag_operation = Cast<UCustom_drag_drop_operation>(_operation);
-    auto p_slot_UI        = p_drag_operation->p_slot_UI;
+    auto p_slot           = p_drag_operation->p_slot_UI;
 
-    if (!p_slot_UI)
+    if (!p_slot)
         return false;
 
+    // 같은 아이템일 시
+    if (p_slot_obj)
+    {
+        if (p_slot->p_dragged_item == p_slot_obj->p_dragged_item)
+            return false;
+    }
     // 마우스 위치 구하기
     FVector2D mouse_pos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
@@ -106,9 +118,10 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
     if (mouse_pos.X > 100.f &&
         mouse_pos.X < 325.f)
     {
-        p_slot_UI->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
-        p_slot_UI->dele_set_weapon_slot_null.ExecuteIfBound();
-        World_list_view->AddItem(p_slot_UI);
+        p_slot->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
+        p_slot->dele_set_weapon_slot_null.ExecuteIfBound();
+        World_list_view->AddItem(p_slot);
+        mp_weapon_manager->Drop(mp_weapon_manager->Get_weapon_index(p_slot->p_dragged_item));
     }
     // 인벤토리 리스트에 드롭
     else
@@ -116,9 +129,9 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
         if (p_drag_operation->is_gun)
             return false;
 
-        p_slot_UI->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
-        p_slot_UI->dele_set_weapon_slot_null.ExecuteIfBound();
-        Inventory_list_view->AddItem(p_slot_UI);
+        p_slot->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
+        p_slot->dele_set_weapon_slot_null.ExecuteIfBound();
+        Inventory_list_view->AddItem(p_slot);
     }
     return true;
 }
@@ -176,9 +189,6 @@ FVector2D UInventory_list_UI::Get_distance_between_slot_cursor()
 // this가 넘어오므로 널 체크 불필요
 void UInventory_list_UI::Check_for_hovered_item(UItem_Slot_UI* _p_slot_obj)
 {
-    if (World_list_view->GetIndexForItem(_p_slot_obj) != -1)
-        GEngine->AddOnScreenDebugMessage(2, 2.f, FColor::Cyan, "Found slot");
-
     // 현재 이미지 위치를 구함
     FVector2D move_pos = FVector2D::ZeroVector, dummy_vec;
     auto cached_geometry = Cast<UItem_Slot_UI>(_p_slot_obj)->GetCachedGeometry();
@@ -195,4 +205,48 @@ void UInventory_list_UI::Check_for_hovered_item(UItem_Slot_UI* _p_slot_obj)
 
     Highlight_img->SetVisibility(ESlateVisibility::Visible);
     p_slot_obj = _p_slot_obj;
+}
+
+void UInventory_list_UI::Delete_from_list()
+{
+    if (!p_slot_obj)
+        return;
+
+    bool is_found = false;
+
+    // 월드 리스트부터 순차적으로 검색
+    for (int i = 0; i < World_list_view->GetNumItems(); i++)
+    {
+        if (auto p_slot = Cast<UItem_Slot_UI>(World_list_view->GetItemAt(i)))
+        {
+            // 발견 시 해당하는 아이템 삭제
+            if (p_slot->p_dragged_item == p_slot_obj->p_dragged_item)
+            {
+                World_list_view->RemoveItem(p_slot);
+                p_slot_obj = nullptr;
+                return;
+            }
+        }
+    }
+    // 인벤토리 리스트부터 순차적으로 검색
+    for (int i = 0; i < Inventory_list_view->GetNumItems(); i++)
+    {
+        if (auto p_slot = Cast<UItem_Slot_UI>(Inventory_list_view->GetItemAt(i)))
+        {
+            // 발견 시 해당하는 아이템 삭제
+            if (p_slot->p_dragged_item == p_slot_obj->p_dragged_item)
+            {
+                Inventory_list_view->RemoveItem(p_slot);
+                p_slot_obj = nullptr;
+                return;
+            }
+        }
+    }
+}
+
+void UInventory_list_UI::Swap_weapon_slot(UItem_Slot_UI* _p_weapon_slot)
+{
+    Delete_from_list();
+    _p_weapon_slot->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
+    World_list_view->AddItem(_p_weapon_slot);
 }

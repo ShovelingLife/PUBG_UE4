@@ -30,6 +30,7 @@ public:
       * \brief 전역 변수
      */
     UPROPERTY() class ASound_manager* p_sound_manager;
+
     FDele_update_interaction_widget_comp  dele_update_interaction_widget_comp;
 
 public:

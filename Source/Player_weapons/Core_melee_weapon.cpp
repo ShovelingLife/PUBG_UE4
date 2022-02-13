@@ -22,8 +22,8 @@ void ACore_melee_weapon::BeginPlay()
 
 void ACore_melee_weapon::Init(e_melee_weapon_type _weapon_type)
 {
-    weapon_data   = AData_table_manager::arr_other_weapon_data[(int)_weapon_type];
-    weapon_type   = _weapon_type;
+    weapon_data = AData_table_manager::arr_other_weapon_data[(int)_weapon_type];
+    weapon_type = _weapon_type;
     object_type = weapon_data.type;
 
     ABase_interaction::Init_audio();

@@ -27,16 +27,19 @@ void UItem_Slot_UI::NativeTick(const FGeometry& _geometry, float _delta_time)
 
 void UItem_Slot_UI::NativeOnListItemObjectSet(UObject* _p_obj)
 {
-    auto p_slot   = Cast<UItem_Slot_UI>(_p_obj);
+    auto p_slot = Cast<UItem_Slot_UI>(_p_obj);
 
     if (p_slot)
     {
         Item_img->SetBrushFromTexture(Cast<UTexture2D>(AUI_manager::map_inventory_weapon_ui_tex[p_slot->item_data.image_index]));
         Name_txt->SetText(FText::FromString(p_slot->item_data.name));
-        dele_check_for_slot = p_slot->dele_check_for_slot;
+        p_dragged_item            = p_slot->p_dragged_item;
+        dele_check_for_slot       = p_slot->dele_check_for_slot;
+        dele_swap_weapon_slot     = p_slot->dele_swap_weapon_slot;
         dele_set_weapon_slot_null = p_slot->dele_set_weapon_slot_null;
-        
-        if (item_data.count > 0)
+        item_data                 = p_slot->item_data;
+
+        if (item_data.count > 1)
             Count_txt->SetText(FText::FromString(FString::FromInt(p_slot->item_data.count)));
     }
 }

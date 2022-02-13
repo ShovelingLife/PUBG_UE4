@@ -13,11 +13,13 @@
 #include "Blueprint/UserWidget.h"
 #include "Inventory_list_UI.generated.h"
 
+class AWeapon_manager;
+class UItem_Slot_UI;
+
 class UImage;
 class UListView;
 class USizeBox;
 class UTextBlock;
-class UItem_Slot_UI;
 
 UCLASS()
 class UI_PUBG_API UInventory_list_UI : public UUserWidget
@@ -25,6 +27,9 @@ class UI_PUBG_API UInventory_list_UI : public UUserWidget
 	GENERATED_BODY()
 
 private:
+    /** \brief 무기 매니저 */
+    UPROPERTY() AWeapon_manager* mp_weapon_manager = nullptr;
+
     UPROPERTY() UItem_Slot_UI* p_slot_obj;
     float m_world_size_box_width     = 0.f;
     float m_inventory_size_box_width = 0.f;
@@ -109,4 +114,10 @@ public:
      */
     UFUNCTION()
     void Check_for_hovered_item(UItem_Slot_UI* _p_slot_obj);
+
+    UFUNCTION()
+    void Delete_from_list();
+
+    UFUNCTION()
+    void Swap_weapon_slot(UItem_Slot_UI* _p_weapon_slot);
 };

@@ -36,7 +36,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Mesh)  USkeletalMeshComponent* p_skeletal_mesh_comp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Sound) UAudioComponent*        p_audio_comp         = nullptr;
 
-    FString object_type;
+    FString object_group_type = "";
+    FString object_type       = "";
     bool    is_player_near = false;
 
 public:

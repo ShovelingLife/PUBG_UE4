@@ -17,11 +17,12 @@
 
 class AUI_manager;
 class AWeapon_manager;
-class UImage;
-class UCanvasPanel;
-class UTextBlock;
 class UItem_Slot_UI;
+
 class UBorder;
+class UCanvasPanel;
+class UImage;
+class UTextBlock;
 
 UCLASS()
 class UI_PUBG_API UInventory_Weapon_Slot_UI : public UUserWidget
@@ -40,6 +41,7 @@ private:
      */
     Fs_slot_item_data m_item_data;
     int               m_selected_weapon_index = 0;
+    int               m_dragged_weapon_index = 0;
     bool              m_is_clicked            = false;
 
 public:
@@ -110,28 +112,34 @@ protected:
       * \brief 마우스가 UI를 벗어날 시 선택 이미지 초기화
       * \param _in_mouse_event 마우스 이벤트
      */
-    virtual void NativeOnMouseLeave(const FPointerEvent&) override;
+    virtual void NativeOnMouseLeave(const FPointerEvent& _in_mouse_event) override;
 
     /**
       * \brief 좌클릭 시 (선택된 UI에 맞게끔 슬롯 변환 > 드래그) / 우클릭 시 맵에 드롭
       * 선택 이미지 초기화
-      * \param _geometry UI 정보 \param _in_mouse_event 마우스 이벤트
+      * \param _in_geometry UI 정보 \param _in_mouse_event 마우스 이벤트
       * \return FReply 마우스 처리 이벤트
      */
-    virtual FReply NativeOnMouseButtonDown(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event) override;
+    virtual FReply NativeOnMouseButtonDown(const FGeometry& _in_geometry, const FPointerEvent& _in_mouse_event) override;
     
     /**
       * \brief 마우스 버튼 땠을 시 선택 이미지 및 클릭된 UI 정보 삭제
-      * \param _geometry UI 정보 \param _in_mouse_event 마우스 이벤트
+      * \param _in_geometry UI 정보 \param _in_mouse_event 마우스 이벤트
       * \return FReply 마우스 처리 이벤트
      */
-    virtual FReply NativeOnMouseButtonUp(const FGeometry& _geometry, const FPointerEvent& _in_mouse_event) override;
+    virtual FReply NativeOnMouseButtonUp(const FGeometry& _in_geometry, const FPointerEvent& _in_mouse_event) override;
 
-    virtual void NativeOnDragDetected(const FGeometry& _geometry, const FPointerEvent& _pointer_event, class UDragDropOperation*& _operation) override;
+    virtual void NativeOnDragDetected(const FGeometry& _in_geometry, const FPointerEvent& _pointer_event, class UDragDropOperation*& _in_operation) override;
 
-    virtual bool NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _pointer_event, class UDragDropOperation* _operation) override;
+    virtual bool NativeOnDrop(const FGeometry& _in_geometry, const FDragDropEvent& _pointer_event, class UDragDropOperation* _in_operation) override;
 
-    virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+    virtual void NativeOnDragEnter(const FGeometry& _in_geometry, const FDragDropEvent& _in_drag_drop_event, UDragDropOperation* _in_operation) override;
+
+    virtual void NativeOnDragLeave(const FDragDropEvent& _in_drag_drop_event, UDragDropOperation* _in_operation) override;
+
+    virtual void NativeOnDragCancelled(const FDragDropEvent& _in_drag_drop_event, UDragDropOperation* _in_operation) override;
+
+    virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 private:
     /**
@@ -141,9 +149,13 @@ private:
 
     void Update_inventory_weapon_UI();
 
+    void Check_for_hovered_weapon_slot();
+
     void Update_weapon_UI_highlight_img();
 
     void Reset_highlight_img();
+
+    void Get_item_data();
 
 public:
     // 슬롯 초기화

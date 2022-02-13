@@ -69,7 +69,7 @@ void AData_table_manager::Init_other_weapon_data()
             break;
 
         Fs_other_weapon_data data = *p_row;
-        data.mesh_path            = mk_other_weapon_mesh_path + data.weapon_group + "/Meshes/SM_" + data.type;
+        data.mesh_path            = mk_other_weapon_mesh_path + data.weapon_group_type + "/Meshes/SM_" + data.type;
         arr_other_weapon_data.Add(data);
     }
 }

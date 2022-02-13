@@ -25,10 +25,10 @@ struct Fs_other_weapon_data : public FTableRowBase
 	/**
 	  * \brief 기타 컴포넌트 경로 관련
 	 */
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString type		  = "";
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString weapon_group  = "";
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString audio_path	  = "";
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString particle_path = "";
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString type			   = "";
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString weapon_group_type  = "";
+    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString audio_path		   = "";
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString particle_path	   = "";
 
 	/**
 	  * \brief 충돌체 컴포넌트 관련

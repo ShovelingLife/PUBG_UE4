@@ -87,8 +87,9 @@ private:
      * \brief 무기를 플레이어 메시에 부착
 	 * \param _p_tmp_weapon 무기 종류
 	 * \param _socket_name 소켓 이름
+	 * \param _should_check 무기 중복 여부 체크
      */
-    void Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _socket_name);
+    void Attach_weapon(ABase_interaction* _p_tmp_weapon, FString _socket_name, bool _should_check = true);
 
 	/**
 	 * \brief 무기 버린 후 초기화
@@ -100,9 +101,10 @@ private:
 public:
 	/**
 	 * \brief 무기 착용
-	 * \param _p_weapon 착용할 무기
+	 * \param _p_weapon 착용할 무기 
+	 * \param _should_check 무기 중복 여부 체크
 	 */
-	void Equip(AActor* _p_weapon);
+	void Equip(AActor* _p_weapon, bool _should_check = true);
 
 	/** \brief 발사 */
 	void Shoot();
@@ -123,7 +125,9 @@ public:
 	 * \param _new_weapon 새로운 무기
 	 * \param _socket_name 메시 소켓 명칭
 	 */
-	void Swap(ABase_interaction* _current_weapon, AActor* _new_weapon, FString _socket_name);
+	void Swap_world_weapon(ABase_interaction* _current_weapon, AActor* _new_weapon, FString _socket_name);
+
+	void Swap_weapon(ABase_interaction* _p_old_weapon, ABase_interaction* _p_new_weapon = nullptr);
 
 	/**
 	  * \brief 착용 중인 무기를 체크함 
@@ -167,6 +171,8 @@ public:
      * \return 현재 착용 중인 무기
      */
 	ABase_interaction* Get_weapon(e_current_weapon_type _weapon_type);
+
+	e_current_weapon_type Get_weapon_index(ABase_interaction* _p_weapon);
 
 	// ------- UI 관련 함수 -------
 

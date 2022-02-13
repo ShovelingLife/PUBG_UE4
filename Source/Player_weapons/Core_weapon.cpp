@@ -42,6 +42,7 @@ void ACore_weapon::Init(e_weapon_type _weapon_type)
     weapon_data   = AData_table_manager::arr_weapon_data[(int)_weapon_type];
     weapon_type   = _weapon_type;
     object_type = weapon_data.type;
+    object_group_type = weapon_data.weapon_group_type;
 
     ABase_interaction::Init_audio();
     Update_collider();

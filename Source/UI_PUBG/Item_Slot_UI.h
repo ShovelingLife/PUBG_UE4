@@ -14,9 +14,13 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Item_Slot_UI.generated.h" 
 
+class UItem_Slot_UI;
+
 DECLARE_DELEGATE_OneParam(FDele_check_for_slot, UObject*)
+DECLARE_DELEGATE_OneParam(FDele_swap_weapon_slot, UItem_Slot_UI*)
 DECLARE_DELEGATE(FDele_set_weapon_slot_null)
 
+class ABase_interaction;
 class UImage;
 class UTextBlock;
 class USizeBox;
@@ -44,6 +48,23 @@ public:
       * \param _name 아이템 명칭 \param _image_index UI 이미지 인덱스 \param _count 개수
      */
     Fs_slot_item_data(FString _name, int _image_index, int _count = 1) : name(_name), image_index(_image_index), count(_count) { }
+
+    
+
+public:
+    void Reset()
+    {
+        this->name        = "";
+        this->image_index = 0;
+        this->count       = 0;
+    }
+
+    bool Is_empty()
+    {
+        return this->name        == "" ||
+               this->image_index == 0  ||
+               this->image_index == 0; 
+    }
 };
 
 UCLASS()
@@ -60,9 +81,12 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Name_txt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     Count_txt;
 
+    UPROPERTY() ABase_interaction* p_dragged_item;
     FDele_check_for_slot       dele_check_for_slot;
+    FDele_swap_weapon_slot     dele_swap_weapon_slot;
     FDele_set_weapon_slot_null dele_set_weapon_slot_null;
     Fs_slot_item_data          item_data;
+    bool is_swapping_weapon = false;
 
 protected:    
     virtual void NativeConstruct() override;
