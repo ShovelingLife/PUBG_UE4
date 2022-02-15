@@ -183,4 +183,6 @@ public:
 	void Drop(e_current_weapon_type _weapon_type);
 
 	void Set_null(e_current_weapon_type _weapon_type);
+
+	bool Check_for_duplicated(ABase_interaction* _p_weapon, e_current_weapon_type _weapon_type);
 };

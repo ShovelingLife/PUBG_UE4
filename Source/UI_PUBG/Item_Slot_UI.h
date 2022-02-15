@@ -18,7 +18,7 @@ class UItem_Slot_UI;
 
 DECLARE_DELEGATE_OneParam(FDele_check_for_slot, UObject*)
 DECLARE_DELEGATE_OneParam(FDele_swap_weapon_slot, UItem_Slot_UI*)
-DECLARE_DELEGATE(FDele_set_weapon_slot_null)
+DECLARE_DELEGATE(FDele_set_slot_null)
 
 class ABase_interaction;
 class UImage;
@@ -36,9 +36,9 @@ struct Fs_slot_item_data
     GENERATED_BODY()
 
 public:
-    FString name = "";
+    FString name        = "";
     int     image_index = 0;
-    int     count = 0;
+    int     count       = 0;
 
 public:
     Fs_slot_item_data() = default;
@@ -84,9 +84,8 @@ public:
     UPROPERTY() ABase_interaction* p_dragged_item;
     FDele_check_for_slot       dele_check_for_slot;
     FDele_swap_weapon_slot     dele_swap_weapon_slot;
-    FDele_set_weapon_slot_null dele_set_weapon_slot_null;
+    FDele_set_slot_null dele_set_slot_null;
     Fs_slot_item_data          item_data;
-    bool is_swapping_weapon = false;
 
 protected:    
     virtual void NativeConstruct() override;

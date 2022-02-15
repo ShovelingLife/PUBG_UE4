@@ -24,6 +24,7 @@ struct Fs_weapon_data : public FTableRowBase
 
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString type                  = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString weapon_group_type     = "";
+    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString bullet_type           = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString mesh_path             = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString weapon_icon_path      = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString weapon_slot_icon_path = "";

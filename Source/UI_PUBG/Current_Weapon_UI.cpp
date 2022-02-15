@@ -12,6 +12,7 @@
 void UCurrent_Weapon_UI::NativeConstruct()
 {
     Super::NativeConstruct();
+    Init_arr_img();
 }
 
 void UCurrent_Weapon_UI::NativeTick(const FGeometry& _my_geometry, float _delta_time)
@@ -24,7 +25,6 @@ void UCurrent_Weapon_UI::NativeTick(const FGeometry& _my_geometry, float _delta_
     if (!mp_UI_manager)
         mp_UI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
 
-    Init_arr_img();
     Update_icon_visibility();
     Update_icon_color();
     Set_icon_UI();
@@ -58,7 +58,7 @@ void UCurrent_Weapon_UI::Update_icon_color()
 
     // 현재 선택된 무기
     e_current_weapon_type current_selected_weapon = mp_weapon_manager->current_weapon_type;
-
+    
     // 선택 해제 및 탄알이 비어있을 시
     for (int i = 0; i < 3; i++)
     {
@@ -69,17 +69,19 @@ void UCurrent_Weapon_UI::Update_icon_color()
             p_arr_img[i]->SetColorAndOpacity(mk_unselected_color);
     }
     p_arr_img[3]->SetColorAndOpacity(mk_unselected_color);
-    p_arr_img[4]->SetColorAndOpacity(mk_unselected_color);
+    p_arr_img[4]->SetColorAndOpacity(mk_unselected_color); 
 
     // 선택하고 있을 시
     if(current_selected_weapon != e_current_weapon_type::NONE)
     {
+        int index = (int)current_selected_weapon - 1;
+
         // 선택 및 탄알이 비어있을 시
-        if (mp_weapon_manager->Get_weapon_max_bullet_count((e_current_weapon_type)current_selected_weapon) == 0)
-            p_arr_img[(int)current_selected_weapon]->SetColorAndOpacity(mk_selected_no_ammo_color);
+        if (mp_weapon_manager->Get_weapon_max_bullet_count(current_selected_weapon) == 0)
+            p_arr_img[index]->SetColorAndOpacity(mk_selected_no_ammo_color);
 
         else
-            p_arr_img[(int)current_selected_weapon]->SetColorAndOpacity(mk_selected_color);
+            p_arr_img[index]->SetColorAndOpacity(mk_selected_color);
     }
 }
 

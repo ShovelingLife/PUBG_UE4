@@ -13,6 +13,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Input/Events.h"
 #include "Item_Slot_UI.h"
+#include "Player_weapons/Weapon_enum.h"
 #include "Inventory_Weapon_Slot_UI.generated.h"
 
 class AUI_manager;
@@ -40,8 +41,8 @@ private:
       * \brief 현재 쓰여지는 변수
      */
     Fs_slot_item_data m_item_data;
-    int               m_selected_weapon_index = 0;
-    int               m_dragged_weapon_index = 0;
+    e_current_weapon_type m_selected_weapon_index;
+    e_current_weapon_type m_dragged_weapon_index;
     bool              m_is_clicked            = false;
 
 public:
@@ -155,7 +156,7 @@ private:
 
     void Reset_highlight_img();
 
-    void Get_item_data();
+    void Get_item_data(ABase_interaction* _p_weapon);
 
 public:
     // 슬롯 초기화

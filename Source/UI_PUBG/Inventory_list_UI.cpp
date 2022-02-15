@@ -83,18 +83,19 @@ void UInventory_list_UI::NativeOnDragDetected(const FGeometry& _geometry, const 
     // 슬롯 설정
     p_slot->p_dragged_item = p_slot_obj->p_dragged_item;
     p_slot->item_data = p_slot_obj->item_data;
-    p_slot->dele_set_weapon_slot_null.BindUFunction(this, "Delete_from_list");
+    p_slot->dele_set_slot_null.BindUFunction(this, "Delete_from_list");
     p_slot->dele_swap_weapon_slot.BindUFunction(this, "Swap_weapon_slot");
-    p_slot->Priority  = 1;
+    p_slot->Priority = 1;
     p_slot->Set_as_cursor(mouse_pos);
 
     // 드래그 구현
-    auto p_drag_drop_operation = NewObject<UCustom_drag_drop_operation>();
-    p_drag_drop_operation->p_slot_UI         = p_slot;
-    p_drag_drop_operation->DefaultDragVisual = p_slot;
-    p_drag_drop_operation->Pivot             = EDragPivot::MouseDown;
-    p_drag_drop_operation->item_data         = p_slot_obj->item_data;
-    _out_operation  = p_drag_drop_operation;
+    auto p_custom_operation = NewObject<UCustom_drag_drop_operation>();
+    p_custom_operation->p_slot_UI         = p_slot;
+    p_custom_operation->DefaultDragVisual = p_slot;
+    p_custom_operation->Pivot             = EDragPivot::MouseDown;
+    p_custom_operation->item_data         = p_slot_obj->item_data;
+    p_custom_operation->is_from_list = true;
+    _out_operation  = p_custom_operation;
 }
 
 bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDropEvent& _in_mouse_event, UDragDropOperation* _operation)
@@ -119,7 +120,7 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
         mouse_pos.X < 325.f)
     {
         p_slot->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
-        p_slot->dele_set_weapon_slot_null.ExecuteIfBound();
+        p_slot->dele_set_slot_null.ExecuteIfBound();
         World_list_view->AddItem(p_slot);
         mp_weapon_manager->Drop(mp_weapon_manager->Get_weapon_index(p_slot->p_dragged_item));
     }
@@ -130,7 +131,7 @@ bool UInventory_list_UI::NativeOnDrop(const FGeometry& _geometry, const FDragDro
             return false;
 
         p_slot->dele_check_for_slot.BindUFunction(this, "Check_for_hovered_item");
-        p_slot->dele_set_weapon_slot_null.ExecuteIfBound();
+        p_slot->dele_set_slot_null.ExecuteIfBound();
         Inventory_list_view->AddItem(p_slot);
     }
     return true;

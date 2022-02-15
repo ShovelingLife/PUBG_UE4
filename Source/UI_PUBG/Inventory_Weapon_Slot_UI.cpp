@@ -57,7 +57,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _in_g
     // 왼쪽 클릭 / 마우스 커서 변경
     if(_in_mouse_event.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
-        Get_item_data();
+        Get_item_data(mp_weapon_manager->Get_weapon(m_selected_weapon_index));
         m_is_clicked = true;
         Highlight_img->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.35f });
         m_dragged_weapon_index = m_selected_weapon_index;
@@ -65,7 +65,7 @@ FReply UInventory_Weapon_Slot_UI::NativeOnMouseButtonDown(const FGeometry& _in_g
     // 오른쪽 클릭 / 맵에다가 무기를 버림
     else if (_in_mouse_event.IsMouseButtonDown(EKeys::RightMouseButton))
     {
-        mp_weapon_manager->Drop((e_current_weapon_type)m_selected_weapon_index);
+        mp_weapon_manager->Drop(m_selected_weapon_index);
         Reset_highlight_img();
     }
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_in_mouse_event, this, EKeys::LeftMouseButton);
@@ -83,9 +83,9 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _in_geomet
 {
     Super::NativeOnDragDetected(_in_geometry, _in_mouse_event, _out_operation);
 
-    ABase_interaction* p_tmp_weapon = mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index);
-    auto p_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
-    FVector2D mouse_pos = _in_geometry.AbsoluteToLocal(_in_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
+    ABase_interaction* p_tmp_weapon = mp_weapon_manager->Get_weapon(m_selected_weapon_index);
+    auto               p_slot       = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
+    FVector2D          mouse_pos    = _in_geometry.AbsoluteToLocal(_in_mouse_event.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (!p_slot       ||
         !p_tmp_weapon ||
@@ -94,15 +94,15 @@ void UInventory_Weapon_Slot_UI::NativeOnDragDetected(const FGeometry& _in_geomet
 
     // 슬롯 설정
     p_slot->p_dragged_item = p_tmp_weapon;
-    p_slot->item_data = m_item_data;
-    p_slot->dele_set_weapon_slot_null.BindUFunction(this, "Set_slot_null");
-    p_slot->Priority = 1;
+    p_slot->item_data      = m_item_data;
+    p_slot->Priority       = 1;
+    p_slot->dele_set_slot_null.BindUFunction(this, "Set_slot_null");
     p_slot->Set_as_cursor(mouse_pos);
 
     // 드래그 구현
     auto p_custom_operation = NewObject<UCustom_drag_drop_operation>();
 
-    if (m_selected_weapon_index < 4)
+    if ((int)m_selected_weapon_index < 4)
         p_custom_operation->is_gun = true;
 
     p_custom_operation->p_slot_UI         = p_slot;
@@ -117,89 +117,51 @@ bool UInventory_Weapon_Slot_UI::NativeOnDrop(const FGeometry& _in_geometry, cons
     Super::NativeOnDrop(_in_geometry, _in_drag_drop_event, _in_operation);
     auto p_custom_operation = Cast<UCustom_drag_drop_operation>(_in_operation);
     auto p_slot = p_custom_operation->p_slot_UI;
+    p_custom_operation->is_from_list = false;
 
     if (!p_slot)
         return false;
 
     // 현재 선택하고 있는 인덱스 확인
-    ABase_interaction* p_selected_weapon = nullptr;
-    auto               p_dragged_weapon  = p_slot->p_dragged_item;
+    auto p_dragged_weapon  = p_slot->p_dragged_item;
 
     if (!p_dragged_weapon)
         return false;
     
-    // 드래그가 된 무기가 타입에 안맞을 시
-    FString object_group_type = p_dragged_weapon->object_group_type;
+    // 총기가 수류탄 또는 근접무기 슬롯에 위치시킬 시
+    if ((int)m_selected_weapon_index < 4 &&
+        mp_weapon_manager->Check_for_duplicated(p_dragged_weapon, e_current_weapon_type::NONE))
+        return false;
 
-    if(m_selected_weapon_index < 4)
+    // 1 2번 슬롯 같은 경우 무기가 중복 여부 같은 슬롯 내에는 발생하지 않음
+    if(p_custom_operation->is_from_list)
     {
-        if (object_group_type == "Explosive" ||
-            object_group_type == "Melee")
+        if (mp_weapon_manager->Check_for_duplicated(p_dragged_weapon, m_selected_weapon_index))
             return false;
     }
     // 무기 선택
-    switch (m_selected_weapon_index)
+    ABase_interaction* p_selected_weapon =  mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index);
+    auto tmp_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
+    
+    if (!p_selected_weapon) // 무기 장착, 해당 무기 슬롯이 비어있음
     {
-    case 1: 
-
-        // 총기인지 체크
-        if (object_group_type == "Handgun")
-            return false;
-
-        p_selected_weapon = mp_weapon_manager->p_first_gun;  
-        break;
-
-    case 2: 
-
-        // 총기인지 체크
-        if (object_group_type == "Handgun")
-            return false;
-
-        p_selected_weapon = mp_weapon_manager->p_second_gun; 
-        break;
-
-    case 3: 
-
-        // 권총인지 체크
-        if (object_group_type != "Handgun")
-            return false;
-
-        p_selected_weapon = mp_weapon_manager->p_pistol;
-        break;
-
-    case 4: 
-
-        // 근접 무기인지 체크
-        if (object_group_type != "Melee")
-            return false;
-
-        break;
-
-    case 5:
-
-        // 투척류인지 체크
-        if (object_group_type != "Throwable")
-            return false;
-
-        break;
+        tmp_slot->p_dragged_item = p_dragged_weapon;
+        Get_item_data(p_dragged_weapon);
     }
-    // 무기 교체
-    if (p_selected_weapon)
+    else // 무기 교체
     {
-        Get_item_data();
-        auto tmp_slot = CreateWidget<UItem_Slot_UI>(GetWorld(), p_item_slot_UI_class);
         tmp_slot->p_dragged_item = p_selected_weapon;
-        tmp_slot->item_data = m_item_data;
-        p_slot->dele_set_weapon_slot_null.BindUFunction(this, "Set_slot_null");
-        p_slot->dele_swap_weapon_slot.ExecuteIfBound(tmp_slot);
+        Get_item_data(p_selected_weapon);
     }
+    tmp_slot->item_data = m_item_data;
     mp_weapon_manager->Swap_weapon(p_dragged_weapon, p_selected_weapon);
 
-    if (p_custom_operation->wk_p_slot_obj.Get())
-        p_custom_operation->wk_p_slot_obj->MarkPendingKill();
-
+    // 무기 배치 및 UI 설정이 완료 되었다면 초기화
     if (!p_selected_weapon)
-        p_slot->dele_set_weapon_slot_null.ExecuteIfBound();
+        p_slot->dele_set_slot_null.ExecuteIfBound();
+
+    else
+        p_slot->dele_swap_weapon_slot.ExecuteIfBound(tmp_slot);
 
     return true;
 }
@@ -246,14 +208,14 @@ bool UInventory_Weapon_Slot_UI::NativeOnDragOver(const FGeometry& _in_geometry, 
         if (i < 3) // 총기류
         {
             if (mouse_pos.Y >= widget_position.Y)
-                m_selected_weapon_index = i + 1;
+                m_selected_weapon_index = (e_current_weapon_type)(i + 1);
         }
         else // 투척류 또는 근접일 시 두 축으로 비교
         {
 
             if (mouse_pos.Y >= widget_position.Y &&
                 mouse_pos.X >= widget_position.X)
-                m_selected_weapon_index = i + 1;
+                m_selected_weapon_index = (e_current_weapon_type)(i + 1);
         }
     }
     return true;
@@ -305,32 +267,40 @@ void UInventory_Weapon_Slot_UI::Update_inventory_weapon_UI()
     // 첫번째 무기
     if(auto p_first_gun = mp_weapon_manager->p_first_gun)
     {
+        auto weapon_data = p_first_gun->weapon_data;
         First_gun_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)p_first_gun->weapon_type]));
-        First_gun_name_txt->SetText(FText::FromString(p_first_gun->weapon_data.type));        
+        First_gun_name_txt->SetText(FText::FromString(weapon_data.type));
+        First_gun_bullet_type_txt->SetText(FText::FromString(weapon_data.bullet_type));
     }
     // 두번째 무기
     if (auto p_second_gun = mp_weapon_manager->p_second_gun)
     {
+        auto weapon_data = p_second_gun->weapon_data;
         Second_gun_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)p_second_gun->weapon_type]));
-        Second_gun_name_txt->SetText(FText::FromString(p_second_gun->weapon_data.type));
+        Second_gun_name_txt->SetText(FText::FromString(weapon_data.type));
+        Second_gun_bullet_type_txt->SetText(FText::FromString(weapon_data.bullet_type));
     }
     // 세번째 무기
     if (auto p_pistol = mp_weapon_manager->p_pistol)
     {
+        auto weapon_data = p_pistol->weapon_data;
         Pistol_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_pistol->weapon_type]));
-        Pistol_name_txt->SetText(FText::FromString(p_pistol->weapon_data.type));
+        Pistol_name_txt->SetText(FText::FromString(weapon_data.type));
+        Pistol_bullet_type_txt->SetText(FText::FromString(weapon_data.bullet_type));                                                                                            
     }
     // 네번째 무기
     if (auto p_throwable = mp_weapon_manager->p_throwable)
     {
+        auto weapon_data = p_throwable->weapon_data;
         Melee_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_throwable->weapon_type]));
-        Melee_name_txt->SetText(FText::FromString(p_throwable->weapon_data.type));
+        Melee_name_txt->SetText(FText::FromString(weapon_data.type));
     }
     // 다섯번째 무기
     if (auto p_melee = mp_weapon_manager->p_melee)
     {
+        auto weapon_data = p_melee->weapon_data;
         Grenade_slot_img->SetBrushFromTexture(Cast<UTexture2D>(mp_UI_manager->map_inventory_weapon_ui_tex[(int)mp_weapon_manager->p_melee->weapon_type]));
-        Grenade_name_txt->SetText(FText::FromString(p_melee->weapon_data.type));
+        Grenade_name_txt->SetText(FText::FromString(weapon_data.type));
     }
 }
 
@@ -342,23 +312,23 @@ void UInventory_Weapon_Slot_UI::Check_for_hovered_weapon_slot()
     // 선택된 무기 인덱스 구함
     if      (First_gun_slot_img->GetVisibility() == ESlateVisibility::Visible &&
              First_gun_slot_img->IsHovered())
-             m_selected_weapon_index = 1;
+             m_selected_weapon_index = e_current_weapon_type::FIRST;
 
     else if (Second_gun_slot_img->GetVisibility() == ESlateVisibility::Visible &&
              Second_gun_slot_img->IsHovered())
-             m_selected_weapon_index = 2;
+             m_selected_weapon_index = e_current_weapon_type::SECOND;
 
     else if (Pistol_slot_img->GetVisibility() == ESlateVisibility::Visible &&
              Pistol_slot_img->IsHovered())
-             m_selected_weapon_index = 3;
+             m_selected_weapon_index = e_current_weapon_type::PISTOL;
 
     else if (Melee_slot_img->GetVisibility() == ESlateVisibility::Visible &&
              Melee_slot_img->IsHovered())
-             m_selected_weapon_index = 4;
+             m_selected_weapon_index = e_current_weapon_type::MELEE;
 
     else if (Grenade_slot_img->GetVisibility() == ESlateVisibility::Visible &&
              Grenade_slot_img->IsHovered())
-             m_selected_weapon_index = 5;
+             m_selected_weapon_index = e_current_weapon_type::THROWABLE;
 }
 
 void UInventory_Weapon_Slot_UI::Update_weapon_UI_highlight_img()
@@ -369,13 +339,13 @@ void UInventory_Weapon_Slot_UI::Update_weapon_UI_highlight_img()
     // 무기가 선택됐을 시 이미지 설정
     switch(m_selected_weapon_index)
     {
-    case 1: p_canvas_panel_slot = First_gun_canvas_panel->AddChildToCanvas(Highlight_img);  size_x = 545.f; break;
-    case 2: p_canvas_panel_slot = Second_gun_canvas_panel->AddChildToCanvas(Highlight_img); size_x = 545.f; break;
-    case 3: p_canvas_panel_slot = Pistol_canvas_panel->AddChildToCanvas(Highlight_img);     size_x = 545.f; break;
-    case 4: p_canvas_panel_slot = Melee_canvas_panel->AddChildToCanvas(Highlight_img);      size_x = 225.f; break;
-    case 5: p_canvas_panel_slot = Grenade_canvas_panel->AddChildToCanvas(Highlight_img);    size_x = 225.f; break;
+    case e_current_weapon_type::FIRST:     p_canvas_panel_slot = First_gun_canvas_panel->AddChildToCanvas(Highlight_img);  size_x = 545.f; break;
+    case e_current_weapon_type::SECOND:    p_canvas_panel_slot = Second_gun_canvas_panel->AddChildToCanvas(Highlight_img); size_x = 545.f; break;
+    case e_current_weapon_type::PISTOL:    p_canvas_panel_slot = Pistol_canvas_panel->AddChildToCanvas(Highlight_img);     size_x = 545.f; break;
+    case e_current_weapon_type::MELEE:     p_canvas_panel_slot = Melee_canvas_panel->AddChildToCanvas(Highlight_img);      size_x = 225.f; break;
+    case e_current_weapon_type::THROWABLE: p_canvas_panel_slot = Grenade_canvas_panel->AddChildToCanvas(Highlight_img);    size_x = 225.f; break;
     }
-    if (m_selected_weapon_index != 0 &&
+    if (m_selected_weapon_index != e_current_weapon_type::NONE &&
         p_canvas_panel_slot)
     {
         p_canvas_panel_slot->SetSize(FVector2D(size_x, 195.f));
@@ -389,47 +359,44 @@ void UInventory_Weapon_Slot_UI::Reset_highlight_img()
     // 선택 이미지 부모 새로 지정 및 무기 슬롯 이미지 설정
     switch (m_selected_weapon_index)
     {
-    case 1: First_gun_canvas_panel->RemoveChild(Highlight_img);  break;
-    case 2: Second_gun_canvas_panel->RemoveChild(Highlight_img); break;
-    case 3: Pistol_canvas_panel->RemoveChild(Highlight_img);     break;
-    case 4: Melee_canvas_panel->RemoveChild(Highlight_img);      break;
-    case 5: Grenade_canvas_panel->RemoveChild(Highlight_img);    break;
+    case e_current_weapon_type::FIRST:     First_gun_canvas_panel->RemoveChild(Highlight_img);  break;
+    case e_current_weapon_type::SECOND:    Second_gun_canvas_panel->RemoveChild(Highlight_img); break;
+    case e_current_weapon_type::PISTOL:    Pistol_canvas_panel->RemoveChild(Highlight_img);     break;
+    case e_current_weapon_type::THROWABLE: Melee_canvas_panel->RemoveChild(Highlight_img);      break;
+    case e_current_weapon_type::NONE:      Grenade_canvas_panel->RemoveChild(Highlight_img);    break;
     }
     Main_canvas_panel->AddChildToCanvas(Highlight_img);
     Highlight_img->SetVisibility(ESlateVisibility::Hidden);
-    m_selected_weapon_index = 0;
+    m_selected_weapon_index = e_current_weapon_type::NONE;
     m_is_clicked = false;
 }
 
-void UInventory_Weapon_Slot_UI::Get_item_data()
+void UInventory_Weapon_Slot_UI::Get_item_data(ABase_interaction* _p_weapon)
 {
-    ABase_interaction* p_tmp_weapon = mp_weapon_manager->Get_weapon((e_current_weapon_type)m_selected_weapon_index);
-
-    if (!p_tmp_weapon)
-        return;
-
     switch (m_selected_weapon_index)
     {
-        // 총기류
-    case 1: case 2: case 3:
+    // 총기류
+    case e_current_weapon_type::FIRST: 
+    case e_current_weapon_type::SECOND: 
+    case e_current_weapon_type::PISTOL:
 
-        if (auto p_tmp_gun = Cast<ACore_weapon>(p_tmp_weapon))
+        if (auto p_tmp_gun = Cast<ACore_weapon>(_p_weapon))
             m_item_data = Fs_slot_item_data(p_tmp_gun->object_type, (int)p_tmp_gun->weapon_type);
 
         break;
 
-        // 근접 무기
-    case 4:
+    // 근접 무기
+    case e_current_weapon_type::MELEE:
 
-        if (auto p_tmp_melee = Cast<ACore_melee_weapon>(p_tmp_weapon))
+        if (auto p_tmp_melee = Cast<ACore_melee_weapon>(_p_weapon))
             m_item_data = Fs_slot_item_data(p_tmp_melee->object_type, (int)p_tmp_melee->weapon_type);
 
         break;
 
-        // 투척류 무기
-    case 5:
+    // 투척류 무기
+    case e_current_weapon_type::THROWABLE:
 
-        if (auto p_tmp_throwable = Cast<ACore_throwable_weapon>(p_tmp_weapon))
+        if (auto p_tmp_throwable = Cast<ACore_throwable_weapon>(_p_weapon))
             m_item_data = Fs_slot_item_data(p_tmp_throwable->object_type, (int)p_tmp_throwable->weapon_type);
 
         break;
@@ -442,7 +409,7 @@ void UInventory_Weapon_Slot_UI::Set_slot_null()
     {
         mp_weapon_manager->Set_null((e_current_weapon_type)m_dragged_weapon_index);
         Reset_highlight_img();
-        m_dragged_weapon_index = 0;
+        m_dragged_weapon_index = e_current_weapon_type::NONE;
         m_item_data.Reset();
     }
 }
