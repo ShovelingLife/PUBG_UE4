@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_weapon.h"
+#include "CoreWeapon.h"
 #include "LS80.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API ALS80 : public ACore_weapon
+class PLAYER_WEAPONS_API ALS80 : public ACoreWeapon
 {
 	GENERATED_BODY()
 	

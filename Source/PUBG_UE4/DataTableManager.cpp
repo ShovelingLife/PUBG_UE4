@@ -1,0 +1,111 @@
+﻿#include "DataTableManager.h"
+
+TArray<FsWeaponData>      ADataTableManager::ArrWeaponData;
+TArray<FsOtherWeaponData> ADataTableManager::ArrOtherWeaponData;
+TArray<FsVehicleData>     ADataTableManager::ArrVehicleData;
+
+// Sets default values
+ADataTableManager::ADataTableManager()
+{
+    InitWeaponData();
+    InitOtherWeaponData();
+    InitVehicleData();
+}
+
+void ADataTableManager::InitWeaponData()
+{
+    // CSV 로드
+    ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_DATA_TABLE(TEXT("/Game/Data/WEAPON_DATA_TABLE"));
+
+    if (WEAPON_DATA_TABLE.Succeeded())
+        mpWeaponDataTable = WEAPON_DATA_TABLE.Object;
+
+    if (!mpWeaponDataTable)
+        return;
+
+    // 모든 이름 가져오기
+    TArray<FName> arrRowName = mpWeaponDataTable->GetRowNames();
+    
+    // 갖고온 CSV로부터 데이터 할당
+    for (int i = 0; i < arrRowName.Num(); i++)
+    {
+        // row_name_arr 안에 정보 및 명칭
+        auto p_row = mpWeaponDataTable->FindRow<FsWeaponData>(arrRowName[i], arrRowName[i].ToString());
+
+        if (!p_row)
+            break;
+
+        FsWeaponData data   = *p_row;
+        data.MeshPath       = mkWeaponMeshPath + data.GroupType + "/SK_" + data.MeshPath;
+        data.MagMeshPath    = mkWeaponMeshPath + data.Type + data.MagMeshPath;
+        data.BulletMeshPath = mkWeaponMeshPath + "Ammunition/SM_Shell_" + data.BulletMeshPath;
+        data.BulletBP_path  = mkBulletBP_path + data.Type + "_bullet";
+        //data. = mkRendertargetMeshPath + data.type;
+        ArrWeaponData.Add(data);
+    }
+}
+
+void ADataTableManager::InitOtherWeaponData()
+{
+    // CSV 로드
+    ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));
+
+    if (OTHER_WEAPON_DATA_TABLE.Succeeded())
+        mpOtherWeaponDataTable = OTHER_WEAPON_DATA_TABLE.Object;
+
+    if (!mpOtherWeaponDataTable)
+        return;
+
+    // 모든 이름 가져오기
+    TArray<FName> arrRowName = mpOtherWeaponDataTable->GetRowNames();
+
+    // 갖고온 CSV로부터 데이터 할당
+    for (int i = 0; i < arrRowName.Num(); i++)
+    {
+        // row_name_arr 안에 정보 및 명칭
+        auto p_row = mpOtherWeaponDataTable->FindRow<FsOtherWeaponData>(arrRowName[i], arrRowName[i].ToString());
+
+        if (!p_row)
+            break;
+
+        FsOtherWeaponData data = *p_row;
+        data.MeshPath          = mkOtherWeaponMeshPath + data.GroupType + "/Meshes/SM_" + data.Type;
+        ArrOtherWeaponData.Add(data);
+    }
+}
+
+void ADataTableManager::InitVehicleData()
+{
+    // CSV 로드
+    ConstructorHelpers::FObjectFinder<UDataTable> VEHICLE_DATA_TABLE(TEXT("/Game/Data/VEHICLE_DATA_TABLE"));
+
+    if (VEHICLE_DATA_TABLE.Succeeded())
+        mpVehicleDataTable = VEHICLE_DATA_TABLE.Object;
+
+    if (!mpVehicleDataTable)
+        return;
+
+    // 모든 이름 가져오기
+    TArray<FName> arrRowName = mpVehicleDataTable->GetRowNames();
+
+    // 갖고온 CSV로부터 데이터 할당
+    for (int i = 0; i < arrRowName.Num(); i++)
+    {
+        // row_name_arr 안에 정보 및 명칭
+        auto p_row = mpVehicleDataTable->FindRow<FsVehicleData>(arrRowName[i], arrRowName[i].ToString());
+
+        if (!p_row)
+            break;
+
+        FsVehicleData data    = *p_row;
+        data.MeshPath         = mkVehicleMeshPath + data.MeshPath;
+        data.AnimInstancePath = mkAnimInstancePath + data.Type + "/BP_AnimInst_" + data.Type;
+
+        // 좌석 정보 배치
+        data.ArrPlayerSeatPos[0] = { data.SeatLocation1, data.SeatCameraLocation1 };
+        data.ArrPlayerSeatPos[1] = { data.SeatLocation2, data.SeatCameraLocation2 };
+        data.ArrPlayerSeatPos[2] = { data.SeatLocation3, data.SeatCameraLocation3 };
+        data.ArrPlayerSeatPos[3] = { data.SeatLocation4, data.SeatCameraLocation4 };
+        ArrVehicleData.Add(data);
+    }
+}

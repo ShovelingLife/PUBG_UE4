@@ -5,5 +5,5 @@
 
 ARogerLR220::ARogerLR220()
 {
-    Init(e_weapon_type::RogerLR220);
+    Init(EWeaponType::RogerLR220);
 }

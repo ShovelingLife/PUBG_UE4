@@ -2,5 +2,5 @@
 
 AAyakashi::AAyakashi()
 {
-    Init(e_weapon_type::Ayakashi);
+    Init(EWeaponType::Ayakashi);
 }

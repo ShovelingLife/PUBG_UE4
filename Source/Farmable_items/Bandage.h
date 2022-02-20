@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_farmable_item.h"
+#include "CoreFarmableItem.h"
 #include "Bandage.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FARMABLE_ITEMS_API ABandage : public ACore_farmable_item
+class FARMABLE_ITEMS_API ABandage : public ACoreFarmableItem
 {
 	GENERATED_BODY()
 	

@@ -5,5 +5,5 @@
 
 ASK12::ASK12()
 {
-    Init(e_weapon_type::SK12);
+    Init(EWeaponType::SK12);
 }

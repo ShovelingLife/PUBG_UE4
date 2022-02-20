@@ -5,5 +5,5 @@
 
 AEON::AEON()
 {
-    Init(e_weapon_type::EON);
+    Init(EWeaponType::EON);
 }

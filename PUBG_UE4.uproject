@@ -52,11 +52,6 @@
 				"Engine",
 				"UMG"
 			]
-		},
-		{
-			"Name": "Server_PUBG",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [

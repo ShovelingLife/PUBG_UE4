@@ -5,5 +5,5 @@
 
 AM1::AM1()
 {
-    Init(e_weapon_type::M1);
+    Init(EWeaponType::M1);
 }

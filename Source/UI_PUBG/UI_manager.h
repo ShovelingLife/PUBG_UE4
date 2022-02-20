@@ -13,8 +13,9 @@
 #include "GameFramework/Actor.h"
 #include "UI_manager.generated.h"
 
-class UPlayer_UI;
-class UItem_Slot_UI;
+class UPlayerUI;
+class UItemSlotUI;
+class AInventoryManager;
 
 UCLASS()
 class UI_PUBG_API AUI_manager : public AActor
@@ -22,37 +23,34 @@ class UI_PUBG_API AUI_manager : public AActor
 	GENERATED_BODY()
 	
 public:    
-    static TMap<int, UMaterial*> map_main_weapon_ui_mat;      // 메인 무기 UI    
-    static TMap<int, UTexture*>  map_inventory_weapon_ui_tex; // 인벤토리 무기 UI    
-    static TMap<int, UTexture*>  map_player_ui_tex;           // 플레이어 UI
+    static TMap<int, UMaterial*> MapMainWeaponMat;      // 메인 무기 UI    
+    static TMap<int, UTexture*>  MapInventoryWeaponTex; // 인벤토리 무기 UI    
+    static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
 
 private:
     // ------- 현재 쓰이고있는 변수들 -------
 
     /** * \brief 플레이어 UI */
-    UPlayer_UI*             mp_player_UI;
+    UPROPERTY() UPlayerUI* mpPlayer_UI;
 
     /** * \brief 플레이어 UI BP */
-    TSubclassOf<UPlayer_UI> m_bp_player_UI;
-
-    /** * \brief 인벤토리 */
-    TSubclassOf<AActor> m_inventory_manager_actor;
+    TSubclassOf<UPlayerUI> mPlayerUI_BP;
 
     /** * \brief 상호작용 UI 관련 */
-    UPROPERTY(VisibleAnywhere, Category = Widget_bp) TSubclassOf<UUserWidget> m_interaction_widget_bp;
+    UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
 
     /** * \brief 메인 플레이어 UI 리소스 경로명 */
-    const TArray<FString> mk_arr_player_UI_tex_path 
+    const TArray<FString> mkArrPlayerUI_TexPath 
     {
-        "Single_shot",
-        "Burst_shot",
-        "Consecutive_shot",
+        "SingleShot",
+        "BurstShot",
+        "ConsecutiveShot",
     };
 
-    const FString mk_default_player_UI_path = "/Game/UI/Player/State/";
+    const FString mkDefaultPlayerUI_path = "/Game/UI/Player/State/";
 
 public:
-    class AInventory_manager* p_inventory_manager;
+    UPROPERTY() AInventoryManager* pInventoryManager;
 
 public:
     AUI_manager();
@@ -65,37 +63,39 @@ private:
     /**
      * \brief 최상위 플레이어 UI 초기화
      */
-    void Init_player_UI();
+    void InitPlayerUI();
 
     /**
      * \brief 상호작용 UI 초기화
      */
-    void Init_interaction_UI();
-
-    /**
-     * \brief 플레이어 UI 띄움
-     */
-    void Set_player_UI();
-
-    /**
-     * \brief 플레이어 인벤토리 설정
-     */
-    void Init_player_inventory();
-
-    /**
-     * \brief 인벤토리 무기 UI 초기화
-     */
-    void Init_inventory_weapon_UI_tex();
-
-    /**
-     * \brief 플레이어 무기 선택 UI 초기화
-     */
-    void Init_main_weapon_UI_mat();
+    void InitInteractionUI();
 
     /**
      * \brief 플레이어 UI 초기화
      */
-    void Init_player_UI_tex();
+    void InitPlayerUI_Tex();
+
+    /**
+     * \brief 인벤토리 무기 UI 초기화
+     */
+    void InitInventoryWeaponTex();
+
+    /**
+     * \brief 플레이어 무기 선택 UI 초기화
+     */
+    void InitMainWeaponMat();
+
+// 시작 후 초기화
+public:
+    /**
+     * \brief 플레이어 인벤토리 설정
+     */
+    void InitPlayerInventory();
+
+    /**
+     * \brief 플레이어 UI 띄움
+     */
+    void SetPlayerUI();
 
     /**
      * \brief 미구현 상태
@@ -107,5 +107,5 @@ public:
      * \brief 상호작용 UI 업데이트 (델리게이트)
      */
     UFUNCTION()
-    void Update_interaction_UI(class UWidgetComponent* _widget_comp, FString _title);
+    void UpdateInteractionUI(class UWidgetComponent* _widget_comp, FString _title);
 };

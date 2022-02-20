@@ -5,5 +5,5 @@
 
 AKaros::AKaros()
 {
-    Init(e_weapon_type::Karos);
+    Init(EWeaponType::Karos);
 }

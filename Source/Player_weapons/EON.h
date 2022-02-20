@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_weapon.h"
+#include "CoreWeapon.h"
 #include "EON.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AEON : public ACore_weapon
+class PLAYER_WEAPONS_API AEON : public ACoreWeapon
 {
 	GENERATED_BODY()
 	

@@ -1,14 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_throwable_weapon.h"
+#include "CoreThrowableWeapon.h"
 #include "Molotov.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AMolotov : public ACore_throwable_weapon
+class PLAYER_WEAPONS_API AMolotov : public ACoreThrowableWeapon
 {
 	GENERATED_BODY()
 	

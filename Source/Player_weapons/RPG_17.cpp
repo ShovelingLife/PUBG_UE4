@@ -5,5 +5,5 @@
 
 ARPG_17::ARPG_17()
 {
-    Init(e_weapon_type::RPG_17);
+    Init(EWeaponType::RPG_17);
 }

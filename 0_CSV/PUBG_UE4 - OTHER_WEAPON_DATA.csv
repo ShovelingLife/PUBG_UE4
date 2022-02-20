@@ -1,4 +1,4 @@
-,Type,Weapon_group_type,Audio_path,Particle_path,Collider_size,Collider_pos,Damage,Radius,Time,Mesh_size,Mesh_pos
+,Type,GroupType,AudioPath,ParticlePath,ColliderSize,ColliderPos,Damage,Radius,Time,MeshSize,MeshPos
 14,Grenade_fragmentation1,Explosive,,,,,50,100,,0.25,
 15,Grenade_fragmentation2,Explosive,,,,,100,100,,0.25,
 16,Grenade_illumination,Explosive,,,,,0,100,,0.25,

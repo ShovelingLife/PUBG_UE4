@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_weapon.h"
+#include "CoreWeapon.h"
 #include "C7.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AC7 : public ACore_weapon
+class PLAYER_WEAPONS_API AC7 : public ACoreWeapon
 {
 	GENERATED_BODY()
 	

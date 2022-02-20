@@ -5,5 +5,5 @@
 
 APickup::APickup()
 {
-    Init(e_vehicle_type::Pickup);
+    Init(EVehicleType::Pickup);
 }

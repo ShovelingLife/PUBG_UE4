@@ -5,5 +5,5 @@
 
 AC7::AC7()
 {
-    Init(e_weapon_type::C7);
+    Init(EWeaponType::C7);
 }

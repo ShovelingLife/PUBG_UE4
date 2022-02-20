@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_vehicle.h"
+#include "CoreVehicle.h"
 #include "Hatchback.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARACTERS_API AHatchback : public ACore_vehicle
+class CHARACTERS_API AHatchback : public ACoreVehicle
 {
 	GENERATED_BODY()
 

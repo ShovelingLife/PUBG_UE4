@@ -9,6 +9,6 @@ public class PUBG_UE4Target : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "PUBG_UE4", "AI_PUBG", "UI_PUBG", "Animations", "Characters", "Farmable_items", "Player_weapons", "Server_PUBG" } );
+		ExtraModuleNames.AddRange( new string[] { "PUBG_UE4", "AI_PUBG", "UI_PUBG", "Animations", "Characters", "Farmable_items", "Player_weapons" } );
 	}
 }

@@ -5,5 +5,5 @@
 
 ATruck::ATruck()
 {
-    Init(e_vehicle_type::Truck);
+    Init(EVehicleType::Truck);
 }

@@ -5,5 +5,5 @@
 
 APX_70::APX_70()
 {
-    Init(e_weapon_type::PX_70);
+    Init(EWeaponType::PX_70);
 }

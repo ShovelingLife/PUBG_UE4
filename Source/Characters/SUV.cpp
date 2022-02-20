@@ -5,5 +5,5 @@
 
 ASUV::ASUV()
 {
-    Init(e_vehicle_type::SUV);
+    Init(EVehicleType::SUV);
 }

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_weapon.h"
+#include "CoreWeapon.h"
 #include "Crossbow.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API ACrossbow : public ACore_weapon
+class PLAYER_WEAPONS_API ACrossbow : public ACoreWeapon
 {
 	GENERATED_BODY()
 	

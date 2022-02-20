@@ -5,5 +5,5 @@
 
 ACrossbow::ACrossbow()
 {
-    Init(e_weapon_type::Crossbow);
+    Init(EWeaponType::Crossbow);
 }

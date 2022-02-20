@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_vehicle.h"
+#include "CoreVehicle.h"
 #include "SUV.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARACTERS_API ASUV : public ACore_vehicle
+class CHARACTERS_API ASUV : public ACoreVehicle
 {
 	GENERATED_BODY()
 	

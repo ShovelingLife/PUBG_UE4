@@ -1,14 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core_melee_weapon.h"
+#include "CoreMeleeWeapon.h"
 #include "Knife.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PLAYER_WEAPONS_API AKnife : public ACore_melee_weapon
+class PLAYER_WEAPONS_API AKnife : public ACoreMeleeWeapon
 {
 	GENERATED_BODY()
 	

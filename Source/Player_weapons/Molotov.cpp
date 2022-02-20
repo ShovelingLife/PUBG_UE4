@@ -2,5 +2,5 @@
 
 AMolotov::AMolotov()
 {
-    Init(e_throwable_weapon_type::MOLOTOV);
+    Init(EThrowableWeaponType::MOLOTOV);
 }

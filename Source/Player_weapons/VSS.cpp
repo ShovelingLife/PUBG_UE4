@@ -5,5 +5,5 @@
 
 AVSS::AVSS()
 {
-    Init(e_weapon_type::VSS);
+    Init(EWeaponType::VSS);
 }
