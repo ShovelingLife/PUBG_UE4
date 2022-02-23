@@ -47,7 +47,7 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
-	bool b_arrWeaponEquipped[5]{ false };
+	bool bArrWeaponEquipped[5]{ false };
 
 public:	
 	AWeaponManager();

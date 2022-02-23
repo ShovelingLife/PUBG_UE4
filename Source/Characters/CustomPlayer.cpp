@@ -1,6 +1,7 @@
 ﻿#include "CustomPlayer.h"
 #include "CoreVehicle.h"
 #include "CustomGameModeBase.h"
+#include "DummyCharacter.h"
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
@@ -11,9 +12,9 @@
 #include "PUBG_UE4/SoundManager.h" 
 #include "PUBG_UE4/CustomGameInstance.h" 
 #include "Camera/CameraComponent.h"
-#include "Components/TimelineComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "Components/AudioComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Framework/Application/SlateApplication.h"
@@ -35,6 +36,11 @@ ACustomPlayer::ACustomPlayer()
     InitAudioComp();
     InitAnimInstance();
     InitParticleComp();
+
+    auto bp_DummyCharacter = ConstructorHelpers::FClassFinder<ADummyCharacter>(TEXT("Blueprint'/Game/Blueprints/BP_DummyCharacter.BP_DummyCharacter_C'"));
+
+    if (bp_DummyCharacter.Succeeded())
+        BP_DummyCharacter = bp_DummyCharacter.Class;
 }
 
 void ACustomPlayer::BeginPlay()
@@ -43,8 +49,13 @@ void ACustomPlayer::BeginPlay()
 
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
-    mpWeaponManager->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-    mpSoundManager = Cast<ASoundManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ASoundManager::StaticClass()));
+    mpWeaponManager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+
+    mpSoundManager  = Cast<ASoundManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ASoundManager::StaticClass()));
+
+    // UI용 캐릭터 생성
+    pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
+    pDummyCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ACustomPlayer::Tick(float DeltaTime)

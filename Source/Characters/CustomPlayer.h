@@ -24,6 +24,7 @@ class ASoundManager;
 class AWeaponManager;
 class ACoreWeapon;
 class ACoreVehicle;
+class ADummyCharacter;
 class UAudioComponent;
 class UParticleSystemComponent;
 class USpringArmComponent;
@@ -38,10 +39,11 @@ private:
     /**
      * \brief 플레이어가 사용하는 변수
      */
-    UPROPERTY() ASoundManager* mpSoundManager;
+    UPROPERTY() ASoundManager*  mpSoundManager;
     UPROPERTY() AWeaponManager* mpWeaponManager;
     UPROPERTY() AActor*         mpCollidedWeapon  = nullptr;
     UPROPERTY() ACoreVehicle*   mpCollidedVehicle = nullptr;
+
 
     UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp;
@@ -60,11 +62,13 @@ private:
 
  // 플레이어 컴포넌트 및 상태 변수
 public:
-    FDeleOpenInventory  DeleOpenInventory;
-    FDeleCloseInventory DeleCloseInventory;
-
+    UPROPERTY(EditAnywhere) TSubclassOf<ADummyCharacter> BP_DummyCharacter;
+    UPROPERTY() ADummyCharacter* pDummyCharacter;
     UPROPERTY(VisibleAnywhere, Category = Camera) USpringArmComponent* SpringArmComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent*    CameraComp = nullptr;
+
+    FDeleOpenInventory  DeleOpenInventory;
+    FDeleCloseInventory DeleCloseInventory;
 
     /**
      * \brief 플레이어 상태 관련 변수

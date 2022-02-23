@@ -51,7 +51,7 @@ void AWeaponManager::UpdateCurrentWeaponArr()
         pThrowable
     };
     for (int i = 0; i < 5; i++)
-         b_arrWeaponEquipped[i] = (p_arrCurrentWeapon[i] != nullptr);
+         bArrWeaponEquipped[i] = (p_arrCurrentWeapon[i] != nullptr);
 }
 
 void AWeaponManager::PlaySound(EWeaponSoundType _SoundType)
@@ -61,33 +61,33 @@ void AWeaponManager::PlaySound(EWeaponSoundType _SoundType)
     int              weapon_index = 0;
     
     // 첫번째 무기
-    if (b_arrWeaponEquipped[0])
+    if (bArrWeaponEquipped[0])
     {
-        p_AudioComp = pFirstGun->AudioComp;
+        p_AudioComp  = pFirstGun->AudioComp;
         weapon_index = (int)pFirstGun->WeaponType;
     }
     // 두번째 무기
-    else if (b_arrWeaponEquipped[1])
+    else if (bArrWeaponEquipped[1])
     {
-        p_AudioComp = pSecondGun->AudioComp;
+        p_AudioComp  = pSecondGun->AudioComp;
         weapon_index = (int)pSecondGun->WeaponType;
     }
     // 세번째 무기
-    else if (b_arrWeaponEquipped[2])
+    else if (bArrWeaponEquipped[2])
     {
-        p_AudioComp = pPistol->AudioComp;
+        p_AudioComp  = pPistol->AudioComp;
         weapon_index = (int)pPistol->WeaponType;
     }
     // 네번째 무기
-    else if (b_arrWeaponEquipped[3])
+    else if (bArrWeaponEquipped[3])
     {
-        p_AudioComp = pMelee->AudioComp;
+        p_AudioComp  = pMelee->AudioComp;
         weapon_index = (int)pMelee->WeaponType;
     }
     // 다섯번째 무기
-    else if (b_arrWeaponEquipped[4])
+    else if (bArrWeaponEquipped[4])
     {
-        p_AudioComp = pThrowable->AudioComp;
+        p_AudioComp  = pThrowable->AudioComp;
         weapon_index = (int)pThrowable->WeaponType;
     }
     /*if (_sound_type != e_weapon_sound_type::SHOT)
@@ -104,7 +104,7 @@ ECurrentWeaponType AWeaponManager::GetWeaponIndex(FString _Direction, int _Start
     {
         for (int i = _StartIndex - 1; i > -1; i--)
         {
-            if (b_arrWeaponEquipped[i])
+            if (bArrWeaponEquipped[i])
                 return (ECurrentWeaponType)(i + 1);
         }
     }
@@ -113,7 +113,7 @@ ECurrentWeaponType AWeaponManager::GetWeaponIndex(FString _Direction, int _Start
     {
         for (int i = _StartIndex - 1; i < 5; i++)
         {
-            if (b_arrWeaponEquipped[i])
+            if (bArrWeaponEquipped[i])
                 return (ECurrentWeaponType)(i + 1);
         }
     }
@@ -354,7 +354,7 @@ bool AWeaponManager::ScrollSelect(FString _Pos)
     for (int i = 0; i < 5; i++)
     {
         // 현재 장착 중인 무기
-        if (b_arrWeaponEquipped[i])
+        if (bArrWeaponEquipped[i])
             totalWeapon++;
     }
     // 무기가 1개일 시 옮길 필요가 없음
