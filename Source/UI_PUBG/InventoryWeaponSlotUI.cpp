@@ -84,8 +84,8 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, 
     Super::NativeOnDragDetected(_InGeometry, _InMouseEvent, _OutOperation);
 
     ABaseInteraction* p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
-    auto               p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
-    FVector2D          mousePos = _InGeometry.AbsoluteToLocal(_InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
+    auto              p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
+    FVector2D         mousePos = _InGeometry.AbsoluteToLocal(_InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (!p_slot       ||
         !p_weapon ||

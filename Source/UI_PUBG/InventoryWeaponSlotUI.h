@@ -19,7 +19,6 @@
 class AUI_manager;
 class AWeaponManager;
 class UItemSlotUI;
-
 class UBorder;
 class UCanvasPanel;
 class UImage;
@@ -40,10 +39,10 @@ private:
     /**
       * \brief 현재 쓰여지는 변수
      */
-    Fs_SlotItemData  mItemData;
+    Fs_SlotItemData    mItemData;
     ECurrentWeaponType mSelectedWeaponIndex;
     ECurrentWeaponType mDraggedWeaponIndex;
-    bool               mbClicked            = false;
+    bool               mbClicked = false;
 
 public:
     /**

@@ -128,17 +128,17 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
     auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
 
     // 소켓 기반 무기 종류 판별 후 다운캐스팅
-    if (_SocketName == "hand_gun_sock")
+    if (_SocketName == "HandGunSock")
     {
         pPistol           = Cast<ACoreWeapon>(_pWeapon);
         CurrentWeaponType = ECurrentWeaponType::PISTOL;
     }
-    else if (_SocketName == "first_gun_sock")
+    else if (_SocketName == "FirstGunSock")
     {
         pFirstGun         = Cast<ACoreWeapon>(_pWeapon);
         CurrentWeaponType = ECurrentWeaponType::FIRST;
     }
-    else if (_SocketName == "second_gun_sock")
+    else if (_SocketName == "SecondGunSock")
     {
         // 중복 무기 방지
         if (_bShouldCheck)
@@ -182,21 +182,21 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform 
     if (!_pWeapon)
         return;
 
-    USkeletalMeshComponent* skeletal_mesh_comp = _pWeapon->SkeletalMeshComp;
-    UStaticMeshComponent*   static_mesh_comp   = _pWeapon->StaticMeshComp;
+    USkeletalMeshComponent* skeletalMeshComp = _pWeapon->SkeletalMeshComp;
+    UStaticMeshComponent*   staticMeshComp   = _pWeapon->StaticMeshComp;
     
     // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
-    if (skeletal_mesh_comp)
+    if (skeletalMeshComp)
     {
-        skeletal_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        skeletal_mesh_comp->AttachToComponent(_pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        skeletal_mesh_comp->ResetRelativeTransform();
+        skeletalMeshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+        skeletalMeshComp->AttachToComponent(_pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        skeletalMeshComp->ResetRelativeTransform();
     }
-    else if (static_mesh_comp)
+    else if (staticMeshComp)
     {
-        static_mesh_comp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        static_mesh_comp->AttachToComponent(_pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        static_mesh_comp->ResetRelativeTransform();
+        staticMeshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+        staticMeshComp->AttachToComponent(_pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        staticMeshComp->ResetRelativeTransform();
     }
     // 현재 무기를 탈착 후 월드에 소환
     _pWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
@@ -205,10 +205,10 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform 
 
 void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
 {
-    ABaseInteraction* p_collided_weapon = Cast<ABaseInteraction>(_pWeapon);
+    ABaseInteraction* p_collidedWeapon = Cast<ABaseInteraction>(_pWeapon);
 
-    if (p_collided_weapon)
-        p_collided_weapon->bPlayerNear = false;
+    if (p_collidedWeapon)
+        p_collidedWeapon->bPlayerNear = false;
 
     // 총기 종류
     if (_pWeapon->IsA<ACoreWeapon>())
@@ -217,42 +217,42 @@ void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
         if (Cast<ACoreWeapon>(_pWeapon)->WeaponData.GroupType == "Handgun")
         {
             if (!pPistol)
-                Attach(p_collided_weapon, "hand_gun_sock", _bShouldCheck);
+                Attach(p_collidedWeapon, "HandGunSock", _bShouldCheck);
 
             else
-                SwapWorld(pPistol, _pWeapon, "hand_gun_sock");
+                SwapWorld(pPistol, _pWeapon, "HandGunSock");
         }
         // 기타 총기 1,2번 슬롯
         else
         {
             if (!pFirstGun) // 첫번째 무기가 없을 시
-                Attach(p_collided_weapon, "first_gun_sock", _bShouldCheck);
+                Attach(p_collidedWeapon, "FirstGunSock", _bShouldCheck);
 
             else
             {
                 if (!pSecondGun) // 두번째 무기가 없을 시
-                    Attach(p_collided_weapon, "second_gun_sock", _bShouldCheck);
+                    Attach(p_collidedWeapon, "SecondGunSock", _bShouldCheck);
 
                 else
                 {
                     // 첫번째 무기 장착중
                     if      (CurrentWeaponType == ECurrentWeaponType::FIRST)
-                             SwapWorld(pFirstGun, _pWeapon, "first_gun_sock");
+                             SwapWorld(pFirstGun, _pWeapon, "FirstGunSock");
 
                     // 두째 무기 장착중
                     else if (CurrentWeaponType == ECurrentWeaponType::SECOND)
-                             SwapWorld(pSecondGun, _pWeapon, "second_gun_sock");
+                             SwapWorld(pSecondGun, _pWeapon, "SecondGunSock");
                 }
             }
         }
     }
     // 근접 종류
     else if (_pWeapon->IsA<ACoreMeleeWeapon>())
-             Attach(p_collided_weapon, "equipped_weapon_pos_sock", _bShouldCheck);
+             Attach(p_collidedWeapon, "EquippedweaponPosSock", _bShouldCheck);
 
     // 투척류
     else if (_pWeapon->IsA<ACoreThrowableWeapon>())
-             Attach(p_collided_weapon, "equipped_weapon_pos_sock", _bShouldCheck);
+             Attach(p_collidedWeapon, "EquippedweaponPosSock", _bShouldCheck);
 }
 
 void AWeaponManager::Shoot()
@@ -266,12 +266,12 @@ void AWeaponManager::Shoot()
     if (p_weapon->IsA<ACoreWeapon>())
     {
         auto p_gun = Cast<ACoreWeapon>(p_weapon);
-        auto weapon_data = p_gun->WeaponData;
+        auto weaponData = p_gun->WeaponData;
 
         // 총알 부족
-        if (weapon_data.CurrentBulletCount == 0)
+        if (weaponData.CurrentBulletCount == 0)
         {
-            if (weapon_data.CurrentBulletCount == 0)
+            if (weaponData.CurrentBulletCount == 0)
                 PlaySound(EWeaponSoundType::EMPTY_AMMO);
 
             else
@@ -280,7 +280,7 @@ void AWeaponManager::Shoot()
             return;
         }
         // 사운드 적용 및 총알 1개 차감
-        weapon_data.CurrentBulletCount--;
+        weaponData.CurrentBulletCount--;
         PlaySound(EWeaponSoundType::SHOT);
 
         // 레이캐스트 적용
@@ -317,8 +317,7 @@ void AWeaponManager::Shoot()
 
 void AWeaponManager::Reload()
 {
-    ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentWeaponType);
-    
+    ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentWeaponType);    
 
     if (auto p_gun = Cast<ACoreWeapon>(p_weapon))
     {
@@ -435,20 +434,20 @@ bool AWeaponManager::Swap(ABaseInteraction* _pOldWeapon, ABaseInteraction* _pNew
         if (p_oldWeapon == pFirstGun &&
             p_newWeapon == pSecondGun)
         {
-            Attach(p_oldWeapon, "second_gun_sock", false);
-            Attach(p_newWeapon, "first_gun_sock", false);
+            Attach(p_oldWeapon, "SecondGunSock", false);
+            Attach(p_newWeapon, "FirstGunSock", false);
         }
         // 두번째 총과 첫번째 총 교체
         else if (p_newWeapon == pFirstGun &&
             p_oldWeapon == pSecondGun)
         {
-            Attach(p_newWeapon, "second_gun_sock", false);
-            Attach(p_oldWeapon, "first_gun_sock", false);
+            Attach(p_newWeapon, "SecondGunSock", false);
+            Attach(p_oldWeapon, "FirstGunSock", false);
         }
         // 인벤토리 총과 첫번째 총 교체
         else
         {
-            FString sockName = (_WeaponType == ECurrentWeaponType::FIRST) ? "first_gun_sock" : "second_gun_sock";
+            FString sockName = (_WeaponType == ECurrentWeaponType::FIRST) ? "FirstGunSock" : "SecondGunSock";
             SwapWorld(p_newWeapon, p_oldWeapon, sockName);
         }
         break;
@@ -459,7 +458,7 @@ bool AWeaponManager::Swap(ABaseInteraction* _pOldWeapon, ABaseInteraction* _pNew
             return false;
 
         if (p_oldWeapon != pPistol)
-            SwapWorld(p_newWeapon, p_oldWeapon, "hand_gun_sock");
+            SwapWorld(p_newWeapon, p_oldWeapon, "HandGunSock");
 
         break;
 

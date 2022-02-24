@@ -459,6 +459,11 @@ void ACustomPlayer::OpenInventory()
     }
 }
 
+void ACustomPlayer::UpdateCharacterUI()
+{
+
+}
+
 void ACustomPlayer::BeginShooting()
 {
     //mp_weapon_manager->is_shooting = true;

@@ -2,11 +2,14 @@
 #include "CustomDragDropOperation.h"
 #include "Characters/CustomPlayer.h"
 #include "Characters/DummyCharacter.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
+#include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Components/Border.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Components/Image.h"
+#include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UCharacterSlotUI::NativeConstruct()
@@ -18,6 +21,7 @@ void UCharacterSlotUI::NativeConstruct()
 void UCharacterSlotUI::NativeTick(const FGeometry& _MyGeometry, float _DeltaTime)
 {
     Super::NativeTick(_MyGeometry, _DeltaTime);
+    UpdateHighlightImg();
 }
 
 FReply UCharacterSlotUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
@@ -30,7 +34,6 @@ FReply UCharacterSlotUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, c
         if (CharacterImg->IsHovered())
             mCharacterUIClickPos = _InMouseEvent.GetScreenSpacePosition();
     }
-
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
 }
@@ -62,7 +65,6 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, const FDra
     // 캐릭터 UI 창 드래그 시 회전
     if (mCharacterUIClickPos != FVector2D::ZeroVector)
     {
-        //auto currentMousePos = _InMouseEvent.GetScreenSpacePosition();
         auto currentMousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
         
         ADummyCharacter* p_dummyCharacter = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->pDummyCharacter;
@@ -80,7 +82,6 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, const FDra
                 rotationValInZ = -5.f;
 
             p_dummyCharacter->SkeletalMeshComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(0.f, 0.f, rotationValInZ)));
-            GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Blue, trackPos.ToString());
         }      
     }
     return true;
@@ -97,4 +98,51 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
     Super::NativeOnDrop(_InGeometry, _InDragDropEvent, _InOperation);
     mCharacterUIClickPos = FVector2D::ZeroVector;
     return true;
+}
+
+void UCharacterSlotUI::UpdateHighlightImg()
+{
+    UBorder* tmpBorder = nullptr;
+    TArray<Chaos::Pair<UBorder*, UImage*>> p_ArrSlot
+    {
+        Chaos::MakePair< UBorder*, UImage*>(HeadSlotBorder,      HeadSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(BodyArmorSlotBorder, BodyArmorSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(BackpackSlotBorder,  BackpackSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(BeltSlotBorder,      BeltSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(HatSlotBorder,       HatSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(MaskSlotBorder,      MaskSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(CoatSlotBorder,      CoatSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(ShirtSlotBorder,     ShirtSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(GlovesSlotBorder,    GlovesSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(PantsSlotBorder,     PantsSlotImg),
+        Chaos::MakePair< UBorder*, UImage*>(ShoesSlotBorder,     ShoesSlotImg)
+    };
+    for (const auto item : p_ArrSlot)
+    {
+        // 선택 되었을 시
+    	if (item.Second->IsHovered())
+        {
+            tmpBorder = item.First;
+            break;
+        }
+    }
+    if (tmpBorder)
+    {
+        FVector2D dummyVector, movePos;
+        USlateBlueprintLibrary::LocalToViewport(GetWorld(), tmpBorder->GetCachedGeometry(), FVector2D::ZeroVector, dummyVector, movePos);
+
+        if (movePos.X == 580)
+            movePos.X = 0;
+
+        if (movePos.X == 1231)
+            movePos.X /= 1.89f;
+        
+        if (auto p_canvasSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
+        {
+            p_canvasSlot->SetPosition(movePos);
+            HighlightImg->SetVisibility(ESlateVisibility::Visible);
+        }
+    }
+    else
+        HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 }

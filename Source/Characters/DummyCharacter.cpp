@@ -27,7 +27,7 @@ void ADummyCharacter::BeginPlay()
 void ADummyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-    SetActorLocation(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());
+    SetActorRelativeLocation(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());
 }
 
 void ADummyCharacter::InitMeshComp()
