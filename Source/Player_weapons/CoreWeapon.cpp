@@ -52,8 +52,7 @@ void ACoreWeapon::Init(EWeaponType _WeaponType)
 
 void ACoreWeapon::InitMesh()
 {
-    FName name = TEXT("Weapon_mesh");
-    ABaseInteraction::InitSkeletalMesh(WeaponData.MeshPath, name);
+    ABaseInteraction::InitSkeletalMesh(WeaponData.MeshPath);
     SkeletalMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
     SkeletalMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }

@@ -38,8 +38,7 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
 
 void ACoreThrowableWeapon::InitMesh()
 {
-    FName name = TEXT("Weapon_mesh");
-    ABaseInteraction::InitStaticMesh(WeaponData.MeshPath, name);
+    ABaseInteraction::InitStaticMesh(WeaponData.MeshPath);
     StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
     StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }

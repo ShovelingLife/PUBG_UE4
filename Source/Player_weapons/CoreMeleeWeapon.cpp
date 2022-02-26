@@ -33,8 +33,7 @@ void ACoreMeleeWeapon::Init(EMeleeWeaponType _WeaponType)
 
 void ACoreMeleeWeapon::InitMesh()
 {
-    FName name = TEXT("Weapon_mesh");
-    ABaseInteraction::InitStaticMesh(WeaponData.MeshPath, name);
+    ABaseInteraction::InitStaticMesh(WeaponData.MeshPath);
     StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
     StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }

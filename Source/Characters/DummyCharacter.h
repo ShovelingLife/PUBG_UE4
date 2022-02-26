@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -11,9 +9,13 @@ class CHARACTERS_API ADummyCharacter : public AActor
 {
 	GENERATED_BODY()
 
+private:
+    UPROPERTY() class AWeaponManager* mpWeaponManager = nullptr;
+    TArray<AActor*> mArrActorToShow;
+
 public:
 	UPROPERTY(EditAnywhere, Category = Mesh)		 class USkeletalMeshComponent*	 SkeletalMeshComp;
-	UPROPERTY(EditAnywhere, Category = SceneCapture) class USceneCaptureComponent2D* SceneCaptureComp;
+    UPROPERTY(EditAnywhere, Category = SceneCapture) class USceneCaptureComponent2D* SceneCaptureComp;
 
 public:
 	// Sets default values for this character's properties
@@ -28,9 +30,14 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+
 	void InitMeshComp();
 
 	void InitAnimInstance();
 
-	void InitRenderTarget();
+    void InitRenderTarget();
+
+    void InitWeaponUI();
+
+    void UpdateCharacterWeaponUI();
 };

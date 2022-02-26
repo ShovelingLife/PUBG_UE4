@@ -124,7 +124,8 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
 {
     if (!_pWeapon)
         return;
-    
+
+    _pWeapon->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
     auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
 
     // 소켓 기반 무기 종류 판별 후 다운캐스팅
@@ -172,9 +173,6 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
 
     else if (staticMeshComp)
              staticMeshComp->AttachToComponent(playerMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_SocketName);
-
-    // 무기 오브젝트를 인벤토리 매니저에 부착
-    _pWeapon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform _NewPos)

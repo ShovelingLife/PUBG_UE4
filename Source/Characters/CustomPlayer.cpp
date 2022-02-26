@@ -17,6 +17,7 @@
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "Framework/Application/SlateApplication.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -457,11 +458,6 @@ void ACustomPlayer::OpenInventory()
         DeleCloseInventory.ExecuteIfBound();
         mbInventoryOpened = false;
     }
-}
-
-void ACustomPlayer::UpdateCharacterUI()
-{
-
 }
 
 void ACustomPlayer::BeginShooting()

@@ -216,8 +216,6 @@ private:
      */
     void OpenInventory();
 
-    void UpdateCharacterUI();
-
     // ------- 무기 관련 -------
 
     /**

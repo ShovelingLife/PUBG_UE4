@@ -55,15 +55,15 @@ protected:
 protected:
     /**
       * \brief 스태틱 메시 컴포넌트 초기화 (무기,아이템)
-      * \param _path 메시 경로 _name 변수 명칭 
+      * \param _path 메시 경로
      */
-    void InitStaticMesh(FString _path, FName _name);
+    void InitStaticMesh(FString _path);
 
     /**
       * \brief 스켈레탈 메시 컴포넌트 초기화 (캐릭터,차량)
-      * \param _path 메시 경로 _name 변수 명칭
+      * \param _path 메시 경로
      */
-    void InitSkeletalMesh(FString _path, FName _name);
+    void InitSkeletalMesh(FString _path);
 
     /**
       * \brief 오디오 컴포넌트 초기화
@@ -74,4 +74,7 @@ protected:
       * \brief 상호작용 UI 초기화
      */
     void InitInteractionUI();
+
+public:
+    void DestroyComponentsForUI(FString _MeshType);
 };

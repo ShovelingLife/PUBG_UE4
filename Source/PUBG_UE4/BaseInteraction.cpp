@@ -10,79 +10,95 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
- ABaseInteraction::ABaseInteraction()
- {
-     PrimaryActorTick.bCanEverTick = true;
-     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root_comp"));
-     
-     // 박스 콜라이더 초기화
-     ColliderComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision_comp"));
-     ColliderComp->SetupAttachment(RootComponent);
+ABaseInteraction::ABaseInteraction()
+{
+    PrimaryActorTick.bCanEverTick = true;
+    RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
+    
+    // 박스 콜라이더 초기화
+    ColliderComp = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComp"));
+    ColliderComp->SetupAttachment(RootComponent);
 
-     // UI 위젯 컴포넌트 초기화
-     WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interaction_widget"));
-     WidgetComp->SetupAttachment(RootComponent);
- }
+    // UI 위젯 컴포넌트 초기화
+    WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidgetComp"));
+    WidgetComp->SetupAttachment(RootComponent);
 
- void ABaseInteraction::BeginPlay()
- {
-     Super::BeginPlay();
-     InitInteractionUI();
-     ColliderComp->BodyInstance.SetCollisionProfileName("Object");
-     ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
- }
+    // 스태틱 메시 생성
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+    StaticMeshComp->SetupAttachment(RootComponent);
 
- void ABaseInteraction::Tick(float _DeltaTime)
- {
-     Super::Tick(_DeltaTime);
+    // 스켈레탈 메시 생성
+    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
+    SkeletalMeshComp->SetupAttachment(RootComponent);
+}
 
-     mCurrentTime = (bPlayerNear) ? mCurrentTime += _DeltaTime : 0.f;
+void ABaseInteraction::BeginPlay()
+{
+    Super::BeginPlay();
+    InitInteractionUI();
+    ColliderComp->BodyInstance.SetCollisionProfileName("Object");
+    ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
+}
 
-     // 0.25초 지날 시 UI설정
-     if (mCurrentTime > 0.25f)
-         WidgetComp->SetVisibility(true);
+void ABaseInteraction::Tick(float _DeltaTime)
+{
+    Super::Tick(_DeltaTime);
 
-     else
-         WidgetComp->SetVisibility(false);
- }
+    mCurrentTime = (bPlayerNear) ? mCurrentTime += _DeltaTime : 0.f;
 
- void ABaseInteraction::InitStaticMesh(FString _Path, FName _Name)
- {
-     // 메시 생성
-     StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(_Name);
-     StaticMeshComp->SetupAttachment(RootComponent);
+    // 0.25초 지날 시 UI설정
+    if (mCurrentTime > 0.25f)
+        WidgetComp->SetVisibility(true);
 
-     // 경로로부터 메시 생성
-     ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*_Path);
+    else
+        WidgetComp->SetVisibility(false);
+}
 
-     if (MESH.Succeeded())
-         StaticMeshComp->SetStaticMesh(MESH.Object);
- }
+void ABaseInteraction::InitStaticMesh(FString _Path)
+{
+    SkeletalMeshComp->DestroyComponent();
 
- void ABaseInteraction::InitSkeletalMesh(FString _Path, FName _Name)
- {
-     // 메시 생성
-     SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(_Name);
-     SkeletalMeshComp->SetupAttachment(RootComponent);
+    // 경로로부터 메시 생성
+    ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*_Path);
 
-     // 경로로부터 메시 생성
-     ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*_Path);
+    if (MESH.Succeeded())
+        StaticMeshComp->SetStaticMesh(MESH.Object);
+}
 
-     if (MESH.Succeeded())
-         SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
- }
+void ABaseInteraction::InitSkeletalMesh(FString _Path)
+{
+    StaticMeshComp->DestroyComponent();
 
- void ABaseInteraction::InitAudio()
- {
-     // 오디오 포인터에 대한 생성
-     AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-     AudioComp->SetupAttachment(RootComponent);
- }
+    // 경로로부터 메시 생성
+    ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*_Path);
 
- void ABaseInteraction::InitInteractionUI()
- {
-     auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
+    if (MESH.Succeeded())
+        SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
+}
 
-     if (p_customGameInst)
-         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
- }
+void ABaseInteraction::InitAudio()
+{
+    // 오디오 포인터에 대한 생성
+    AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+    AudioComp->SetupAttachment(RootComponent);
+}
+
+void ABaseInteraction::InitInteractionUI()
+{
+    auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
+
+    if (p_customGameInst)
+        p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
+}
+
+void ABaseInteraction::DestroyComponentsForUI(FString _MeshType)
+{
+    ColliderComp->DestroyComponent();
+    WidgetComp->DestroyComponent();
+
+    if (_MeshType == "Skeletal")
+        StaticMeshComp->DestroyComponent();
+
+    else
+        SkeletalMeshComp->DestroyComponent();
+}

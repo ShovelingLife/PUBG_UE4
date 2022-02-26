@@ -59,8 +59,10 @@ void ACrateBox::InitVfx()
 
 void ACrateBox::InitMeshes()
 {
+    SkeletalMeshComp->DestroyComponent();
+
     // 보급 상자 메쉬 설정
-    ABaseInteraction::InitStaticMesh("StaticMesh'/Game/Meshes/PUBG_CRATE/Box_crate_mesh.Box_crate_mesh'","Box_crate");
+    ABaseInteraction::InitStaticMesh("StaticMesh'/Game/Meshes/PUBG_CRATE/Box_crate_mesh.Box_crate_mesh'");
     StaticMeshComp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(-90.f, 0.f, 0.f)), FVector(0.f, 0.f, -70.f), FVector(0.1f)));
 
     // 낙하산 메쉬 설정
