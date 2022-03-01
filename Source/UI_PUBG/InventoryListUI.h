@@ -101,12 +101,6 @@ private:
      */
     void GetItemListWidth();
 
-    /**
-      * \brief 슬롯과 마우스간 뷰포트 기준 거리값을 구함
-      * \return FVector2D 슬롯-마우스간 거리 값
-     */
-    FVector2D GetDistanceBetweenSlotCursor();
-
 public:
     /**
       * \brief 리스트 내 아이템 슬롯에서 선택할 시 호출함 (델리게이트)

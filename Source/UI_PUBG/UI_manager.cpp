@@ -3,6 +3,7 @@
 #include "InventoryListUI.h"
 #include "InventoryManager.h"
 #include "PlayerUI.h"
+#include "TooltipUI.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "Blueprint/UserWidget.h"

@@ -1,5 +1,6 @@
 ﻿#include "CharacterSlotUI.h"
 #include "CustomDragDropOperation.h"
+#include "ItemSlotUI.h"
 #include "Characters/CustomPlayer.h"
 #include "Characters/DummyCharacter.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
@@ -9,13 +10,14 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Image.h"
 #include "Components/ProgressBar.h"
+#include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UCharacterSlotUI::NativeConstruct()
 {
     Super::NativeConstruct();
-
+    InitSlotUI();
 }
 
 void UCharacterSlotUI::NativeTick(const FGeometry& _MyGeometry, float _DeltaTime)
@@ -98,6 +100,24 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
     Super::NativeOnDrop(_InGeometry, _InDragDropEvent, _InOperation);
     mCharacterUIClickPos = FVector2D::ZeroVector;
     return true;
+}
+
+void UCharacterSlotUI::InitSlotUI()
+{
+    // 장비 관련
+    HeadSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    BodyArmorSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    BackpackSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    BeltSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+
+    // 스킨 관련
+    HatSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    MaskSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    CoatSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    ShirtSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    GlovesSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    PantsSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    ShoesSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UCharacterSlotUI::UpdateHighlightImg()

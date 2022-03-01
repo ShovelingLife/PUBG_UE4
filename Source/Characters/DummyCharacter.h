@@ -11,7 +11,7 @@ class CHARACTERS_API ADummyCharacter : public AActor
 
 private:
     UPROPERTY() class AWeaponManager* mpWeaponManager = nullptr;
-    TArray<AActor*> mArrActorToShow;
+	UPROPERTY(VisibleAnywhere, Category = RenderedActors) TArray<AActor*> mArrActorToShow;
 
 public:
 	UPROPERTY(EditAnywhere, Category = Mesh)		 class USkeletalMeshComponent*	 SkeletalMeshComp;

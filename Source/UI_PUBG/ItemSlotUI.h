@@ -21,6 +21,7 @@ DECLARE_DELEGATE_OneParam(FDeleSwapWeaponSlot, UItemSlotUI*)
 DECLARE_DELEGATE(FDeleSetSlotNull)
 
 class ABaseInteraction;
+class UTooltipUI;
 class UImage;
 class UTextBlock;
 class USizeBox;
@@ -79,6 +80,9 @@ class UI_PUBG_API UItemSlotUI : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 	
+private:
+    bool mbShouldCheckTooltipUI = false;
+
 public:
     /** \brief 현재 쓰여지는 변수 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UHorizontalBox* MainHorizontalBox;
@@ -109,10 +113,19 @@ protected:
      */
     virtual void NativeOnListItemObjectSet(UObject* _p_obj);
 
+private:
+    void UpdateTooltipVisibility();
+
 public:
     /**
       * \brief 슬롯 UI를 커서 중앙 지점에 설정
       * \param _Pos 슬롯 UI 위치 
      */
     void SetAsCursor(FVector2D _Pos);
+
+    /**
+      * \brief 슬롯과 마우스간 뷰포트 기준 거리값을 구함
+      * \return FVector2D 슬롯-마우스간 거리 값
+     */
+    FVector2D GetDistanceBetweenSlotCursor();
 };

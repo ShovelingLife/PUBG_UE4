@@ -1,17 +1,24 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "TooltipUI.generated.h"
 
-/**
- * 
- */
+class UImage;
+class UTextBlock;
+
 UCLASS()
 class UI_PUBG_API UTooltipUI : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*	   ItemImg;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* NameTxt;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* CategoryTxt;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* DescriptionTxt;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* CapacityTxt;
+
+protected:
+	virtual void NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime) override;
 };

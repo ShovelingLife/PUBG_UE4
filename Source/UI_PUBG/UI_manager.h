@@ -16,25 +16,21 @@
 class UPlayerUI;
 class UItemSlotUI;
 class AInventoryManager;
+class UTooltipUI;
 
 UCLASS()
 class UI_PUBG_API AUI_manager : public AActor
 {
 	GENERATED_BODY()
-	
-public:    
-    static TMap<int, UMaterial*> MapMainWeaponMat;      // 메인 무기 UI    
-    static TMap<int, UTexture*>  MapInventoryWeaponTex; // 인벤토리 무기 UI    
-    static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
 
 private:
     // ------- 현재 쓰이고있는 변수들 -------
 
-    /** * \brief 플레이어 UI */
-    UPROPERTY() UPlayerUI* mpPlayer_UI;
-
     /** * \brief 플레이어 UI BP */
     TSubclassOf<UPlayerUI> mPlayerUI_BP;
+
+    /** * \brief 플레이어 UI */
+    UPROPERTY() UPlayerUI* mpPlayer_UI;
 
     /** * \brief 상호작용 UI 관련 */
     UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
@@ -50,6 +46,10 @@ private:
     const FString mkDefaultPlayerUI_path = "/Game/UI/Player/State/";
 
 public:
+    static TMap<int, UMaterial*> MapMainWeaponMat;      // 메인 무기 UI    
+    static TMap<int, UTexture*>  MapInventoryWeaponTex; // 인벤토리 무기 UI    
+    static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
+
     UPROPERTY() AInventoryManager* pInventoryManager;
 
 public:

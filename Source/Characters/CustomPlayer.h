@@ -20,11 +20,11 @@
 DECLARE_DELEGATE(FDeleOpenInventory)
 DECLARE_DELEGATE(FDeleCloseInventory)
 
-class ASoundManager;
-class AWeaponManager;
 class ACoreWeapon;
 class ACoreVehicle;
 class ADummyCharacter;
+class ASoundManager;
+class AWeaponManager;
 class UAudioComponent;
 class UParticleSystemComponent;
 class USpringArmComponent;

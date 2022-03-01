@@ -49,7 +49,11 @@ FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& _InGeometry, const F
     Super::NativeOnMouseMove(_InGeometry, _InMouseEvent);
 
     // 움직일 때마다 현재 이미지의 위치를 구함    
-    FVector2D distance = GetDistanceBetweenSlotCursor();
+    FVector2D distance = FVector2D::ZeroVector;
+
+    if (mpSlotObj)
+        distance = mpSlotObj->GetDistanceBetweenSlotCursor();
+
     //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, FString::Printf(TEXT("Distance posX : %f, Distance posY : %f"),distance.X, distance.Y));
 
     if (WorldTxt->IsHovered()     ||
@@ -82,18 +86,18 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const 
 
     // 슬롯 설정
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
-    p_slot->ItemData      = mpSlotObj->ItemData;
-    p_slot->Priority       = 1;
+    p_slot->ItemData     = mpSlotObj->ItemData;
+    p_slot->Priority     = 1;
     p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
     p_slot->SetAsCursor(mousePos);
 
     // 드래그 구현
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();
-    p_dragOperation->pSlotUI         = p_slot;
+    p_dragOperation->pSlotUI           = p_slot;
     p_dragOperation->DefaultDragVisual = p_slot;
     p_dragOperation->Pivot             = EDragPivot::MouseDown;
-    p_dragOperation->ItemData         = mpSlotObj->ItemData;
+    p_dragOperation->ItemData          = mpSlotObj->ItemData;
     p_dragOperation->bFromList = true;
     _OutOperation  = p_dragOperation;
 }
@@ -107,11 +111,10 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
         return false;
 
     // 같은 아이템일 시
-    if (mpSlotObj)
-    {
-        if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
-            return false;
-    }
+    if (mpSlotObj &&
+        p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
+        return false;
+
     // 마우스 위치 구하기
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
@@ -144,47 +147,15 @@ void UInventoryListUI::GetItemListWidth()
     {
         FVector2D worldSizeBoxPos  = p_worldListCanvasSlot->GetPosition();
         FVector2D worldSizeBoxSize = p_worldListCanvasSlot->GetSize();
-        mWorldSizeBoxWidth     = worldSizeBoxPos.X + worldSizeBoxSize.X;
+        mWorldSizeBoxWidth         = worldSizeBoxPos.X + worldSizeBoxSize.X;
     }
     // 인벤토리 사이즈 박스 넓이 구함    
     if (auto p_inventoryListCanvasSlot = Cast<UCanvasPanelSlot>(InventoryListSizeBox->Slot))
     {
         FVector2D inventorySizeBoxPos  = p_inventoryListCanvasSlot->GetPosition();
         FVector2D inventorySizeBoxSize = p_inventoryListCanvasSlot->GetSize();
-        mInventorySizeBoxWidth     = inventorySizeBoxPos.X + inventorySizeBoxSize.X;
+        mInventorySizeBoxWidth         = inventorySizeBoxPos.X + inventorySizeBoxSize.X;
     }
-}
-
-FVector2D UInventoryListUI::GetDistanceBetweenSlotCursor()
-{
-    // 마우스 위치를 구함   
-    FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
-
-    if (mpSlotObj)
-    {
-        // 현재 이미지 위치를 구함
-        FVector2D imgPos         = FVector2D::ZeroVector, dummy_vec;
-        auto      cachedGeometry = mpSlotObj->GetCachedGeometry();
-        USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, imgPos);
-
-        // 마우스 좌표 - 이미지 좌표 간 거리
-        float posX = 0.f, posY = 0.f;
-
-        if (imgPos.X > mousePos.X)
-            posX = imgPos.X - mousePos.X;
-
-        else
-            posX = mousePos.X - imgPos.X;
-
-        if (imgPos.Y > mousePos.Y)
-            posY = imgPos.Y - mousePos.Y;
-
-        else
-            posY = mousePos.Y - imgPos.Y;
-
-        return FVector2D(posX, posY);
-    }
-    return FVector2D::ZeroVector;
 }
 
 // this가 넘어오므로 널 체크 불필요
@@ -192,9 +163,8 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* _pSlotObj)
 {
     // 현재 이미지 위치를 구함
     FVector2D movePos = FVector2D::ZeroVector, dummy_vec;
-    auto      cachedGeometry = Cast<UItemSlotUI>(_pSlotObj)->GetCachedGeometry();
+    auto      cachedGeometry = _pSlotObj->GetCachedGeometry();
     mpSlotObj = _pSlotObj;
-    FVector2D tooltipPos = GetDistanceBetweenSlotCursor();
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);
     movePos.X = 0.f;
 
@@ -208,6 +178,11 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* _pSlotObj)
         p_canvasPanelSlot->SetPosition(movePos);
 
     HighlightImg->SetVisibility(ESlateVisibility::Visible);
+    
+    /*auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+
+    if (subGameInst)
+        subGameInst->DeleHideTooltip.ExecuteIfBound(ESlateVisibility::Hidden);*/
 }
 
 void UInventoryListUI::DeleteFromList()

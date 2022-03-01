@@ -184,5 +184,7 @@ public:
 
 	void SetNull(ECurrentWeaponType _weapon_type);
 
+	void SetMeshToPlayerUI(TArray<AActor*> _pArrActor);
+
 	bool IsDuplicated(ABaseInteraction* _p_weapon, ECurrentWeaponType _weapon_type);
 };

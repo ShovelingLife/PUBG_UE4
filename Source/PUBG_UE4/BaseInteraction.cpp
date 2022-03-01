@@ -44,14 +44,17 @@ void ABaseInteraction::Tick(float _DeltaTime)
 {
     Super::Tick(_DeltaTime);
 
-    mCurrentTime = (bPlayerNear) ? mCurrentTime += _DeltaTime : 0.f;
+    if (WidgetComp)
+    {
+        mCurrentTime = (bPlayerNear) ? mCurrentTime += _DeltaTime : 0.f;
 
-    // 0.25초 지날 시 UI설정
-    if (mCurrentTime > 0.25f)
-        WidgetComp->SetVisibility(true);
+        // 0.25초 지날 시 UI설정
+        if (mCurrentTime > 0.25f)
+            WidgetComp->SetVisibility(true);
 
-    else
-        WidgetComp->SetVisibility(false);
+        else
+            WidgetComp->SetVisibility(false);
+    }
 }
 
 void ABaseInteraction::InitStaticMesh(FString _Path)

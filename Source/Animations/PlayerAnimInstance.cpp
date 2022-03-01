@@ -24,7 +24,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float _DeltaSeconds)
         else
             PlayerState = (EPlayerAnimationState)p_player->CurrentState;
         
-        Speed           = p_player->GetCharacterMovement()->MaxWalkSpeed + p_player->GetInputAxisValue(TEXT("Up_down"));
+        Speed           = p_player->GetCharacterMovement()->MaxWalkSpeed + p_player->GetInputAxisValue(TEXT("UpDown"));
         bWeaponEquipped = p_player->bWeaponEquipped;
     }
     //// AI가 널이 아닐 시

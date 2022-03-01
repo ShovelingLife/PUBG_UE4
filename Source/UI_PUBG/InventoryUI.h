@@ -9,6 +9,7 @@
 class UInventoryListUI;
 class UCharacterSlotUI;
 class UInventoryWeaponSlotUI;
+class UTooltipUI;
 
 UCLASS()
 class UI_PUBG_API UInventoryUI : public UUserWidget
@@ -22,11 +23,14 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*          CharacterSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*          InventoryListUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
-
-    class UCursor_UI* pIconUI = nullptr;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTooltipUI* TooltipUI;
 
 protected:
     virtual void NativeConstruct() override;
 
     virtual void NativeTick(const FGeometry&, float) override;
+
+public:
+    UFUNCTION()
+    void SetTooltipVisibility(ESlateVisibility _Visibility);
 };

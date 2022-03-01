@@ -87,7 +87,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, 
     auto              p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
     FVector2D         mousePos = _InGeometry.AbsoluteToLocal(_InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
-    if (!p_slot       ||
+    if (!p_slot   ||
         !p_weapon ||
         mItemData.Is_empty())
         return;
@@ -148,8 +148,6 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FD
     else // 무기 교체
         GetIemData(p_selectedWeapon);
 
-    p_slot->ItemData = mItemData;
-
     if (!mpWeaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex))
         return false;
 
@@ -160,6 +158,8 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FD
     else
         p_slot->DeleSwapWeaponSlot.ExecuteIfBound(p_slot);
 
+    p_slot->ItemData     = mItemData;
+    p_slot->pDraggedItem = p_selectedWeapon;
     return true;
 }
 
@@ -186,7 +186,7 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, cons
     Super::NativeOnDragOver(_InGeometry, _InDragDropEvent, _InOperation);    
     ResetHighlightImg();
 
-    UCanvasPanel* p_arrCanvasPanel[5]
+     TArray< UCanvasPanel* >p_arrCanvasPanel
     {
         FirstGunCanvasPanel,
         SecondGunCanvasPanel,
@@ -198,7 +198,7 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, cons
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
 
     // 어떤 무기를 선택했는지 확인
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < p_arrCanvasPanel.Num(); i++)
     {
         USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), p_arrCanvasPanel[i]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
 
@@ -360,9 +360,9 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     {
     case ECurrentWeaponType::FIRST:     FirstGunCanvasPanel->RemoveChild(HighlightImg);  break;
     case ECurrentWeaponType::SECOND:    SecondGunCanvasPanel->RemoveChild(HighlightImg); break;
-    case ECurrentWeaponType::PISTOL:    PistolCanvasPanel->RemoveChild(HighlightImg);     break;
-    case ECurrentWeaponType::THROWABLE: MeleeCanvasPanel->RemoveChild(HighlightImg);      break;
-    case ECurrentWeaponType::NONE:      GrenadeCanvasPanel->RemoveChild(HighlightImg);    break;
+    case ECurrentWeaponType::PISTOL:    PistolCanvasPanel->RemoveChild(HighlightImg);    break;
+    case ECurrentWeaponType::THROWABLE: MeleeCanvasPanel->RemoveChild(HighlightImg);     break;
+    case ECurrentWeaponType::NONE:      GrenadeCanvasPanel->RemoveChild(HighlightImg);   break;
     }
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
     HighlightImg->SetVisibility(ESlateVisibility::Hidden);

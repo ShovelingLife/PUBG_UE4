@@ -42,7 +42,7 @@ void AWeaponManager::Check_for_equipped_weapon()
 
 void AWeaponManager::UpdateCurrentWeaponArr()
 {
-    ABaseInteraction* p_arrCurrentWeapon[]
+    TArray< ABaseInteraction*> ArrCurrentWeapon
     {
         pFirstGun,
         pSecondGun,
@@ -50,16 +50,16 @@ void AWeaponManager::UpdateCurrentWeaponArr()
         pMelee,
         pThrowable
     };
-    for (int i = 0; i < 5; i++)
-         bArrWeaponEquipped[i] = (p_arrCurrentWeapon[i] != nullptr);
+    for (int i = 0; i < ArrCurrentWeapon.Num(); i++)
+         bArrWeaponEquipped[i] = (ArrCurrentWeapon[i] != nullptr);
 }
 
 void AWeaponManager::PlaySound(EWeaponSoundType _SoundType)
 {
-    // 오디오 컴포넌트 가져오기
+    // 오디오 컴포넌트 가져오기    
     UAudioComponent* p_AudioComp = nullptr;
     int              weapon_index = 0;
-    
+
     // 첫번째 무기
     if (bArrWeaponEquipped[0])
     {
@@ -437,7 +437,7 @@ bool AWeaponManager::Swap(ABaseInteraction* _pOldWeapon, ABaseInteraction* _pNew
         }
         // 두번째 총과 첫번째 총 교체
         else if (p_newWeapon == pFirstGun &&
-            p_oldWeapon == pSecondGun)
+                 p_oldWeapon == pSecondGun)
         {
             Attach(p_newWeapon, "SecondGunSock", false);
             Attach(p_oldWeapon, "FirstGunSock", false);
@@ -585,9 +585,9 @@ ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType _WeaponTyp
     {
     case ECurrentWeaponType::FIRST:      p_weapon = pFirstGun;  break;
     case ECurrentWeaponType::SECOND:     p_weapon = pSecondGun; break;
-    case ECurrentWeaponType::PISTOL:     p_weapon = pPistol;     break;
-    case ECurrentWeaponType::MELEE:      p_weapon = pMelee;      break;
-    case ECurrentWeaponType::THROWABLE:  p_weapon = pThrowable;  break;
+    case ECurrentWeaponType::PISTOL:     p_weapon = pPistol;    break;
+    case ECurrentWeaponType::MELEE:      p_weapon = pMelee;     break;
+    case ECurrentWeaponType::THROWABLE:  p_weapon = pThrowable; break;
     }
     return p_weapon;
 }
@@ -639,6 +639,66 @@ void AWeaponManager::SetNull(ECurrentWeaponType _WeaponType)
     case ECurrentWeaponType::PISTOL:    pPistol     = nullptr; break;
     case ECurrentWeaponType::MELEE:     pMelee      = nullptr; break;
     case ECurrentWeaponType::THROWABLE: pThrowable  = nullptr; break;
+    }
+}
+
+void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor)
+{
+    ACoreWeapon*          p_FirstGunUI  = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::FIRST]);
+    ACoreWeapon*          p_SecondGunUI = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::SECOND]);
+    ACoreWeapon*          p_PistolUI    = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::PISTOL]);
+    ACoreMeleeWeapon*     p_MeleeUI     = Cast<ACoreMeleeWeapon>(_pArrActor[(int)ECurrentWeaponType::MELEE]);
+    ACoreThrowableWeapon* p_ThrowableUI = Cast<ACoreThrowableWeapon>(_pArrActor[(int)ECurrentWeaponType::THROWABLE]);
+
+    // 첫번째 무기
+    {
+        if (pFirstGun    &&
+            p_FirstGunUI &&
+            pFirstGun->WeaponType != p_FirstGunUI->WeaponType)
+            p_FirstGunUI->SkeletalMeshComp->SetSkeletalMesh(pFirstGun->SkeletalMeshComp->SkeletalMesh);
+
+        else
+            p_FirstGunUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
+    }
+    // 두번째 무기
+    {
+        if (pSecondGun    &&
+            p_SecondGunUI &&
+            pSecondGun->WeaponType != p_SecondGunUI->WeaponType)
+            p_SecondGunUI->SkeletalMeshComp->SetSkeletalMesh(pSecondGun->SkeletalMeshComp->SkeletalMesh);
+
+        else
+            p_SecondGunUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
+    }
+    // 세번째 무기
+    {
+        if (pPistol    &&
+            p_PistolUI &&
+            pPistol->WeaponType != p_PistolUI->WeaponType)
+            p_PistolUI->SkeletalMeshComp->SetSkeletalMesh(pPistol->SkeletalMeshComp->SkeletalMesh);
+
+        else
+            p_PistolUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
+    }
+    // 네번째 무기
+    {
+        if (pMelee    &&
+            p_MeleeUI &&
+            pMelee->WeaponType != p_MeleeUI->WeaponType)
+            p_MeleeUI->StaticMeshComp->SetStaticMesh(pMelee->StaticMeshComp->GetStaticMesh());
+
+        else
+            p_MeleeUI->StaticMeshComp->SetStaticMesh(nullptr);
+    }
+    // 투척무기 일 시
+    {
+        if (pThrowable    &&
+            p_ThrowableUI &&
+            pThrowable->WeaponType != p_ThrowableUI->WeaponType)
+            p_ThrowableUI->StaticMeshComp->SetStaticMesh(pThrowable->StaticMeshComp->GetStaticMesh());
+
+        else
+            p_ThrowableUI->StaticMeshComp->SetStaticMesh(nullptr);
     }
 }
 
