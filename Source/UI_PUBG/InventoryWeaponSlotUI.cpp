@@ -4,6 +4,7 @@
 #include "InventoryUI.h"
 #include "ItemSlotUI.h"
 #include "CustomDragDropOperation.h"
+#include "GameInstanceSubsystemUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "Player_weapons/CoreWeapon.h"
@@ -18,12 +19,14 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/CanvasPanel.h"
 #include "Components/Image.h"
+#include "Components/Sizebox.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UInventoryWeaponSlotUI::NativeConstruct()
 {
-    Super::NativeConstruct();   
+    Super::NativeConstruct();
+    HideAllSlotUI_background();
 }
 
 void UInventoryWeaponSlotUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
@@ -93,6 +96,11 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, 
         return;
 
     // 슬롯 설정
+    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+
+    if (subGameInst)
+        subGameInst->DeleHideTooltip.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
+
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData     = mItemData;
     p_slot->Priority     = 1;
@@ -127,7 +135,9 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FD
 
     if (!p_draggedWeapon)
         return false;
-    
+
+    //p_slot->TooltipVisibility = ESlateVisibility::Hidden;
+
     // 총기가 수류탄 또는 근접무기 슬롯에 위치시킬 시
     if ((int)mSelectedWeaponIndex < 4 &&
         mpWeaponManager->IsDuplicated(p_draggedWeapon, ECurrentWeaponType::NONE))
@@ -380,7 +390,7 @@ void UInventoryWeaponSlotUI::GetIemData(ABaseInteraction* _pWeapon)
     case ECurrentWeaponType::PISTOL:
 
         if (auto p_tmp_gun = Cast<ACoreWeapon>(_pWeapon))
-            mItemData = Fs_SlotItemData(p_tmp_gun->ObjectType, (int)p_tmp_gun->WeaponType);
+            mItemData = FsSlotItemData(p_tmp_gun->ObjectType, (int)p_tmp_gun->WeaponType);
 
         break;
 
@@ -388,7 +398,7 @@ void UInventoryWeaponSlotUI::GetIemData(ABaseInteraction* _pWeapon)
     case ECurrentWeaponType::MELEE:
 
         if (auto p_tmp_melee = Cast<ACoreMeleeWeapon>(_pWeapon))
-            mItemData = Fs_SlotItemData(p_tmp_melee->ObjectType, (int)p_tmp_melee->WeaponType);
+            mItemData = FsSlotItemData(p_tmp_melee->ObjectType, (int)p_tmp_melee->WeaponType);
 
         break;
 
@@ -396,10 +406,29 @@ void UInventoryWeaponSlotUI::GetIemData(ABaseInteraction* _pWeapon)
     case ECurrentWeaponType::THROWABLE:
 
         if (auto p_tmp_throwable = Cast<ACoreThrowableWeapon>(_pWeapon))
-            mItemData = Fs_SlotItemData(p_tmp_throwable->ObjectType, (int)p_tmp_throwable->WeaponType);
+            mItemData = FsSlotItemData(p_tmp_throwable->ObjectType, (int)p_tmp_throwable->WeaponType);
 
         break;
     }
+}
+
+void UInventoryWeaponSlotUI::HideAllSlotUI_background()
+{
+    FirstGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    FirstGunGripSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    FirstGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    FirstGunStockSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    FirstGunScopeSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    
+    SecondGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    SecondGunGripSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    SecondGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    SecondGunStockSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    SecondGunScopeSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    
+    PistolMuzzleSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    PistolMagazineSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    PistolScopeSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInventoryWeaponSlotUI::SetSlotNull()

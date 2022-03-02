@@ -32,7 +32,7 @@ class UHorizontalBox;
   * \brief 아이템 슬롯 구조체
  */
 USTRUCT()
-struct Fs_SlotItemData
+struct FsSlotItemData
 {
     GENERATED_BODY()
 
@@ -42,22 +42,22 @@ public:
     int     Count      = 0;
 
 public:
-    Fs_SlotItemData() = default;
+    FsSlotItemData() = default;
 
     /**
       * \brief 기본 생성자 아이템 명칭 / 이미지 인덱스 / 개수 (UI매니저)
       * \param _name 아이템 명칭 \param _image_index UI 이미지 인덱스 \param _count 개수
      */
-    Fs_SlotItemData(FString _Name, int _ImageIndex, int _Count = 1) : Name(_Name), ImageIndex(_ImageIndex), Count(_Count) { }
+    FsSlotItemData(FString _Name, int _ImageIndex, int _Count = 1) : Name(_Name), ImageIndex(_ImageIndex), Count(_Count) { }
 
-    bool operator==(Fs_SlotItemData& _Other)
+    bool operator==(FsSlotItemData& _Other)
     {
         return this->Name       == _Other.Name       &&
                this->ImageIndex == _Other.ImageIndex &&
                this->Count      == _Other.Count;
     }
 
-    bool operator!=(Fs_SlotItemData& _Other) { return !(*this == _Other); }
+    bool operator!=(FsSlotItemData& _Other) { return !(*this == _Other); }
 
 public:
     void Reset()
@@ -93,10 +93,10 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     CountTxt;
 
     UPROPERTY() ABaseInteraction* pDraggedItem;
-    FDeleCheckForSlot              DeleCheckForSlot;
-    FDeleSwapWeaponSlot            DeleSwapWeaponSlot;
-    FDeleSetSlotNull               DeleSetSlotNull;
-    Fs_SlotItemData                ItemData;
+    FDeleCheckForSlot             DeleCheckForSlot;
+    FDeleSwapWeaponSlot           DeleSwapWeaponSlot;
+    FDeleSetSlotNull              DeleSetSlotNull;
+    FsSlotItemData                ItemData;
 
 protected:    
     virtual void NativeConstruct() override;
@@ -113,19 +113,10 @@ protected:
      */
     virtual void NativeOnListItemObjectSet(UObject* _p_obj);
 
-private:
-    void UpdateTooltipVisibility();
-
 public:
     /**
       * \brief 슬롯 UI를 커서 중앙 지점에 설정
       * \param _Pos 슬롯 UI 위치 
      */
     void SetAsCursor(FVector2D _Pos);
-
-    /**
-      * \brief 슬롯과 마우스간 뷰포트 기준 거리값을 구함
-      * \return FVector2D 슬롯-마우스간 거리 값
-     */
-    FVector2D GetDistanceBetweenSlotCursor();
 };

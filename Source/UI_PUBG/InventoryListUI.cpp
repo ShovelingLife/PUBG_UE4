@@ -1,6 +1,7 @@
 ﻿#include "InventoryListUI.h"
 #include "ItemSlotUI.h"
 #include "CustomDragDropOperation.h"
+#include "GameInstanceSubsystemUI.h"
 #include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "Player_weapons/WeaponManager.h"
@@ -39,6 +40,11 @@ FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, c
     {
         HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 
+        // 클릭시 툴팁 숨김
+        auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+
+        if (!subGameInst)
+            subGameInst->DeleHideTooltip.ExecuteIfBound(mpSlotObj, ESlateVisibility::Hidden);
     }
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
@@ -49,18 +55,15 @@ FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& _InGeometry, const F
     Super::NativeOnMouseMove(_InGeometry, _InMouseEvent);
 
     // 움직일 때마다 현재 이미지의 위치를 구함    
-    FVector2D distance = FVector2D::ZeroVector;
+    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 
-    if (mpSlotObj)
-        distance = mpSlotObj->GetDistanceBetweenSlotCursor();
+    if (!subGameInst)
+        return FReply::Unhandled();
 
-    //GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, FString::Printf(TEXT("Distance posX : %f, Distance posY : %f"),distance.X, distance.Y));
+    bool bFirst = false;
+    auto distance = subGameInst->GetDistanceBetweenSlotCursor(mpSlotObj, bFirst);
 
-    if (WorldTxt->IsHovered()     ||
-        InventoryTxt->IsHovered() ||
-        SeparatorImg->IsHovered() ||
-        distance.Y <= 2.5f        ||
-        distance.Y >= 55.f)    
+    if (subGameInst->IsMouseLeftFromUI(distance, bFirst))
         HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 
     return FReply::Handled();
@@ -85,6 +88,11 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const 
         return;
 
     // 슬롯 설정
+    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+
+    if (subGameInst)
+        subGameInst->DeleHideTooltip.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
+
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
     p_slot->ItemData     = mpSlotObj->ItemData;
     p_slot->Priority     = 1;
@@ -114,6 +122,8 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
     if (mpSlotObj &&
         p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
         return false;
+
+    //p_slot->bShowTooltip = false;
 
     // 마우스 위치 구하기
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
@@ -178,11 +188,6 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* _pSlotObj)
         p_canvasPanelSlot->SetPosition(movePos);
 
     HighlightImg->SetVisibility(ESlateVisibility::Visible);
-    
-    /*auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
-
-    if (subGameInst)
-        subGameInst->DeleHideTooltip.ExecuteIfBound(ESlateVisibility::Hidden);*/
 }
 
 void UInventoryListUI::DeleteFromList()

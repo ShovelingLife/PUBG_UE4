@@ -21,4 +21,7 @@ public:
 
 protected:
 	virtual void NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime) override;
+
+public:
+	void SetData(class UItemSlotUI* _pItemSlotUI);
 };

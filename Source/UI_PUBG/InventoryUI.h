@@ -6,9 +6,11 @@
 #include "Input/Reply.h"
 #include "InventoryUI.generated.h"
 
+class AUI_manager;
 class UInventoryListUI;
 class UCharacterSlotUI;
 class UInventoryWeaponSlotUI;
+class UItemSlotUI;
 class UTooltipUI;
 
 UCLASS()
@@ -17,7 +19,8 @@ class UI_PUBG_API UInventoryUI : public UUserWidget
 	GENERATED_BODY()
 
 private:
-    class AUI_manager* mpUI_manager;
+    AUI_manager* mpUI_manager;
+    UItemSlotUI* mpCurrentItemSlot;
 
 public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*          CharacterSlotUI;
@@ -30,7 +33,11 @@ protected:
 
     virtual void NativeTick(const FGeometry&, float) override;
 
+private:
+
+    void CheckTooltipMouseDistance();
+
 public:
     UFUNCTION()
-    void SetTooltipVisibility(ESlateVisibility _Visibility);
+    void SetTooltipVisibility(UItemSlotUI* _pItemSlotUI, ESlateVisibility _Visibility);
 };

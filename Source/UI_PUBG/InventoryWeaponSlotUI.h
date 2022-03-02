@@ -36,24 +36,18 @@ private:
     /** \brief 무기 매니저 */
     UPROPERTY() AWeaponManager* mpWeaponManager = nullptr;
 
-    /**
-      * \brief 현재 쓰여지는 변수
-     */
-    Fs_SlotItemData    mItemData;
+    /** \brief 현재 쓰여지는 변수 */
+    FsSlotItemData     mItemData;
     ECurrentWeaponType mSelectedWeaponIndex;
     ECurrentWeaponType mDraggedWeaponIndex;
     bool               mbClicked = false;
 
 public:
-    /**
-      * \brief 선택 UI 관련
-     */
+    /** \brief 선택 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       HighlightImg;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* MainCanvasPanel;
              
-    /**
-      * \brief 1번 슬롯 UI 관련
-     */
+    /** \brief 1번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* FirstGunCanvasPanel;       
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      FirstGunNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   FirstGunNameTxt;
@@ -62,9 +56,19 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   FirstGunMaxMagazineTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       FirstGunSlotImg;
 
-    /**
-      * \brief 2번 슬롯 UI 관련
-     */
+    /** \brief 1번 슬롯 부속품 관련 */
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunMuzzleSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunGripSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunMagazineSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunStockSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunScopeSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunMuzzleSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunGripSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunMagazineSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunStockSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunScopeSlotUI;
+
+    /** \brief 2번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* SecondGunCanvasPanel;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      SecondGunNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   SecondGunNameTxt;
@@ -73,9 +77,19 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   SecondGunMaxMagazineTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       SecondGunSlotImg;
 
-    /**
-      * \brief 3번 슬롯 UI 관련
-     */
+    /** \brief 2번 슬롯 부속품 관련 */
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunMuzzleSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunGripSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunMagazineSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunStockSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunScopeSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunMuzzleSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunGripSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunMagazineSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunStockSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunScopeSlotUI;
+
+    /** \brief 3번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* PistolCanvasPanel;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      PistolNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   PistolNameTxt;
@@ -84,17 +98,21 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   PistolMaxMagazineTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       PistolSlotImg;
 
-    /**
-      * \brief 4번 슬롯 UI 관련
-     */
+    /** \brief 3번 슬롯 부속품 관련 */
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     PistolMuzzleSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     PistolMagazineSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     PistolScopeSlotBorder;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* PistolMuzzleSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* PistolMagazineSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* PistolScopeSlotUI;
+
+    /** \brief 4번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* MeleeCanvasPanel;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      MeleeNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   MeleeNameTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       MeleeSlotImg;
 
-    /**
-      * \brief 5번 슬롯 UI 관련
-     */
+    /** \brief 5번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* GrenadeCanvasPanel;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      GrenadeNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   GrenadeNameTxt;
@@ -157,6 +175,8 @@ private:
     void ResetHighlightImg();
 
     void GetIemData(ABaseInteraction* _pWeapon);
+
+    void HideAllSlotUI_background();
 
 public:
     // 슬롯 초기화

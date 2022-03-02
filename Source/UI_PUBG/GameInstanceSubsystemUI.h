@@ -5,9 +5,10 @@
 #include "GameInstanceSubsystemUI.generated.h"
 
 class AUI_manager;
+class UItemSlotUI;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
-DECLARE_DELEGATE_OneParam(FDeleHideTooltip, ESlateVisibility)
+DECLARE_DELEGATE_TwoParams(FDeleHideTooltip, UItemSlotUI*, ESlateVisibility)
 
 UCLASS()
 class UI_PUBG_API UGameInstanceSubsystemUI : public UGameInstanceSubsystem
@@ -31,4 +32,13 @@ public:
 
 private:
     void InitUImanager();
+
+public:
+    /**
+      * \brief 슬롯과 마우스간 뷰포트 기준 거리값을 구함
+      * \return FVector2D 슬롯-마우스간 거리 값
+     */
+    FVector2D GetDistanceBetweenSlotCursor(class UUserWidget* _pWigdet, bool& _bFirst);
+
+    bool IsMouseLeftFromUI(FVector2D _Distance, bool _bFirst = false);
 };
