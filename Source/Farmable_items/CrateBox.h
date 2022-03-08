@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -14,12 +12,8 @@ class FARMABLE_ITEMS_API ACrateBox : public ACoreFarmableItem
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(VisibleAnywhere, Category = Mesh)
-        class UStaticMeshComponent* mParachuteMesh = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Mesh)
-		class UParticleSystemComponent* ParticleComp = nullptr;
-
+	UPROPERTY(VisibleAnywhere, Category = Mesh) class UStaticMeshComponent* ParachuteMesh = nullptr;
+        
 	float mCurrentTime			  = 0.f;
     const float mkMaxParticleTime = 15.f;
 	bool  mbParticleEnded		  = false;

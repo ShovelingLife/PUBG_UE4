@@ -6,9 +6,9 @@
 #include "Components/BoxComponent.h"
 #include "Sound/SoundBase.h"
 #include "Materials/Material.h"
-#include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
+#include "Particles/ParticleSystemComponent.h"
 
 ACoreWeapon::ACoreWeapon()
 {
@@ -18,7 +18,7 @@ ACoreWeapon::ACoreWeapon()
 void ACoreWeapon::BeginPlay()
 {
     Super::BeginPlay();
-    UpdateParticleSystem();
+    ABaseInteraction::SetCollisionSettingsForObjects();
 }
 
 void ACoreWeapon::NotifyActorBeginOverlap(AActor* CollidedActor)
@@ -43,11 +43,12 @@ void ACoreWeapon::Init(EWeaponType _WeaponType)
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
-    ABaseInteraction::InitAudio();
-    UpdateCollider();
+    ABaseInteraction::AttachComponents();
+    Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     InitMesh();
     InitBullet();
-    InitParticleSystem();
+    UpdateCollider();
+    UpdateParticleSystem();
 }
 
 void ACoreWeapon::InitMesh()
@@ -57,13 +58,6 @@ void ACoreWeapon::InitMesh()
     SkeletalMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }
 
-void ACoreWeapon::UpdateCollider()
-{
-    ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
-    ColliderComp->SetBoxExtent(WeaponData.ColliderSize);
-    ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
-}
-
 void ACoreWeapon::InitBullet()
 {
     ConstructorHelpers::FClassFinder<AActor> BP_BULLET(*(WeaponData.BulletBP_path));
@@ -71,19 +65,18 @@ void ACoreWeapon::InitBullet()
     if (BP_BULLET.Succeeded())
     {
         auto p_bp_bullet = BP_BULLET.Class;
-        pBullet         = p_bp_bullet->GetDefaultObject<ACoreBullet>();
+        pBullet          = p_bp_bullet->GetDefaultObject<ACoreBullet>();
     }
 }
 
-void ACoreWeapon::InitParticleSystem()
+void ACoreWeapon::UpdateCollider()
 {
-    // 총기 관련
-    ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
-    ParticleComp->bAutoActivate = false;
-    static ConstructorHelpers::FObjectFinder<UParticleSystem> GUN_PARTICLE(TEXT("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave"));
+    if (!ColliderComp)
+        return;
 
-    if (GUN_PARTICLE.Succeeded())
-        ParticleComp->SetTemplate(GUN_PARTICLE.Object);
+    ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
+    ColliderComp->SetBoxExtent(WeaponData.ColliderSize);
+    ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
 }
 
 void ACoreWeapon::UpdateParticleSystem()
@@ -91,10 +84,10 @@ void ACoreWeapon::UpdateParticleSystem()
     if (!ParticleComp)
         return;
 
-    FVector start_pos = SkeletalMeshComp->GetSocketLocation(TEXT("Muzzle_socket"));
-    FVector scale_value{ 0.05f };
+    FVector startPos = SkeletalMeshComp->GetSocketLocation(TEXT("MuzzleSock"));
+    FVector scaleValue{ 0.05f };
 
-    ParticleComp->SetWorldScale3D(scale_value);
-    ParticleComp->SetWorldLocation(start_pos);
+    ParticleComp->SetWorldScale3D(scaleValue);
+    ParticleComp->SetWorldLocation(startPos);
     ParticleComp->AddWorldRotation(FQuat::MakeFromEuler(FVector(0.f, 90.f, 0.f)));
 }

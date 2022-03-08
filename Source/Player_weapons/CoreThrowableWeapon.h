@@ -20,12 +20,10 @@ class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 {
 	GENERATED_BODY()
 
-protected:
-    UPROPERTY(VisibleAnywhere, Category = Particle) class UParticleSystemComponent* ParticleComp = nullptr;
-
 public:
-	FsOtherWeaponData WeaponData;
-	EThrowableWeaponType WeaponType;
+    UPROPERTY(VisibleAnywhere, Category = Collider) class UCapsuleComponent* GrenadeColliderComp = nullptr;
+	FsOtherWeaponData    WeaponData;
+	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
 
 public:
     ACoreThrowableWeapon();
@@ -50,10 +48,10 @@ protected:
     /**
       * \brief 콜라이더 정보 갱신
      */
-    void Update_collider();
+    void UpdateCollider();
 
     /**
-      * \brief 파티클 시스템 초기화
+      * \brief 파티클 시스템 갱신
      */
-    void InitParticleSystem();
+    void UpdateParticleSystem();
 };

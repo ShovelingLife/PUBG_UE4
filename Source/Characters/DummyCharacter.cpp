@@ -71,47 +71,61 @@ void ADummyCharacter::InitRenderTarget()
 void ADummyCharacter::InitWeaponUI()
 {
     // 1번째 무기
+    if (auto tmpFirstGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
     {
-        auto tmpFirstGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass());
-        tmpFirstGun->DestroyComponentsForUI("Skeletal");
-        tmpFirstGun->SkeletalMeshComp->SetVisibility(true);
-        tmpFirstGun->SkeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "FirstGunSock");
+        if (auto skeletalMeshComp = tmpFirstGun->SkeletalMeshComp)
+        {
+            skeletalMeshComp->SetVisibility(true);
+            skeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "FirstGunSock");
+        }
+        tmpFirstGun->DestroyComponentsForUI();
         tmpFirstGun->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpFirstGun);
     }
     // 2번째 무기
+    if (auto tmpSecondGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
     {
-        auto tmpSecondGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass());
-        tmpSecondGun->DestroyComponentsForUI("Skeletal");
-        tmpSecondGun->SkeletalMeshComp->SetVisibility(true);
-        tmpSecondGun->SkeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "SecondGunSock");
+        if (auto skeletalMeshComp = tmpSecondGun->SkeletalMeshComp)
+        {
+            skeletalMeshComp->SetVisibility(true);
+            skeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "SecondGunSock");
+        }
+        tmpSecondGun->DestroyComponentsForUI();
         tmpSecondGun->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpSecondGun);
     }
     // 3번째 무기
+    if (auto tmpPistol = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
     {
-        auto tmpPistol = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass());
-        tmpPistol->DestroyComponentsForUI("Skeletal");
-        tmpPistol->SkeletalMeshComp->SetVisibility(true);
-        tmpPistol->SkeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "HandGunSock");
+        if (auto skeletalMeshComp = tmpPistol->SkeletalMeshComp)
+        {
+
+            skeletalMeshComp->SetVisibility(true);
+            skeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "HandGunSock");
+        }
+        tmpPistol->DestroyComponentsForUI();
         tmpPistol->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpPistol);
     }
     // 4번째 무기
+    if (auto tmpMelee = GetWorld()->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()))
     {
-        auto tmpMelee = GetWorld()->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass());
-        tmpMelee->DestroyComponentsForUI("Static");
-        tmpMelee->StaticMeshComp->SetVisibility(true);
-        tmpMelee->StaticMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "MeleeSock");
+        if (auto staticMeshComp = tmpMelee->StaticMeshComp)
+        {
+            staticMeshComp->SetVisibility(true);
+            staticMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "MeleeSock");
+        }
+        tmpMelee->DestroyComponentsForUI();
         tmpMelee->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpMelee);
     }
     // 5번째 무기
+    if (auto tmpThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()))
     {
-        auto tmpThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
-        tmpThrowable->DestroyComponentsForUI("Static");
-        tmpThrowable->StaticMeshComp->SetVisibility(true);
-        tmpThrowable->StaticMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "ThrowableSock");
+        if (auto staticMeshComp = tmpThrowable->StaticMeshComp)
+            staticMeshComp->SetVisibility(true);
+
+        tmpThrowable->DestroyComponentsForUI();
         tmpThrowable->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpThrowable);
     }
@@ -121,5 +135,5 @@ void ADummyCharacter::UpdateCharacterWeaponUI()
 {
     // 데이터 갱신
     if (mpWeaponManager)
-        mpWeaponManager->SetMeshToPlayerUI(mArrActorToShow);
+        mpWeaponManager->SetMeshToPlayerUI(mArrActorToShow, SkeletalMeshComp);
 } 

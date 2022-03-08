@@ -62,9 +62,9 @@ public:
 public:
     void Reset()
     {
-        this->Name        = "";
+        this->Name       = "";
         this->ImageIndex = 0;
-        this->Count       = 0;
+        this->Count      = 0;
     }
 
     bool Is_empty()

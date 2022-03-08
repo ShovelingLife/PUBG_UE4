@@ -249,9 +249,9 @@ void ACustomPlayer::CheckForObject()
     FVector    endPos = beginPos + direction;
     FHitResult hitResult;
     bool       b_collided = false;
-
+    
     GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
-
+    DrawDebugLine(GetWorld(), beginPos, endPos,FColor::Red);
     AActor* p_hittedActor = hitResult.GetActor();
 
     // 충돌한 오브젝트가 있을 시

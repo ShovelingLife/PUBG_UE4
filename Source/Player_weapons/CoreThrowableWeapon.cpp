@@ -1,8 +1,10 @@
 ﻿#include "CoreThrowableWeapon.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "PUBG_UE4/SoundManager.h"
-#include "Components/WidgetComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Sound/SoundBase.h"
 #include "Materials/Material.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -17,8 +19,18 @@ ACoreThrowableWeapon::ACoreThrowableWeapon()
 void ACoreThrowableWeapon::BeginPlay()
 {
     Super::BeginPlay();
-}
+    ABaseInteraction::SetCollisionSettingsForObjects();
 
+    if (GrenadeColliderComp)
+    {
+        auto component_location = GrenadeColliderComp->GetComponentLocation();
+        GrenadeColliderComp->SetRelativeLocation(FVector(component_location.X, component_location.Y, WeaponData.ColliderPosZ));
+        //GrenadeColliderComp->AddRelativeLocation(FVector(0.f, 0.f, WeaponData.ColliderPosZ));
+        GrenadeColliderComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(FMath::Abs(WeaponData.MeshRotationX), 0.f, 0.f)));
+        GrenadeColliderComp->SetCollisionProfileName("Object");
+    }
+}
+    
 void ACoreThrowableWeapon::Tick(float _DeltaTime)
 {
     Super::Tick(_DeltaTime);
@@ -26,34 +38,40 @@ void ACoreThrowableWeapon::Tick(float _DeltaTime)
 
 void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
 {
-    WeaponData   = ADataTableManager::ArrOtherWeaponData[(int)_WeaponType];
-    WeaponType   = _WeaponType;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)_WeaponType];
+    WeaponType = _WeaponType;
     ObjectType = WeaponData.Type;
-    
-    ABaseInteraction::InitAudio();
-    Update_collider();
+    UpdateCollider();
+    ABaseInteraction::AttachComponents();
+    Super::InitParticleSystem(WeaponData.ParticlePath);
     InitMesh();
-    InitParticleSystem();
 }
 
 void ACoreThrowableWeapon::InitMesh()
 {
     ABaseInteraction::InitStaticMesh(WeaponData.MeshPath);
-    StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
-    StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
+
+    if (StaticMeshComp)
+    {
+        StaticMeshComp->SetRelativeLocation(WeaponData.MeshPos);
+        StaticMeshComp->SetRelativeRotation(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)));
+        StaticMeshComp->SetRelativeScale3D(FVector(WeaponData.MeshSize));
+        StaticMeshComp->SetCollisionProfileName("NoCollision");
+        StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+    }
 }
 
-void ACoreThrowableWeapon::Update_collider()
+void ACoreThrowableWeapon::UpdateCollider()
 {
-    ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
-    ColliderComp->SetBoxExtent(WeaponData.ColliderSize);
-    ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
-}
-
-void ACoreThrowableWeapon::InitParticleSystem()
-{
-    // 총기 관련
-    ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
-    ParticleComp->bAutoActivate = false;
-    ParticleComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    GrenadeColliderComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
+    
+    if (GrenadeColliderComp)
+    {
+        RootComponent->DestroyComponent();
+        GrenadeColliderComp->SetCapsuleRadius(0.f);
+        GrenadeColliderComp->SetCapsuleHalfHeight(0.f);        
+        GrenadeColliderComp->SetCapsuleHalfHeight(WeaponData.ColliderHeight);
+        GrenadeColliderComp->SetCapsuleRadius(WeaponData.ColliderSize);
+        RootComponent = GrenadeColliderComp;
+    }
 }

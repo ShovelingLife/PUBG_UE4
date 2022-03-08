@@ -19,6 +19,7 @@ class USceneComponent;
 class USkeletalMeshComponent;
 class UStaticMeshComponent;
 class UWidgetComponent;
+class UParticleSystemComponent;
 
 UCLASS()
 class PUBG_UE4_API ABaseInteraction : public AActor
@@ -35,6 +36,7 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Mesh)  UStaticMeshComponent*   StaticMeshComp   = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)  USkeletalMeshComponent* SkeletalMeshComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Sound) UAudioComponent*        AudioComp         = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp = nullptr;
 
     FString ObjectGroupType = "";
     FString ObjectType      = "";
@@ -68,13 +70,22 @@ protected:
     /**
       * \brief 오디오 컴포넌트 초기화
      */
-    void InitAudio();
+    void InitComponents();
 
     /**
       * \brief 상호작용 UI 초기화
      */
     void InitInteractionUI();
 
+    /**
+      * \brief 파티클 시스템 초기화
+     */
+    void InitParticleSystem(FString _Path);
+
+    void AttachComponents();
+
+    void SetCollisionSettingsForObjects();
+
 public:
-    void DestroyComponentsForUI(FString _MeshType);
+    void DestroyComponentsForUI();
 };

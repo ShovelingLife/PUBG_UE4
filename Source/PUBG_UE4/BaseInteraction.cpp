@@ -3,41 +3,24 @@
 #include "CustomGameInstance.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
-#include "Components/WidgetComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 ABaseInteraction::ABaseInteraction()
 {
     PrimaryActorTick.bCanEverTick = true;
-    RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
-    
-    // 박스 콜라이더 초기화
-    ColliderComp = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComp"));
-    ColliderComp->SetupAttachment(RootComponent);
-
-    // UI 위젯 컴포넌트 초기화
-    WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidgetComp"));
-    WidgetComp->SetupAttachment(RootComponent);
-
-    // 스태틱 메시 생성
-    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
-    StaticMeshComp->SetupAttachment(RootComponent);
-
-    // 스켈레탈 메시 생성
-    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
-    SkeletalMeshComp->SetupAttachment(RootComponent);
+    InitComponents();
 }
 
 void ABaseInteraction::BeginPlay()
 {
     Super::BeginPlay();
     InitInteractionUI();
-    ColliderComp->BodyInstance.SetCollisionProfileName("Object");
-    ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
 }
 
 void ABaseInteraction::Tick(float _DeltaTime)
@@ -59,8 +42,10 @@ void ABaseInteraction::Tick(float _DeltaTime)
 
 void ABaseInteraction::InitStaticMesh(FString _Path)
 {
-    SkeletalMeshComp->DestroyComponent();
+    if (SkeletalMeshComp)
+        SkeletalMeshComp->DestroyComponent();
 
+    StaticMeshComp->SetupAttachment(RootComponent);
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*_Path);
 
@@ -70,7 +55,10 @@ void ABaseInteraction::InitStaticMesh(FString _Path)
 
 void ABaseInteraction::InitSkeletalMesh(FString _Path)
 {
-    StaticMeshComp->DestroyComponent();
+    if (StaticMeshComp)
+        StaticMeshComp->DestroyComponent();
+
+    SkeletalMeshComp->SetupAttachment(RootComponent);
 
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*_Path);
@@ -79,11 +67,14 @@ void ABaseInteraction::InitSkeletalMesh(FString _Path)
         SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
 }
 
-void ABaseInteraction::InitAudio()
+void ABaseInteraction::InitComponents()
 {
-    // 오디오 포인터에 대한 생성
-    AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-    AudioComp->SetupAttachment(RootComponent);
+    ColliderComp     = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComp"));
+    RootComponent    = ColliderComp;
+    WidgetComp       = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidgetComp"));    
+    AudioComp        = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
+    StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
 }
 
 void ABaseInteraction::InitInteractionUI()
@@ -94,14 +85,45 @@ void ABaseInteraction::InitInteractionUI()
         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
 }
 
-void ABaseInteraction::DestroyComponentsForUI(FString _MeshType)
+void ABaseInteraction::DestroyComponentsForUI()
 {
-    ColliderComp->DestroyComponent();
-    WidgetComp->DestroyComponent();
+    if (ColliderComp)
+        ColliderComp->DestroyComponent();
+    
+    if (WidgetComp)
+        WidgetComp->DestroyComponent();
+}
 
-    if (_MeshType == "Skeletal")
-        StaticMeshComp->DestroyComponent();
+void ABaseInteraction::InitParticleSystem(FString _Path)
+{
+    // 파티클 컴포넌트 초기화
+    ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
+    ParticleComp->bAutoActivate = false;
 
-    else
-        SkeletalMeshComp->DestroyComponent();
+    // 파티클 설정
+    ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(*_Path);
+
+    if (PARTICLE.Succeeded())
+        ParticleComp->SetTemplate(PARTICLE.Object);
+}
+
+void ABaseInteraction::AttachComponents()
+{
+    if (WidgetComp)
+        WidgetComp->SetupAttachment(RootComponent);
+    
+    if (AudioComp)
+        AudioComp->SetupAttachment(RootComponent);
+    
+    if (ParticleComp)
+        ParticleComp->SetupAttachment(RootComponent);
+}
+
+void ABaseInteraction::SetCollisionSettingsForObjects()
+{
+    if (ColliderComp)
+    {
+        ColliderComp->BodyInstance.SetCollisionProfileName("Object");
+        ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
+    }
 }

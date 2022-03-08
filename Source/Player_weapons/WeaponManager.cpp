@@ -6,6 +6,7 @@
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/SoundManager.h"
 #include "Components/AudioComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -155,7 +156,11 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
     {
         if (_pWeapon->IsA<ACoreThrowableWeapon>())
         {
-            pThrowable        = Cast<ACoreThrowableWeapon>(_pWeapon);
+            pThrowable = Cast<ACoreThrowableWeapon>(_pWeapon);
+
+            if (pThrowable)
+                pThrowable->GrenadeColliderComp->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
             CurrentWeaponType = ECurrentWeaponType::THROWABLE;
         }
         else if (_pWeapon->IsA<ACoreMeleeWeapon>())
@@ -164,6 +169,7 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
             CurrentWeaponType = ECurrentWeaponType::MELEE;
         }
     }
+
     USkeletalMeshComponent* skeletalMeshComp = _pWeapon->SkeletalMeshComp;
     UStaticMeshComponent*   staticMeshComp   = _pWeapon->StaticMeshComp;
 
@@ -172,7 +178,7 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
              skeletalMeshComp->AttachToComponent(playerMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_SocketName);
 
     else if (staticMeshComp)
-             staticMeshComp->AttachToComponent(playerMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *_SocketName);
+             staticMeshComp->AttachToComponent(playerMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, *_SocketName);
 }
 
 void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform _NewPos)
@@ -205,8 +211,10 @@ void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
 {
     ABaseInteraction* p_collidedWeapon = Cast<ABaseInteraction>(_pWeapon);
 
-    if (p_collidedWeapon)
-        p_collidedWeapon->bPlayerNear = false;
+    if (!p_collidedWeapon)
+        return;
+    
+    p_collidedWeapon->bPlayerNear = false;
 
     // 총기 종류
     if (_pWeapon->IsA<ACoreWeapon>())
@@ -246,11 +254,11 @@ void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
     }
     // 근접 종류
     else if (_pWeapon->IsA<ACoreMeleeWeapon>())
-             Attach(p_collidedWeapon, "EquippedweaponPosSock", _bShouldCheck);
+             Attach(p_collidedWeapon, "EquippedWeaponPosSock", _bShouldCheck);
 
     // 투척류
     else if (_pWeapon->IsA<ACoreThrowableWeapon>())
-             Attach(p_collidedWeapon, "EquippedweaponPosSock", _bShouldCheck);
+             Attach(p_collidedWeapon, p_collidedWeapon->ObjectType + "Socket", _bShouldCheck);
 }
 
 void AWeaponManager::Shoot()
@@ -642,7 +650,7 @@ void AWeaponManager::SetNull(ECurrentWeaponType _WeaponType)
     }
 }
 
-void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor)
+void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor, USkeletalMeshComponent* _pSkeletalMeshComp)
 {
     ACoreWeapon*          p_FirstGunUI  = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::FIRST]);
     ACoreWeapon*          p_SecondGunUI = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::SECOND]);
@@ -695,8 +703,15 @@ void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor)
         if (pThrowable    &&
             p_ThrowableUI &&
             pThrowable->WeaponType != p_ThrowableUI->WeaponType)
-            p_ThrowableUI->StaticMeshComp->SetStaticMesh(pThrowable->StaticMeshComp->GetStaticMesh());
+        {
+            auto staticMeshComp = p_ThrowableUI->StaticMeshComp;
 
+            if (staticMeshComp)
+            {
+                staticMeshComp->SetStaticMesh(pThrowable->StaticMeshComp->GetStaticMesh());
+                staticMeshComp->AttachToComponent(_pSkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *(pThrowable->WeaponData.Type + "Socket"));
+            }
+        }
         else
             p_ThrowableUI->StaticMeshComp->SetStaticMesh(nullptr);
     }

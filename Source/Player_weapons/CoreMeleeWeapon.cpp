@@ -18,6 +18,7 @@ ACoreMeleeWeapon::ACoreMeleeWeapon()
 void ACoreMeleeWeapon::BeginPlay()
 {
     Super::BeginPlay();
+    ABaseInteraction::SetCollisionSettingsForObjects();
 }
 
 void ACoreMeleeWeapon::Init(EMeleeWeaponType _WeaponType)
@@ -26,7 +27,6 @@ void ACoreMeleeWeapon::Init(EMeleeWeaponType _WeaponType)
     WeaponType = _WeaponType;
     ObjectType = WeaponData.Type;
     
-    ABaseInteraction::InitAudio();
     UpdateCollider();
     InitMesh();
 }
@@ -40,7 +40,7 @@ void ACoreMeleeWeapon::InitMesh()
 
 void ACoreMeleeWeapon::UpdateCollider()
 {
-    ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
-    ColliderComp->SetBoxExtent(WeaponData.ColliderSize);
+    //ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
+    ColliderComp->SetBoxExtent(FVector(WeaponData.ColliderSize));
     ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
 }

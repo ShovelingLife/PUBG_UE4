@@ -30,9 +30,6 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Bullet) ACoreBullet* pBullet;
 
     // class ACore_gun_mag* p_gun_mag = nullptr;
-
-    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp = nullptr;
-
     FsWeaponData  WeaponData;
     EWeaponType   WeaponType  = EWeaponType::MAX;
     EGunShootType ShootType   = EGunShootType::SINGLE;
@@ -62,19 +59,14 @@ protected:
     void InitMesh();
 
     /**
-      * \brief 콜라이더 정보 갱신
-     */
-    void UpdateCollider();
-
-    /**
       * \brief 탄알 초기화
      */
     void InitBullet();
 
     /**
-      * \brief 파티클 시스템 초기화
+      * \brief 콜라이더 정보 갱신
      */
-    void InitParticleSystem();
+    void UpdateCollider();
 
     /**
       * \brief 파티클 시스템 갱신
