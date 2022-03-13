@@ -4,6 +4,7 @@
 #include "GameInstanceSubsystemUI.h"
 #include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/BaseInteraction.h"
+#include "PUBG_UE4/CustomGameInstance.h"
 #include "Player_weapons/WeaponManager.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -21,6 +22,11 @@ void UInventoryListUI::NativeConstruct()
 {
     Super::NativeConstruct();
     GetItemListWidth();
+
+    // 인벤토리에 아이템 추가되는 델리게이트 설정
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+        p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
+
 }
 
 void UInventoryListUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
@@ -44,7 +50,7 @@ FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, c
         auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 
         if (!subGameInst)
-            subGameInst->DeleHideTooltip.ExecuteIfBound(mpSlotObj, ESlateVisibility::Hidden);
+            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(mpSlotObj, ESlateVisibility::Hidden);
     }
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
@@ -91,7 +97,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const 
     auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 
     if (subGameInst)
-        subGameInst->DeleHideTooltip.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
+        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
 
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
     p_slot->ItemData     = mpSlotObj->ItemData;
@@ -112,6 +118,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const 
 
 bool UInventoryListUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InMouseEvent, UDragDropOperation* _Operation)
 {
+    Super::NativeOnDrop(_InGeometry, _InMouseEvent, _Operation);
     auto p_dragOperation = Cast<UCustomDragDropOperation>(_Operation);
     auto p_slot          = p_dragOperation->pSlotUI;
 
@@ -230,4 +237,26 @@ void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* _pWeaponSlot)
     DeleteFromList();
     _pWeaponSlot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     WorldListView->AddItem(_pWeaponSlot);
+}
+
+void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* _pWeapon)
+{
+    if (!_pWeapon ||
+        !mpWeaponManager)
+        return;
+
+    UItemSlotUI* p_slot = NewObject<UItemSlotUI>();
+
+    int imageIndex = mpWeaponManager->GetWeaponType(_pWeapon);
+
+    if (imageIndex == -1) // 예외 처리
+        return;
+
+    FsSlotItemData slotItemData(_pWeapon->ObjectGroupType, _pWeapon->ObjectType, imageIndex);
+    p_slot->ItemData     = slotItemData;
+    p_slot->pDraggedItem = _pWeapon;
+    p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
+    p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
+    p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
+    InventoryListView->AddItem(p_slot);
 }

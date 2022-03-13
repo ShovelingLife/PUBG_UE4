@@ -27,10 +27,8 @@ void UItemSlotUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
     {
         DeleCheckForSlot.ExecuteIfBound(this);
 
-        auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
-
-        if (subGameInst)
-            subGameInst->DeleHideTooltip.ExecuteIfBound(this, ESlateVisibility::Visible);
+        if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
+            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, ESlateVisibility::Visible);
     }
 }
 
@@ -40,7 +38,7 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* _pObj)
 
     if (p_slot)
     {
-        ItemImg->SetBrushFromTexture(Cast<UTexture2D>(AUI_manager::MapInventoryWeaponTex[p_slot->ItemData.ImageIndex]));
+        ItemImg->SetBrushFromTexture(GetTexture2D(p_slot->ItemData));
         NameTxt->SetText(FText::FromString(p_slot->ItemData.Name));
         pDraggedItem       = p_slot->pDraggedItem;
         DeleCheckForSlot   = p_slot->DeleCheckForSlot;
@@ -53,6 +51,33 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* _pObj)
     }
 }
 
+UTexture2D* UItemSlotUI::GetTexture2D(FsSlotItemData _ItemData)
+{
+    UTexture* weaponTex       = nullptr;
+    FString   weaponGroupType = _ItemData.GroupType;
+    int       imageIndex      = _ItemData.ImageIndex;
+
+    // 투척류 또는 근접무기일 시
+    if (weaponGroupType == "Explosive" ||
+        weaponGroupType == "Melee")
+    {
+        auto mapInventoryOtherWeaponTex = AUI_manager::MapInventoryOtherWeaponTex;
+
+        if (imageIndex < mapInventoryOtherWeaponTex.Num())
+            weaponTex = mapInventoryOtherWeaponTex[imageIndex];
+    }
+
+    // 총기 무기일 시
+    else
+    {
+        auto mapInventoryGunWeaponTex = AUI_manager::MapInventoryGunWeaponTex;
+
+        if (imageIndex < mapInventoryGunWeaponTex.Num())
+            weaponTex = mapInventoryGunWeaponTex[imageIndex];
+    }
+    return Cast<UTexture2D>(weaponTex);
+}
+
 void UItemSlotUI::SetAsCursor(FVector2D _Pos)
 {
     auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(MainHorizontalBox->Slot);
@@ -61,7 +86,7 @@ void UItemSlotUI::SetAsCursor(FVector2D _Pos)
         p_canvasPanelSlot->SetPosition(_Pos);
 
     this->SetVisibility(ESlateVisibility::Visible);
-    ItemImg->SetBrushFromTexture(Cast<UTexture2D>(AUI_manager::MapInventoryWeaponTex[ItemData.ImageIndex]));
+    ItemImg->SetBrushFromTexture(GetTexture2D(ItemData));
     NameTxt->SetVisibility(ESlateVisibility::Hidden);
     CountTxt->SetVisibility(ESlateVisibility::Hidden);
     BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);

@@ -45,8 +45,11 @@ void UPlayerStateUI::UpdateAimUI()
 
 void UPlayerStateUI::UpdateBulletCountUI()
 {
+    if (!p_player)
+        return;
+
     auto p_weaponManager = p_player->GetWeaponManager();
-    auto p_weapon         = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
+    auto p_weapon        = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
 
     if (!p_weapon)
         return;
@@ -62,6 +65,9 @@ void UPlayerStateUI::UpdateBulletCountUI()
 
 void UPlayerStateUI::UpdateShootMode()
 {
+    if (!p_player)
+        return;
+
     auto p_weaponManager = p_player->GetWeaponManager();
     auto p_weapon         = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
 
@@ -81,6 +87,9 @@ void UPlayerStateUI::UpdateShootMode()
 
 void UPlayerStateUI::UpdateOxygenBarUI(float _DeltaTime)
 {
+    if (!p_player)
+        return;
+
     // 현재 뛰고있음
     if      (p_player->bSprinting &&
              p_player->CurrentOxygen > 0.f)

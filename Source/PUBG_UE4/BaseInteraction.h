@@ -26,20 +26,21 @@ class PUBG_UE4_API ABaseInteraction : public AActor
 {
 	GENERATED_BODY()
 	
-protected:
-    UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*  ColliderComp = nullptr;    
+protected: 
     UPROPERTY(VisibleAnywhere, Category = Widget) UWidgetComponent* WidgetComp;
 
     float   mCurrentTime = 0.f;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Mesh)  UStaticMeshComponent*   StaticMeshComp   = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Mesh)  USkeletalMeshComponent* SkeletalMeshComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Sound) UAudioComponent*        AudioComp         = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*            ColliderComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Mesh)     UStaticMeshComponent*     StaticMeshComp   = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Mesh)     USkeletalMeshComponent*   SkeletalMeshComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Sound)    UAudioComponent*          AudioComp        = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp     = nullptr;
 
     FString ObjectGroupType = "";
-    FString ObjectType      = "";
+    FString ObjectType = "";
+    int     UI_index = 0;
     bool    bPlayerNear     = false;
 
 public:

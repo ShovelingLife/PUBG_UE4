@@ -13,7 +13,8 @@
 #include "Kismet/GameplayStatics.h"
 
 TMap<int, UMaterial*> AUI_manager::MapMainWeaponMat;
-TMap<int, UTexture*>  AUI_manager::MapInventoryWeaponTex;
+TMap<int, UTexture*>  AUI_manager::MapInventoryGunWeaponTex;
+TMap<int, UTexture*>  AUI_manager::MapInventoryOtherWeaponTex;
 TMap<int, UTexture*>  AUI_manager::MapPlayerTex;
 
 AUI_manager::AUI_manager()
@@ -61,7 +62,7 @@ void AUI_manager::InitPlayerUI_Tex()
     for (int i = 0; i < mkArrPlayerUI_TexPath.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString playerUI_path = mkDefaultPlayerUI_path + mkArrPlayerUI_TexPath[i] + "Icon";
+        FString playerUI_path = "/Game/UI/Player/State/" + mkArrPlayerUI_TexPath[i] + "Icon";
         auto    playerUI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*playerUI_path);
 
         if (playerUI_tex.Succeeded())
@@ -71,14 +72,27 @@ void AUI_manager::InitPlayerUI_Tex()
 
 void AUI_manager::InitInventoryWeaponTex()
 {
+    const FString inventoryWeaponUI_Path = "/Game/UI/WeaponInventoryIcon/";
+
+    // 총기 아이콘 초기화
     for (int i = 0; i < ADataTableManager::ArrWeaponData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString weaponUI_path = "/Game/UI/WeaponInventoryIcon/" + ADataTableManager::ArrWeaponData[i].IconPath;
+        FString weaponUI_path = inventoryWeaponUI_Path + ADataTableManager::ArrWeaponData[i].IconPath;
         auto    weaponUI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*weaponUI_path);
 
         if (weaponUI_tex.Succeeded())
-            AUI_manager::MapInventoryWeaponTex.Add(i, weaponUI_tex.Object);
+            AUI_manager::MapInventoryGunWeaponTex.Add(i, weaponUI_tex.Object);
+    }
+    // 근접 및 투척류 무기 초기화
+    for (int i = 0; i < ADataTableManager::ArrOtherWeaponData.Num(); i++)
+    {
+        // 리소스를 불러온 후 데이터 테이블에 대입
+        FString weaponUI_path = inventoryWeaponUI_Path + ADataTableManager::ArrOtherWeaponData[i].Type + "_icon";
+        auto    weaponUI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*weaponUI_path);
+
+        if (weaponUI_tex.Succeeded())
+            AUI_manager::MapInventoryOtherWeaponTex.Add(i, weaponUI_tex.Object);
     }
 }
 
@@ -114,14 +128,22 @@ void AUI_manager::Set_weapon_UI()
 void AUI_manager::InitPlayerInventory()
 {
     pInventoryManager = GetWorld()->SpawnActor<AInventoryManager>(AInventoryManager::StaticClass());
-    pInventoryManager->GetRootComponent()->AttachToComponent(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+    auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+    if (pInventoryManager &&
+        p_player)
+        pInventoryManager->GetRootComponent()->AttachToComponent(p_player->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AUI_manager::SetPlayerUI()
 {
     UUserWidget* p_widget = CreateWidget(GetWorld(), mPlayerUI_BP);
-    mpPlayer_UI = Cast<UPlayerUI>(p_widget);
-    mpPlayer_UI->AddToViewport(0);
+
+    if (p_widget)
+    {
+        mpPlayer_UI = Cast<UPlayerUI>(p_widget);
+        mpPlayer_UI->AddToViewport(0);
+    }
 }
 
 void AUI_manager::UpdateInteractionUI(UWidgetComponent* _pWidgetComp, FString _Type)

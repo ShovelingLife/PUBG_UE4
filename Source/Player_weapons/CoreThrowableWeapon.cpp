@@ -19,7 +19,6 @@ ACoreThrowableWeapon::ACoreThrowableWeapon()
 void ACoreThrowableWeapon::BeginPlay()
 {
     Super::BeginPlay();
-    ABaseInteraction::SetCollisionSettingsForObjects();
 
     if (GrenadeColliderComp)
     {
@@ -28,6 +27,13 @@ void ACoreThrowableWeapon::BeginPlay()
         //GrenadeColliderComp->AddRelativeLocation(FVector(0.f, 0.f, WeaponData.ColliderPosZ));
         GrenadeColliderComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(FMath::Abs(WeaponData.MeshRotationX), 0.f, 0.f)));
         GrenadeColliderComp->SetCollisionProfileName("Object");
+    }
+    if(ColliderComp)
+    {
+        ABaseInteraction::SetCollisionSettingsForObjects();
+        ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 4.f));
+        ColliderComp->SetBoxExtent(FVector(15.f, 15.f, 5.f));
+        StaticMeshComp->AddRelativeLocation(FVector(0.f, 0.f, 18.f));
     }
 }
     
@@ -41,6 +47,7 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
     WeaponData = ADataTableManager::ArrOtherWeaponData[(int)_WeaponType];
     WeaponType = _WeaponType;
     ObjectType = WeaponData.Type;
+    ObjectGroupType = WeaponData.GroupType;
     UpdateCollider();
     ABaseInteraction::AttachComponents();
     Super::InitParticleSystem(WeaponData.ParticlePath);
@@ -63,15 +70,18 @@ void ACoreThrowableWeapon::InitMesh()
 
 void ACoreThrowableWeapon::UpdateCollider()
 {
-    GrenadeColliderComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
-    
-    if (GrenadeColliderComp)
+    if (WeaponType != EThrowableWeaponType::CLAYMORE)
     {
-        RootComponent->DestroyComponent();
-        GrenadeColliderComp->SetCapsuleRadius(0.f);
-        GrenadeColliderComp->SetCapsuleHalfHeight(0.f);        
-        GrenadeColliderComp->SetCapsuleHalfHeight(WeaponData.ColliderHeight);
-        GrenadeColliderComp->SetCapsuleRadius(WeaponData.ColliderSize);
-        RootComponent = GrenadeColliderComp;
+        GrenadeColliderComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
+
+        if (GrenadeColliderComp)
+        {
+            RootComponent->DestroyComponent();
+            GrenadeColliderComp->SetCapsuleRadius(0.f);
+            GrenadeColliderComp->SetCapsuleHalfHeight(0.f);
+            GrenadeColliderComp->SetCapsuleHalfHeight(WeaponData.ColliderHeight);
+            GrenadeColliderComp->SetCapsuleRadius(WeaponData.ColliderSize);
+            RootComponent = GrenadeColliderComp;
+        }
     }
 }

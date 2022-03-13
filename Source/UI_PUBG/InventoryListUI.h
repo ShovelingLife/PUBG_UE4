@@ -29,8 +29,8 @@ class UI_PUBG_API UInventoryListUI : public UUserWidget
 private:
     /** \brief 무기 매니저 */
     UPROPERTY() AWeaponManager* mpWeaponManager = nullptr;
+    UPROPERTY() UItemSlotUI*    mpSlotObj;
 
-    UPROPERTY() UItemSlotUI* mpSlotObj;
     float mWorldSizeBoxWidth     = 0.f;
     float mInventorySizeBoxWidth = 0.f;
 
@@ -49,7 +49,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*    HighlightImg;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*    SeparatorImg;
 
-    UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
+    UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
 
 protected:
     virtual void NativeConstruct() override;
@@ -104,14 +104,17 @@ private:
 public:
     /**
       * \brief 리스트 내 아이템 슬롯에서 선택할 시 호출함 (델리게이트)
-      * \param _p_slot_obj 아이템 슬롯
+      * \param _pSlot_obj 아이템 슬롯
      */
     UFUNCTION()
-    void CheckForHoveredItem(UItemSlotUI* _p_slot_obj);
+    void CheckForHoveredItem(UItemSlotUI* _pSlot_obj);
 
     UFUNCTION()
     void DeleteFromList();
 
     UFUNCTION()
-    void SwapWeaponSlot(UItemSlotUI* _p_weapon_slot);
+    void SwapWeaponSlot(UItemSlotUI* _pWeapon_slot);
+
+    UFUNCTION()
+    void SetItemOntoInventory(class ABaseInteraction* _pWeapon);
 };

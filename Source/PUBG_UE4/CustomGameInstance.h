@@ -14,7 +14,11 @@
 #include "CustomGameInstance.generated.h"
 
 class UWidgetComponent;
+class ASoundManager;
+class AWeaponManager;
+class ABaseInteraction;
 
+DECLARE_DELEGATE_OneParam(FDeleSetItemOntoInventory, ABaseInteraction*)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
 
 /**
@@ -26,12 +30,10 @@ class PUBG_UE4_API UCustomGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-    /**
-      * \brief 전역 변수
-     */
-    UPROPERTY() class ASoundManager* pSoundManager;
-
-    FDeleUpdateInteractionWidgetComp  DeleUpdateInteractionWidgetComp;
+    /** \brief 전역 변수 */
+    UPROPERTY() ASoundManager*       pSoundManager;
+    FDeleSetItemOntoInventory        DeleSetItemOntoInventory;
+    FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
 
 public:
     UCustomGameInstance();

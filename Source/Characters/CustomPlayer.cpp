@@ -50,13 +50,15 @@ void ACustomPlayer::BeginPlay()
 
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
-    mpWeaponManager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 
-    mpSoundManager  = Cast<ASoundManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ASoundManager::StaticClass()));
+    if (mpWeaponManager)
+        mpWeaponManager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 
     // UI용 캐릭터 생성
     pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
-    pDummyCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+
+    if (pDummyCharacter)
+        pDummyCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ACustomPlayer::Tick(float DeltaTime)
@@ -67,18 +69,21 @@ void ACustomPlayer::Tick(float DeltaTime)
     //Play_walk_sound();
     CheckForObject();
     TryToInteract();
+
+    if (mpWeaponManager)
+        mpWeaponManager->GrenadePathPredictPos = GetMesh()->GetSocketLocation("GrenadeThrowSocket");
 }
 
 void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(InputComponent);
 
+    // 이동 관련
     InputComponent->BindAxis(FName(TEXT("UpDown")),    this, &ACustomPlayer::MoveForwardBack);
     InputComponent->BindAxis(FName(TEXT("LeftRight")), this, &ACustomPlayer::MoveLeftRight);
     InputComponent->BindAxis(FName(TEXT("LookUp")),    this, &ACustomPlayer::LookUp);
     InputComponent->BindAxis(FName(TEXT("Turn")),       this, &ACustomPlayer::Turn);
 
-    // 이동 관련
     InputComponent->BindAction(FName(TEXT("Jump")),   IE_Pressed,  this, &ACustomPlayer::CustomJump);
     InputComponent->BindAction(FName(TEXT("Crouch")), IE_Pressed,  this, &ACustomPlayer::CustomCrouch);
     InputComponent->BindAction(FName(TEXT("Sprint")), IE_Pressed,  this, &ACustomPlayer::BeginSprint);
@@ -321,7 +326,11 @@ void ACustomPlayer::TryToInteract()
         // 무기랑 충돌 시
         if (mpCollidedWeapon)
         {
-            mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
+            if(auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+            {
+                if(auto p_soundManager = p_customGameInst->pSoundManager)
+                    p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
+            }
             mpWeaponManager->Equip(mpCollidedWeapon);
         }
         if (mpCollidedVehicle)
@@ -462,12 +471,17 @@ void ACustomPlayer::OpenInventory()
 
 void ACustomPlayer::BeginShooting()
 {
-    //mp_weapon_manager->is_shooting = true;
+    mpWeaponManager->bShooting = true;
+    mpWeaponManager->Shoot();
 }
 
 void ACustomPlayer::EndShooting()
 {
-    //mp_weapon_manager->is_shooting = false;
+    mpWeaponManager->bShooting = false;
+
+    // 투척류 무기일 시 뗐을 때만 발동
+    if (mpWeaponManager->bArrWeaponEquipped[4])
+        mpWeaponManager->Shoot();
 }
 
 void ACustomPlayer::Reload()
@@ -504,46 +518,30 @@ void ACustomPlayer::ChangeShootMode()
     mpWeaponManager->ChangeShootMode();
 }
 
-void ACustomPlayer::SwapScrollingUp()
+void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, int _WeaponType /* = 0 */)
 {
-    if (mpWeaponManager->ScrollSelect("Up"))
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-}
+    auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+    bool bPlayAudio = false;
 
-void ACustomPlayer::SwapScrollingDown()
-{
-    if (mpWeaponManager->ScrollSelect("Down"))
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-}
+    if (!p_customGameInst)
+        return;
 
-void ACustomPlayer::EquipFirstWeapon()
-{
-    if (mpWeaponManager->IsWeaponAvailable(ECurrentWeaponType::FIRST))    
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-}
+    if (mpWeaponManager)
+    {
+        if (auto p_soundManager = p_customGameInst->pSoundManager)
+        {
+            // 마우스 휠로 무기 선택
+            if      (_Direction != "")
+                     bPlayAudio = mpWeaponManager->ScrollSelect(_Direction);
 
-void ACustomPlayer::EquipSecondWeapon()
-{
-    if (mpWeaponManager->IsWeaponAvailable(ECurrentWeaponType::SECOND))
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-}
+            // 키보드 숫자 키로 무기 선택
+            else if (_WeaponType > 0)
+                     bPlayAudio = mpWeaponManager->IsWeaponAvailable((ECurrentWeaponType)_WeaponType);
 
-void ACustomPlayer::EquipThirdWeapon()
-{
-    if (mpWeaponManager->IsWeaponAvailable(ECurrentWeaponType::PISTOL))
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-}
-
-void ACustomPlayer::EquipFourthWeapon()
-{
-    if (mpWeaponManager->IsWeaponAvailable(ECurrentWeaponType::MELEE))
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-}
-
-void ACustomPlayer::EquipFifthWeapon()
-{
-    if (mpWeaponManager->IsWeaponAvailable(ECurrentWeaponType::THROWABLE))
-        mpSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+            if (bPlayAudio)
+                p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+        }
+    }
 }
 
 void ACustomPlayer::ExitFromVehicle(FVector _exit_location)

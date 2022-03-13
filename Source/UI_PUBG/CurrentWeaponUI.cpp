@@ -19,8 +19,11 @@ void UCurrentWeaponUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime
 {
     Super::NativeTick(_InGeometry, _DeltaTime);
 
-    if (!mpWeaponManager)
-        mpWeaponManager = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->GetWeaponManager();
+    auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+    if (!mpWeaponManager &&
+        p_player)
+        mpWeaponManager = p_player->GetWeaponManager();
 
     if (!mpUI_Manager)
         mpUI_Manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
@@ -87,19 +90,25 @@ void UCurrentWeaponUI::UpdateIconColor()
 
 void UCurrentWeaponUI::SetIconUI()
 {
-    if (!mpWeaponManager &&
+    if (!mpWeaponManager ||
         !mpUI_Manager)
         return;
     
-    if (mpWeaponManager->pFirstGun)
-        FirstWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)mpWeaponManager->pFirstGun->WeaponType]);
-
-    if (mpWeaponManager->pSecondGun)
-        SecondWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)mpWeaponManager->pSecondGun->WeaponType]);
-
-    if (mpWeaponManager->pPistol)
-        ThirdWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)mpWeaponManager->pPistol->WeaponType]);
-    
+    if (auto p_firstGun = mpWeaponManager->pFirstGun)
+    {
+        if (FirstWeaponImg)
+            FirstWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)p_firstGun->WeaponType]);
+    }
+    if (auto p_secondGun = mpWeaponManager->pSecondGun)
+    {
+        if (SecondWeaponImg)
+            SecondWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)p_secondGun->WeaponType]);
+    }
+    if (auto p_pistol = mpWeaponManager->pPistol)
+    {
+        if (ThirdWeaponImg)
+            ThirdWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)p_pistol->WeaponType]);
+    }
     //// 네번쨰 무기
     //if (mp_weapon_manager->p_melee)
     //{

@@ -43,11 +43,10 @@ private:
         "ConsecutiveShot",
     };
 
-    const FString mkDefaultPlayerUI_path = "/Game/UI/Player/State/";
-
 public:
     static TMap<int, UMaterial*> MapMainWeaponMat;      // 메인 무기 UI    
-    static TMap<int, UTexture*>  MapInventoryWeaponTex; // 인벤토리 무기 UI    
+    static TMap<int, UTexture*>  MapInventoryGunWeaponTex; // 인벤토리 무기 UI (총기)   
+    static TMap<int, UTexture*>  MapInventoryOtherWeaponTex; // 인벤토리 무기 UI (근접 및 투척류)
     static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
 
     UPROPERTY() AInventoryManager* pInventoryManager;

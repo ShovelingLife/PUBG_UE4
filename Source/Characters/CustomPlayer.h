@@ -23,7 +23,6 @@ DECLARE_DELEGATE(FDeleCloseInventory)
 class ACoreWeapon;
 class ACoreVehicle;
 class ADummyCharacter;
-class ASoundManager;
 class AWeaponManager;
 class UAudioComponent;
 class UParticleSystemComponent;
@@ -36,10 +35,7 @@ class CHARACTERS_API ACustomPlayer : public ACharacter
     GENERATED_BODY()
 
 private:
-    /**
-     * \brief 플레이어가 사용하는 변수
-     */
-    UPROPERTY() ASoundManager*  mpSoundManager;
+    /** \brief 플레이어가 사용하는 변수 */
     UPROPERTY() AWeaponManager* mpWeaponManager;
     UPROPERTY() AActor*         mpCollidedWeapon  = nullptr;
     UPROPERTY() ACoreVehicle*   mpCollidedVehicle = nullptr;
@@ -243,40 +239,28 @@ private:
      */
     void ChangeShootMode();
 
-    /**
-     * \brief 마우스 위로 스크롤
-     */
-    void SwapScrollingUp();
+    /** \brief 마우스 위로 스크롤 */
+    void SwapScrollingUp() { CheckForWeapon("Up"); }
 
-    /**
-     * \brief 마우스 아래로 스크롤
-     */
-    void SwapScrollingDown();
+    /** \brief 마우스 아래로 스크롤 */
+    void SwapScrollingDown() { CheckForWeapon("Down"); }
 
-    /**
-     * \brief 첫번째 무기 장착
-     */
-    void EquipFirstWeapon();
+    /** \brief 첫번째 무기 장착 */
+    void EquipFirstWeapon() { CheckForWeapon("", 1); }
 
-    /**
-     * \brief 두번째 무기 장착
-     */
-    void EquipSecondWeapon();
+    /** \brief 두번째 무기 장착 */
+    void EquipSecondWeapon() { CheckForWeapon("", 2); }
 
-    /**
-     * \brief 세번째 무기 장착
-     */
-    void EquipThirdWeapon();
+    /** \brief 세번째 무기 장착 */
+    void EquipThirdWeapon() { CheckForWeapon("", 3); }
 
-    /**
-     * \brief 네번째 무기 장착
-     */
-    void EquipFourthWeapon();
+    /** \brief 네번째 무기 장착 */
+    void EquipFourthWeapon() { CheckForWeapon("", 4); }
 
-    /**
-     * \brief 다섯번째 무기 장착
-     */
-    void EquipFifthWeapon();
+    /** \brief 다섯번째 무기 장착 */
+    void EquipFifthWeapon() { CheckForWeapon("", 5); }
+
+    void CheckForWeapon(FString _Direction = "", int _WeaponType = 0);
 
 public:
     /**
@@ -285,9 +269,5 @@ public:
      */
     void ExitFromVehicle(FVector _exit_location);
 
-    /**
-     * \brief 무기 매니저를 갖고옴
-     * \return 무기 매니저
-     */
     AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
 };

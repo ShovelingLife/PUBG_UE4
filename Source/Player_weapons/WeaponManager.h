@@ -19,6 +19,7 @@ class ABaseInteraction;
 class ACoreWeapon;
 class ACoreMeleeWeapon;
 class ACoreThrowableWeapon;
+class AWeaponManager;
 class USceneComponent;
 
 UCLASS()
@@ -27,7 +28,7 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere, Category = Scene_comp) USceneComponent* SceneComp = nullptr;
+    UPROPERTY(EditAnywhere, Category = Scene_comp) USceneComponent* SceneComp = nullptr;
 
     const float	mkReloadTime	   = 2.f;
     float		mCurrentReloadTime = 0.f;
@@ -36,7 +37,7 @@ private:
     bool		mbReloading		   = false;
     bool		mbInteracting	   = false;
     bool		mbChangedShootType = true;
-    bool		mbShooting		   = false;
+	bool		mbThrowingGrenade  = false;
 
 public:
 	/** \brief 현재 착용 중인 무기 */
@@ -47,7 +48,9 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
-	bool bArrWeaponEquipped[5]{ false };
+	FVector			   GrenadePathPredictPos;
+	bool			   bArrWeaponEquipped[5]{ false };
+	bool			   bShooting = false;
 
 public:	
 	AWeaponManager();
@@ -98,6 +101,8 @@ private:
 	 */
     void ResetAfterDetaching(ABaseInteraction* _p_weapon, FTransform _new_pos);
 
+	void CheckForGrenadePath();
+
 public:
 	/**
 	 * \brief 무기 착용
@@ -115,7 +120,6 @@ public:
 	/**
 	 * \brief 마우스 휠 통해 무기 교체
 	 * \param _Pos 현재 착용 중인 무기의 위치
-	 * \return boolean 교체 여부
 	 */
 	bool ScrollSelect(FString _Pos);
 
@@ -139,50 +143,53 @@ public:
 
 	/**
 	 * \brief 재장전 중인지 확인
-	 * \param _transcurred_reload_time 현재 재장전으로부터 초과한 시간
+	 * \param _TranscurredShootTime 현재 재장전으로부터 초과한 시간
 	 */
-	void CheckIfReloading(float _transcurred_reload_time);
+	void CheckIfReloading(float _TranscurredShootTime);
 
 	/**
 	 * \brief 연사 하고있는 중인지 체크
-	 * \param _transcurred_shoot_time 발사 시간 간격
+	 * \param _TranscurredShootTime 발사 시간 간격
 	 */
-	void CheckContinouslyShooting(float _transcurred_shoot_time);
+	void CheckContinouslyShooting(float _TranscurredShootTime);
 
 	/**
 	 * \brief 무기 변경 가능한지 확인
-	 * \param _weapon_type 무기 종류
-	 * \return 변경 가능 여부
+	 * \param _WeaponType 무기 종류
 	 */
-	bool IsWeaponAvailable(ECurrentWeaponType _weapon_type);
+	bool IsWeaponAvailable(ECurrentWeaponType _WeaponType);
 
 	// ------- 부착 관련 함수 -------
 
 	/**
 	 * \brief 총기 최대 총알 개수를 가지고 옴
-	 * \param _weapon_type 무기 종류
+	 * \param _WeaponType 무기 종류
 	 * \return 총알 최대 개수
 	 */
-    int GetMaxBulletCount(ECurrentWeaponType _weapon_type);
+    int GetMaxBulletCount(ECurrentWeaponType _WeaponType);
 
     /**
      * \brief 현재 착용 중인 무기를 갖고옴
-     * \param _weapon_type 무기 종류
+     * \param _WeaponType 무기 종류
      * \return 현재 착용 중인 무기
      */
-	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType _weapon_type);
+	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType _WeaponType);
 
-	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* _p_weapon);
+	// 무기의 인덱스를 구함
+	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* _pWeapon);
+
+	// 무기의 종류를 구함
+	int GetWeaponType(ABaseInteraction* _pWeapon);
 
 	// ------- UI 관련 함수 -------
 
 	/**
 	 * \brief 무기를 맵에다가 버림
-	 * \param _weapon_type 버릴 무기 종류
+	 * \param _WeaponType 버릴 무기 종류
 	 */
-	void Drop(ECurrentWeaponType _weapon_type);
+	void Drop(ECurrentWeaponType _WeaponType);
 
-	void SetNull(ECurrentWeaponType _weapon_type);
+	void SetNull(ECurrentWeaponType _WeaponType);
 
 	void SetMeshToPlayerUI(TArray<AActor*> _pArrActor, USkeletalMeshComponent* _pSkeletalMeshComp);
 

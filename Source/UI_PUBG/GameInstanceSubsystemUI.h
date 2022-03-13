@@ -8,7 +8,7 @@ class AUI_manager;
 class UItemSlotUI;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
-DECLARE_DELEGATE_TwoParams(FDeleHideTooltip, UItemSlotUI*, ESlateVisibility)
+DECLARE_DELEGATE_TwoParams(FDeleSetTooltipVisibility, UItemSlotUI*, ESlateVisibility)
 
 UCLASS()
 class UI_PUBG_API UGameInstanceSubsystemUI : public UGameInstanceSubsystem
@@ -20,7 +20,7 @@ private:
 
 public:
     UPROPERTY() AUI_manager* pUImanager;
-    FDeleHideTooltip DeleHideTooltip;
+    FDeleSetTooltipVisibility DeleSetTooltipVisibility;
 
 public:
 	UGameInstanceSubsystemUI();

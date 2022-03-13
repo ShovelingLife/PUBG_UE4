@@ -14,13 +14,12 @@
 void UInventoryUI::NativeConstruct()
 {
     Super::NativeConstruct();
-    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+    
+    if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
+        subGameInst->DeleSetTooltipVisibility.BindUFunction(this, "SetTooltipVisibility");
 
-    if (subGameInst)
-        subGameInst->DeleHideTooltip.BindUFunction(this, "SetTooltipVisibility");
-
-    if (!mpUI_manager)
-        mpUI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
+    /*if (!mpUI_manager)
+        mpUI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));*/
 }
 
 void UInventoryUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)

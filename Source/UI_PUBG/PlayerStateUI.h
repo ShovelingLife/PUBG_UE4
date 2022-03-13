@@ -17,6 +17,7 @@ class UProgressBar;
 class UImage;
 class UTextBlock;
 class AUI_manager;
+class ACustomPlayer;
 
 UCLASS()
 class UI_PUBG_API UPlayerStateUI : public UUserWidget
@@ -61,7 +62,7 @@ public:
     /** \brief 조준선 이미지 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ReticleImg;
 
-    class ACustomPlayer* p_player;
+    UPROPERTY() ACustomPlayer* p_player;
 
 protected:
 	void NativeConstruct() override;

@@ -4,8 +4,10 @@
 #include "CoreThrowableWeapon.h"
 #include "CoreWeapon.h"
 #include "PUBG_UE4/BaseInteraction.h"
+#include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/SoundManager.h"
 #include "Components/AudioComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -31,9 +33,15 @@ void AWeaponManager::BeginPlay()
 void AWeaponManager::Tick(float _delta_time)
 {
 	Super::Tick(_delta_time);
-    CheckIfReloading(_delta_time);
-    CheckContinouslyShooting(_delta_time);
     UpdateCurrentWeaponArr();
+
+    // 총기일 때마다 확인
+    if (bArrWeaponEquipped[3] &&
+        bArrWeaponEquipped[4])
+    {
+        CheckIfReloading(_delta_time);
+        CheckContinouslyShooting(_delta_time);
+    }
 }
 
 void AWeaponManager::Check_for_equipped_weapon()
@@ -159,8 +167,13 @@ void AWeaponManager::Attach(ABaseInteraction* _pWeapon, FString _SocketName, boo
             pThrowable = Cast<ACoreThrowableWeapon>(_pWeapon);
 
             if (pThrowable)
-                pThrowable->GrenadeColliderComp->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            {
+                if      (auto p_capsuleColliderComp = pThrowable->GrenadeColliderComp)
+                         p_capsuleColliderComp->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+                else if (auto p_boxColliderComp = pThrowable->ColliderComp)
+                         p_boxColliderComp->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            }
             CurrentWeaponType = ECurrentWeaponType::THROWABLE;
         }
         else if (_pWeapon->IsA<ACoreMeleeWeapon>())
@@ -205,6 +218,37 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform 
     // 현재 무기를 탈착 후 월드에 소환
     _pWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     _pWeapon->SetActorTransform(_NewPos);
+}
+
+void AWeaponManager::CheckForGrenadePath()
+{
+    if (!pThrowable)
+        return;
+    //UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetControlRotation().Pitch / 360.f;
+    // 투척류 예측 경로 데이터 설정
+    FVector outVelocity = FVector::ZeroVector;
+    auto    controllerRotation = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetControlRotation();
+    FVector targetPos = FVector(GrenadePathPredictPos.X, GrenadePathPredictPos.Y + controllerRotation.Pitch, GrenadePathPredictPos.Z + controllerRotation.Yaw);
+    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, controllerRotation.ToString());
+    GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Blue, targetPos.ToString());
+    
+    // UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetActorForwardVector().Z * 0.5f
+    if (UGameplayStatics::SuggestProjectileVelocity_CustomArc(this, outVelocity, GrenadePathPredictPos, targetPos, GetWorld()->GetGravityZ()))
+    {
+        FPredictProjectilePathParams predictParams(2.f, GrenadePathPredictPos, outVelocity, 5.f);   
+        predictParams.DrawDebugTime = 3.f; //디버그 라인 보여지는 시간 (초)     
+        predictParams.DrawDebugType = EDrawDebugTrace::Type::ForDuration;  // DrawDebugTime 을 지정하면 EDrawDebugTrace::Type::ForDuration 필요.
+        predictParams.OverrideGravityZ = GetWorld()->GetGravityZ();
+        FPredictProjectilePathResult result;
+        UGameplayStatics::PredictProjectilePath(this, predictParams, result);
+
+        // 수류탄 투척
+        if (auto colliderComp = pThrowable->GrenadeColliderComp)
+        {
+            colliderComp->SetSimulatePhysics(true);
+            colliderComp->AddImpulse(outVelocity);
+        }
+    }
 }
 
 void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
@@ -258,19 +302,34 @@ void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
 
     // 투척류
     else if (_pWeapon->IsA<ACoreThrowableWeapon>())
-             Attach(p_collidedWeapon, p_collidedWeapon->ObjectType + "Socket", _bShouldCheck);
+    {
+        // 수류탄을 장착중이지 않을 때만
+        if (!pThrowable)
+            Attach(p_collidedWeapon, p_collidedWeapon->ObjectType + "Socket", _bShouldCheck);
+
+        else
+        {
+            if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+            {
+                p_customGameInst->DeleSetItemOntoInventory.ExecuteIfBound(p_collidedWeapon);
+                p_collidedWeapon->Destroy();
+            }
+        }
+    }
 }
 
 void AWeaponManager::Shoot()
 {
     ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentWeaponType);
 
-    if (mbReloading ||
-        !p_weapon)
+    if (!p_weapon)
         return;
 
     if (p_weapon->IsA<ACoreWeapon>())
     {
+        if (mbReloading)
+            return;
+
         auto p_gun = Cast<ACoreWeapon>(p_weapon);
         auto weaponData = p_gun->WeaponData;
 
@@ -319,6 +378,14 @@ void AWeaponManager::Shoot()
         // 파티클 적용
         p_gun->ParticleComp->Activate(true);
     }
+    // 근접 무기
+    else if(p_weapon->IsA<ACoreMeleeWeapon>())
+    {
+
+    }
+    // 투척류 무기
+    else
+        CheckForGrenadePath();
 }
 
 void AWeaponManager::Reload()
@@ -548,15 +615,16 @@ void AWeaponManager::CheckIfReloading(float _TranscurredReloadTime)
 
 void AWeaponManager::CheckContinouslyShooting(float _TranscurredShootTime)
 {
-    if (mbShooting)
+    if (bShooting)
     {
+        // 총기일 경우 쿨타임 적용
         mCurrentShootTime += _TranscurredShootTime;
 
         if (mCurrentShootTime > mShootTime)
         {
             Shoot();
             mCurrentShootTime = 0.f;
-            mbShooting        = mbChangedShootType;
+            bShooting = mbChangedShootType;
         }
     }
 }
@@ -566,9 +634,12 @@ bool AWeaponManager::IsWeaponAvailable(ECurrentWeaponType _WeaponType)
     auto p_weapon = GetWeaponByIndex(_WeaponType);
 
     if (p_weapon)
+    {
         CurrentWeaponType = _WeaponType;
-
-    return (p_weapon != nullptr);
+        return true;
+    }
+    else
+        return false;
 }
 
 int AWeaponManager::GetMaxBulletCount(ECurrentWeaponType _WeaponType)
@@ -621,6 +692,22 @@ ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* _pWeapon)
              return ECurrentWeaponType::NONE;
 }
 
+int AWeaponManager::GetWeaponType(ABaseInteraction* _pWeapon)
+{
+    // 총기일시
+    if      (auto p_gun = Cast<ACoreWeapon>(_pWeapon))
+             return (int)p_gun->WeaponType;
+
+    else if (auto p_melee = Cast<ACoreMeleeWeapon>(_pWeapon))
+             return (int)p_melee->WeaponType;
+
+    else if (auto p_throwable = Cast<ACoreThrowableWeapon>(_pWeapon))
+             return (int)p_throwable->WeaponType;
+
+    else
+        return -1;
+}
+
 void AWeaponManager::Drop(ECurrentWeaponType _WeaponType)
 {
     auto p_weapon = GetWeaponByIndex(_WeaponType);
@@ -652,59 +739,59 @@ void AWeaponManager::SetNull(ECurrentWeaponType _WeaponType)
 
 void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor, USkeletalMeshComponent* _pSkeletalMeshComp)
 {
-    ACoreWeapon*          p_FirstGunUI  = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::FIRST]);
-    ACoreWeapon*          p_SecondGunUI = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::SECOND]);
-    ACoreWeapon*          p_PistolUI    = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::PISTOL]);
-    ACoreMeleeWeapon*     p_MeleeUI     = Cast<ACoreMeleeWeapon>(_pArrActor[(int)ECurrentWeaponType::MELEE]);
-    ACoreThrowableWeapon* p_ThrowableUI = Cast<ACoreThrowableWeapon>(_pArrActor[(int)ECurrentWeaponType::THROWABLE]);
+    ACoreWeapon*          p_firstGunUI  = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::FIRST]);
+    ACoreWeapon*          p_secondGunUI = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::SECOND]);
+    ACoreWeapon*          p_pistolUI    = Cast<ACoreWeapon>(_pArrActor[(int)ECurrentWeaponType::PISTOL]);
+    ACoreMeleeWeapon*     p_meleeUI     = Cast<ACoreMeleeWeapon>(_pArrActor[(int)ECurrentWeaponType::MELEE]);
+    ACoreThrowableWeapon* p_throwableUI = Cast<ACoreThrowableWeapon>(_pArrActor[(int)ECurrentWeaponType::THROWABLE]);
 
     // 첫번째 무기
     {
         if (pFirstGun    &&
-            p_FirstGunUI &&
-            pFirstGun->WeaponType != p_FirstGunUI->WeaponType)
-            p_FirstGunUI->SkeletalMeshComp->SetSkeletalMesh(pFirstGun->SkeletalMeshComp->SkeletalMesh);
+            p_firstGunUI &&
+            pFirstGun->WeaponType != p_firstGunUI->WeaponType)
+            p_firstGunUI->SkeletalMeshComp->SetSkeletalMesh(pFirstGun->SkeletalMeshComp->SkeletalMesh);
 
         else
-            p_FirstGunUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
+            p_firstGunUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
     }
     // 두번째 무기
     {
         if (pSecondGun    &&
-            p_SecondGunUI &&
-            pSecondGun->WeaponType != p_SecondGunUI->WeaponType)
-            p_SecondGunUI->SkeletalMeshComp->SetSkeletalMesh(pSecondGun->SkeletalMeshComp->SkeletalMesh);
+            p_secondGunUI &&
+            pSecondGun->WeaponType != p_secondGunUI->WeaponType)
+            p_secondGunUI->SkeletalMeshComp->SetSkeletalMesh(pSecondGun->SkeletalMeshComp->SkeletalMesh);
 
         else
-            p_SecondGunUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
+            p_secondGunUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
     }
     // 세번째 무기
     {
         if (pPistol    &&
-            p_PistolUI &&
-            pPistol->WeaponType != p_PistolUI->WeaponType)
-            p_PistolUI->SkeletalMeshComp->SetSkeletalMesh(pPistol->SkeletalMeshComp->SkeletalMesh);
+            p_pistolUI &&
+            pPistol->WeaponType != p_pistolUI->WeaponType)
+            p_pistolUI->SkeletalMeshComp->SetSkeletalMesh(pPistol->SkeletalMeshComp->SkeletalMesh);
 
         else
-            p_PistolUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
+            p_pistolUI->SkeletalMeshComp->SetSkeletalMesh(nullptr);
     }
     // 네번째 무기
     {
         if (pMelee    &&
-            p_MeleeUI &&
-            pMelee->WeaponType != p_MeleeUI->WeaponType)
-            p_MeleeUI->StaticMeshComp->SetStaticMesh(pMelee->StaticMeshComp->GetStaticMesh());
+            p_meleeUI &&
+            pMelee->WeaponType != p_meleeUI->WeaponType)
+            p_meleeUI->StaticMeshComp->SetStaticMesh(pMelee->StaticMeshComp->GetStaticMesh());
 
         else
-            p_MeleeUI->StaticMeshComp->SetStaticMesh(nullptr);
+            p_meleeUI->StaticMeshComp->SetStaticMesh(nullptr);
     }
     // 투척무기 일 시
     {
         if (pThrowable    &&
-            p_ThrowableUI &&
-            pThrowable->WeaponType != p_ThrowableUI->WeaponType)
+            p_throwableUI &&
+            pThrowable->WeaponType != p_throwableUI->WeaponType)
         {
-            auto staticMeshComp = p_ThrowableUI->StaticMeshComp;
+            auto staticMeshComp = p_throwableUI->StaticMeshComp;
 
             if (staticMeshComp)
             {
@@ -713,7 +800,7 @@ void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor, USkeletalMesh
             }
         }
         else
-            p_ThrowableUI->StaticMeshComp->SetStaticMesh(nullptr);
+            p_throwableUI->StaticMeshComp->SetStaticMesh(nullptr);
     }
 }
 

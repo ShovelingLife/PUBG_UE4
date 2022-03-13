@@ -28,15 +28,14 @@ class USizeBox;
 class UBorder;
 class UHorizontalBox;
 
-/**
-  * \brief 아이템 슬롯 구조체
- */
+/** * \brief 아이템 슬롯 구조체 */
 USTRUCT()
 struct FsSlotItemData
 {
     GENERATED_BODY()
 
 public:
+    FString GroupType  = "";
     FString Name       = "";
     int     ImageIndex = 0;
     int     Count      = 0;
@@ -48,7 +47,7 @@ public:
       * \brief 기본 생성자 아이템 명칭 / 이미지 인덱스 / 개수 (UI매니저)
       * \param _name 아이템 명칭 \param _image_index UI 이미지 인덱스 \param _count 개수
      */
-    FsSlotItemData(FString _Name, int _ImageIndex, int _Count = 1) : Name(_Name), ImageIndex(_ImageIndex), Count(_Count) { }
+    FsSlotItemData(FString _GroupType, FString _Name, int _ImageIndex, int _Count = 1) : GroupType(_GroupType), Name(_Name), ImageIndex(_ImageIndex), Count(_Count) { }
 
     bool operator==(FsSlotItemData& _Other)
     {
@@ -67,7 +66,7 @@ public:
         this->Count      = 0;
     }
 
-    bool Is_empty()
+    bool IsEmpty()
     {
         return this->Name       == "" &&
                this->ImageIndex == 0  &&
@@ -119,4 +118,6 @@ public:
       * \param _Pos 슬롯 UI 위치 
      */
     void SetAsCursor(FVector2D _Pos);
+
+    UTexture2D* GetTexture2D(FsSlotItemData _ItemData);
 };

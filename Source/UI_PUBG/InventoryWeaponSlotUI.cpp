@@ -92,14 +92,14 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, 
 
     if (!p_slot   ||
         !p_weapon ||
-        mItemData.Is_empty())
+        mItemData.IsEmpty())
         return;
 
     // 슬롯 설정
     auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 
     if (subGameInst)
-        subGameInst->DeleHideTooltip.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
+        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
 
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData     = mItemData;
@@ -274,7 +274,7 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
     if(auto p_firstGun = mpWeaponManager->pFirstGun)
     {
         auto weaponData = p_firstGun->WeaponData;
-        FirstGunSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryWeaponTex[(int)p_firstGun->WeaponType]));
+        FirstGunSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryGunWeaponTex[(int)p_firstGun->WeaponType]));
         FirstGunNameTxt->SetText(FText::FromString(weaponData.Type));
         FirstGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
     }
@@ -282,7 +282,7 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
     if (auto p_secondGun = mpWeaponManager->pSecondGun)
     {
         auto weaponData = p_secondGun->WeaponData;
-        SecondGunSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryWeaponTex[(int)p_secondGun->WeaponType]));
+        SecondGunSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryGunWeaponTex[(int)p_secondGun->WeaponType]));
         SecondGunNameTxt->SetText(FText::FromString(weaponData.Type));
         SecondGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
     }
@@ -290,7 +290,7 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
     if (auto p_pistol = mpWeaponManager->pPistol)
     {
         auto weaponData = p_pistol->WeaponData;
-        PistolSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryWeaponTex[(int)mpWeaponManager->pPistol->WeaponType]));
+        PistolSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryGunWeaponTex[(int)mpWeaponManager->pPistol->WeaponType]));
         PistolNameTxt->SetText(FText::FromString(weaponData.Type));
         PistolBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
     }
@@ -298,14 +298,14 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
     if (auto p_throwable = mpWeaponManager->pThrowable)
     {
         auto weaponData = p_throwable->WeaponData;
-        MeleeSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryWeaponTex[(int)mpWeaponManager->pThrowable->WeaponType]));
+        MeleeSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryGunWeaponTex[(int)mpWeaponManager->pThrowable->WeaponType]));
         MeleeNameTxt->SetText(FText::FromString(weaponData.Type));
     }
     // 다섯번째 무기
     if (auto p_melee = mpWeaponManager->pMelee)
     {
         auto weaponData = p_melee->WeaponData;
-        GrenadeSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryWeaponTex[(int)mpWeaponManager->pMelee->WeaponType]));
+        GrenadeSlotImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapInventoryGunWeaponTex[(int)mpWeaponManager->pMelee->WeaponType]));
         GrenadeNameTxt->SetText(FText::FromString(weaponData.Type));
     }
 }
@@ -390,7 +390,7 @@ void UInventoryWeaponSlotUI::GetIemData(ABaseInteraction* _pWeapon)
     case ECurrentWeaponType::PISTOL:
 
         if (auto p_tmp_gun = Cast<ACoreWeapon>(_pWeapon))
-            mItemData = FsSlotItemData(p_tmp_gun->ObjectType, (int)p_tmp_gun->WeaponType);
+            mItemData = FsSlotItemData(p_tmp_gun->ObjectType, "", (int)p_tmp_gun->WeaponType);
 
         break;
 
@@ -398,7 +398,7 @@ void UInventoryWeaponSlotUI::GetIemData(ABaseInteraction* _pWeapon)
     case ECurrentWeaponType::MELEE:
 
         if (auto p_tmp_melee = Cast<ACoreMeleeWeapon>(_pWeapon))
-            mItemData = FsSlotItemData(p_tmp_melee->ObjectType, (int)p_tmp_melee->WeaponType);
+            mItemData = FsSlotItemData(p_tmp_melee->ObjectType, "", (int)p_tmp_melee->WeaponType);
 
         break;
 
@@ -406,7 +406,7 @@ void UInventoryWeaponSlotUI::GetIemData(ABaseInteraction* _pWeapon)
     case ECurrentWeaponType::THROWABLE:
 
         if (auto p_tmp_throwable = Cast<ACoreThrowableWeapon>(_pWeapon))
-            mItemData = FsSlotItemData(p_tmp_throwable->ObjectType, (int)p_tmp_throwable->WeaponType);
+            mItemData = FsSlotItemData(p_tmp_throwable->ObjectType, "", (int)p_tmp_throwable->WeaponType);
 
         break;
     }

@@ -29,10 +29,12 @@ void AInventoryManager::BeginPlay()
     InitInventoryWidget();
 
     // 캐릭터 관련 초기화
-    auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-    p_player->DeleOpenInventory.BindUFunction(this, "OpenInventory");
-    p_player->DeleCloseInventory.BindUFunction(this, "CloseInventory");
-    AttachToActor(p_player, FAttachmentTransformRules::KeepRelativeTransform);
+    if(auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0)))
+    {
+        p_player->DeleOpenInventory.BindUFunction(this, "OpenInventory");
+        p_player->DeleCloseInventory.BindUFunction(this, "CloseInventory");
+        AttachToActor(p_player, FAttachmentTransformRules::KeepRelativeTransform);
+    }
 }
 
 void AInventoryManager::Tick(float DeltaTime)

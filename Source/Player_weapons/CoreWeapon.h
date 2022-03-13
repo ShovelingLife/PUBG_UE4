@@ -31,8 +31,8 @@ public:
 
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;
-    EWeaponType   WeaponType  = EWeaponType::MAX;
-    EGunShootType ShootType   = EGunShootType::SINGLE;
+    EWeaponType   WeaponType = EWeaponType::MAX;
+    EGunShootType ShootType  = EGunShootType::SINGLE;
 
 public:
     ACoreWeapon();

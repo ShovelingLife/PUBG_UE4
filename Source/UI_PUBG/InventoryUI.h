@@ -23,10 +23,10 @@ private:
     UItemSlotUI* mpCurrentItemSlot;
 
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*          CharacterSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*          InventoryListUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*       CharacterSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*       InventoryListUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTooltipUI* TooltipUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTooltipUI*             TooltipUI;
 
 protected:
     virtual void NativeConstruct() override;

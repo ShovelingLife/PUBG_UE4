@@ -104,20 +104,25 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
 
 void UCharacterSlotUI::InitSlotUI()
 {
-    // 장비 관련
-    HeadSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    BodyArmorSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    BackpackSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    BeltSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    TArray< UItemSlotUI* > p_arrSlotUI
+    {
+        // 장비 관련
+        HeadSlotUI,
+        BodyArmorSlotUI,
+        BackpackSlotUI,
+        BeltSlotUI,
 
-    // 스킨 관련
-    HatSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    MaskSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    CoatSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    ShirtSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    GlovesSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    PantsSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    ShoesSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+        // 스킨 관련
+        HatSlotUI,
+        MaskSlotUI,
+        CoatSlotUI,
+        ShirtSlotUI,
+        GlovesSlotUI,
+        PantsSlotUI,
+        ShoesSlotUI
+    };
+    for(const auto item : p_arrSlotUI)
+        item->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UCharacterSlotUI::UpdateHighlightImg()

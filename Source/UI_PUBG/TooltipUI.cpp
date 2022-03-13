@@ -30,5 +30,5 @@ void UTooltipUI::SetData(UItemSlotUI* _pItemSlotUI)
     // 데이터 설정
     auto data = _pItemSlotUI->ItemData;
     NameTxt->SetText(FText::FromString(data.Name));
-    ItemImg->SetBrushFromTexture(Cast<UTexture2D>(AUI_manager::MapInventoryWeaponTex[data.ImageIndex]));
+    ItemImg->SetBrushFromTexture(_pItemSlotUI->GetTexture2D(data));
 }
