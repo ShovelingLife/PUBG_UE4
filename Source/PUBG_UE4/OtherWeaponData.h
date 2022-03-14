@@ -1,7 +1,7 @@
-Ôªø/**
+/**
  * \file Other_weapon_data.h
  *
- * \brief Í∏∞ÌÉÄ Î¨¥Í∏∞ Îç∞Ïù¥ÌÑ∞
+ * \brief ±‚≈∏ π´±‚ µ•¿Ã≈Õ
  *
  * \ingroup PUBG_UE4
  *
@@ -10,46 +10,39 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
 #include "OtherWeaponData.generated.h"
 
-/**
-  * \brief CSVÎ°úÎ∂ÄÌÑ∞ Í∞ÄÏßÄÍ≥†Ïò¨ Í∏∞ÌÉÄ Î¨¥Í∏∞(Ìà¨Ï≤ôÎ•ò,Í∑ºÏ†ë) Ï†ïÎ≥¥ Íµ¨Ï°∞Ï≤¥
- */
+ /**
+   * \brief CSV∑Œ∫Œ≈Õ ∞°¡ˆ∞Ìø√ ±‚≈∏ π´±‚(≈ı√¥∑˘,±Ÿ¡¢) ¡§∫∏ ±∏¡∂√º
+  */
 USTRUCT(BlueprintType)
 struct FsOtherWeaponData : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** \brief Í∏∞ÌÉÄ Ïª¥Ìè¨ÎÑåÌä∏ Í≤ΩÎ°ú Í¥ÄÎ†® */
+	/** \brief ±‚≈∏ ƒƒ∆˜≥Õ∆Æ ∞Ê∑Œ ∞¸∑√ */
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString Type		 = "";
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString GroupType	 = "";
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString AudioPath	 = "";
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString ParticlePath = "";
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString AudioPath	 = "";
+    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString ParticlePath = "";
+    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FString Description  = "";
 
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FVector MeshPos = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float MeshRotationX = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float MeshSize = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) FVector MeshPos		= FVector::ZeroVector;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float MeshRotationX = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float MeshSize		= 0.f;
 
-	/** \brief Ï∂©ÎèåÏ≤¥ Ïª¥Ìè¨ÎÑåÌä∏ Í¥ÄÎ†® */
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderPosZ = 0.f;
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderHeight = 0.f;
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderSize = 0.f;
+	/** \brief √Êµπ√º ƒƒ∆˜≥Õ∆Æ ∞¸∑√ */
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderPosZ	 = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderHeight = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderSize	 = 0.f;
 
-	/** \brief Î¨¥Í∏∞ Ï†ïÎ≥¥ Í¥ÄÎ†® */
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float Damage = 0.f;
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ExplosionRadius = 0.f;
-    UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ExplosionTime = 0.f;
-    FString MeshPath = "";
-	
+	/** \brief π´±‚ ¡§∫∏ ∞¸∑√ */
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float Damage		  = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ExplosionRadius = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ExplosionTime	  = 0.f;
+	FString MeshPath = "";
 
 public:
 	FsOtherWeaponData() = default;
-};
-
-UCLASS()
-class PUBG_UE4_API AOther_weapon_data : public AActor
-{
-	GENERATED_BODY()	
 };

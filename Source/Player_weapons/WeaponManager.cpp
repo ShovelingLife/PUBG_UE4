@@ -264,7 +264,7 @@ void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
     if (_pWeapon->IsA<ACoreWeapon>())
     {
         // 권총일 시 무조건 3번 슬롯
-        if (Cast<ACoreWeapon>(_pWeapon)->WeaponData.GroupType == "Handgun")
+        if (Cast<ACoreWeapon>(_pWeapon)->WeaponData.GroupType == "HandGun")
         {
             if (!pPistol)
                 Attach(p_collidedWeapon, "HandGunSock", _bShouldCheck);
@@ -491,14 +491,17 @@ bool AWeaponManager::Swap(ABaseInteraction* _pOldWeapon, ABaseInteraction* _pNew
 {
     auto    p_oldWeapon = Cast<ACoreWeapon>(_pOldWeapon);
     auto    p_newWeapon = Cast<ACoreWeapon>(_pNewWeapon);
-    FString weaponType  = p_oldWeapon->WeaponData.GroupType;
+    FString weaponType  = "";
+
+    if (p_oldWeapon)
+        weaponType = p_oldWeapon->WeaponData.GroupType;
 
     switch (_WeaponType)
     {
     case ECurrentWeaponType::FIRST:
     case ECurrentWeaponType::SECOND:
 
-        if (weaponType == "Handgun" ||
+        if (weaponType == "HandGun" ||
             weaponType == "Melee" ||
             weaponType == "Explosive")
             return false;
@@ -527,7 +530,7 @@ bool AWeaponManager::Swap(ABaseInteraction* _pOldWeapon, ABaseInteraction* _pNew
 
     case ECurrentWeaponType::PISTOL:
 
-        if (weaponType != "Handgun")
+        if (weaponType != "HandGun")
             return false;
 
         if (p_oldWeapon != pPistol)
@@ -567,17 +570,17 @@ void AWeaponManager::ChangeShootMode()
         FString weaponGroup = p_gun->WeaponData.GroupType;
 
         // 단발/점사/연사 가능
-        if      (weaponGroup == "Assault" ||
+        if      (weaponGroup == "AssaultGun" ||
                  weaponGroup == "SMG")
                  maxGunShootType = (int)EGunShootType::CONSECUTIVE;
 
         // 단발/점사 가능
-        else if (weaponGroup == "Shotgun")
+        else if (weaponGroup == "ShotGun")
                  maxGunShootType = (int)EGunShootType::BURST;
 
         // 오직 단발만 가능
-        else if (weaponGroup == "Handgun" ||
-                 weaponGroup == "Sniper"  ||
+        else if (weaponGroup == "HandGun" ||
+                 weaponGroup == "SniperGun"  ||
                  weaponGroup == "Special")
                  maxGunShootType = (int)EGunShootType::SINGLE;
 

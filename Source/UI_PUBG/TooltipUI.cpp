@@ -22,13 +22,21 @@ void UTooltipUI::NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime)
     }
 }
 
-void UTooltipUI::SetData(UItemSlotUI* _pItemSlotUI)
+void UTooltipUI::SetData(FsSlotItemData _SlotItemData)
 {
-    if (!_pItemSlotUI)
-        return;
-
     // 데이터 설정
-    auto data = _pItemSlotUI->ItemData;
-    NameTxt->SetText(FText::FromString(data.Name));
-    ItemImg->SetBrushFromTexture(_pItemSlotUI->GetTexture2D(data));
+    ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(_SlotItemData));
+
+    Chaos::Pair<UTextBlock*, FString> arrTextPair[]
+    {
+        Chaos::MakePair<UTextBlock*, FString>(NameTxt, _SlotItemData.Name),
+        Chaos::MakePair<UTextBlock*, FString>(CategoryTxt, _SlotItemData.Category),
+        Chaos::MakePair<UTextBlock*, FString>(DescriptionTxt, _SlotItemData.Description),
+        Chaos::MakePair<UTextBlock*, FString>(CapacityTxt, (_SlotItemData.Capacity == 0) ? "" : FString::FromInt(_SlotItemData.Capacity))
+    };
+    for(auto item : arrTextPair)
+    {
+        if (item.First)
+            item.First->SetText(FText::FromString(item.Second));
+    }
 }

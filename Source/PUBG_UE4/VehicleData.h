@@ -1,7 +1,7 @@
-Ôªø/**
+/**
  * \file Vehicle_data.h
  *
- * \brief Ï∞®Îüâ Îç∞Ïù¥ÌÑ∞
+ * \brief ¬˜∑Æ µ•¿Ã≈Õ
  *
  * \ingroup PUBG_UE4
  *
@@ -10,21 +10,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
 #include "VehicleData.generated.h"
- 
-/**
-  * \brief CSVÎ°úÎ∂ÄÌÑ∞ Í∞ÄÏßÄÍ≥†Ïò¨ Ï∞®Îüâ Ï†ïÎ≥¥ Íµ¨Ï°∞Ï≤¥\
- */
+
+ /**
+   * \brief CSV∑Œ∫Œ≈Õ ∞°¡ˆ∞Ìø√ ¬˜∑Æ ¡§∫∏ ±∏¡∂√º\
+  */
 USTRUCT(BlueprintType)
 struct FsVehicleData : public FTableRowBase
 {
     GENERATED_BODY()
 
-    /**
-      * \brief Í≥µÌÜµ Ï∞®Îüâ Îç∞Ïù¥ÌÑ∞ 
-     */
+    /** \brief ∞¯≈Î ¬˜∑Æ µ•¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FString Type                    = "";
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FString MeshPath                = "";
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FString AudioPath               = "";
@@ -33,53 +30,35 @@ struct FsVehicleData : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector InteractionColliderSize = FVector::ZeroVector;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector InteractionColliderPos  = FVector::ZeroVector;
 
-    /**
-      * \brief Ïπ¥Î©îÎùº Îç∞Ïù¥ÌÑ∞ 
-     */
+    /** \brief ƒ´∏ﬁ∂Û µ•¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector CameraLocation = FVector::ZeroVector;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector CameraRotation = FVector::ZeroVector;
 
-    /**
-      * \brief ÌîåÎ†àÏù¥Ïñ¥ 1 Îç∞Ïù¥ÌÑ∞
-     */
+    /** \brief «√∑π¿ÃæÓ 1 µ•¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation1       = FVector::ZeroVector;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation1 = FVector::ZeroVector;
-                     
-    /**
-      * \brief ÌîåÎ†àÏù¥Ïñ¥ 2 Îç∞Ïù¥ÌÑ∞
-     */
+
+    /** \brief «√∑π¿ÃæÓ 2 µ•¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation2       = FVector::ZeroVector;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation2 = FVector::ZeroVector;
-                                       
-    /**
-      * \brief ÌîåÎ†àÏù¥Ïñ¥ 3 Îç∞Ïù¥ÌÑ∞
-     */
+
+    /** \brief «√∑π¿ÃæÓ 3 µ•¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation3       = FVector::ZeroVector;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation3 = FVector::ZeroVector;
-                                      
-    /**
-      * \brief ÌîåÎ†àÏù¥Ïñ¥ 4 Îç∞Ïù¥ÌÑ∞
-     */
+
+    /** \brief «√∑π¿ÃæÓ 4 µ•¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation4       = FVector::ZeroVector;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation4 = FVector::ZeroVector;
 
-    /**
-      * \brief Í∏∞ÌÉÄ ÌÖåÏù¥ÌÑ∞
-     */
+    /** \brief ±‚≈∏ ≈◊¿Ã≈Õ */
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) float SpringArmLength = 0.f;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) int   MaxSeater       = 0;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) int   Durability      = 0;
     UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) int   Speed           = 0;
 
-    FString                     AnimInstancePath = "";
+    FString AnimInstancePath = "";
     std::pair<FVector, FVector> ArrPlayerSeatPos[4];
 
 public:
     FsVehicleData() = default;
-};
-
-UCLASS()
-class PUBG_UE4_API AVehicle_data : public AActor
-{
-	GENERATED_BODY()
 };

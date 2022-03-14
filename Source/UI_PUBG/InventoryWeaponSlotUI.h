@@ -174,8 +174,6 @@ private:
 
     void ResetHighlightImg();
 
-    void GetIemData(ABaseInteraction* _pWeapon);
-
     void HideAllSlotUI_background();
 
 public:

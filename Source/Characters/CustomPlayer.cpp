@@ -518,7 +518,7 @@ void ACustomPlayer::ChangeShootMode()
     mpWeaponManager->ChangeShootMode();
 }
 
-void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, int _WeaponType /* = 0 */)
+void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, ECurrentWeaponType _WeaponType /* = ECurrentWeaponType::NONE */)
 {
     auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
     bool bPlayAudio = false;
@@ -535,8 +535,8 @@ void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, int _WeaponTyp
                      bPlayAudio = mpWeaponManager->ScrollSelect(_Direction);
 
             // 키보드 숫자 키로 무기 선택
-            else if (_WeaponType > 0)
-                     bPlayAudio = mpWeaponManager->IsWeaponAvailable((ECurrentWeaponType)_WeaponType);
+            else if ((int)_WeaponType > 0)
+                     bPlayAudio = mpWeaponManager->IsWeaponAvailable((_WeaponType));
 
             if (bPlayAudio)
                 p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);

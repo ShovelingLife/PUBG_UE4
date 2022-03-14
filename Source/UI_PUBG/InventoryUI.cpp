@@ -17,9 +17,6 @@ void UInventoryUI::NativeConstruct()
     
     if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
         subGameInst->DeleSetTooltipVisibility.BindUFunction(this, "SetTooltipVisibility");
-
-    /*if (!mpUI_manager)
-        mpUI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));*/
 }
 
 void UInventoryUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
@@ -30,9 +27,12 @@ void UInventoryUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
 
 void UInventoryUI::SetTooltipVisibility(UItemSlotUI* _pItemSlotUI, ESlateVisibility _Visibility)
 {
-    TooltipUI->SetVisibility(_Visibility);
-    TooltipUI->SetData(_pItemSlotUI);
-    mpCurrentItemSlot = _pItemSlotUI;
+    if (_pItemSlotUI)
+    {
+        TooltipUI->SetVisibility(_Visibility);
+        TooltipUI->SetData(_pItemSlotUI->ItemData);
+        mpCurrentItemSlot = _pItemSlotUI;
+    }
 }
 
 void UInventoryUI::CheckTooltipMouseDistance()

@@ -2,5 +2,5 @@
 
 ADoubleBarrel::ADoubleBarrel()
 {
-    Init(EWeaponType::Double_barrel);
+    Init(EWeaponType::DOUBLE_BARREL);
 }

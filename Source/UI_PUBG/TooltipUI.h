@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "SlotItemData.h"
 #include "TooltipUI.generated.h"
 
 class UImage;
@@ -23,5 +24,5 @@ protected:
 	virtual void NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime) override;
 
 public:
-	void SetData(class UItemSlotUI* _pItemSlotUI);
+	void SetData(FsSlotItemData _SlotItemData);
 };

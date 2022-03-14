@@ -11,6 +11,7 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/MyEnum.h"
+#include "Player_weapons/WeaponEnum.h"
 #include "GameFramework/Character.h"
 #include "CustomPlayer.generated.h"
 
@@ -96,75 +97,47 @@ private:
 
 // 초기화 함수들
 private:
-    /**
-     * \brief 플레이어에 대한 정보 갱신
-     */
+    /** \brief 플레이어에 대한 정보 갱신 */
     void UpdatePlayerSettings();
 
-    /**
-     * \brief 카메라 컴포넌트 초기화
-     */
+    /** \brief 카메라 컴포넌트 초기화 */
     void InitCameraComp();
 
-    /**
-     * \brief 메시 컴포넌트 초기화
-     */
+    /** \brief 메시 컴포넌트 초기화 */
     void InitMeshComp();
 
-    /**
-     * \brief 오디오 컴포넌트 초기화
-     */
+    /** \brief 오디오 컴포넌트 초기화 */
     void InitAudioComp();
 
-    /**
-     * \brief 애님 인스턴스 초기화
-     */
+    /** \brief 애님 인스턴스 초기화 */
     void InitAnimInstance();
 
-    /**
-     * \brief 파티클 시스템 초기화
-     */
+    /** \brief 파티클 시스템 초기화 */
     void InitParticleComp();
 
 private:
-    /**
-     * \brief 플레이어 움직임 감지
-     */
+    /** \brief 플레이어 움직임 감지 */
     void CheckIfMoving();
 
-    /**
-     * \brief 충돌한 오브젝트 확인 (아이템) (레이캐스트 : 플레이어 발 밑)
-     */
+    /** \brief 충돌한 오브젝트 확인 (아이템) (레이캐스트 : 플레이어 발 밑) */
     void CheckForObject();
 
-    /**
-     * \brief 근처에 차량이 있는지 감지 (레이캐스트 : 플레이어 상체)
-     */
+    /** \brief 근처에 차량이 있는지 감지 (레이캐스트 : 플레이어 상체) */
     void CheckIfVehicleNear();
 
-    /**
-     * \brief 상호 작용 중일 시 (무기 줍기/차량 탑승)
-     */
+    /** \brief 상호 작용 중일 시 (무기 줍기/차량 탑승) */
     void TryToInteract();
 
-    /**
-     * \brief F키 눌렀을 시 상호 작용
-     */
+    /** \brief F키 눌렀을 시 상호 작용 */
     void BeginInteract() { mbInteracting = true; }
 
-    /**
-     * \brief F키를 뗐을 시 
-     */
+    /** \brief F키를 뗐을 시 */
     void EndInteract()   { mbInteracting = false; }
   
-    /**
-     * \brief 앞 뒤로 움직임
-     */
+    /** \brief 앞 뒤로 움직임 */
     void MoveForwardBack(float);
 
-    /**
-     * \brief 좌 우로 움직임
-     */
+    /** \brief 좌 우로 움직임 */
     void MoveLeftRight(float);
 
     /**
@@ -179,64 +152,41 @@ private:
      */
     void Turn(float _value);
 
-    /**
-     * \brief 점프
-     */
+    /** \brief 점프 */
     void CustomJump();
 
-    /**
-     * \brief 숙임
-     */
+    /** \brief 숙임 */
     void CustomCrouch();
 
-    /**
-     * \brief 엎드림
-     */
+    /** \brief 엎드림 */
     void Proning();
 
-    /**
-     * \brief 뛰기 시작함
-     */
+    /** \brief 뛰기 시작함 */
     void BeginSprint();
 
-    /**
-     * \brief 뛰다 멈춤
-     */
+    /** \brief 뛰다 멈춤 */
     void EndSprint();
-
 
     // ------- UI 관련 -------
 
-    /**
-     * \brief 인벤토리 열음/닫음
-     */
+    /** \brief 인벤토리 열음/닫음 */
     void OpenInventory();
 
     // ------- 무기 관련 -------
 
-    /**
-     * \brief 사격
-     */
+    /** \brief 사격 */
     void BeginShooting();
 
-    /**
-     * \brief 사격 중지
-     */
+    /** \brief 사격 중지 */
     void EndShooting();
 
-    /**
-     * \brief 재장전
-     */
+    /** \brief 재장전 */
     void Reload();
 
-    /**
-     * \brief 조준
-     */
+    /** \brief 조준 */
     void Aim();
 
-    /**
-     * \brief 격발 모드 변경
-     */
+    /** \brief 격발 모드 변경 */
     void ChangeShootMode();
 
     /** \brief 마우스 위로 스크롤 */
@@ -246,21 +196,21 @@ private:
     void SwapScrollingDown() { CheckForWeapon("Down"); }
 
     /** \brief 첫번째 무기 장착 */
-    void EquipFirstWeapon() { CheckForWeapon("", 1); }
+    void EquipFirstWeapon() { CheckForWeapon("", ECurrentWeaponType::FIRST); }
 
     /** \brief 두번째 무기 장착 */
-    void EquipSecondWeapon() { CheckForWeapon("", 2); }
+    void EquipSecondWeapon() { CheckForWeapon("", ECurrentWeaponType::SECOND); }
 
     /** \brief 세번째 무기 장착 */
-    void EquipThirdWeapon() { CheckForWeapon("", 3); }
+    void EquipThirdWeapon() { CheckForWeapon("", ECurrentWeaponType::PISTOL); }
 
     /** \brief 네번째 무기 장착 */
-    void EquipFourthWeapon() { CheckForWeapon("", 4); }
+    void EquipFourthWeapon() { CheckForWeapon("", ECurrentWeaponType::MELEE); }
 
     /** \brief 다섯번째 무기 장착 */
-    void EquipFifthWeapon() { CheckForWeapon("", 5); }
+    void EquipFifthWeapon() { CheckForWeapon("", ECurrentWeaponType::THROWABLE); }
 
-    void CheckForWeapon(FString _Direction = "", int _WeaponType = 0);
+    void CheckForWeapon(FString _Direction = "", ECurrentWeaponType _CurrentWeaponType = ECurrentWeaponType::NONE);
 
 public:
     /**

@@ -130,8 +130,6 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
         p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
         return false;
 
-    //p_slot->bShowTooltip = false;
-
     // 마우스 위치 구하기
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
 
@@ -182,15 +180,19 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* _pSlotObj)
     FVector2D movePos = FVector2D::ZeroVector, dummy_vec;
     auto      cachedGeometry = _pSlotObj->GetCachedGeometry();
     mpSlotObj = _pSlotObj;
-    USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);
-    movePos.X = 0.f;
-
-    if (FMath::FloorToInt(movePos.Y) > 91.f)
-        movePos.Y += 5.f;
-
+    USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);   
+    
+    // 리스트 판별
+    if (movePos.X == 100.f)
+    {
+        movePos.X = 0.f;
+        movePos.Y = ((int)movePos.Y > 86.f) ? movePos.Y + 5.f : 86.f;
+    }
     else
-        movePos.Y = 86.f;
-
+    {
+        movePos.X = 255.f;
+        movePos.Y = ((int)movePos.Y > 82.f) ? movePos.Y + 5.f : 82.f;
+    }
     if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
         p_canvasPanelSlot->SetPosition(movePos);
 
@@ -252,8 +254,7 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* _pWeapon)
     if (imageIndex == -1) // 예외 처리
         return;
 
-    FsSlotItemData slotItemData(_pWeapon->ObjectGroupType, _pWeapon->ObjectType, imageIndex);
-    p_slot->ItemData     = slotItemData;
+    p_slot->ItemData     = FsSlotItemData::GetDataFrom(_pWeapon);
     p_slot->pDraggedItem = _pWeapon;
     p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");

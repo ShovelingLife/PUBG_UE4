@@ -158,3 +158,34 @@ void AUI_manager::UpdateInteractionUI(UWidgetComponent* _pWidgetComp, FString _T
     if (p_interactionUI)
         p_interactionUI->TitleTxt->SetText(FText::FromString(_Type));
 }
+
+UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData _ItemData)
+{
+    UTexture* weaponTex       = nullptr;
+    FString   weaponGroupType = _ItemData.Category;
+    int       imageIndex      = _ItemData.ImageIndex;
+
+    // 투척류 또는 근접무기일 시
+    if (weaponGroupType == "Explosive" ||
+        weaponGroupType == "Melee")
+    {
+        if (imageIndex < MapInventoryOtherWeaponTex.Num())
+            weaponTex = MapInventoryOtherWeaponTex[imageIndex];
+    }
+    // 총기 무기일 시
+    else
+    {
+        if (imageIndex < MapInventoryGunWeaponTex.Num())
+            weaponTex = MapInventoryGunWeaponTex[imageIndex];
+    }
+    return Cast<UTexture2D>(weaponTex);
+}
+
+UTexture2D* AUI_manager::GetTexture2D(int _Index, FString _Type /* = "" */)
+{
+    if (_Type == "Gun")
+        return (_Index < MapInventoryGunWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryGunWeaponTex[_Index]) : nullptr;
+
+    else
+        return (_Index < MapInventoryOtherWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryOtherWeaponTex[_Index]) : nullptr;
+}

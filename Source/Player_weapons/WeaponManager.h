@@ -133,9 +133,7 @@ public:
 
 	bool Swap(ABaseInteraction* _p_old_weapon, ABaseInteraction* _p_new_weapon = nullptr, ECurrentWeaponType _weapon_type = ECurrentWeaponType::NONE);
 
-	/**
-	  * \brief 착용 중인 무기를 체크함 
-	 */
+	/** \brief 착용 중인 무기를 체크함 */
 	void ChangeShootMode();
 
 	// 미구현 상태

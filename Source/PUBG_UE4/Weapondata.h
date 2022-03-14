@@ -1,7 +1,7 @@
-Ôªø/**
+/**
  * \file Weapon_data.h
  *
- * \brief Î¨¥Í∏∞ Îç∞Ïù¥ÌÑ∞
+ * \brief π´±‚ µ•¿Ã≈Õ
  *
  * \ingroup PUBG_UE4
  *
@@ -10,13 +10,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
 #include "WeaponData.generated.h"
 
-/**
-  * \brief CSVÎ°úÎ∂ÄÌÑ∞ Í∞ÄÏßÄÍ≥†Ïò¨ Î¨¥Í∏∞ Ï†ïÎ≥¥ Íµ¨Ï°∞Ï≤¥
- */
+ /**
+   * \brief CSV∑Œ∫Œ≈Õ ∞°¡ˆ∞Ìø√ π´±‚ ¡§∫∏ ±∏¡∂√º
+  */
 USTRUCT()
 struct FsWeaponData : public FTableRowBase
 {
@@ -25,6 +24,7 @@ struct FsWeaponData : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString Type           = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString GroupType      = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString BulletType     = "";
+    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString Description    = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString MeshPath       = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString IconPath       = "";
     UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString SlotIconPath   = "";
@@ -41,10 +41,4 @@ struct FsWeaponData : public FTableRowBase
 
 public:
     FsWeaponData() = default;
-};
-
-UCLASS()
-class PUBG_UE4_API AWeapon_data : public AActor
-{
-	GENERATED_BODY()
 };

@@ -1,18 +1,17 @@
-ï»¿#pragma once
-
+#pragma once
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "WeaponEnum.generated.h"
 
-/** 
- * \brief í˜„ì¬ ì°©ìš© ì¤‘ì¸ ë¬´ê¸° \n
- * 
- * FIRST     ì²«ë²ˆì§¸ ì´ \n
- * SECOND    ë‘ë²ˆì§¸ ì´ \n
- * PISTOL    ê¶Œì´ \n
- * MELEE     ê·¼ì ‘ë¥˜ \n
- * THROWABLE íˆ¬ì²™ë¥˜ \n
+/**
+ * \brief ÇöÀç Âø¿ë ÁßÀÎ ¹«±â \n
+ *
+ * FIRST     Ã¹¹øÂ° ÃÑ \n
+ * SECOND    µÎ¹øÂ° ÃÑ \n
+ * PISTOL    ±ÇÃÑ \n
+ * MELEE     ±ÙÁ¢·ù \n
+ * THROWABLE ÅõÃ´·ù \n
  */
+UENUM()
 enum class ECurrentWeaponType
 {
     FIRST = 1,
@@ -23,87 +22,90 @@ enum class ECurrentWeaponType
     NONE
 };
 
-/** 
- * \brief ë¶€ì†í’ˆ ì¢…ë¥˜ \n
+/**
+ * \brief ºÎ¼ÓÇ° Á¾·ù \n
  */
-enum class EAttachmentType : uint8
+UENUM()
+enum class EAttachmentType
 {
-
+    NONE
 };
 
-/** 
- * \brief ì´ê¸° ì¢…ë¥˜ \n
- * 
- * ------- ì†Œì´ : ìµœëŒ€ ì´ì•Œ 30 ------- \n
- * 
+/**
+ * \brief ÃÑ±â Á¾·ù \n
+ *
+ * ------- ¼ÒÃÑ : ÃÖ´ë ÃÑ¾Ë 30 ------- \n
+ *
  * C7 \n
  * LS80 \n
  * M1 \n
- * 
- * ------- ê¶Œì´ : ìµœëŒ€ ì´ì•Œ 40 ------- \n
- * 
- * Karos \n
+ *
+ * ------- ±ÇÃÑ : ÃÖ´ë ÃÑ¾Ë 40 ------- \n
+ *
+ * KAROS \n
  * RogerLR220 \n
- * 
- * ------- ì‚°íƒ„ì´ : ìµœëŒ€ ì´ì•Œ 10 ------- \n
- * 
- * Double_barrel \n
+ *
+ * ------- »êÅºÃÑ : ÃÖ´ë ÃÑ¾Ë 10 ------- \n
+ *
+ * DOUBLE_BARREL \n
  * SK12 \n
- * 
- * ------- SMG : ìµœëŒ€ ì´ì•Œ 50 ------- \n
- * 
+ *
+ * ------- SMG : ÃÖ´ë ÃÑ¾Ë 50 ------- \n
+ *
  * EON \n
  * PX_70 \n
- * 
- * ------- ì €ê²©ì´ : ìµœëŒ€ ì´ì•Œ 5 ------- \n
- * 
- * Ayakashi \n
+ *
+ * ------- Àú°İÃÑ : ÃÖ´ë ÃÑ¾Ë 5 ------- \n
+ *
+ * AYAKASHI \n
  * VSS \n
- * 
- * ------- ê¸°íƒ€ : ìµœëŒ€ ì´ì•Œ ìƒì´ ------- \n
- * 
- * RPG_17 / ì´ì•Œ ê°œìˆ˜ : 5 \n
- * Crossbow / ì´ì•Œ ê°œìˆ˜ : 10 \n
+ *
+ * ------- ±âÅ¸ : ÃÖ´ë ÃÑ¾Ë »óÀÌ ------- \n
+ *
+ * RPG_17 / ÃÑ¾Ë °³¼ö : 5 \n
+ * CROSSBOW / ÃÑ¾Ë °³¼ö : 10 \n
  */
-enum class EWeaponType : uint8
+UENUM()
+enum class EWeaponType
 {
     C7,
     LS80,
     M1,
-    Karos,
-    RogerLR220,
-    Double_barrel,
+    KAROS,
+    ROGER_LR220,
+    DOUBLE_BARREL,
     SK12,
     EON,
     PX_70,
-    Ayakashi,
+    AYAKASHI,
     VSS,
     RPG_17,
-    Crossbow,
+    CROSSBOW,
     MAX
 };
 
 /**
- * \brief íˆ¬ì²™ë¥˜ ì¢…ë¥˜ \n
+ * \brief ÅõÃ´·ù Á¾·ù \n
  *
- * ------- ì¼ë°˜ ìˆ˜ë¥˜íƒ„ : ë°ë¯¸ì§€ ìƒì´ / ë²”ìœ„ 100 / ì§€ì† ì‹œê°„ 0 ------- \n
+ * ------- ÀÏ¹İ ¼ö·ùÅº : µ¥¹ÌÁö »óÀÌ / ¹üÀ§ 100 / Áö¼Ó ½Ã°£ 0 ------- \n
  *
- * Grenade_fragmentation1 / ë°ë¯¸ì§€ : 50
- * Grenade_fragmentation2 / ë°ë¯¸ì§€ : 100
- * Grenade_stick          / ë°ë¯¸ì§€ : 75
+ * Grenade_fragmentation1 / µ¥¹ÌÁö : 50
+ * Grenade_fragmentation2 / µ¥¹ÌÁö : 100
+ * Grenade_stick          / µ¥¹ÌÁö : 75
  *
- * ------- íŠ¹ìˆ˜ ìˆ˜ë¥˜íƒ„ : ë°ë¯¸ì§€ 0 / ë²”ìœ„ ìƒì´ / ì§€ì† ì‹œê°„ ìƒì´ ------- \n
+ * ------- Æ¯¼ö ¼ö·ùÅº : µ¥¹ÌÁö 0 / ¹üÀ§ »óÀÌ / Áö¼Ó ½Ã°£ »óÀÌ ------- \n
  *
- * Grenade_illumination / ë²”ìœ„ : 100, ì§€ì† ì‹œê°„ : 3ì´ˆ \n
- * Grenade_gray_smoke   / ë²”ìœ„ : 100, ì§€ì† ì‹œê°„ : 5ì´ˆ \n
- * Grenade_red_smoke    / ë²”ìœ„ : 100, ì§€ì† ì‹œê°„ : 7ì´ˆ \n
+ * Grenade_illumination / ¹üÀ§ : 100, Áö¼Ó ½Ã°£ : 3ÃÊ \n
+ * Grenade_gray_smoke   / ¹üÀ§ : 100, Áö¼Ó ½Ã°£ : 5ÃÊ \n
+ * Grenade_red_smoke    / ¹üÀ§ : 100, Áö¼Ó ½Ã°£ : 7ÃÊ \n
  *
- * ------- ê´‘ë²”ìœ„ ìˆ˜ë¥˜íƒ„ : ë°ë¯¸ì§€ ìƒì´ / ë²”ìœ„ ìƒì´ / ì§€ì† ì‹œê°„ ìƒì´ ------- \n
+ * ------- ±¤¹üÀ§ ¼ö·ùÅº : µ¥¹ÌÁö »óÀÌ / ¹üÀ§ »óÀÌ / Áö¼Ó ½Ã°£ »óÀÌ ------- \n
  *
- * Molotov /  ë°ë¯¸ì§€ : 5,   ë²”ìœ„ : 100, ì§€ì† ì‹œê°„ : 10ì´ˆ
- * Claymore / ë°ë¯¸ì§€ : 200, ë²”ìœ„ : 200
+ * Molotov /  µ¥¹ÌÁö : 5,   ¹üÀ§ : 100, Áö¼Ó ½Ã°£ : 10ÃÊ
+ * Claymore / µ¥¹ÌÁö : 200, ¹üÀ§ : 200
  */
-enum class EThrowableWeaponType : uint8
+UENUM()
+enum class EThrowableWeaponType
 {
     FRAGMENTATION1,
     FRAGMENTATION2,
@@ -117,33 +119,29 @@ enum class EThrowableWeaponType : uint8
 };
 
 /**
-  * \brief ê·¼ì ‘ ë¬´ê¸° ì¢…ë¥˜ \n
-  * PAN í›„ë¼ì´íŒ¬ \n
-  * KNIFE ì¹¼ \n
+  * \brief ±ÙÁ¢ ¹«±â Á¾·ù \n
+  * PAN ÈÄ¶óÀÌÆÒ \n
+  * KNIFE Ä® \n
  */
-enum class EMeleeWeaponType : uint8
+UENUM()
+enum class EMeleeWeaponType
 {
-    PAN = (uint8)EThrowableWeaponType::MAX,
+    PAN = (int)EThrowableWeaponType::MAX,
     KNIFE,
     MAX
 };
 
-/** \brief ì´ ê²©ë°œ ì¢…ë¥˜ \n
- * 
- * SINGLE      ë‹¨ë°œ \n
- * BURST       ì ì‚¬ \n
- * CONSECUTIVE ì—°ì‚¬ \n
+/** \brief ÃÑ °İ¹ß Á¾·ù \n
+ *
+ * SINGLE      ´Ü¹ß \n
+ * BURST       Á¡»ç \n
+ * CONSECUTIVE ¿¬»ç \n
  */
+UENUM()
 enum class EGunShootType
 {
     SINGLE,
     BURST,
     CONSECUTIVE,
     MAX
-};
-
-UCLASS()
-class PLAYER_WEAPONS_API AWeaponEnum : public AActor
-{
-	GENERATED_BODY()
 };

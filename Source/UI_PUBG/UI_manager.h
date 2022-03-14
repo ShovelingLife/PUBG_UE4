@@ -11,6 +11,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SlotItemData.h"
+#include "PUBG_UE4/WeaponData.h"
+#include "PUBG_UE4/OtherWeaponData.h"
 #include "UI_manager.generated.h"
 
 class UPlayerUI;
@@ -107,4 +110,8 @@ public:
      */
     UFUNCTION()
     void UpdateInteractionUI(class UWidgetComponent* _widget_comp, FString _title);
+
+    static UTexture2D* GetTexture2D(FsSlotItemData _ItemData);
+
+    static UTexture2D* GetTexture2D(int _Index, FString _Type = "");
 };

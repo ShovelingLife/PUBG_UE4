@@ -1,7 +1,7 @@
-ï»¿/**
+/**
  * \file My_enum.h
  *
- * \brief ê²Œì„ ë‚´ ì“°ì—¬ì§ˆ ì—´ê±°í˜• ê´€ë¦¬
+ * \brief °ÔÀÓ ³» ¾²¿©Áú ¿­°ÅÇü °ü¸®
  *
  * \ingroup PUBG_UE4
  *
@@ -10,12 +10,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "MyEnum.generated.h"
 
-/**
-  * \brief í”Œë ˆì´ì–´ ìƒíƒœ ê´€ë ¨
- */
+ /**
+   * \brief ÇÃ·¹ÀÌ¾î »óÅÂ °ü·Ã
+  */
+UENUM()
 enum class EPlayerState
 {
     IDLE,
@@ -34,29 +34,31 @@ enum class EPlayerState
     AIM_WALK,
     SPRINT_JUMP,
     CROUCH_AIM,
-    PRONING_AIM,
-    TEST
+    PRONING_AIM
 };
 
 /**
-  * \brief ì„­ì·¨ ì•„ì´í…œ ì¢…ë¥˜
+  * \brief ¼·Ãë ¾ÆÀÌÅÛ Á¾·ù
  */
-enum class EConsumableType : uint8
+UENUM()
+enum class EConsumableType
 {
-
+    NONE
 };
 
 /**
-  * \brief ë°©ì–´êµ¬ ì¢…ë¥˜
+  * \brief ¹æ¾î±¸ Á¾·ù
  */
-enum class EEquipmentType : uint8
+UENUM()
+enum class EEquipmentType
 {
-
+    NONE
 };
 
 /**
-  * \brief ì°¨ëŸ‰ ì¢…ë¥˜
+  * \brief Â÷·® Á¾·ù
  */
+UENUM()
 enum class EVehicleType
 {
     Hatchback,
@@ -69,7 +71,7 @@ enum class EVehicleType
 };
 
 /**
-  * \brief ì¢Œì„ ì¢…ë¥˜
+  * \brief ÁÂ¼® Á¾·ù
  */
 UENUM()
 enum class ESeatType
@@ -82,11 +84,12 @@ enum class ESeatType
 };
 
 /**
-  * \brief í”Œë ˆì´ì–´ ì‚¬ìš´ë“œ ì¢…ë¥˜ \n
-  * ITEM_FARM íŒŒë° \n
-  * WEAPON_EQUIP ì¥ì°© \n
-  * WEAPON_SWAP êµì²´ \n
+  * \brief ÇÃ·¹ÀÌ¾î »ç¿îµå Á¾·ù \n
+  * ITEM_FARM ÆÄ¹Ö \n
+  * WEAPON_EQUIP ÀåÂø \n
+  * WEAPON_SWAP ±³Ã¼ \n
  */
+UENUM()
 enum class EPlayerSoundType
 {
     ITEM_FARM,
@@ -95,20 +98,15 @@ enum class EPlayerSoundType
 };
 
 /**
- * \brief ì´ê¸° ì‚¬ìš´ë“œ ê´€ë ¨ \n
- * EMPTY_AMMO ë¹ˆ íƒ„ì°½ \n
- * SHOT ê²©ë°œ \n
- * RELOAD ì¥ì „ \n
+ * \brief ÃÑ±â »ç¿îµå °ü·Ã \n
+ * EMPTY_AMMO ºó ÅºÃ¢ \n
+ * SHOT °İ¹ß \n
+ * RELOAD ÀåÀü \n
  */
+UENUM()
 enum class EWeaponSoundType
 {
     EMPTY_AMMO,
     SHOT,
     RELOAD
-};
-
-UCLASS()
-class PUBG_UE4_API AMyEnum : public AActor
-{
-	GENERATED_BODY()
 };

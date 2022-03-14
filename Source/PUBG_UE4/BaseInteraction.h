@@ -29,18 +29,18 @@ class PUBG_UE4_API ABaseInteraction : public AActor
 protected: 
     UPROPERTY(VisibleAnywhere, Category = Widget) UWidgetComponent* WidgetComp;
 
-    float   mCurrentTime = 0.f;
+    float mCurrentTime = 0.f;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*            ColliderComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*            ColliderComp     = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)     UStaticMeshComponent*     StaticMeshComp   = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)     USkeletalMeshComponent*   SkeletalMeshComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Sound)    UAudioComponent*          AudioComp        = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp     = nullptr;
 
     FString ObjectGroupType = "";
-    FString ObjectType = "";
-    int     UI_index = 0;
+    FString ObjectType      = "";
+    int     UI_index        = 0;
     bool    bPlayerNear     = false;
 
 public:
@@ -68,18 +68,15 @@ protected:
      */
     void InitSkeletalMesh(FString _path);
 
-    /**
-      * \brief 오디오 컴포넌트 초기화
-     */
+    /** \brief 오디오 컴포넌트 초기화 */
     void InitComponents();
 
-    /**
-      * \brief 상호작용 UI 초기화
-     */
+    /** \brief 상호작용 UI 초기화 */
     void InitInteractionUI();
 
     /**
       * \brief 파티클 시스템 초기화
+      * \param FString 파티클 경로
      */
     void InitParticleSystem(FString _Path);
 
