@@ -1,9 +1,12 @@
 #include "GameInstanceSubsystemUI.h"
 #include "TooltipUI.h"
 #include "UI_manager.h"
+#include "Characters/CustomPlayer.h"
+#include "Player_weapons/WeaponManager.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
 UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
@@ -28,7 +31,7 @@ void UGameInstanceSubsystemUI::Deinitialize()
 void UGameInstanceSubsystemUI::InitUImanager()
 {
     if (UImanagerClass)
-        pUImanager = GetWorld()->SpawnActor<AUI_manager>(UImanagerClass);        
+        pUImanager = GetWorld()->SpawnActor<AUI_manager>(UImanagerClass);     
 }
 
 FVector2D UGameInstanceSubsystemUI::GetDistanceBetweenSlotCursor(UUserWidget* _pWigdet, bool& _bFirst)
@@ -61,4 +64,13 @@ bool UGameInstanceSubsystemUI::IsMouseLeftFromUI(FVector2D _Distance, bool _bFir
 
     else
         return ((_Distance.X <= 0.1f) || (_Distance.X >= 225.f) || (_Distance.Y <= 1.5f) || (_Distance.Y >= 55.f));
+}
+
+AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager()
+{
+    if (auto p_currentPlayer = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+        return p_currentPlayer->GetWeaponManager();
+    
+    else
+        return nullptr;
 }

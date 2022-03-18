@@ -222,8 +222,6 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform 
 
 void AWeaponManager::CheckForGrenadePath()
 {
-    if (!pThrowable)
-        return;
     //UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetControlRotation().Pitch / 360.f;
     // 투척류 예측 경로 데이터 설정
     FVector outVelocity = FVector::ZeroVector;
@@ -241,10 +239,13 @@ void AWeaponManager::CheckForGrenadePath()
         predictParams.OverrideGravityZ = GetWorld()->GetGravityZ();
         FPredictProjectilePathResult result;
         UGameplayStatics::PredictProjectilePath(this, predictParams, result);
-
+        
         // 수류탄 투척
+        pThrowable->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+
         if (auto colliderComp = pThrowable->GrenadeColliderComp)
         {
+            colliderComp->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
             colliderComp->SetSimulatePhysics(true);
             colliderComp->AddImpulse(outVelocity);
         }
@@ -311,7 +312,7 @@ void AWeaponManager::Equip(AActor* _pWeapon, bool _bShouldCheck)
         {
             if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
             {
-                p_customGameInst->DeleSetItemOntoInventory.ExecuteIfBound(p_collidedWeapon);
+                p_customGameInst->DeleSetItemOntoInventory.ExecuteIfBound(p_collidedWeapon, false);
                 p_collidedWeapon->Destroy();
             }
         }
@@ -385,7 +386,13 @@ void AWeaponManager::Shoot()
     }
     // 투척류 무기
     else
-        CheckForGrenadePath();
+    {
+        // 크레모아가 아닌 무기일 때만 투척 경로 지정
+        if (pThrowable && 
+            pThrowable->WeaponType != EThrowableWeaponType::CLAYMORE)
+            CheckForGrenadePath();
+        
+    }
 }
 
 void AWeaponManager::Reload()
@@ -445,12 +452,8 @@ bool AWeaponManager::ScrollSelect(FString _Pos)
             // 현재 위치에서 탐색
             finalIndex = GetWeaponIndex("down", currentIndex - 1);
 
-            // 발견하지 못함
-            if (finalIndex == ECurrentWeaponType::NONE)
-                CurrentWeaponType = GetWeaponIndex("down", (int)ECurrentWeaponType::THROWABLE);
-
-            else
-                CurrentWeaponType = finalIndex;
+            // 발견하지 못했을 시
+            CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("down", (int)ECurrentWeaponType::THROWABLE) : finalIndex;
         }
     }
     // 위로 스크롤
@@ -458,101 +461,112 @@ bool AWeaponManager::ScrollSelect(FString _Pos)
     {
         // 현재 마지막 원소에 접근 할 시
         if (currentIndex == (int)ECurrentWeaponType::THROWABLE)
-        {
-            if (pFirstGun)
-                CurrentWeaponType = ECurrentWeaponType::FIRST;
+            CurrentWeaponType = (pFirstGun) ? ECurrentWeaponType::FIRST : GetWeaponIndex("up", 1);
 
-            else
-                CurrentWeaponType = GetWeaponIndex("up", 1);
-        }
         else
         {
             // 현재 위치에서 탐색
             finalIndex = GetWeaponIndex("up", currentIndex + 1);
 
-            // 발견하지 못함
-            if (finalIndex == ECurrentWeaponType::NONE)
-                CurrentWeaponType = GetWeaponIndex("up", 1);
-
-            else
-                CurrentWeaponType = finalIndex;
+            // 발견하지 못했을 시
+            CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("up", 1) : finalIndex;
         }
     }
     return true;
 }
 
-void AWeaponManager::SwapWorld(ABaseInteraction* _CurrentWeapon, AActor* _NewWeapon, FString _SocketName)
+void AWeaponManager::SwapWorld(ABaseInteraction* _pNewWeapon, AActor* _pCurrentWeapon, FString _SocketName)
 {
-    ResetAfterDetaching(_CurrentWeapon, _NewWeapon->GetActorTransform());
-    Attach(Cast<ABaseInteraction>(_NewWeapon), _SocketName);
+    ResetAfterDetaching(_pNewWeapon, _pCurrentWeapon->GetActorTransform());
+    Attach(Cast<ABaseInteraction>(_pCurrentWeapon), _SocketName);
 }
 
-bool AWeaponManager::Swap(ABaseInteraction* _pOldWeapon, ABaseInteraction* _pNewWeapon, ECurrentWeaponType _WeaponType)
+int AWeaponManager::Swap(ABaseInteraction* _pNewWeapon, ABaseInteraction* _pCurrentWeapon, ECurrentWeaponType _WeaponType)
 {
-    auto    p_oldWeapon = Cast<ACoreWeapon>(_pOldWeapon);
-    auto    p_newWeapon = Cast<ACoreWeapon>(_pNewWeapon);
-    FString weaponType  = "";
-
-    if (p_oldWeapon)
-        weaponType = p_oldWeapon->WeaponData.GroupType;
+#define ERROR -1
 
     switch (_WeaponType)
     {
-    case ECurrentWeaponType::FIRST:
-    case ECurrentWeaponType::SECOND:
+    case ECurrentWeaponType::FIRST: case ECurrentWeaponType::SECOND:
+    {
+        auto p_newWeapon     = Cast<ACoreWeapon>(_pNewWeapon);
+        auto p_currentWeapon = Cast<ACoreWeapon>(_pCurrentWeapon);
 
-        if (weaponType == "HandGun" ||
-            weaponType == "Melee" ||
-            weaponType == "Explosive")
-            return false;
+        if (_pNewWeapon)
+        {
+            if (_pNewWeapon->IsA<ACoreMeleeWeapon>() ||
+                _pNewWeapon->IsA<ACoreThrowableWeapon>())
+                return ERROR;
+        }
+        if (p_newWeapon &&
+            p_newWeapon->WeaponData.GroupType == "HandGun")
+            return ERROR;
 
         // 첫번째 총과 두번째 총 교체
-        if (p_oldWeapon == pFirstGun &&
-            p_newWeapon == pSecondGun)
+        if (p_newWeapon     == pFirstGun &&
+            p_currentWeapon == pSecondGun)
         {
-            Attach(p_oldWeapon, "SecondGunSock", false);
-            Attach(p_newWeapon, "FirstGunSock", false);
+            Attach(p_newWeapon,     "SecondGunSock", false);
+            Attach(p_currentWeapon, "FirstGunSock",  false);
         }
         // 두번째 총과 첫번째 총 교체
-        else if (p_newWeapon == pFirstGun &&
-                 p_oldWeapon == pSecondGun)
+        else if (p_currentWeapon == pFirstGun &&
+                 p_newWeapon     == pSecondGun)
         {
-            Attach(p_newWeapon, "SecondGunSock", false);
-            Attach(p_oldWeapon, "FirstGunSock", false);
+            Attach(p_currentWeapon, "SecondGunSock", false);
+            Attach(p_newWeapon,     "FirstGunSock",  false);
         }
         // 인벤토리 총과 첫번째 총 교체
         else
         {
             FString sockName = (_WeaponType == ECurrentWeaponType::FIRST) ? "FirstGunSock" : "SecondGunSock";
-            SwapWorld(p_newWeapon, p_oldWeapon, sockName);
+            SwapWorld(p_currentWeapon, p_newWeapon, sockName);
         }
-        break;
+    }
+    break;
 
     case ECurrentWeaponType::PISTOL:
+    {
+        auto p_newWeapon = Cast<ACoreWeapon>(_pNewWeapon);
 
-        if (weaponType != "HandGun")
-            return false;
+        if (!p_newWeapon || 
+            (p_newWeapon && p_newWeapon->WeaponData.GroupType != "HandGun"))
+            return ERROR;
 
-        if (p_oldWeapon != pPistol)
-            SwapWorld(p_newWeapon, p_oldWeapon, "HandGunSock");
-
-        break;
+        if (p_newWeapon != pPistol)
+            SwapWorld(_pCurrentWeapon, p_newWeapon, "HandGunSock");
+    }
+    break;
 
     case ECurrentWeaponType::MELEE:
+    {
+        auto p_newMelee = Cast<ACoreMeleeWeapon>(_pNewWeapon);
 
-        if (weaponType != "Melee")
-            return false;
-
-        break;
+        if (!p_newMelee ||
+            (p_newMelee && p_newMelee->WeaponData.GroupType != "Melee"))
+            return -1;
+    }
+    break;
 
     case ECurrentWeaponType::THROWABLE:
+    {
+        auto p_newThrowable = Cast<ACoreThrowableWeapon>(_pNewWeapon);
 
-        if (weaponType != "Explosive")
-            return false;
+        if (!p_newThrowable ||
+            (p_newThrowable && p_newThrowable->WeaponData.GroupType != "Explosive"))
+            return ERROR;
 
-        break;
+        if (pThrowable != p_newThrowable)
+        {
+            pThrowable = p_newThrowable;
+            return 1;
+        }
+        else
+            return ERROR;
     }
-    return true;
+    break;
+    }
+    return 0;
 }
 
 void AWeaponManager::ChangeShootMode()
@@ -637,22 +651,17 @@ bool AWeaponManager::IsWeaponAvailable(ECurrentWeaponType _WeaponType)
     auto p_weapon = GetWeaponByIndex(_WeaponType);
 
     if (p_weapon)
-    {
         CurrentWeaponType = _WeaponType;
-        return true;
-    }
-    else
-        return false;
+
+    return (p_weapon != nullptr);
 }
 
 int AWeaponManager::GetMaxBulletCount(ECurrentWeaponType _WeaponType)
 {
     ABaseInteraction* p_weapon = GetWeaponByIndex(_WeaponType);
 
-    if (!p_weapon)
-        return 0;
-
-    if (p_weapon->IsA<ACoreWeapon>())
+    if (p_weapon &&
+        p_weapon->IsA<ACoreWeapon>())
         return Cast<ACoreWeapon>(p_weapon)->WeaponData.CurrentMaxBulletCount;
 
     else
@@ -713,17 +722,12 @@ int AWeaponManager::GetWeaponType(ABaseInteraction* _pWeapon)
 
 void AWeaponManager::Drop(ECurrentWeaponType _WeaponType)
 {
-    auto p_weapon = GetWeaponByIndex(_WeaponType);
-
-    if (!p_weapon)
-        return;
-
     FVector  finalLocation  = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
     FRotator playerRotation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorRotation();
     finalLocation.Y        += 75.f;
     finalLocation.Z         = 20.f;
     FTransform new_location = FTransform(playerRotation, finalLocation);
-    ResetAfterDetaching(p_weapon, new_location);
+    ResetAfterDetaching(GetWeaponByIndex(_WeaponType), new_location);
     SetNull(_WeaponType);
 }
 
@@ -793,15 +797,8 @@ void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> _pArrActor, USkeletalMesh
         if (pThrowable    &&
             p_throwableUI &&
             pThrowable->WeaponType != p_throwableUI->WeaponType)
-        {
-            auto staticMeshComp = p_throwableUI->StaticMeshComp;
+            p_throwableUI->StaticMeshComp->SetStaticMesh(pThrowable->StaticMeshComp->GetStaticMesh());
 
-            if (staticMeshComp)
-            {
-                staticMeshComp->SetStaticMesh(pThrowable->StaticMeshComp->GetStaticMesh());
-                staticMeshComp->AttachToComponent(_pSkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *(pThrowable->WeaponData.Type + "Socket"));
-            }
-        }
         else
             p_throwableUI->StaticMeshComp->SetStaticMesh(nullptr);
     }

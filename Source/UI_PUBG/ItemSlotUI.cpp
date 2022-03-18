@@ -38,16 +38,20 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* _pObj)
 
     if (p_slot)
     {
-        ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(p_slot->ItemData));
-        NameTxt->SetText(FText::FromString(p_slot->ItemData.Name));
+        // 현재 변수들에 데이터 적용
+        auto itemData      = p_slot->ItemData;
         pDraggedItem       = p_slot->pDraggedItem;
         DeleCheckForSlot   = p_slot->DeleCheckForSlot;
         DeleSwapWeaponSlot = p_slot->DeleSwapWeaponSlot;
         DeleSetSlotNull    = p_slot->DeleSetSlotNull;
-        ItemData           = p_slot->ItemData;
+        ItemData           = itemData;
 
-        if (ItemData.Count > 1)
-            CountTxt->SetText(FText::FromString(FString::FromInt(p_slot->ItemData.Count)));
+        // 현재 관련된 UI에 적용
+        ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(itemData));
+        NameTxt->SetText(FText::FromString(itemData.Name));
+
+        if (ItemData.Count > 0)
+            CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
     }
 }
 

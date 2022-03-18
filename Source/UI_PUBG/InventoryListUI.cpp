@@ -2,6 +2,7 @@
 #include "ItemSlotUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
+#include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
@@ -27,14 +28,12 @@ void UInventoryListUI::NativeConstruct()
     if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
         p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
 
+    pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
 void UInventoryListUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
 {
     Super::NativeTick(_InGeometry, _DeltaTime);
-
-    if (!mpWeaponManager)
-        mpWeaponManager = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->GetWeaponManager();
 }
 
 FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
@@ -47,10 +46,8 @@ FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, c
         HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 
         // 클릭시 툴팁 숨김
-        auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
-
-        if (!subGameInst)
-            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(mpSlotObj, ESlateVisibility::Hidden);
+        if (pGameInstanceSubsystemUI)
+            pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(mpSlotObj, ESlateVisibility::Hidden);
     }
     auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
@@ -61,15 +58,13 @@ FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& _InGeometry, const F
     Super::NativeOnMouseMove(_InGeometry, _InMouseEvent);
 
     // 움직일 때마다 현재 이미지의 위치를 구함    
-    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
-
-    if (!subGameInst)
+    if (!pGameInstanceSubsystemUI)
         return FReply::Unhandled();
 
-    bool bFirst = false;
-    auto distance = subGameInst->GetDistanceBetweenSlotCursor(mpSlotObj, bFirst);
+    bool b_first = false;
+    auto distance = pGameInstanceSubsystemUI->GetDistanceBetweenSlotCursor(mpSlotObj, b_first);
 
-    if (subGameInst->IsMouseLeftFromUI(distance, bFirst))
+    if (pGameInstanceSubsystemUI->IsMouseLeftFromUI(distance, b_first))
         HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 
     return FReply::Handled();
@@ -94,10 +89,10 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const 
         return;
 
     // 슬롯 설정
-    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+    if (!pGameInstanceSubsystemUI)
+        return;
 
-    if (subGameInst)
-        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
+    pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
 
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
     p_slot->ItemData     = mpSlotObj->ItemData;
@@ -137,10 +132,15 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDro
     if (mousePos.X > 100.f &&
         mousePos.X < 325.f)
     {
+        if (!pGameInstanceSubsystemUI)
+            return false;
+
         p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
         p_slot->DeleSetSlotNull.ExecuteIfBound();
         WorldListView->AddItem(p_slot);
-        mpWeaponManager->Drop(mpWeaponManager->GetWeaponIndex(p_slot->pDraggedItem));
+
+        if (auto p_weaponManager = pGameInstanceSubsystemUI->GetWeaponManager())
+            p_weaponManager->Drop(p_weaponManager->GetWeaponIndex(p_slot->pDraggedItem));
     }
     // 인벤토리 리스트에 드롭
     else
@@ -171,6 +171,24 @@ void UInventoryListUI::GetItemListWidth()
         FVector2D inventorySizeBoxSize = p_inventoryListCanvasSlot->GetSize();
         mInventorySizeBoxWidth         = inventorySizeBoxPos.X + inventorySizeBoxSize.X;
     }
+}
+
+bool UInventoryListUI::IsItemAddedInList(FString _ItemName)
+{
+    for (auto item : InventoryListView->GetListItems())
+    {
+        if (auto p_slot = Cast<UItemSlotUI>(item))
+        {
+            if (p_slot->ItemData.Name == _ItemName)
+            {
+                p_slot->ItemData.Count++;                
+                InventoryListView->RemoveItem(p_slot);
+                InventoryListView->AddItem(p_slot);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 // this가 넘어오므로 널 체크 불필요
@@ -241,20 +259,22 @@ void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* _pWeaponSlot)
     WorldListView->AddItem(_pWeaponSlot);
 }
 
-void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* _pWeapon)
+void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* _pWeapon, bool _bDeleteFromList /* = false */)
 {
-    if (!_pWeapon ||
-        !mpWeaponManager)
+    if (!pGameInstanceSubsystemUI)
         return;
 
-    UItemSlotUI* p_slot = NewObject<UItemSlotUI>();
+    if (_bDeleteFromList)
+        DeleteFromList();
 
-    int imageIndex = mpWeaponManager->GetWeaponType(_pWeapon);
+    UItemSlotUI*   p_slot   = NewObject<UItemSlotUI>();
+    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(_pWeapon);
 
-    if (imageIndex == -1) // 예외 처리
+    if (itemData.IsEmpty() ||
+        IsItemAddedInList(itemData.Name))
         return;
-
-    p_slot->ItemData     = FsSlotItemData::GetDataFrom(_pWeapon);
+    
+    p_slot->ItemData     = itemData;
     p_slot->pDraggedItem = _pWeapon;
     p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");

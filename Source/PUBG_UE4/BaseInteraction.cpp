@@ -69,6 +69,7 @@ void ABaseInteraction::InitSkeletalMesh(FString _Path)
 
 void ABaseInteraction::InitComponents()
 {
+    SceneComp        = CreateDefaultSubobject<UBoxComponent>(TEXT("SceneComp"));
     ColliderComp     = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComp"));
     RootComponent    = ColliderComp;
     WidgetComp       = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidgetComp"));    
@@ -92,6 +93,9 @@ void ABaseInteraction::DestroyComponentsForUI()
     
     if (WidgetComp)
         WidgetComp->DestroyComponent();
+
+    if (AudioComp)
+        AudioComp->DestroyComponent();
 }
 
 void ABaseInteraction::InitParticleSystem(FString _Path)

@@ -25,10 +25,13 @@ void ACoreMeleeWeapon::Init(EMeleeWeaponType _WeaponType)
 {
     WeaponData = ADataTableManager::ArrOtherWeaponData[(int)_WeaponType];
     WeaponType = _WeaponType;
-    ObjectType = WeaponData.Type;
-    
+    ObjectType = WeaponData.Type;    
+
     UpdateCollider();
     InitMesh();
+
+    if (SceneComp)
+        SceneComp->DestroyComponent();
 }
 
 void ACoreMeleeWeapon::InitMesh()

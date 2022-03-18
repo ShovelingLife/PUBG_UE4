@@ -48,10 +48,14 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
     WeaponType = _WeaponType;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
+
     UpdateCollider();
     ABaseInteraction::AttachComponents();
     Super::InitParticleSystem(WeaponData.ParticlePath);
     InitMesh();
+
+    if (SceneComp)
+        SceneComp->DestroyComponent();
 }
 
 void ACoreThrowableWeapon::InitMesh()

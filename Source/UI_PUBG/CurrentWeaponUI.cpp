@@ -1,11 +1,12 @@
 ﻿#include "CurrentWeaponUI.h"
+#include "GameInstanceSubsystemUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
-#include "Player_weapons/WeaponManager.h"
-#include "Player_weapons/WeaponEnum.h"
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
+#include "Player_weapons/WeaponEnum.h"
+#include "Player_weapons/WeaponManager.h"
 #include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -13,21 +14,12 @@ void UCurrentWeaponUI::NativeConstruct()
 {
     Super::NativeConstruct();
     InitArrImg();
+    pGameInstanceSubSystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
 void UCurrentWeaponUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
 {
     Super::NativeTick(_InGeometry, _DeltaTime);
-
-    auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
-    if (!mpWeaponManager &&
-        p_player)
-        mpWeaponManager = p_player->GetWeaponManager();
-
-    if (!mpUI_Manager)
-        mpUI_Manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
-
     UpdateIconVisibility();
     UpdateIconColor();
     SetIconUI();
@@ -44,28 +36,36 @@ void UCurrentWeaponUI::InitArrImg()
 
 void UCurrentWeaponUI::UpdateIconVisibility()
 {
-    if (!mpWeaponManager)
+    if (!pGameInstanceSubSystemUI)
         return;
-    
-    FirstWeaponImg->SetVisibility((mpWeaponManager->pFirstGun)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    SecondWeaponImg->SetVisibility(mpWeaponManager->pSecondGun  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    ThirdWeaponImg->SetVisibility((mpWeaponManager->pPistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    FourthWeaponImg->SetVisibility((mpWeaponManager->pMelee)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    FifthWeaponImg->SetVisibility((mpWeaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+
+    if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
+    {
+        FirstWeaponImg->SetVisibility((p_weaponManager->pFirstGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        SecondWeaponImg->SetVisibility(p_weaponManager->pSecondGun ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        ThirdWeaponImg->SetVisibility((p_weaponManager->pPistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        FourthWeaponImg->SetVisibility((p_weaponManager->pMelee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        FifthWeaponImg->SetVisibility((p_weaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    }
 }
 
 void UCurrentWeaponUI::UpdateIconColor()
 {
-    if (!mpWeaponManager)
+    if (!pGameInstanceSubSystemUI)
+        return;
+
+    auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
+
+    if (!p_weaponManager)
         return;
 
     // 현재 선택된 무기
-    ECurrentWeaponType currentSelectedWeapon = mpWeaponManager->CurrentWeaponType;
+    ECurrentWeaponType currentSelectedWeapon = p_weaponManager->CurrentWeaponType;
     
     // 선택 해제 및 탄알이 비어있을 시
     for (int i = 0; i < 3; i++)
     {
-        if (mpWeaponManager->GetMaxBulletCount((ECurrentWeaponType)i) == 0)
+        if (p_weaponManager->GetMaxBulletCount((ECurrentWeaponType)i) == 0)
             pArrImg[i]->SetColorAndOpacity(mkUnselectedNoAmmoColor);
 
         else
@@ -75,12 +75,12 @@ void UCurrentWeaponUI::UpdateIconColor()
     pArrImg[4]->SetColorAndOpacity(mkUnselectedColor); 
 
     // 선택하고 있을 시
-    if(currentSelectedWeapon != ECurrentWeaponType::NONE)
+    if (currentSelectedWeapon != ECurrentWeaponType::NONE)
     {
         int index = (int)currentSelectedWeapon - 1;
 
         // 선택 및 탄알이 비어있을 시
-        if (mpWeaponManager->GetMaxBulletCount(currentSelectedWeapon) == 0)
+        if (p_weaponManager->GetMaxBulletCount(currentSelectedWeapon) == 0)
             pArrImg[index]->SetColorAndOpacity(mkSelectedNoAmmoColor);
 
         else
@@ -90,24 +90,28 @@ void UCurrentWeaponUI::UpdateIconColor()
 
 void UCurrentWeaponUI::SetIconUI()
 {
-    if (!mpWeaponManager ||
-        !mpUI_Manager)
+    if (!pGameInstanceSubSystemUI)
         return;
-    
-    if (auto p_firstGun = mpWeaponManager->pFirstGun)
+
+    auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
+
+    if (!p_weaponManager)
+        return;
+
+    if (auto p_firstGun = p_weaponManager->pFirstGun)
     {
         if (FirstWeaponImg)
-            FirstWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)p_firstGun->WeaponType]);
+            FirstWeaponImg->SetBrushFromMaterial(AUI_manager::GetMaterial((int)p_firstGun->WeaponType));
     }
-    if (auto p_secondGun = mpWeaponManager->pSecondGun)
+    if (auto p_secondGun = p_weaponManager->pSecondGun)
     {
         if (SecondWeaponImg)
-            SecondWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)p_secondGun->WeaponType]);
+            SecondWeaponImg->SetBrushFromMaterial(AUI_manager::GetMaterial((int)p_secondGun->WeaponType));
     }
-    if (auto p_pistol = mpWeaponManager->pPistol)
+    if (auto p_pistol = p_weaponManager->pPistol)
     {
         if (ThirdWeaponImg)
-            ThirdWeaponImg->SetBrushFromMaterial(mpUI_Manager->MapMainWeaponMat[(int)p_pistol->WeaponType]);
+            ThirdWeaponImg->SetBrushFromMaterial(AUI_manager::GetMaterial((int)p_pistol->WeaponType));
     }
     //// 네번쨰 무기
     //if (mp_weapon_manager->p_melee)

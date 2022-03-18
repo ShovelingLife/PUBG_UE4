@@ -13,7 +13,6 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryListUI.generated.h"
 
-class AWeaponManager;
 class UItemSlotUI;
 
 class UImage;
@@ -27,8 +26,6 @@ class UI_PUBG_API UInventoryListUI : public UUserWidget
 	GENERATED_BODY()
 
 private:
-    /** \brief 무기 매니저 */
-    UPROPERTY() AWeaponManager* mpWeaponManager = nullptr;
     UPROPERTY() UItemSlotUI*    mpSlotObj;
 
     float mWorldSizeBoxWidth     = 0.f;
@@ -46,10 +43,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView*  InventoryListView;
 
     /** \brief 기타 UI 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*    HighlightImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*    SeparatorImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* HighlightImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* SeparatorImg;
 
     UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
+    UPROPERTY() class UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
 
 protected:
     virtual void NativeConstruct() override;
@@ -96,10 +94,10 @@ protected:
     virtual bool NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InMouseEvent, class UDragDropOperation* _Operation) override;
 
 private:
-    /**
-      * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 
-     */
+    /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
     void GetItemListWidth();
+
+    bool IsItemAddedInList(FString _ItemName);
 
 public:
     /**
@@ -116,5 +114,5 @@ public:
     void SwapWeaponSlot(UItemSlotUI* _pWeapon_slot);
 
     UFUNCTION()
-    void SetItemOntoInventory(class ABaseInteraction* _pWeapon);
+    void SetItemOntoInventory(class ABaseInteraction* _pWeapon, bool _bDeleteFromList = false);
 };

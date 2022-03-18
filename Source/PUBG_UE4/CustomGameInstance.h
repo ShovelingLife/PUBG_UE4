@@ -18,7 +18,7 @@ class ASoundManager;
 class AWeaponManager;
 class ABaseInteraction;
 
-DECLARE_DELEGATE_OneParam(FDeleSetItemOntoInventory, ABaseInteraction*)
+DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
 
 /**

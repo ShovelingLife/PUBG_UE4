@@ -30,12 +30,6 @@ class UI_PUBG_API UInventoryWeaponSlotUI : public UUserWidget
 	GENERATED_BODY()
 	
 private:
-    /** \brief UI 매니저 */
-    UPROPERTY() AUI_manager*    mpUI_manager    = nullptr;
-
-    /** \brief 무기 매니저 */
-    UPROPERTY() AWeaponManager* mpWeaponManager = nullptr;
-
     /** \brief 현재 쓰여지는 변수 */
     FsSlotItemData     mItemData;
     ECurrentWeaponType mSelectedWeaponIndex;
@@ -120,6 +114,8 @@ public:
 
     /** \brief 아이템 슬롯 BP */
     UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItemSlotUI> BP_itemSlotUI;
+
+    UPROPERTY() class UGameInstanceSubsystemUI* pGameInstanceSubSystemUI = nullptr;
 
 protected:
     void NativeConstruct() override;

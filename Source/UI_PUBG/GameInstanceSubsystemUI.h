@@ -6,6 +6,7 @@
 
 class AUI_manager;
 class UItemSlotUI;
+class AWeaponManager;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
 DECLARE_DELEGATE_TwoParams(FDeleSetTooltipVisibility, UItemSlotUI*, ESlateVisibility)
@@ -16,7 +17,7 @@ class UI_PUBG_API UGameInstanceSubsystemUI : public UGameInstanceSubsystem
 	GENERATED_BODY()
 	
 private:
-	TSubclassOf< AUI_manager> UImanagerClass;
+	UPROPERTY() TSubclassOf< AUI_manager> UImanagerClass;
 
 public:
     UPROPERTY() AUI_manager* pUImanager;
@@ -41,4 +42,6 @@ public:
     FVector2D GetDistanceBetweenSlotCursor(class UUserWidget* _pWigdet, bool& _bFirst);
 
     bool IsMouseLeftFromUI(FVector2D _Distance, bool _bFirst = false);
+
+    AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager();
 };

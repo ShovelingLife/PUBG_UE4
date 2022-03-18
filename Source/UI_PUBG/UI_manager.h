@@ -114,4 +114,6 @@ public:
     static UTexture2D* GetTexture2D(FsSlotItemData _ItemData);
 
     static UTexture2D* GetTexture2D(int _Index, FString _Type = "");
+
+    static UMaterial* GetMaterial(int _Index);
 };

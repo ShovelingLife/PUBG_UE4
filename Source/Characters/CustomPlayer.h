@@ -50,12 +50,12 @@ private:
      */
     FVector mDirectionUpDown    = FVector::ZeroVector;
     FVector mDirectionLeftRight = FVector::ZeroVector;
-    float   mSprintTime          = 0.f;
+    float   mSprintTime         = 0.f;
     float   mMaxSprintTime      = 0.5f;
-    float   mSprintMultiplier    = 1.f;
+    float   mSprintMultiplier   = 1.f;
     bool    mbMoving            = false;
     bool    mbInteracting       = false;
-    bool    mbInventoryOpened  = false;
+    bool    mbInventoryOpened   = false;
 
  // 플레이어 컴포넌트 및 상태 변수
 public:

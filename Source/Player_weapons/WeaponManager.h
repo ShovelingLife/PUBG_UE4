@@ -129,9 +129,10 @@ public:
 	 * \param _new_weapon 새로운 무기
 	 * \param _socket_name 메시 소켓 명칭
 	 */
-	void SwapWorld(ABaseInteraction* _current_weapon, AActor* _new_weapon, FString _socket_name);
+	void SwapWorld(ABaseInteraction* _pNewWeapon, AActor* _pCurrentWeapon, FString _SocketName);
 
-	bool Swap(ABaseInteraction* _p_old_weapon, ABaseInteraction* _p_new_weapon = nullptr, ECurrentWeaponType _weapon_type = ECurrentWeaponType::NONE);
+	// Exit Code = -1 Error / 0 Succeded / 1 Is Melee or Is Throwable
+	int Swap(ABaseInteraction* _pCurrentWeapon, ABaseInteraction* _pNewWeapon = nullptr, ECurrentWeaponType _WeaponType = ECurrentWeaponType::NONE);
 
 	/** \brief 착용 중인 무기를 체크함 */
 	void ChangeShootMode();

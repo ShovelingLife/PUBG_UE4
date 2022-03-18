@@ -49,6 +49,9 @@ void ACoreWeapon::Init(EWeaponType _WeaponType)
     InitBullet();
     UpdateCollider();
     UpdateParticleSystem();
+
+    if (SceneComp)
+        SceneComp->DestroyComponent();
 }
 
 void ACoreWeapon::InitMesh()

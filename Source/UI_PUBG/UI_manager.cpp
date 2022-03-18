@@ -189,3 +189,8 @@ UTexture2D* AUI_manager::GetTexture2D(int _Index, FString _Type /* = "" */)
     else
         return (_Index < MapInventoryOtherWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryOtherWeaponTex[_Index]) : nullptr;
 }
+
+UMaterial* AUI_manager::GetMaterial(int _Index)
+{
+    return (_Index < MapMainWeaponMat.Num()) ? MapMainWeaponMat[_Index] : nullptr;
+}

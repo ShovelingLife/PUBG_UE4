@@ -31,9 +31,12 @@ public:
 
     bool operator==(FsSlotItemData& _Other)
     {
-        return this->Name == _Other.Name &&
-               this->ImageIndex == _Other.ImageIndex &&
-               this->Count == _Other.Count;
+        return this->Name        == _Other.Name        &&
+               this->Category    == _Other.Category    &&
+               this->Description == _Other.Description &&
+               this->ImageIndex  == _Other.ImageIndex  &&
+               this->Capacity    == _Other.Capacity    &&
+               this->Count       == _Other.Count;
     }
 
     bool operator!=(FsSlotItemData& _Other) { return !(*this == _Other); }
@@ -41,18 +44,13 @@ public:
 public:
     void Reset()
     {
-        this->Name        = "";
-        this->Category    = "";
-        this->Description = "";
-        this->ImageIndex  = 0;
-        this->Count       = 0;
+        *this = FsSlotItemData::EmptyData;
     }
 
     bool IsEmpty()
     {
-        return this->Name == "" &&
-            this->ImageIndex == 0 &&
-            this->Count == 0;
+        FsSlotItemData emptyData = FsSlotItemData::EmptyData;
+        return *this == emptyData;
     }
 
     static FsSlotItemData GetDataFrom(class ABaseInteraction* _pObj);

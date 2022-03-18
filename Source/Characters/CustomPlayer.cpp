@@ -471,12 +471,18 @@ void ACustomPlayer::OpenInventory()
 
 void ACustomPlayer::BeginShooting()
 {
+    if (mbInventoryOpened)
+        return;
+
     mpWeaponManager->bShooting = true;
     mpWeaponManager->Shoot();
 }
 
 void ACustomPlayer::EndShooting()
 {
+    if (mbInventoryOpened)
+        return;
+
     mpWeaponManager->bShooting = false;
 
     // 투척류 무기일 시 뗐을 때만 발동

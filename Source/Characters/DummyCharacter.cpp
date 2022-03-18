@@ -73,59 +73,90 @@ void ADummyCharacter::InitWeaponUI()
     // 1번째 무기
     if (auto tmpFirstGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
     {
+        tmpFirstGun->DestroyComponentsForUI();
+
         if (auto skeletalMeshComp = tmpFirstGun->SkeletalMeshComp)
         {
+            tmpFirstGun->SetRootComponent(tmpFirstGun->SceneComp);
+            SkeletalMeshComp->SetupAttachment(tmpFirstGun->SceneComp);
             skeletalMeshComp->SetVisibility(true);
-            skeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "FirstGunSock");
+            skeletalMeshComp->AttachToComponent(this->SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "FirstGunSock");
         }
-        tmpFirstGun->DestroyComponentsForUI();
+        if (auto staticMeshComp = tmpFirstGun->StaticMeshComp)
+            staticMeshComp->DestroyComponent();
+
         tmpFirstGun->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpFirstGun);
     }
     // 2번째 무기
     if (auto tmpSecondGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
     {
+        tmpSecondGun->DestroyComponentsForUI();
+
         if (auto skeletalMeshComp = tmpSecondGun->SkeletalMeshComp)
         {
+            tmpSecondGun->SetRootComponent(tmpSecondGun->SceneComp);
+            SkeletalMeshComp->SetupAttachment(tmpSecondGun->SceneComp);
             skeletalMeshComp->SetVisibility(true);
-            skeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "SecondGunSock");
+            skeletalMeshComp->AttachToComponent(this->SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "SecondGunSock");
         }
-        tmpSecondGun->DestroyComponentsForUI();
+        if (auto staticMeshComp = tmpSecondGun->StaticMeshComp)
+            staticMeshComp->DestroyComponent();
+
         tmpSecondGun->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpSecondGun);
     }
     // 3번째 무기
     if (auto tmpPistol = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
     {
+        tmpPistol->DestroyComponentsForUI();
+
         if (auto skeletalMeshComp = tmpPistol->SkeletalMeshComp)
         {
-
+            tmpPistol->SetRootComponent(tmpPistol->SceneComp);
+            SkeletalMeshComp->SetupAttachment(tmpPistol->SceneComp);
             skeletalMeshComp->SetVisibility(true);
-            skeletalMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "HandGunSock");
+            skeletalMeshComp->AttachToComponent(this->SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "HandGun");
         }
-        tmpPistol->DestroyComponentsForUI();
+        if (auto staticMeshComp = tmpPistol->StaticMeshComp)
+            staticMeshComp->DestroyComponent();
+
         tmpPistol->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpPistol);
     }
     // 4번째 무기
     if (auto tmpMelee = GetWorld()->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()))
     {
+        tmpMelee->DestroyComponentsForUI();
+
         if (auto staticMeshComp = tmpMelee->StaticMeshComp)
         {
+            tmpMelee->SetRootComponent(tmpMelee->SceneComp);
+            SkeletalMeshComp->SetupAttachment(tmpMelee->SceneComp);
             staticMeshComp->SetVisibility(true);
-            staticMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "MeleeSock");
+            staticMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, "MeleeSocket");
         }
-        tmpMelee->DestroyComponentsForUI();
+        if (auto skeletalMeshComp = tmpMelee->SkeletalMeshComp)
+            skeletalMeshComp->DestroyComponent();
+
         tmpMelee->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpMelee);
     }
     // 5번째 무기
     if (auto tmpThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()))
     {
-        if (auto staticMeshComp = tmpThrowable->StaticMeshComp)
-            staticMeshComp->SetVisibility(true);
-
         tmpThrowable->DestroyComponentsForUI();
+
+        if (auto staticMeshComp = tmpThrowable->StaticMeshComp)
+        {
+            tmpThrowable->SetRootComponent(tmpThrowable->SceneComp);
+            SkeletalMeshComp->SetupAttachment(tmpThrowable->SceneComp);
+            staticMeshComp->SetVisibility(true);
+            staticMeshComp->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *(tmpThrowable->WeaponData.Type + "Socket"));
+        }
+        if (auto skeletalMeshComp = tmpThrowable->SkeletalMeshComp)
+            skeletalMeshComp->DestroyComponent();
+
         tmpThrowable->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
         mArrActorToShow.Add(tmpThrowable);
     }
