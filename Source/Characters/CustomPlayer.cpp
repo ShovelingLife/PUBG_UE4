@@ -51,8 +51,8 @@ void ACustomPlayer::BeginPlay()
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
 
-    if (mpWeaponManager)
-        mpWeaponManager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+    /*if (mpWeaponManager)
+        mpWeaponManager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);*/
 
     // UI용 캐릭터 생성
     pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
@@ -69,12 +69,9 @@ void ACustomPlayer::Tick(float DeltaTime)
     //Play_walk_sound();
     CheckForObject();
     TryToInteract();
-
-    if (mpWeaponManager)
-        mpWeaponManager->GrenadePathPredictPos = GetMesh()->GetSocketLocation("GrenadeThrowSocket");
 }
 
-void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* _pPlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(InputComponent);
 
@@ -250,7 +247,7 @@ void ACustomPlayer::CheckIfMoving()
 void ACustomPlayer::CheckForObject()
 {
     FVector    direction = GetActorForwardVector() * 50;
-    FVector    beginPos  = GetMesh()->GetSocketLocation("detect_object_ray_sock");
+    FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
     FVector    endPos = beginPos + direction;
     FHitResult hitResult;
     bool       b_collided = false;
@@ -289,17 +286,16 @@ void ACustomPlayer::CheckIfVehicleNear()
     if (bInVehicle)
         return;
 
-    APlayerCameraManager* camera_manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-    FVector               begin_pos      = GetActorLocation();
-    FVector               forward_vec    = GetActorForwardVector() * 50;
-    FHitResult            hit_result;
-    FVector               end_pos        = begin_pos + forward_vec;
-    auto                  p_world        = GetWorld();
-    p_world->LineTraceSingleByObjectType(hit_result, begin_pos, end_pos, FCollisionObjectQueryParams(ECC_Vehicle));
+    APlayerCameraManager* p_cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
+    FVector               beginPos      = GetActorLocation();
+    FVector               forwardVec    = GetActorForwardVector() * 50;
+    FHitResult            hitResult;
+    FVector               endPos        = beginPos + forwardVec;
+    GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
     //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
 
     // 차량을 감지
-    AActor* pHittedActor = hit_result.GetActor();
+    AActor* pHittedActor = hitResult.GetActor();
 
     if (!pHittedActor)
     {
@@ -346,32 +342,28 @@ void ACustomPlayer::TryToInteract()
     }
 }
 
-void ACustomPlayer::MoveForwardBack(float Value)
+void ACustomPlayer::MoveForwardBack(float _Value)
 {
-    if (bAnimationPlaying)
-        return;
-
-    AddMovementInput(GetActorForwardVector() * Value * mSprintMultiplier);
+    if (!bAnimationPlaying)
+        AddMovementInput(GetActorForwardVector() * _Value * mSprintMultiplier);
 }
 
-void ACustomPlayer::MoveLeftRight(float Value)
+void ACustomPlayer::MoveLeftRight(float _Value)
 {
-    if (bAnimationPlaying)
-        return;
-
-    AddMovementInput(GetActorRightVector() * Value * mSprintMultiplier);
+    if (!bAnimationPlaying)
+        AddMovementInput(GetActorRightVector() * _Value * mSprintMultiplier);
 }
 
-void ACustomPlayer::LookUp(float Value)
+void ACustomPlayer::LookUp(float _Value)
 {
     if (!mbInventoryOpened)
-        AddControllerPitchInput(Value);
+        AddControllerPitchInput(_Value);
 }
 
-void ACustomPlayer::Turn(float Value)
+void ACustomPlayer::Turn(float _Value)
 {
     if (!mbInventoryOpened)
-        AddControllerYawInput(Value);
+        AddControllerYawInput(_Value);
 }
 
 void ACustomPlayer::CustomJump()
@@ -420,14 +412,17 @@ void ACustomPlayer::Proning()
 
     switch (CurrentState)
     {
-    case EPlayerState::IDLE: CurrentState = EPlayerState::PRONING; rotationVal = FVector(0.f, 0.f, -50.f); break;
     case EPlayerState::AIM:  CurrentState = EPlayerState::PRONING_AIM; break;
 
+    case EPlayerState::IDLE:
     case EPlayerState::CROUCH:
     case EPlayerState::CROUCH_WALK:
         CurrentState = EPlayerState::PRONING;
         rotationVal = FVector(0.f, 0.f, -50.f);
-        UnCrouch();
+
+        if (CurrentState != EPlayerState::IDLE)
+            UnCrouch();
+
         break;
 
     case EPlayerState::PRONING:
@@ -487,7 +482,7 @@ void ACustomPlayer::EndShooting()
 
     // 투척류 무기일 시 뗐을 때만 발동
     if (mpWeaponManager->bArrWeaponEquipped[4])
-        mpWeaponManager->Shoot();
+        mpWeaponManager->ThrowGrenade();
 }
 
 void ACustomPlayer::Reload()
@@ -550,7 +545,7 @@ void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, ECurrentWeapon
     }
 }
 
-void ACustomPlayer::ExitFromVehicle(FVector _exit_location)
+void ACustomPlayer::ExitFromVehicle(FVector _ExitPos)
 {
     // 플레이어 충돌체 관련
     auto capsuleComp = GetCapsuleComponent();
@@ -561,7 +556,7 @@ void ACustomPlayer::ExitFromVehicle(FVector _exit_location)
     // 플레이어 위치 및 카메라 위치
     CurrentSeatType = ESeatType::NONE;
     bInVehicle      = false;
-    SetActorLocation(_exit_location);
+    SetActorLocation(_ExitPos);
     SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }

@@ -21,6 +21,10 @@ class ACoreMeleeWeapon;
 class ACoreThrowableWeapon;
 class AWeaponManager;
 class USceneComponent;
+class USplineComponent;
+class USplineMeshComponent;
+class UStaticMesh;
+class UMaterial;
 
 UCLASS()
 class PLAYER_WEAPONS_API AWeaponManager : public AActor
@@ -28,16 +32,20 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 	GENERATED_BODY()
 
 private:
-    UPROPERTY(EditAnywhere, Category = Scene_comp) USceneComponent* SceneComp = nullptr;
+	// 투척류 관련
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
+	UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
+	float mPathTime = 0.f;
+    bool  mbThrowingGrenade = false;
 
+	// 총기 관련
     const float	mkReloadTime	   = 2.f;
     float		mCurrentReloadTime = 0.f;
     float		mShootTime		   = 0.25f;
     float		mCurrentShootTime  = 0.f;
     bool		mbReloading		   = false;
-    bool		mbInteracting	   = false;
-    bool		mbChangedShootType = true;
-	bool		mbThrowingGrenade  = false;
+	bool		mbChangedShootType = true;
 
 public:
 	/** \brief 현재 착용 중인 무기 */
@@ -48,9 +56,14 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
-	FVector			   GrenadePathPredictPos;
 	bool			   bArrWeaponEquipped[5]{ false };
 	bool			   bShooting = false;
+
+	// 투척류 관련
+	UPROPERTY(EditAnywhere, Category = GrenadeVariable) UStaticMesh* PathMesh;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) UMaterial*	 PathMat;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) TArray<USplineMeshComponent*> arrSplineMeshComp;
+	UPROPERTY(EditAnywhere, Category = GrenadeVariable) float GrenadeSpeed = 0.f;
 
 public:	
 	AWeaponManager();
@@ -64,8 +77,12 @@ public:
 private:
 	/* \brief 착용 중인 무기를 체크함 */
 	// 미구현상태
-    void Check_for_equipped_weapon();
-	
+    void CheckForEquippedWeapon();
+
+    void InitGrenadePath();
+
+    bool IsAmmoInsufficient(int _BulletCount);
+
 	/**
      * \brief 현재 장착 중인 무기에 따라 착용 여부 \n
 	 * arr_is_weapon_equipped 배열 업데이트
@@ -101,7 +118,7 @@ private:
 	 */
     void ResetAfterDetaching(ABaseInteraction* _p_weapon, FTransform _new_pos);
 
-	void CheckForGrenadePath();
+	void PredictGrenadePath();
 
 public:
 	/**
@@ -116,6 +133,8 @@ public:
 
 	/** \brief 재장전 */
 	void Reload();
+
+	void ThrowGrenade();
 
 	/**
 	 * \brief 마우스 휠 통해 무기 교체
@@ -144,7 +163,7 @@ public:
 	 * \brief 재장전 중인지 확인
 	 * \param _TranscurredShootTime 현재 재장전으로부터 초과한 시간
 	 */
-	void CheckIfReloading(float _TranscurredShootTime);
+	void CheckReloading(float _TranscurredShootTime);
 
 	/**
 	 * \brief 연사 하고있는 중인지 체크

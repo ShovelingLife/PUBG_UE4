@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Sound/SoundBase.h"
 #include "Materials/Material.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -50,12 +51,24 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
     ObjectGroupType = WeaponData.GroupType;
 
     UpdateCollider();
-    ABaseInteraction::AttachComponents();
+    InitProjectileMovementComp();
+    Super::AttachComponents();
     Super::InitParticleSystem(WeaponData.ParticlePath);
     InitMesh();
 
     if (SceneComp)
         SceneComp->DestroyComponent();
+}
+
+void ACoreThrowableWeapon::InitProjectileMovementComp()
+{
+    if (WeaponType == EThrowableWeaponType::CLAYMORE)
+        return;
+
+    ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
+    ProjectileMovementComp->bShouldBounce = true;
+    ProjectileMovementComp->InitialSpeed  = 100.f;
+    ProjectileMovementComp->MaxSpeed      = 100.f;
 }
 
 void ACoreThrowableWeapon::InitMesh()

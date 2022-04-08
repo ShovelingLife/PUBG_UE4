@@ -9,10 +9,12 @@
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -21,37 +23,100 @@
 AWeaponManager::AWeaponManager()
 {
 	PrimaryActorTick.bCanEverTick = true;
-    SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("Scene_comp"));
-    RootComponent = SceneComp;
+
+    // 경로 예측 오브젝트 초기화
+    InitGrenadePath();
 }
 
 void AWeaponManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+    // 투척류 무기 맨 마지막 지점 오브젝트 생성
+    if (BP_GrenadeEndPoint &&
+        pThrowable)
+        GrenadeEndPoint = GetWorld()->SpawnActor<AActor>(BP_GrenadeEndPoint, pThrowable->StaticMeshComp->GetSocketTransform("GrenadeThrowSocket"));
+
+    if (GrenadeEndPoint)
+        GrenadeEndPoint->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
 }
 
-void AWeaponManager::Tick(float _delta_time)
+void AWeaponManager::Tick(float _DeltaTime)
 {
-	Super::Tick(_delta_time);
+	Super::Tick(_DeltaTime);
     UpdateCurrentWeaponArr();
 
     // 총기일 때마다 확인
     if (bArrWeaponEquipped[3] &&
         bArrWeaponEquipped[4])
     {
-        CheckIfReloading(_delta_time);
-        CheckContinouslyShooting(_delta_time);
+        CheckReloading(_DeltaTime);
+        CheckContinouslyShooting(_DeltaTime);
+    }
+    if (mbThrowingGrenade)
+    {
+        mPathTime += _DeltaTime;
+
+        if(mPathTime > 0.5f)
+        {
+            // 경로 제거 및 메쉬 제거
+            SplineComp->ClearSplinePoints();
+
+            for (int i = 0; i < arrSplineMeshComp.Num(); i++)
+            {
+                if (auto splineMeshComp = arrSplineMeshComp[i])
+                    splineMeshComp->DestroyComponent();
+            }
+            arrSplineMeshComp.Empty();
+            mPathTime = 0.f;
+            mbThrowingGrenade = false;
+        }        
     }
 }
 
-void AWeaponManager::Check_for_equipped_weapon()
+void AWeaponManager::CheckForEquippedWeapon()
 {
     //
 }
 
+void AWeaponManager::InitGrenadePath()
+{
+    SplineComp = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComp"));
+    SplineComp->SetMobility(EComponentMobility::Static);
+    RootComponent = SplineComp;
+
+    auto BP_GrenadeEndPointRef = ConstructorHelpers::FClassFinder<AActor>(TEXT("/Game/UI/PredictGrenadePath/BP_PredictEndpoint.BP_PredictEndpoint_C"));
+
+    if (BP_GrenadeEndPointRef.Succeeded())
+        BP_GrenadeEndPoint = BP_GrenadeEndPointRef.Class;
+
+    auto PATH_MESH = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Engine/BasicShapes/Cylinder"));
+
+    if (PATH_MESH.Succeeded())
+        PathMesh = PATH_MESH.Object;
+
+    auto PATH_MAT = ConstructorHelpers::FObjectFinder<UMaterial>(TEXT("/Game/UI/PredictGrenadePath/PredictionPathMat"));
+
+    if (PATH_MAT.Succeeded())
+        PathMat = PATH_MAT.Object;
+}
+
+bool AWeaponManager::IsAmmoInsufficient(int _BulletCount)
+{
+    bool b_ammo = (_BulletCount != 0);
+
+    if (b_ammo)
+        Reload();
+
+    else
+        PlaySound(EWeaponSoundType::EMPTY_AMMO);
+
+    return b_ammo;
+}
+
 void AWeaponManager::UpdateCurrentWeaponArr()
 {
-    TArray< ABaseInteraction*> ArrCurrentWeapon
+    TArray< ABaseInteraction*> p_arrCurrentWeapon
     {
         pFirstGun,
         pSecondGun,
@@ -59,57 +124,40 @@ void AWeaponManager::UpdateCurrentWeaponArr()
         pMelee,
         pThrowable
     };
-    for (int i = 0; i < ArrCurrentWeapon.Num(); i++)
-         bArrWeaponEquipped[i] = (ArrCurrentWeapon[i] != nullptr);
+    for (int i = 0; i < p_arrCurrentWeapon.Num(); i++)
+         bArrWeaponEquipped[i] = (p_arrCurrentWeapon[i] != nullptr);
 }
 
 void AWeaponManager::PlaySound(EWeaponSoundType _SoundType)
 {
-    // 오디오 컴포넌트 가져오기    
-    UAudioComponent* p_AudioComp = nullptr;
-    int              weapon_index = 0;
+    if (CurrentWeaponType == ECurrentWeaponType::NONE)
+        return;
 
-    // 첫번째 무기
-    if (bArrWeaponEquipped[0])
+    TArray< ABaseInteraction*> p_arrCurrentWeapon
     {
-        p_AudioComp  = pFirstGun->AudioComp;
-        weapon_index = (int)pFirstGun->WeaponType;
-    }
-    // 두번째 무기
-    else if (bArrWeaponEquipped[1])
-    {
-        p_AudioComp  = pSecondGun->AudioComp;
-        weapon_index = (int)pSecondGun->WeaponType;
-    }
-    // 세번째 무기
-    else if (bArrWeaponEquipped[2])
-    {
-        p_AudioComp  = pPistol->AudioComp;
-        weapon_index = (int)pPistol->WeaponType;
-    }
-    // 네번째 무기
-    else if (bArrWeaponEquipped[3])
-    {
-        p_AudioComp  = pMelee->AudioComp;
-        weapon_index = (int)pMelee->WeaponType;
-    }
-    // 다섯번째 무기
-    else if (bArrWeaponEquipped[4])
-    {
-        p_AudioComp  = pThrowable->AudioComp;
-        weapon_index = (int)pThrowable->WeaponType;
-    }
-    /*if (_sound_type != e_weapon_sound_type::SHOT)
-        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type);
+        pFirstGun,
+        pSecondGun,
+        pPistol,
+        pMelee,
+        pThrowable
+    };
+    int index       = (int)CurrentWeaponType;
+    int weaponIndex = GetWeaponType(p_arrCurrentWeapon[index]);
 
-    else
-        AGlobal::Get_sound_manager()->Play_weapon_sound(p_audio_comp, _sound_type, weapon_index);*/
+    if (weaponIndex == -1)
+        return;
+
+    if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    {
+        if (auto p_soundManager = p_customGameInst->pSoundManager)
+            p_soundManager->PlayWeaponSound(p_arrCurrentWeapon[index]->AudioComp, _SoundType, weaponIndex);
+    }
 }
 
 ECurrentWeaponType AWeaponManager::GetWeaponIndex(FString _Direction, int _StartIndex)
 {
     // 위에서 아래
-    if (_Direction == "down")
+    if (_Direction == "Down")
     {
         for (int i = _StartIndex - 1; i > -1; i--)
         {
@@ -220,35 +268,72 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* _pWeapon, FTransform 
     _pWeapon->SetActorTransform(_NewPos);
 }
 
-void AWeaponManager::CheckForGrenadePath()
+void AWeaponManager::PredictGrenadePath()
 {
-    //UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetControlRotation().Pitch / 360.f;
-    // 투척류 예측 경로 데이터 설정
-    FVector outVelocity = FVector::ZeroVector;
-    auto    controllerRotation = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetControlRotation();
-    FVector targetPos = FVector(GrenadePathPredictPos.X, GrenadePathPredictPos.Y + controllerRotation.Pitch, GrenadePathPredictPos.Z + controllerRotation.Yaw);
-    GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Red, controllerRotation.ToString());
-    GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Blue, targetPos.ToString());
-    
-    // UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetActorForwardVector().Z * 0.5f
-    if (UGameplayStatics::SuggestProjectileVelocity_CustomArc(this, outVelocity, GrenadePathPredictPos, targetPos, GetWorld()->GetGravityZ()))
-    {
-        FPredictProjectilePathParams predictParams(2.f, GrenadePathPredictPos, outVelocity, 5.f);   
-        predictParams.DrawDebugTime = 3.f; //디버그 라인 보여지는 시간 (초)     
-        predictParams.DrawDebugType = EDrawDebugTrace::Type::ForDuration;  // DrawDebugTime 을 지정하면 EDrawDebugTrace::Type::ForDuration 필요.
-        predictParams.OverrideGravityZ = GetWorld()->GetGravityZ();
-        FPredictProjectilePathResult result;
-        UGameplayStatics::PredictProjectilePath(this, predictParams, result);
-        
-        // 수류탄 투척
-        pThrowable->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-        if (auto colliderComp = pThrowable->GrenadeColliderComp)
+    if (!SplineComp ||
+        !p_player)
+        return;
+
+    mbThrowingGrenade = true;
+    mPathTime         = 0.f;
+    // 투척류 예측 경로 데이터 설정
+    FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSocket");
+    FVector launchVelocity;
+
+    if (auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+        launchVelocity = UKismetMathLibrary::GetForwardVector(p_playerController->GetControlRotation()) * 1000.f;
+
+    pThrowable->Velocity = launchVelocity;
+    RootComponent->SetMobility(EComponentMobility::Movable);
+    RootComponent->SetWorldLocation(socketPos);
+    RootComponent->SetMobility(EComponentMobility::Static);
+    FPredictProjectilePathParams predictParams(25.f, socketPos, launchVelocity, 2.f, ECC_WorldStatic, UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    predictParams.SimFrequency     = 15.f;
+    predictParams.OverrideGravityZ = 0.f;
+    FPredictProjectilePathResult result;
+    UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, result);
+
+    // 경로 지정    
+    for (int i = 0; i < result.PathData.Num(); i++)
+         SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
+
+    for (int i = 0; i < SplineComp->GetNumberOfSplinePoints(); i++)
+    {
+        // 라인 메쉬 생성
+        if (auto splineMeshComp = NewObject<USplineMeshComponent>(GetWorld(), USplineMeshComponent::StaticClass()))
         {
-            colliderComp->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-            colliderComp->SetSimulatePhysics(true);
-            colliderComp->AddImpulse(outVelocity);
+            // 위치 설정
+            FVector startPos, startTangent, endPos, endTangent;
+            SplineComp->GetLocationAndTangentAtSplinePoint(i, startPos, startTangent, ESplineCoordinateSpace::World);
+            SplineComp->GetLocationAndTangentAtSplinePoint(i + 1, endPos, endTangent, ESplineCoordinateSpace::World);
+            splineMeshComp->SetStartAndEnd(startPos, startTangent, endPos, endTangent);
+
+            // 비쥬얼 설정
+            splineMeshComp->SetForwardAxis(ESplineMeshAxis::Z);
+            splineMeshComp->SetStartScale(FVector2D(0.02f));
+            splineMeshComp->SetEndScale(FVector2D(0.02f));
+            splineMeshComp->SetStartOffset(FVector2D::ZeroVector);
+            splineMeshComp->SetEndOffset(FVector2D::ZeroVector);
+            splineMeshComp->SetStaticMesh(PathMesh);
+            splineMeshComp->SetMaterial(0, PathMat);
+            splineMeshComp->SetVisibility(true);
+
+            splineMeshComp->SetMobility(EComponentMobility::Static);
+            splineMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            splineMeshComp->RegisterComponentWithWorld(GetWorld());
+            splineMeshComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+            arrSplineMeshComp.Add(splineMeshComp);
         }
+    }
+    auto length = SplineComp->GetSplineLength();
+
+    // 도착 지점에 생성 및 설정
+    if (GrenadeEndPoint)
+    {
+        GrenadeEndPoint->SetHidden(false);
+        GrenadeEndPoint->SetActorRelativeLocation(result.LastTraceDestination.Location);
     }
 }
 
@@ -323,28 +408,19 @@ void AWeaponManager::Shoot()
 {
     ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentWeaponType);
 
-    if (!p_weapon)
+    if (!p_weapon ||
+        mbReloading)
         return;
 
     if (p_weapon->IsA<ACoreWeapon>())
     {
-        if (mbReloading)
-            return;
-
         auto p_gun = Cast<ACoreWeapon>(p_weapon);
         auto weaponData = p_gun->WeaponData;
 
         // 총알 부족
-        if (weaponData.CurrentBulletCount == 0)
-        {
-            if (weaponData.CurrentBulletCount == 0)
-                PlaySound(EWeaponSoundType::EMPTY_AMMO);
-
-            else
-                Reload();
-
+        if (IsAmmoInsufficient(weaponData.CurrentBulletCount))
             return;
-        }
+
         // 사운드 적용 및 총알 1개 차감
         weaponData.CurrentBulletCount--;
         PlaySound(EWeaponSoundType::SHOT);
@@ -388,10 +464,9 @@ void AWeaponManager::Shoot()
     else
     {
         // 크레모아가 아닌 무기일 때만 투척 경로 지정
-        if (pThrowable && 
+        if (pThrowable &&
             pThrowable->WeaponType != EThrowableWeaponType::CLAYMORE)
-            CheckForGrenadePath();
-        
+            PredictGrenadePath();
     }
 }
 
@@ -401,25 +476,31 @@ void AWeaponManager::Reload()
 
     if (auto p_gun = Cast<ACoreWeapon>(p_weapon))
     {
-        int result       = 0;
-        mbReloading   = true;
         auto weaponData = p_gun->WeaponData;
 
-        // 허용 총알 개수가 똑같을 시
-        if      (weaponData.CurrentBulletCount == weaponData.MaxBulletCount)
-                 return;
+        if (weaponData.CurrentBulletCount != weaponData.MaxBulletCount)
+        {
+            int result = (weaponData.CurrentBulletCount > 0) ? weaponData.MaxBulletCount - weaponData.CurrentBulletCount : p_gun->WeaponData.MaxBulletCount;
+            p_gun->WeaponData.MaxBulletCount     -= result;
+            p_gun->WeaponData.CurrentBulletCount += result;
+            PlaySound(EWeaponSoundType::RELOAD);
+            mbReloading = true;
+        }
+    }
+}
 
-        // 중간에 장전
-        else if (weaponData.CurrentBulletCount > 0)
-                 result = weaponData.MaxBulletCount - weaponData.CurrentBulletCount;
+void AWeaponManager::ThrowGrenade()
+{
+    // 수류탄 탈착 후 월드에 소환
+    pThrowable->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    
+    if (auto colliderComp = pThrowable->GrenadeColliderComp)
+    {
+        colliderComp->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+        colliderComp->SetSimulatePhysics(true);
 
-        // 전체 총알 소모 후 장전
-        else
-                 result = p_gun->WeaponData.MaxBulletCount;
-
-        weaponData.MaxBulletCount     -= result;
-        weaponData.CurrentBulletCount += result;
-        PlaySound(EWeaponSoundType::RELOAD);
+        if (auto p_projectileMovementComp = pThrowable->ProjectileMovementComp)
+            p_projectileMovementComp->AddForce(pThrowable->Velocity);
     }
 }
 
@@ -445,15 +526,15 @@ bool AWeaponManager::ScrollSelect(FString _Pos)
     {
         // 마지막 원소 0 도달 시
         if (currentIndex == (int)ECurrentWeaponType::FIRST)
-            CurrentWeaponType = GetWeaponIndex("down", (int)ECurrentWeaponType::THROWABLE);
+            CurrentWeaponType = GetWeaponIndex("Down", (int)ECurrentWeaponType::THROWABLE);
 
         else
         {
             // 현재 위치에서 탐색
-            finalIndex = GetWeaponIndex("down", currentIndex - 1);
+            finalIndex = GetWeaponIndex("Down", currentIndex - 1);
 
             // 발견하지 못했을 시
-            CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("down", (int)ECurrentWeaponType::THROWABLE) : finalIndex;
+            CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("Down", (int)ECurrentWeaponType::THROWABLE) : finalIndex;
         }
     }
     // 위로 스크롤
@@ -461,15 +542,15 @@ bool AWeaponManager::ScrollSelect(FString _Pos)
     {
         // 현재 마지막 원소에 접근 할 시
         if (currentIndex == (int)ECurrentWeaponType::THROWABLE)
-            CurrentWeaponType = (pFirstGun) ? ECurrentWeaponType::FIRST : GetWeaponIndex("up", 1);
+            CurrentWeaponType = (pFirstGun) ? ECurrentWeaponType::FIRST : GetWeaponIndex("Up", 1);
 
         else
         {
             // 현재 위치에서 탐색
-            finalIndex = GetWeaponIndex("up", currentIndex + 1);
+            finalIndex = GetWeaponIndex("Up", currentIndex + 1);
 
             // 발견하지 못했을 시
-            CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("up", 1) : finalIndex;
+            CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("Up", 1) : finalIndex;
         }
     }
     return true;
@@ -615,7 +696,7 @@ void AWeaponManager::ChangeAimPose(int _type)
     //
 }
 
-void AWeaponManager::CheckIfReloading(float _TranscurredReloadTime)
+void AWeaponManager::CheckReloading(float _TranscurredReloadTime)
 {
     // 재장전 중
     if (mbReloading)

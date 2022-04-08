@@ -15,15 +15,20 @@
 #include "PUBG_UE4/OtherWeaponData.h"
 #include "CoreThrowableWeapon.generated.h"
 
+class UCapsuleComponent;
+class UProjectileMovementComponent;
+
 UCLASS()
 class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 {
 	GENERATED_BODY()
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Collider) class UCapsuleComponent* GrenadeColliderComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Collider) UCapsuleComponent* GrenadeColliderComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;
 	FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
+    FVector Velocity;
 
 public:
     ACoreThrowableWeapon();
@@ -40,18 +45,15 @@ protected:
      */
     void Init(EThrowableWeaponType _weapon_type);
 
-    /**
-      * \brief 메쉬 초기화
-     */
+    /** \brief 이동 컴포넌트 초기화 */
+    void InitProjectileMovementComp();
+
+    /** \brief 메쉬 초기화 */
     void InitMesh();
 
-    /**
-      * \brief 콜라이더 정보 갱신
-     */
+    /** \brief 콜라이더 정보 갱신 */
     void UpdateCollider();
 
-    /**
-      * \brief 파티클 시스템 갱신
-     */
+    /** \brief 파티클 시스템 갱신 */
     void UpdateParticleSystem();
 };
