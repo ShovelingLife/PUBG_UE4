@@ -62,15 +62,16 @@ class ANIMATIONS_API UPlayerAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player_property") EPlayerAnimationState PlayerState;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerProperty") EPlayerAnimationState PlayerState;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint") float Speed = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Direction = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Speed     = 0.f;
 
 
     /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch")
     float crouch_walk_speed = 0.f;*/
 
-    bool bWeaponEquipped;
+    bool bEquipped;
 
 public:
     UPlayerAnimInstance();

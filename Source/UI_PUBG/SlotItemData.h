@@ -27,7 +27,7 @@ public:
       * \param _image_index UI 이미지 인덱스 
       * \param _count 개수
      */
-    FsSlotItemData(FString _Name, FString _Category, FString _Description, int _ImageIndex, int _Capacity = 0,  int _Count = 1) : Name(_Name), Category(_Category), Description(_Description), ImageIndex(_ImageIndex), Capacity(_Capacity),  Count(_Count) { }
+    FsSlotItemData(FString Name, FString Category, FString Description, int ImageIndex, int Capacity = 0,  int Count = 1) : Name(Name), Category(Category), Description(Description), ImageIndex(ImageIndex), Capacity(Capacity),  Count(Count) { }
 
     bool operator==(FsSlotItemData& _Other)
     {
@@ -39,7 +39,7 @@ public:
                this->Count       == _Other.Count;
     }
 
-    bool operator!=(FsSlotItemData& _Other) { return !(*this == _Other); }
+    bool operator!=(FsSlotItemData& Other) { return !(*this == Other); }
 
 public:
     void Reset()
@@ -53,5 +53,5 @@ public:
         return *this == emptyData;
     }
 
-    static FsSlotItemData GetDataFrom(class ABaseInteraction* _pObj);
+    static FsSlotItemData GetDataFrom(class ABaseInteraction* pObj);
 };

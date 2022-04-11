@@ -19,9 +19,9 @@ void UItemSlotUI::NativeConstruct()
     Super::NativeConstruct();    
 }
 
-void UItemSlotUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
     
     if (this->IsHovered())
     {
@@ -32,9 +32,9 @@ void UItemSlotUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
     }
 }
 
-void UItemSlotUI::NativeOnListItemObjectSet(UObject* _pObj)
+void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
 {
-    auto p_slot = Cast<UItemSlotUI>(_pObj);
+    auto p_slot = Cast<UItemSlotUI>(pObj);
 
     if (p_slot)
     {
@@ -55,12 +55,12 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* _pObj)
     }
 }
 
-void UItemSlotUI::SetAsCursor(FVector2D _Pos)
+void UItemSlotUI::SetAsCursor(FVector2D Pos)
 {
     auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(MainHorizontalBox->Slot);
     
     if (p_canvasPanelSlot)
-        p_canvasPanelSlot->SetPosition(_Pos);
+        p_canvasPanelSlot->SetPosition(Pos);
 
     this->SetVisibility(ESlateVisibility::Visible);
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));

@@ -52,22 +52,22 @@ protected:
 
     /**
       * \brief 플레이어가 접근했을 시 상호작용 UI 띄움
-      * \param _delta_time 프레임 초
+      * \param DeltaTime 프레임 초
      */
-    virtual void Tick(float _delta_time) override;
+    virtual void Tick(float DeltaTime) override;
 
 protected:
     /**
       * \brief 스태틱 메시 컴포넌트 초기화 (무기,아이템)
-      * \param _path 메시 경로
+      * \param Path 메시 경로
      */
-    void InitStaticMesh(FString _path);
+    void InitStaticMesh(FString Path);
 
     /**
       * \brief 스켈레탈 메시 컴포넌트 초기화 (캐릭터,차량)
-      * \param _path 메시 경로
+      * \param Path 메시 경로
      */
-    void InitSkeletalMesh(FString _path);
+    void InitSkeletalMesh(FString Path);
 
     /** \brief 오디오 컴포넌트 초기화 */
     void InitComponents();
@@ -77,9 +77,9 @@ protected:
 
     /**
       * \brief 파티클 시스템 초기화
-      * \param FString 파티클 경로
+      * \param Path 파티클 경로
      */
-    void InitParticleSystem(FString _Path);
+    void InitParticleSystem(FString Path);
 
     void AttachComponents();
 

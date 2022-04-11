@@ -57,20 +57,21 @@ protected:
 
     /**
       * \brief 프레임마다 호출
-      * \param _geometry UI 정보 \param _delta_time 프레임 초
+      * \param InGeometry UI 정보 
+      * \param DeltaTime 프레임 초
      */
-    virtual void NativeTick(const FGeometry& _geometry, float _delta_time) override;
+    virtual void NativeTick(const FGeometry& InGeometry, float DeltaTime) override;
 
     /**
       * \brief 리스트에 아이템 설정 시 호출
-      * \param UObject 슬롯 오브젝트
+      * \param pObj 슬롯 오브젝트
      */
-    virtual void NativeOnListItemObjectSet(UObject* _p_obj);
+    virtual void NativeOnListItemObjectSet(UObject* pObj);
 
 public:
     /**
       * \brief 슬롯 UI를 커서 중앙 지점에 설정
-      * \param _Pos 슬롯 UI 위치 
+      * \param Pos 슬롯 UI 위치 
      */
-    void SetAsCursor(FVector2D _Pos);
+    void SetAsCursor(FVector2D Pos);
 };

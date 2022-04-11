@@ -17,9 +17,9 @@ void UCurrentWeaponUI::NativeConstruct()
     pGameInstanceSubSystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
-void UCurrentWeaponUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UCurrentWeaponUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
     UpdateIconVisibility();
     UpdateIconColor();
     SetIconUI();

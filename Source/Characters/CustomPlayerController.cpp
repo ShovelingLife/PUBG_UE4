@@ -21,16 +21,16 @@ void ACustomPlayerController::BeginPlay()
 void ACustomPlayerController::OnUnPossess()
 {
     // 플레이어 컨트롤 바인딩 초기화
-    auto pPlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-    if (!pPlayerController)
+    if (!p_playerController)
         return;
 
-    auto pInputComp = pPlayerController->InputComponent;
+    auto p_inputComp = p_playerController->InputComponent;
 
-    if (!pInputComp)
+    if (!p_inputComp)
         return;
 
-    pInputComp->ClearActionBindings();
-    pInputComp->AxisBindings.Empty();
+    p_inputComp->ClearActionBindings();
+    p_inputComp->AxisBindings.Empty();
 }

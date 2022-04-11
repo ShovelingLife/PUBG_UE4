@@ -10,7 +10,7 @@ void UPlayerUI::NativeConstruct()
     Super::NativeConstruct();
 }
 
-void UPlayerUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UPlayerUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
 }

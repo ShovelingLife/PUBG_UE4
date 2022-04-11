@@ -62,18 +62,12 @@ public:
     ADataTableManager();
 
 private:
-    /**
-      * \brief 무기 데이터 초기화
-     */
+    /** \brief 무기 데이터 초기화 */
     void InitWeaponData();
 
-    /**
-      * \brief 기타 무기 데이터 초기화
-     */ 
+    /** \brief 기타 무기 데이터 초기화 */ 
     void InitOtherWeaponData();
 
-    /**
-      * \brief 차량 데이터 초기화
-     */
+    /** \brief 차량 데이터 초기화 */
     void InitVehicleData();
 };

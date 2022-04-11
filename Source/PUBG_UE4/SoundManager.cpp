@@ -62,38 +62,38 @@ void ASoundManager::InitWeaponAudio()
     }
 }
 
-void ASoundManager::PlayWeaponSound(UAudioComponent* _pAudioComp, EWeaponSoundType _SoundType, int _WeaponIndex)
+void ASoundManager::PlayWeaponSound(UAudioComponent* AudioComp, EWeaponSoundType SoundType, int WeaponIndex)
 {
     USoundBase* tmpSound = nullptr;
 
-    switch (_SoundType)
+    switch (SoundType)
     {
     case EWeaponSoundType::EMPTY_AMMO: tmpSound = pEmptyAmmoSound;             break;
-    case EWeaponSoundType::SHOT:       tmpSound = pArrShotSound[_WeaponIndex]; break;
+    case EWeaponSoundType::SHOT:       tmpSound = pArrShotSound[WeaponIndex]; break;
     case EWeaponSoundType::RELOAD:     tmpSound = pReloadSound;                break;
     }
-    if (_pAudioComp &&
+    if (AudioComp &&
         tmpSound)
     {
-        _pAudioComp->SetSound(tmpSound);
-        _pAudioComp->Play();
+        AudioComp->SetSound(tmpSound);
+        AudioComp->Play();
     }
 }
 
-void ASoundManager::PlayPlayerSound(UAudioComponent* _pAudioComp, EPlayerSoundType _SoundType)
+void ASoundManager::PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType)
 {
     USoundBase* tmpSound = nullptr;
 
-    switch(_SoundType)
+    switch(SoundType)
     {
     case EPlayerSoundType::ITEM_FARM:    tmpSound = pItemFarmSound;     break;
     case EPlayerSoundType::WEAPON_EQUIP: tmpSound = pWeaponPickupSound; break;
     case EPlayerSoundType::WEAPON_SWAP:  tmpSound = pWeaponSwapSound;   break;
     }
-    if (_pAudioComp &&
+    if (AudioComp &&
         tmpSound)
     {
-        _pAudioComp->SetSound(tmpSound);
-        _pAudioComp->Play();
+        AudioComp->SetSound(tmpSound);
+        AudioComp->Play();
     }
 }

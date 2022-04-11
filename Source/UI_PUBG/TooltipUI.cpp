@@ -7,9 +7,9 @@
 #include "Components/TextBlock.h"
 #include "Engine/Texture2D.h"
 
-void UTooltipUI::NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime)
+void UTooltipUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_MyGeometry, _InDeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
 
     if (this->GetVisibility() == ESlateVisibility::Visible)
     {
@@ -22,17 +22,17 @@ void UTooltipUI::NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime)
     }
 }
 
-void UTooltipUI::SetData(FsSlotItemData _SlotItemData)
+void UTooltipUI::SetData(FsSlotItemData SlotItemData)
 {
     // 데이터 설정
-    ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(_SlotItemData));
+    ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(SlotItemData));
 
     Chaos::Pair<UTextBlock*, FString> arrTextPair[]
     {
-        Chaos::MakePair<UTextBlock*, FString>(NameTxt, _SlotItemData.Name),
-        Chaos::MakePair<UTextBlock*, FString>(CategoryTxt, _SlotItemData.Category),
-        Chaos::MakePair<UTextBlock*, FString>(DescriptionTxt, _SlotItemData.Description),
-        Chaos::MakePair<UTextBlock*, FString>(CapacityTxt, (_SlotItemData.Capacity == 0) ? "" : FString::FromInt(_SlotItemData.Capacity))
+        Chaos::MakePair<UTextBlock*, FString>(NameTxt, SlotItemData.Name),
+        Chaos::MakePair<UTextBlock*, FString>(CategoryTxt, SlotItemData.Category),
+        Chaos::MakePair<UTextBlock*, FString>(DescriptionTxt, SlotItemData.Description),
+        Chaos::MakePair<UTextBlock*, FString>(CapacityTxt, (SlotItemData.Capacity == 0) ? "" : FString::FromInt(SlotItemData.Capacity))
     };
     for(auto item : arrTextPair)
     {

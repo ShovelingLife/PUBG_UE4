@@ -71,13 +71,13 @@ public:
      * \brief 플레이어 상태 관련 변수
      */
     EPlayerState CurrentState;
-    const float    kMaxHealth          = 100.f;
-    float          CurrentHealth        = 100;
-    float          CurrentOxygen        = 1.f;
-    bool           bSprinting          = false;
-    bool           bAnimationPlaying  = false;
-    bool           bAiming             = false;
-    bool           bWeaponEquipped    = false;
+    const float    kMaxHealth        = 100.f;
+    float          CurrentHealth     = 100;
+    float          CurrentOxygen     = 1.f;
+    bool           bSprinting        = false;
+    bool           bAnimationPlaying = false;
+    bool           bAiming           = false;
+    bool           bWeaponEquipped   = false;
     
     /**
      * \brief 차량 관련 변수
@@ -144,13 +144,13 @@ private:
      * \brief 위 아래 카메라 전환
      * \param _value 카메라 회전 값
      */
-    void LookUp(float _value);
+    void LookUp(float Value);
 
     /**
      * \brief 좌우 카메라 전환
      * \param _value 카메라 회전 값
      */
-    void Turn(float _value);
+    void Turn(float Value);
 
     /** \brief 점프 */
     void CustomJump();
@@ -210,14 +210,14 @@ private:
     /** \brief 다섯번째 무기 장착 */
     void EquipFifthWeapon() { CheckForWeapon("", ECurrentWeaponType::THROWABLE); }
 
-    void CheckForWeapon(FString _Direction = "", ECurrentWeaponType _CurrentWeaponType = ECurrentWeaponType::NONE);
+    void CheckForWeapon(FString Direction = "", ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE);
 
 public:
     /**
      * \brief 플레이어가 차량에서 나감
      * \param _exit_location 나가는 위치
      */
-    void ExitFromVehicle(FVector _exit_location);
+    void ExitFromVehicle(FVector ExitLocation);
 
     AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
 };

@@ -22,7 +22,7 @@ class PLAYER_WEAPONS_API ACoreMeleeWeapon : public ABaseInteraction
 
 public:
     FsOtherWeaponData WeaponData;
-    EMeleeWeaponType  WeaponType;	
+    EMeleeWeaponType  CurrentWeaponType;	
 
 public:
     ACoreMeleeWeapon();
@@ -35,15 +35,11 @@ protected:
       * \brief 근접 무기 초기화
       * \param _weapon_type 무기 종류
      */
-    void Init(EMeleeWeaponType _weapon_type);
+    void Init(EMeleeWeaponType WeaponType);
 
-    /**
-      * \brief 메쉬 초기화
-     */
+    /** \brief 메쉬 초기화 */
     void InitMesh();
 
-    /**
-      * \brief 콜라이더 정보 갱신
-     */
+    /** \brief 콜라이더 정보 갱신 */
     void UpdateCollider();
 };

@@ -21,8 +21,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* CapacityTxt;
 
 protected:
-	virtual void NativeTick(const FGeometry& _MyGeometry, float _InDeltaTime) override;
+	virtual void NativeTick(const FGeometry& InGeometry, float DeltaTime) override;
 
 public:
-	void SetData(FsSlotItemData _SlotItemData);
+	void SetData(FsSlotItemData SlotItemData);
 };

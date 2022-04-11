@@ -31,17 +31,17 @@ void UInventoryListUI::NativeConstruct()
     pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
-void UInventoryListUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UInventoryListUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
 }
 
-FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseButtonDown(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
     
     // 왼쪽 클릭 / 마우스 커서 변경
-    if (_InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+    if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 
@@ -49,13 +49,13 @@ FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, c
         if (pGameInstanceSubsystemUI)
             pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(mpSlotObj, ESlateVisibility::Hidden);
     }
-    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
+    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
 }
 
-FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseMove(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseMove(InGeometry, InMouseEvent);
 
     // 움직일 때마다 현재 이미지의 위치를 구함    
     if (!pGameInstanceSubsystemUI)
@@ -70,19 +70,19 @@ FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& _InGeometry, const F
     return FReply::Handled();
 }
 
-void UInventoryListUI::NativeOnMouseLeave(const FPointerEvent& _InMouseEvent)
+void UInventoryListUI::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseLeave(_InMouseEvent);
+    Super::NativeOnMouseLeave(InMouseEvent);
     HighlightImg->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent, UDragDropOperation*& _OutOperation)
+void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
-    Super::NativeOnDragDetected(_InGeometry, _InMouseEvent, _OutOperation);
+    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
     
     // 마우스 위치를 구함
-    auto      p_slot    = CreateWidget<UItemSlotUI>(GetWorld(), BP_ItemSlotUI);
-    FVector2D mousePos = _InGeometry.AbsoluteToLocal(_InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
+    auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_ItemSlotUI);
+    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
     
     if (!p_slot ||
         !mpSlotObj)
@@ -108,13 +108,13 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& _InGeometry, const 
     p_dragOperation->Pivot             = EDragPivot::MouseDown;
     p_dragOperation->ItemData          = mpSlotObj->ItemData;
     p_dragOperation->bFromList = true;
-    _OutOperation  = p_dragOperation;
+    OutOperation  = p_dragOperation;
 }
 
-bool UInventoryListUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InMouseEvent, UDragDropOperation* _Operation)
+bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InMouseEvent, UDragDropOperation* Operation)
 {
-    Super::NativeOnDrop(_InGeometry, _InMouseEvent, _Operation);
-    auto p_dragOperation = Cast<UCustomDragDropOperation>(_Operation);
+    Super::NativeOnDrop(InGeometry, InMouseEvent, Operation);
+    auto p_dragOperation = Cast<UCustomDragDropOperation>(Operation);
     auto p_slot          = p_dragOperation->pSlotUI;
 
     if (!p_slot)
@@ -173,13 +173,13 @@ void UInventoryListUI::GetItemListWidth()
     }
 }
 
-bool UInventoryListUI::IsItemAddedInList(FString _ItemName)
+bool UInventoryListUI::IsItemAddedInList(FString ItemName)
 {
     for (auto item : InventoryListView->GetListItems())
     {
         if (auto p_slot = Cast<UItemSlotUI>(item))
         {
-            if (p_slot->ItemData.Name == _ItemName)
+            if (p_slot->ItemData.Name == ItemName)
             {
                 p_slot->ItemData.Count++;                
                 InventoryListView->RemoveItem(p_slot);
@@ -192,12 +192,12 @@ bool UInventoryListUI::IsItemAddedInList(FString _ItemName)
 }
 
 // this가 넘어오므로 널 체크 불필요
-void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* _pSlotObj)
+void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
 {
     // 현재 이미지 위치를 구함
     FVector2D movePos = FVector2D::ZeroVector, dummy_vec;
-    auto      cachedGeometry = _pSlotObj->GetCachedGeometry();
-    mpSlotObj = _pSlotObj;
+    auto      cachedGeometry = pSlotObj->GetCachedGeometry();
+    mpSlotObj = pSlotObj;
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);   
     
     // 리스트 판별
@@ -252,30 +252,30 @@ void UInventoryListUI::DeleteFromList()
     }
 }
 
-void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* _pWeaponSlot)
+void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* pWeaponSlot)
 {
     DeleteFromList();
-    _pWeaponSlot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-    WorldListView->AddItem(_pWeaponSlot);
+    pWeaponSlot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
+    WorldListView->AddItem(pWeaponSlot);
 }
 
-void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* _pWeapon, bool _bDeleteFromList /* = false */)
+void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDeleteFromList /* = false */)
 {
     if (!pGameInstanceSubsystemUI)
         return;
 
-    if (_bDeleteFromList)
+    if (bDeleteFromList)
         DeleteFromList();
 
     UItemSlotUI*   p_slot   = NewObject<UItemSlotUI>();
-    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(_pWeapon);
+    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(pWeapon);
 
     if (itemData.IsEmpty() ||
         IsItemAddedInList(itemData.Name))
         return;
     
     p_slot->ItemData     = itemData;
-    p_slot->pDraggedItem = _pWeapon;
+    p_slot->pDraggedItem = pWeapon;
     p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");

@@ -56,63 +56,59 @@ protected:
 
     /**
       * \brief 리스트에 마우스 클릭 시 슬롯 정보 가져옴
-      * \param _InGeometry UI 정보 
-      * \param _InMouseEvent 마우스 이벤트
+      * \param InGeometry UI 정보 
+      * \param InMouseEvent 마우스 이벤트
       * \return FReply 마우스 처리 이벤트
      */
-    virtual FReply NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent) override;
+    virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
     /**
       * \brief 마우스 움직일 시 선택 이미지 값에 따라 숨김
-      * \param _InGeometry UI 정보
-      * \param _InMouseEvent 마우스 이벤트
+      * \param InGeometry UI 정보
+      * \param InMouseEvent 마우스 이벤트
       * \return FReply 마우스 처리 이벤트
      */
-    virtual FReply NativeOnMouseMove(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent) override;
+    virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
     /**
       * \brief 마우스가 UI에서 벗어남 따라서 선택 이미지 숨김
-      * \param _InMouseEvent 마우스 이벤트
+      * \param InMouseEvent 마우스 이벤트
      */
-    virtual void NativeOnMouseLeave(const FPointerEvent& _InMouseEvent) override;
+    virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 
     /**
       * \brief 드래그 중일 시 슬롯 커서 생성
-      * \param _InGeometry UI 정보
-      * \param _InMouseEvent 마우스 이벤트
-      * \param _OutOperation 드래그 드롭 객체
+      * \param InGeometry UI 정보
+      * \param InMouseEvent 마우스 이벤트
+      * \param OutOperation 드래그 드롭 객체
      */
-    virtual void NativeOnDragDetected(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent, class UDragDropOperation*& _OutOperation) override;
+    virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, class UDragDropOperation*& OutOperation) override;
 
     /**
       * \brief 인벤토리 무기 UI로부터 드래그 후 드롭할 시 위치에 따라 월드-인벤토리 리스트에 넣음
-      * \param _InGeometry UI 정보
-      * \param _InMouseEvent 마우스 이벤트
-      * \param _Operation 드래그 드롭 객체
+      * \param InGeometry UI 정보
+      * \param InMouseEvent 마우스 이벤트
+      * \param Operation 드래그 드롭 객체
       * \return boolean 드롭 성공 여부
      */
-    virtual bool NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InMouseEvent, class UDragDropOperation* _Operation) override;
+    virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InMouseEvent, class UDragDropOperation* Operation) override;
 
 private:
     /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
     void GetItemListWidth();
 
-    bool IsItemAddedInList(FString _ItemName);
+    bool IsItemAddedInList(FString ItemName);
 
 public:
     /**
       * \brief 리스트 내 아이템 슬롯에서 선택할 시 호출함 (델리게이트)
-      * \param _pSlot_obj 아이템 슬롯
+      * \param pSlotObj 아이템 슬롯
      */
-    UFUNCTION()
-    void CheckForHoveredItem(UItemSlotUI* _pSlot_obj);
+    UFUNCTION() void CheckForHoveredItem(UItemSlotUI* pSlotObj);
 
-    UFUNCTION()
-    void DeleteFromList();
+    UFUNCTION() void DeleteFromList();
 
-    UFUNCTION()
-    void SwapWeaponSlot(UItemSlotUI* _pWeapon_slot);
+    UFUNCTION() void SwapWeaponSlot(UItemSlotUI* pWeaponSlot);
 
-    UFUNCTION()
-    void SetItemOntoInventory(class ABaseInteraction* _pWeapon, bool _bDeleteFromList = false);
+    UFUNCTION() void SetItemOntoInventory(class ABaseInteraction* pWeapon, bool bDeleteFromList = false);
 };

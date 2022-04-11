@@ -12,6 +12,17 @@
 #include "Kismet/GameplayStatics.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 
+void ACoreThrowableWeapon::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+
+    if (!bTouched)
+    {
+        StaticMeshComp->SetSimulatePhysics(false);
+        bTouched = true;
+    }
+}
+
 ACoreThrowableWeapon::ACoreThrowableWeapon()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -29,32 +40,32 @@ void ACoreThrowableWeapon::BeginPlay()
         GrenadeColliderComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(FMath::Abs(WeaponData.MeshRotationX), 0.f, 0.f)));
         GrenadeColliderComp->SetCollisionProfileName("Object");
     }
-    if(ColliderComp)
+    /*if(ColliderComp)
     {
         ABaseInteraction::SetCollisionSettingsForObjects();
         ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 4.f));
         ColliderComp->SetBoxExtent(FVector(15.f, 15.f, 5.f));
         StaticMeshComp->AddRelativeLocation(FVector(0.f, 0.f, 18.f));
-    }
+    }*/
 }
     
-void ACoreThrowableWeapon::Tick(float _DeltaTime)
+void ACoreThrowableWeapon::Tick(float DeltaTime)
 {
-    Super::Tick(_DeltaTime);
+    Super::Tick(DeltaTime);
 }
 
-void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
+void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
 {
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)_WeaponType];
-    WeaponType = _WeaponType;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    this->CurrentWeaponType = WeaponType;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
-    UpdateCollider();
+    InitMesh();
+    //UpdateCollider();
     InitProjectileMovementComp();
     Super::AttachComponents();
     Super::InitParticleSystem(WeaponData.ParticlePath);
-    InitMesh();
 
     if (SceneComp)
         SceneComp->DestroyComponent();
@@ -62,7 +73,7 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType _WeaponType)
 
 void ACoreThrowableWeapon::InitProjectileMovementComp()
 {
-    if (WeaponType == EThrowableWeaponType::CLAYMORE)
+    if (CurrentWeaponType == EThrowableWeaponType::CLAYMORE)
         return;
 
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
@@ -77,17 +88,25 @@ void ACoreThrowableWeapon::InitMesh()
 
     if (StaticMeshComp)
     {
+        RootComponent->DestroyComponent();
+        RootComponent = StaticMeshComp;
+
+        // 위치 관련
         StaticMeshComp->SetRelativeLocation(WeaponData.MeshPos);
         StaticMeshComp->SetRelativeRotation(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)));
         StaticMeshComp->SetRelativeScale3D(FVector(WeaponData.MeshSize));
-        StaticMeshComp->SetCollisionProfileName("NoCollision");
+
+        // 강체 관련
         StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+        StaticMeshComp->SetSimulatePhysics(true);
+        StaticMeshComp->SetCollisionProfileName("PhysicsActor");
+        StaticMeshComp->SetNotifyRigidBodyCollision(true);
     }
 }
 
 void ACoreThrowableWeapon::UpdateCollider()
 {
-    if (WeaponType != EThrowableWeaponType::CLAYMORE)
+    if (CurrentWeaponType != EThrowableWeaponType::CLAYMORE)
     {
         GrenadeColliderComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
 
@@ -101,4 +120,16 @@ void ACoreThrowableWeapon::UpdateCollider()
             RootComponent = GrenadeColliderComp;
         }
     }
+}
+
+void ACoreThrowableWeapon::Throw(FVector Velocity)
+{
+    if (!StaticMeshComp ||
+        !ProjectileMovementComp)
+        return;
+
+    StaticMeshComp->SetSimulatePhysics(true);
+    StaticMeshComp->SetCollisionProfileName("BlockAll");
+    ProjectileMovementComp->AddForce(Velocity);
+    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);    
 }

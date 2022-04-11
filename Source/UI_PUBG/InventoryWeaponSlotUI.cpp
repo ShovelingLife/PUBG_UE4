@@ -32,33 +32,33 @@ void UInventoryWeaponSlotUI::NativeConstruct()
     pGameInstanceSubSystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
-void UInventoryWeaponSlotUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
     CheckForHoveredWeaponSlot();
     UpdateVisibility();
     UpdateInventoryWeaponUI();
     UpdateHighlightImgPos(); 
 }
 
-void UInventoryWeaponSlotUI::NativeOnMouseLeave(const FPointerEvent& _InMouseEvent)
+void UInventoryWeaponSlotUI::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseLeave(_InMouseEvent);
+    Super::NativeOnMouseLeave(InMouseEvent);
 
     if (!mbClicked)
         ResetHighlightImg();
 }
 
-FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseButtonDown(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
     
-    // 왼쪽 클릭 / 마우스 커서 변경
-    if(_InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
-    {
-        if (!pGameInstanceSubSystemUI)
-            return FReply::Unhandled();
+    if (!pGameInstanceSubSystemUI)
+        return FReply::Unhandled();
 
+    // 왼쪽 클릭 / 마우스 커서 변경
+    if(InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+    {
         if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
             mItemData = FsSlotItemData::GetDataFrom(p_weaponManager->GetWeaponByIndex(mSelectedWeaponIndex));
 
@@ -67,42 +67,37 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& _InGeome
         mDraggedWeaponIndex = mSelectedWeaponIndex;
     }
     // 오른쪽 클릭 / 맵에다가 무기를 버림
-    else if (_InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+    else if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
     {
-        if (!pGameInstanceSubSystemUI)
-            return FReply::Unhandled();
-
         if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
             p_weaponManager->Drop(mSelectedWeaponIndex);
 
         ResetHighlightImg();
     }
-    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
+    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
 }
 
-FReply UInventoryWeaponSlotUI::NativeOnMouseButtonUp(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UInventoryWeaponSlotUI::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseButtonUp(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
     mItemData.Reset();
     ResetHighlightImg();
     return FReply::Handled();
 }
-void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent, UDragDropOperation*& _OutOperation)
+void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
-    Super::NativeOnDragDetected(_InGeometry, _InMouseEvent, _OutOperation);
+    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 
-    if (!pGameInstanceSubSystemUI)
-        return;
+    ABaseInteraction* p_weapon = nullptr;
 
-    auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
-
-    if (!p_weaponManager)
-        return;
-
-    ABaseInteraction* p_weapon = p_weaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
-    auto              p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
-    FVector2D         mousePos = _InGeometry.AbsoluteToLocal(_InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
+    if (pGameInstanceSubSystemUI)
+    {
+        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
+            p_weapon= p_weaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
+    }
+    auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
+    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (!p_slot   ||
         !p_weapon ||
@@ -129,19 +124,18 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, 
     p_customOperation->DefaultDragVisual = p_slot;
     p_customOperation->Pivot             = EDragPivot::MouseDown;
     p_customOperation->ItemData          = mItemData;
-    _OutOperation = p_customOperation;
+    OutOperation = p_customOperation;
 }
 
-bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDrop(_InGeometry, _InDragDropEvent, _InOperation);
-    auto p_customOperation = Cast<UCustomDragDropOperation>(_InOperation);
+    Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+    auto p_customOperation = Cast<UCustomDragDropOperation>(InOperation);
     auto p_slot = p_customOperation->pSlotUI;
+    AWeaponManager* p_weaponManager = nullptr;
 
-    if (!pGameInstanceSubSystemUI)
-        return false;
-
-    auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
+    if (pGameInstanceSubSystemUI)
+        p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
 
     if (!p_weaponManager ||
         !p_slot)
@@ -196,27 +190,27 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FD
     return true;
 }
 
-void UInventoryWeaponSlotUI::NativeOnDragEnter(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+void UInventoryWeaponSlotUI::NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragEnter(_InGeometry, _InDragDropEvent, _InOperation);
+    Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
     ResetHighlightImg();
 }
 
-void UInventoryWeaponSlotUI::NativeOnDragLeave(const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+void UInventoryWeaponSlotUI::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragLeave(_InDragDropEvent, _InOperation);
+    Super::NativeOnDragLeave(InDragDropEvent, InOperation);
     ResetHighlightImg();
 }
 
-void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragCancelled(_InDragDropEvent, _InOperation);
+    Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
     ResetHighlightImg();
 }
 
-bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragOver(_InGeometry, _InDragDropEvent, _InOperation);    
+    Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);    
     ResetHighlightImg();
 
      TArray< UCanvasPanel* >p_arrCanvasPanel
@@ -370,13 +364,13 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
     // 네번째 무기
     if (auto p_melee = p_weaponManager->pMelee)
     {
-        MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType));
+        MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->CurrentWeaponType));
         MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
     }
     // 다섯번째 무기
     if (auto p_throwable = p_weaponManager->pThrowable)
     {
-        GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->WeaponType));
+        GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->CurrentWeaponType));
         GrenadeNameTxt->SetText(FText::FromString(p_throwable->WeaponData.Type));
     }
 }

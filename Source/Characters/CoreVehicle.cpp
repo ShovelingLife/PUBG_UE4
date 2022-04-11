@@ -36,9 +36,9 @@ void ACoreVehicle::BeginPlay()
 }
 
 // Called every frame
-void ACoreVehicle::Tick(float _DeltaTime)
+void ACoreVehicle::Tick(float DeltaTime)
 {
-    Super::Tick(_DeltaTime);
+    Super::Tick(DeltaTime);
     InteractionWidgetComp->SetVisibility(bCollided);
     UpdateCarPosData();
 
@@ -52,7 +52,7 @@ void ACoreVehicle::Tick(float _DeltaTime)
     }
 }
 
-void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* _PlayerInputComp)
+void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComp)
 {    
     Super::SetupPlayerInputComponent(InputComponent);
 
@@ -70,9 +70,9 @@ void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* _PlayerInputComp)
     InputComponent->BindAction(TEXT("ChangeToFourthSeat"), EInputEvent::IE_Pressed, this, &ACoreVehicle::ChangeToFourthSeat);
 }
 
-void ACoreVehicle::Init(EVehicleType _VehicleTypeIndex)
+void ACoreVehicle::Init(EVehicleType VehicleTypeIndex)
 {
-    ADataTableManager::ArrVehicleData[(int)_VehicleTypeIndex];
+    ADataTableManager::ArrVehicleData[(int)VehicleTypeIndex];
     InitSkeletalMesh();
     InitCamera();
     InitWheeledComp();
@@ -218,32 +218,32 @@ void ACoreVehicle::PlayerExit()
     mCurrentPlayerCount--;
 }
 
-void ACoreVehicle::Accelerate(float _Value)
+void ACoreVehicle::Accelerate(float Value)
 {
     if (mbPlayerInFirstSeat)
-        GetVehicleMovementComponent()->SetThrottleInput(_Value);
+        GetVehicleMovementComponent()->SetThrottleInput(Value);
 }
 
-void ACoreVehicle::Brake(float _Value)
+void ACoreVehicle::Brake(float Value)
 {
     if (mbPlayerInFirstSeat)
-        GetVehicleMovementComponent()->SetBrakeInput(_Value);
+        GetVehicleMovementComponent()->SetBrakeInput(Value);
 }
 
-void ACoreVehicle::Handling(float _Value)
+void ACoreVehicle::Handling(float Value)
 {
     if (mbPlayerInFirstSeat)
-        GetVehicleMovementComponent()->SetSteeringInput(_Value);
+        GetVehicleMovementComponent()->SetSteeringInput(Value);
 }
 
-void ACoreVehicle::LookUp(float _Value)
+void ACoreVehicle::LookUp(float Value)
 {
-    AddControllerPitchInput(_Value);
+    AddControllerPitchInput(Value);
 }
 
-void ACoreVehicle::Turn(float _Value)
+void ACoreVehicle::Turn(float Value)
 {
-    AddControllerYawInput(_Value);
+    AddControllerYawInput(Value);
 }
 
 void ACoreVehicle::CheckForDoorPos()
@@ -319,25 +319,25 @@ void ACoreVehicle::SetPlayerIntoSeat()
     mCurrentPlayerCount++;
 }
 
-void ACoreVehicle::UpdatePlayerSeatLocation(ESeatType _SeatType)
+void ACoreVehicle::UpdatePlayerSeatLocation(ESeatType SeatType)
 {
     auto p_playerCollider = mpPlayer->GetCapsuleComponent();
     p_playerCollider->SetMobility(EComponentMobility::Movable);
-    mpPlayer->CurrentSeatType = _SeatType;
-    mpPlayer->SetActorLocation(MapSeatPos[_SeatType]);
+    mpPlayer->CurrentSeatType = SeatType;
+    mpPlayer->SetActorLocation(MapSeatPos[SeatType]);
     p_playerCollider->SetMobility(EComponentMobility::Static);
 }
 
-bool ACoreVehicle::IsSeatAvailable(ACustomPlayer* _pPlayer)
+bool ACoreVehicle::IsSeatAvailable(ACustomPlayer* pPlayer)
 {
     if (mCurrentPlayerCount < mVehicleData.MaxSeater - 1)
     {
-        mpPlayer = _pPlayer;
+        mpPlayer = pPlayer;
 
         // 빈 좌석 확인 후 위치 가져오기
         CheckForDoorPos();
 
-        if (!mMapEmptySeat[_pPlayer->CurrentSeatType])
+        if (!mMapEmptySeat[pPlayer->CurrentSeatType])
             return false;
 
         SetPlayerIntoSeat();

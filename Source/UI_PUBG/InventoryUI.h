@@ -38,6 +38,5 @@ private:
     void CheckTooltipMouseDistance();
 
 public:
-    UFUNCTION()
-    void SetTooltipVisibility(UItemSlotUI* _pItemSlotUI, ESlateVisibility _Visibility);
+    UFUNCTION() void SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility);
 };

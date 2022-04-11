@@ -146,24 +146,24 @@ void AUI_manager::SetPlayerUI()
     }
 }
 
-void AUI_manager::UpdateInteractionUI(UWidgetComponent* _pWidgetComp, FString _Type)
+void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type)
 {
     // 위젯 설정
-    _pWidgetComp->SetWidgetSpace(EWidgetSpace::Screen);
-    _pWidgetComp->SetRelativeLocation(FVector::ZeroVector);
-    _pWidgetComp->SetWidgetClass(mInteractionWidgetBP);
+    WidgetComp->SetWidgetSpace(EWidgetSpace::Screen);
+    WidgetComp->SetRelativeLocation(FVector::ZeroVector);
+    WidgetComp->SetWidgetClass(mInteractionWidgetBP);
 
-    auto p_interactionUI = Cast<UInteractionUI>(_pWidgetComp->GetWidget());
+    auto p_interactionUI = Cast<UInteractionUI>(WidgetComp->GetWidget());
 
     if (p_interactionUI)
-        p_interactionUI->TitleTxt->SetText(FText::FromString(_Type));
+        p_interactionUI->TitleTxt->SetText(FText::FromString(Type));
 }
 
-UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData _ItemData)
+UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
 {
     UTexture* weaponTex       = nullptr;
-    FString   weaponGroupType = _ItemData.Category;
-    int       imageIndex      = _ItemData.ImageIndex;
+    FString   weaponGroupType = ItemData.Category;
+    int       imageIndex      = ItemData.ImageIndex;
 
     // 투척류 또는 근접무기일 시
     if (weaponGroupType == "Explosive" ||
@@ -181,16 +181,16 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData _ItemData)
     return Cast<UTexture2D>(weaponTex);
 }
 
-UTexture2D* AUI_manager::GetTexture2D(int _Index, FString _Type /* = "" */)
+UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
 {
-    if (_Type == "Gun")
-        return (_Index < MapInventoryGunWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryGunWeaponTex[_Index]) : nullptr;
+    if (Type == "Gun")
+        return (Index < MapInventoryGunWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryGunWeaponTex[Index]) : nullptr;
 
     else
-        return (_Index < MapInventoryOtherWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryOtherWeaponTex[_Index]) : nullptr;
+        return (Index < MapInventoryOtherWeaponTex.Num()) ? Cast<UTexture2D>(MapInventoryOtherWeaponTex[Index]) : nullptr;
 }
 
-UMaterial* AUI_manager::GetMaterial(int _Index)
+UMaterial* AUI_manager::GetMaterial(int Index)
 {
-    return (_Index < MapMainWeaponMat.Num()) ? MapMainWeaponMat[_Index] : nullptr;
+    return (Index < MapMainWeaponMat.Num()) ? MapMainWeaponMat[Index] : nullptr;
 }

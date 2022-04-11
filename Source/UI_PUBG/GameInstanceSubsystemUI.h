@@ -39,9 +39,9 @@ public:
       * \brief 슬롯과 마우스간 뷰포트 기준 거리값을 구함
       * \return FVector2D 슬롯-마우스간 거리 값
      */
-    FVector2D GetDistanceBetweenSlotCursor(class UUserWidget* _pWigdet, bool& _bFirst);
+    FVector2D GetDistanceBetweenSlotCursor(class UUserWidget* pWigdet, bool& bFirst);
 
-    bool IsMouseLeftFromUI(FVector2D _Distance, bool _bFirst = false);
+    bool IsMouseLeftFromUI(FVector2D Distance, bool bFirst = false);
 
     AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager();
 };

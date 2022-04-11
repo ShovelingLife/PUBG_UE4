@@ -14,17 +14,16 @@ ACoreMeleeWeapon::ACoreMeleeWeapon()
     PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
 void ACoreMeleeWeapon::BeginPlay()
 {
     Super::BeginPlay();
     ABaseInteraction::SetCollisionSettingsForObjects();
 }
 
-void ACoreMeleeWeapon::Init(EMeleeWeaponType _WeaponType)
+void ACoreMeleeWeapon::Init(EMeleeWeaponType WeaponType)
 {
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)_WeaponType];
-    WeaponType = _WeaponType;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    this->CurrentWeaponType = WeaponType;
     ObjectType = WeaponData.Type;    
 
     UpdateCollider();

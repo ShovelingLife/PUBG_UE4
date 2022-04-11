@@ -71,7 +71,7 @@ void ACustomPlayer::Tick(float DeltaTime)
     TryToInteract();
 }
 
-void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* _pPlayerInputComponent)
+void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(InputComponent);
 
@@ -342,16 +342,16 @@ void ACustomPlayer::TryToInteract()
     }
 }
 
-void ACustomPlayer::MoveForwardBack(float _Value)
+void ACustomPlayer::MoveForwardBack(float Value)
 {
     if (!bAnimationPlaying)
-        AddMovementInput(GetActorForwardVector() * _Value * mSprintMultiplier);
+        AddMovementInput(GetActorForwardVector() * Value * mSprintMultiplier);
 }
 
-void ACustomPlayer::MoveLeftRight(float _Value)
+void ACustomPlayer::MoveLeftRight(float Value)
 {
     if (!bAnimationPlaying)
-        AddMovementInput(GetActorRightVector() * _Value * mSprintMultiplier);
+        AddMovementInput(GetActorRightVector() * Value * mSprintMultiplier);
 }
 
 void ACustomPlayer::LookUp(float _Value)
@@ -386,54 +386,41 @@ void ACustomPlayer::CustomCrouch()
     // 숙이고 있음
     if (GetCharacterMovement()->IsCrouching())
     {
-        if (CurrentState == EPlayerState::CROUCH_AIM)
-            CurrentState = EPlayerState::AIM;
-
-        else
-            CurrentState = EPlayerState::IDLE;
-
+        CurrentState = (CurrentState == EPlayerState::CROUCH_AIM) ? EPlayerState::AIM : EPlayerState::IDLE;
         UnCrouch();
     }
     else
     {
-        if (CurrentState == EPlayerState::AIM)
-            CurrentState = EPlayerState::CROUCH_AIM;
-
-        else
-            CurrentState = EPlayerState::CROUCH;
-
+        CurrentState = (CurrentState == EPlayerState::AIM) ? EPlayerState::CROUCH_AIM : EPlayerState::CROUCH;
         Crouch();
     }
 }
 
 void ACustomPlayer::Proning()
 {
-    FVector rotationVal = FVector::ZeroVector;
+    FVector locationVal = FVector::ZeroVector;
 
     switch (CurrentState)
     {
     case EPlayerState::AIM:  CurrentState = EPlayerState::PRONING_AIM; break;
 
-    case EPlayerState::IDLE:
+    case EPlayerState::IDLE: 
     case EPlayerState::CROUCH:
     case EPlayerState::CROUCH_WALK:
-        CurrentState = EPlayerState::PRONING;
-        rotationVal = FVector(0.f, 0.f, -50.f);
 
         if (CurrentState != EPlayerState::IDLE)
             UnCrouch();
 
+        CurrentState = EPlayerState::PRONING; 
         break;
 
-    case EPlayerState::PRONING:
+    case EPlayerState::PRONING: 
     case EPlayerState::PRONING_WALK:
-        CurrentState = EPlayerState::IDLE;
-        rotationVal = FVector(0.f, 0.f, -50.f);
-        break;
+        CurrentState = EPlayerState::IDLE; break;
 
     default: return;
     }
-    SpringArmComp->SetRelativeLocation(rotationVal);
+    SpringArmComp->SetRelativeLocation((CurrentState == EPlayerState::PRONING || CurrentState == EPlayerState::PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
 }
 
 void ACustomPlayer::BeginSprint()
@@ -519,7 +506,7 @@ void ACustomPlayer::ChangeShootMode()
     mpWeaponManager->ChangeShootMode();
 }
 
-void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, ECurrentWeaponType _WeaponType /* = ECurrentWeaponType::NONE */)
+void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */)
 {
     auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
     bool bPlayAudio = false;
@@ -532,12 +519,12 @@ void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, ECurrentWeapon
         if (auto p_soundManager = p_customGameInst->pSoundManager)
         {
             // 마우스 휠로 무기 선택
-            if      (_Direction != "")
-                     bPlayAudio = mpWeaponManager->ScrollSelect(_Direction);
+            if      (Direction != "")
+                     bPlayAudio = mpWeaponManager->ScrollSelect(Direction);
 
             // 키보드 숫자 키로 무기 선택
-            else if ((int)_WeaponType > 0)
-                     bPlayAudio = mpWeaponManager->IsWeaponAvailable((_WeaponType));
+            else if ((int)WeaponType > 0)
+                     bPlayAudio = mpWeaponManager->IsWeaponAvailable((WeaponType));
 
             if (bPlayAudio)
                 p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
@@ -545,7 +532,7 @@ void ACustomPlayer::CheckForWeapon(FString _Direction /* = "" */, ECurrentWeapon
     }
 }
 
-void ACustomPlayer::ExitFromVehicle(FVector _ExitPos)
+void ACustomPlayer::ExitFromVehicle(FVector ExitPos)
 {
     // 플레이어 충돌체 관련
     auto capsuleComp = GetCapsuleComponent();
@@ -556,7 +543,7 @@ void ACustomPlayer::ExitFromVehicle(FVector _ExitPos)
     // 플레이어 위치 및 카메라 위치
     CurrentSeatType = ESeatType::NONE;
     bInVehicle      = false;
-    SetActorLocation(_ExitPos);
+    SetActorLocation(ExitPos);
     SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }

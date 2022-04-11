@@ -83,7 +83,7 @@ public:
 protected:
     virtual void BeginPlay() override;
 
-    virtual void Tick(float) override;
+    virtual void Tick(float DeltaTime) override;
 
     virtual void SetupPlayerInputComponent(class UInputComponent*) override;
 
@@ -93,7 +93,7 @@ protected:
      * 
      * \param _vehicle_type_index 차량 종류
      */
-    void Init(EVehicleType _vehicle_type_index);
+    void Init(EVehicleType VehicleTypeIndex);
 
     /**
      * .
@@ -137,31 +137,31 @@ protected:
      * \brief 가속
      * \param _value 가속 값
      */
-    void Accelerate(float _value);
+    void Accelerate(float Value);
 
     /**
      * \brief 브레이크
      * \param _value 브레이크 값
      */
-    void Brake(float _value);
+    void Brake(float Value);
 
     /**
      * \brief 회전
      * \param _value 회전 값
      */
-    void Handling(float _value);
+    void Handling(float Value);
 
     /**
      * \brief 카메라를 위 아래로 회전
      * \param _value 회전 값
      */
-    void LookUp(float _value);
+    void LookUp(float Value);
 
     /**
      * \brief 카메라를 좌우로 회전
      * \param _value 회전 값
      */
-    void Turn(float _value);
+    void Turn(float Value);
 
     /**
      * \brief 어느 문 통해 들어갔는지 확인
@@ -177,7 +177,7 @@ protected:
      * \brief 차 안에서 플레이어의 위치를 업데이트 시킴
      * \param _seat_type 좌석 종류
      */
-    void UpdatePlayerSeatLocation(ESeatType _seat_type);
+    void UpdatePlayerSeatLocation(ESeatType SeatType);
 
     /**
      * \brief 첫번째 좌석으로 이동
@@ -205,5 +205,5 @@ public:
      * \param _p_player 플레이어
      * \return boolean 탑승 여부
      */
-    bool IsSeatAvailable(ACustomPlayer* _p_player);
+    bool IsSeatAvailable(ACustomPlayer* pPlayer);
 };

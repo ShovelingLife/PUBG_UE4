@@ -18,14 +18,12 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float _DeltaSeconds)
     if (p_player)
     {
         // 값 적용
-        if (p_player->bInVehicle)
-            PlayerState = EPlayerAnimationState::IDLE;
-
-        else
-            PlayerState = (EPlayerAnimationState)p_player->CurrentState;
-        
-        Speed           = p_player->GetCharacterMovement()->MaxWalkSpeed + p_player->GetInputAxisValue(TEXT("UpDown"));
-        bWeaponEquipped = p_player->bWeaponEquipped;
+        PlayerState = (p_player->bInVehicle) ? EPlayerAnimationState::IDLE : (EPlayerAnimationState)p_player->CurrentState;
+        auto velocity = p_player->GetVelocity();        
+        auto rotation = p_player->GetActorRotation();
+        Direction = CalculateDirection(velocity, rotation);
+        Speed     = velocity.Size();
+        bEquipped = p_player->bWeaponEquipped;
     }
     //// AI가 널이 아닐 시
     //else if (ai)

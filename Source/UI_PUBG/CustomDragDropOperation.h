@@ -21,13 +21,9 @@ class UI_PUBG_API UCustomDragDropOperation : public UDragDropOperation
 	GENERATED_BODY()
 	
 public:
-	TWeakObjectPtr<UItemSlotUI> wk_p_slot_obj;
-
-	/**
-	 * \brief 슬롯 데이터 관련
-	 */
-    UItemSlotUI*	pSlotUI   = nullptr;
+	/** \brief 슬롯 데이터 관련 */
+    UItemSlotUI*   pSlotUI   = nullptr;
     FsSlotItemData ItemData;
-	bool			bFromList = false;
-	bool			bGun	  = false;
+	bool		   bFromList = false;
+	bool		   bGun		 = false;
 };

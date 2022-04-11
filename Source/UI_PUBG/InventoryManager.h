@@ -42,26 +42,16 @@ protected:
 
 // 초기화 함수 모음
 private:
-    /**
-      * \brief 인벤토리 UI 초기화 
-     */
+    /** \brief 인벤토리 UI 초기화 */
     void InitInventoryUI();
 
-    /**
-      * \brief 인벤토리 위젯 초기화 
-     */
+    /** \brief 인벤토리 위젯 초기화 */
     void InitInventoryWidget();
 
 public:
-    /**
-      * \brief 플레이어가 인벤토리를 열음 (델리게이트)
-     */
-    UFUNCTION()
-    void OpenInventory();
+    /** \brief 플레이어가 인벤토리를 열음 (델리게이트) */
+    UFUNCTION() void OpenInventory();
 
-    /**
-      * \brief 플레이어가 인벤토리를 열음 (델리게이트)
-     */
-    UFUNCTION()
-    void CloseInventory();
+    /** \brief 플레이어가 인벤토리를 열음 (델리게이트) */
+    UFUNCTION() void CloseInventory();
 };

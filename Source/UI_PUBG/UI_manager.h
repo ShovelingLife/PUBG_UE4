@@ -109,11 +109,11 @@ public:
      * \brief 상호작용 UI 업데이트 (델리게이트)
      */
     UFUNCTION()
-    void UpdateInteractionUI(class UWidgetComponent* _widget_comp, FString _title);
+    void UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
 
-    static UTexture2D* GetTexture2D(FsSlotItemData _ItemData);
+    static UTexture2D* GetTexture2D(FsSlotItemData ItemData);
 
-    static UTexture2D* GetTexture2D(int _Index, FString _Type = "");
+    static UTexture2D* GetTexture2D(int Index, FString Type = "");
 
-    static UMaterial* GetMaterial(int _Index);
+    static UMaterial* GetMaterial(int Index);
 };

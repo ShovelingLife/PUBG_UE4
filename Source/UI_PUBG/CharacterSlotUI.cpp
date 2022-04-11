@@ -20,49 +20,49 @@ void UCharacterSlotUI::NativeConstruct()
     InitSlotUI();
 }
 
-void UCharacterSlotUI::NativeTick(const FGeometry& _MyGeometry, float _DeltaTime)
+void UCharacterSlotUI::NativeTick(const FGeometry& Geometry, float DeltaTime)
 {
-    Super::NativeTick(_MyGeometry, _DeltaTime);
+    Super::NativeTick(Geometry, DeltaTime);
     UpdateHighlightImg();
 }
 
-FReply UCharacterSlotUI::NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UCharacterSlotUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseButtonDown(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
     // 왼쪽 클릭
-    if (_InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+    if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         if (CharacterImg->IsHovered())
-            mCharacterUIClickPos = _InMouseEvent.GetScreenSpacePosition();
+            mCharacterUIClickPos = InMouseEvent.GetScreenSpacePosition();
     }
-    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(_InMouseEvent, this, EKeys::LeftMouseButton);
+    auto reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
     return reply.NativeReply;
 }
 
-FReply UCharacterSlotUI::NativeOnMouseButtonUp(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UCharacterSlotUI::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseButtonUp(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
     mCharacterUIClickPos = FVector2D::ZeroVector;   
     return FReply::Handled();
 }
 
-FReply UCharacterSlotUI::NativeOnMouseMove(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent)
+FReply UCharacterSlotUI::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    Super::NativeOnMouseMove(_InGeometry, _InMouseEvent);
+    Super::NativeOnMouseMove(InGeometry, InMouseEvent);
     return FReply::Handled();
 }
 
-void UCharacterSlotUI::NativeOnDragDetected(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent, UDragDropOperation*& _OutOperation)
+void UCharacterSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
-    Super::NativeOnDragDetected(_InGeometry, _InMouseEvent, _OutOperation);
+    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
     auto p_customDragDropOperation = NewObject<UCustomDragDropOperation>();
-    _OutOperation = p_customDragDropOperation;
+    OutOperation = p_customDragDropOperation;
 }
 
-bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragOver(_InGeometry, _InDragDropEvent, _InOperation);
+    Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
     
     // 캐릭터 UI 창 드래그 시 회전
     if (mCharacterUIClickPos != FVector2D::ZeroVector)
@@ -89,15 +89,15 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& _InGeometry, const FDra
     return true;
 }
 
-void UCharacterSlotUI::NativeOnDragCancelled(const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+void UCharacterSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragCancelled(_InDragDropEvent, _InOperation);
+    Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
     mCharacterUIClickPos = FVector2D::ZeroVector;
 }
 
-bool UCharacterSlotUI::NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation)
+bool UCharacterSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDrop(_InGeometry, _InDragDropEvent, _InOperation);
+    Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     mCharacterUIClickPos = FVector2D::ZeroVector;
     return true;
 }

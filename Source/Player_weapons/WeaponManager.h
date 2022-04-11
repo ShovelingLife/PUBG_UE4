@@ -36,6 +36,7 @@ private:
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
 	UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
+    FVector mGrenadeVelocity;
 	float mPathTime = 0.f;
     bool  mbThrowingGrenade = false;
 
@@ -81,7 +82,7 @@ private:
 
     void InitGrenadePath();
 
-    bool IsAmmoInsufficient(int _BulletCount);
+    bool IsAmmoInsufficient(int BulletCount);
 
 	/**
      * \brief 현재 장착 중인 무기에 따라 착용 여부 \n
@@ -91,42 +92,42 @@ private:
 	
 	/**
 	 * \brief 소리 재생을 해주는 함수
-	 * \param _sound_type 소리종류
+	 * \param SoundType 소리종류
 	 */
-    void PlaySound(EWeaponSoundType _sound_type);
+    void PlaySound(EWeaponSoundType SoundType);
 
     /**
      * \brief 배열 내에 원소 찾음
-	 * \param _direction 방향
-	 * \param _start_index 시작 위치
+	 * \param Direction 방향
+	 * \param StartIndex 시작 위치
 	 * \return e_current_weapon_type 현재 무기 타입
      */
-    ECurrentWeaponType GetWeaponIndex(FString _direction, int _start_index);
+    ECurrentWeaponType GetWeaponIndex(FString Direction, int StartIndex);
 
     /**
      * \brief 무기를 플레이어 메시에 부착
-	 * \param _p_tmp_weapon 무기 종류
-	 * \param _socket_name 소켓 이름
-	 * \param _should_check 무기 중복 여부 체크
+	 * \param pNewWeapon 무기 종류
+	 * \param SocketName 소켓 이름
+	 * \param bCheck 무기 중복 여부 체크
      */
-    void Attach(ABaseInteraction* _p_tmp_weapon, FString _socket_name, bool _should_check = true);
+    void Attach(ABaseInteraction* pNewWeapon, FString SocketName, bool bCheck = true);
 
 	/**
 	 * \brief 무기 버린 후 초기화
-	 * \param _p_weapon 맵에다가 버릴 무기
-	 * \param _new_pos 새로운 위치
+	 * \param pWeapon 맵에다가 버릴 무기
+	 * \param NewPos 새로운 위치
 	 */
-    void ResetAfterDetaching(ABaseInteraction* _p_weapon, FTransform _new_pos);
+    void ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform NewPos);
 
 	void PredictGrenadePath();
 
 public:
 	/**
 	 * \brief 무기 착용
-	 * \param _p_weapon 착용할 무기 
-	 * \param _should_check 무기 중복 여부 체크
+	 * \param pWeapon 착용할 무기 
+	 * \param bCheck 무기 중복 여부 체크
 	 */
-	void Equip(AActor* _p_weapon, bool _should_check = true);
+	void Equip(AActor* pWeapon, bool bCheck = true);
 
 	/** \brief 발사 */
 	void Shoot();
@@ -138,20 +139,20 @@ public:
 
 	/**
 	 * \brief 마우스 휠 통해 무기 교체
-	 * \param _Pos 현재 착용 중인 무기의 위치
+	 * \param Pos 현재 착용 중인 무기의 위치
 	 */
-	bool ScrollSelect(FString _Pos);
+	bool ScrollSelect(FString Pos);
 
 	/**
 	 * \brief 무기 교체
-	 * \param _current_weapon 현재 착용 중인 무기
-	 * \param _new_weapon 새로운 무기
-	 * \param _socket_name 메시 소켓 명칭
+	 * \param CurrentWeapon 현재 착용 중인 무기
+	 * \param NewWeapon 새로운 무기
+	 * \param SocketName 메시 소켓 명칭
 	 */
-	void SwapWorld(ABaseInteraction* _pNewWeapon, AActor* _pCurrentWeapon, FString _SocketName);
+	void SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName);
 
 	// Exit Code = -1 Error / 0 Succeded / 1 Is Melee or Is Throwable
-	int Swap(ABaseInteraction* _pCurrentWeapon, ABaseInteraction* _pNewWeapon = nullptr, ECurrentWeaponType _WeaponType = ECurrentWeaponType::NONE);
+	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, ECurrentWeaponType WeaponType = ECurrentWeaponType::NONE);
 
 	/** \brief 착용 중인 무기를 체크함 */
 	void ChangeShootMode();
@@ -161,55 +162,55 @@ public:
 
 	/**
 	 * \brief 재장전 중인지 확인
-	 * \param _TranscurredShootTime 현재 재장전으로부터 초과한 시간
+	 * \param TranscurredTime 현재 재장전으로부터 초과한 시간
 	 */
-	void CheckReloading(float _TranscurredShootTime);
+	void CheckReloading(float TranscurredTime);
 
 	/**
 	 * \brief 연사 하고있는 중인지 체크
-	 * \param _TranscurredShootTime 발사 시간 간격
+	 * \param TranscurredTime 발사 시간 간격
 	 */
-	void CheckContinouslyShooting(float _TranscurredShootTime);
+	void CheckContinouslyShooting(float TranscurredTime);
 
 	/**
 	 * \brief 무기 변경 가능한지 확인
-	 * \param _WeaponType 무기 종류
+	 * \param WeaponType 무기 종류
 	 */
-	bool IsWeaponAvailable(ECurrentWeaponType _WeaponType);
+	bool IsWeaponAvailable(ECurrentWeaponType WeaponType);
 
 	// ------- 부착 관련 함수 -------
 
 	/**
 	 * \brief 총기 최대 총알 개수를 가지고 옴
-	 * \param _WeaponType 무기 종류
+	 * \param WeaponType 무기 종류
 	 * \return 총알 최대 개수
 	 */
-    int GetMaxBulletCount(ECurrentWeaponType _WeaponType);
+    int GetMaxBulletCount(ECurrentWeaponType WeaponType);
 
     /**
      * \brief 현재 착용 중인 무기를 갖고옴
-     * \param _WeaponType 무기 종류
+     * \param WeaponType 무기 종류
      * \return 현재 착용 중인 무기
      */
-	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType _WeaponType);
+	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType WeaponType);
 
 	// 무기의 인덱스를 구함
-	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* _pWeapon);
+	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* pWeapon);
 
 	// 무기의 종류를 구함
-	int GetWeaponType(ABaseInteraction* _pWeapon);
+	int GetWeaponType(ABaseInteraction* pWeapon);
 
 	// ------- UI 관련 함수 -------
 
 	/**
 	 * \brief 무기를 맵에다가 버림
-	 * \param _WeaponType 버릴 무기 종류
+	 * \param WeaponType 버릴 무기 종류
 	 */
-	void Drop(ECurrentWeaponType _WeaponType);
+	void Drop(ECurrentWeaponType WeaponType);
 
-	void SetNull(ECurrentWeaponType _WeaponType);
+	void SetNull(ECurrentWeaponType WeaponType);
 
-	void SetMeshToPlayerUI(TArray<AActor*> _pArrActor, USkeletalMeshComponent* _pSkeletalMeshComp);
+	void SetMeshToPlayerUI(TArray<AActor*> pArrActor, USkeletalMeshComponent* SkeletalMeshComp);
 
-	bool IsDuplicated(ABaseInteraction* _p_weapon, ECurrentWeaponType _weapon_type);
+	bool IsDuplicated(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType);
 };

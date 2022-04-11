@@ -19,19 +19,19 @@ void UInventoryUI::NativeConstruct()
         subGameInst->DeleSetTooltipVisibility.BindUFunction(this, "SetTooltipVisibility");
 }
 
-void UInventoryUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UInventoryUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
     CheckTooltipMouseDistance();
 }
 
-void UInventoryUI::SetTooltipVisibility(UItemSlotUI* _pItemSlotUI, ESlateVisibility _Visibility)
+void UInventoryUI::SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility)
 {
-    if (_pItemSlotUI)
+    if (pItemSlotUI)
     {
-        TooltipUI->SetVisibility(_Visibility);
-        TooltipUI->SetData(_pItemSlotUI->ItemData);
-        mpCurrentItemSlot = _pItemSlotUI;
+        TooltipUI->SetVisibility(TooltipVisibility);
+        TooltipUI->SetData(pItemSlotUI->ItemData);
+        mpCurrentItemSlot = pItemSlotUI;
     }
 }
 
@@ -42,9 +42,9 @@ void UInventoryUI::CheckTooltipMouseDistance()
     if (!subGameInst)
         return;
 
-    bool bFirst = false;
-    auto distance = subGameInst->GetDistanceBetweenSlotCursor(mpCurrentItemSlot, bFirst);
+    bool bFirstSlot = false;
+    auto distance   = subGameInst->GetDistanceBetweenSlotCursor(mpCurrentItemSlot, bFirstSlot);
 
-    if (subGameInst->IsMouseLeftFromUI(distance, bFirst))
+    if (subGameInst->IsMouseLeftFromUI(distance, bFirstSlot))
         TooltipUI->SetVisibility(ESlateVisibility::Hidden);
 }

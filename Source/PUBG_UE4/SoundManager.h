@@ -58,16 +58,16 @@ protected:
 public:
     /**
       * \brief 무기 오디오 재생
-      * \param _pAudioComp  오디오 컴포넌트 
-      * \param _SoundType   사운드 종류 
-      * \param _WeaponIndex 사운드 인덱스
+      * \param AudioComp  오디오 컴포넌트 
+      * \param SoundType   사운드 종류 
+      * \param WeaponIndex 사운드 인덱스
       */
-    void PlayWeaponSound(UAudioComponent* _pAudioComp, EWeaponSoundType _SoundType, int _WeaponIndex = 0);
+    void PlayWeaponSound(UAudioComponent* AudioComp, EWeaponSoundType SoundType, int WeaponIndex = 0);
 
     /**
       * \brief 플레이어 오디오 재생
-      * \param _pAudioComp 오디오 컴포넌트 
-      * \param _SoundType  사운드 종류
+      * \param AudioComp 오디오 컴포넌트 
+      * \param SoundType  사운드 종류
       */
-    void PlayPlayerSound(UAudioComponent* _pAudioComp, EPlayerSoundType _SoundType);
+    void PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType);
 };

@@ -19,13 +19,9 @@ class CHARACTERS_API ACustomPlayerController : public APlayerController
 	GENERATED_BODY()
 
 protected:
-	/**
-	 * \brief 탭키 통해 UI 내비게이션 비활성화
-	 */
+	/** \brief 탭키 통해 UI 내비게이션 비활성화 */
 	virtual void BeginPlay() override;
 
-	/**
-	 * \brief 캐릭터-차량 전환 시 컨트롤러 초기화
-	 */
+	/** \brief 캐릭터-차량 전환 시 컨트롤러 초기화 */
 	virtual void OnUnPossess() override;
 };

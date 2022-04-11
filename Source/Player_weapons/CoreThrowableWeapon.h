@@ -27,8 +27,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Collider) UCapsuleComponent* GrenadeColliderComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;
 	FsOtherWeaponData    WeaponData;
-	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
-    FVector Velocity;
+	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
+    bool bTouched = false;
 
 public:
     ACoreThrowableWeapon();
@@ -36,14 +36,17 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	virtual void Tick(float) override;
+	virtual void Tick(float DeltaTime) override;
+
+public:
+    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
     /**
       * \brief 투척류 무기 초기화
       * \param _weapon_type 무기 종류
      */
-    void Init(EThrowableWeaponType _weapon_type);
+    void Init(EThrowableWeaponType WeaponType);
 
     /** \brief 이동 컴포넌트 초기화 */
     void InitProjectileMovementComp();
@@ -56,4 +59,7 @@ protected:
 
     /** \brief 파티클 시스템 갱신 */
     void UpdateParticleSystem();
+
+public:
+    void Throw(FVector Velocity);
 };
