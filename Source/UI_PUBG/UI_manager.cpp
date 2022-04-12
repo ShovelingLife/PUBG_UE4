@@ -3,6 +3,7 @@
 #include "InventoryListUI.h"
 #include "InventoryManager.h"
 #include "PlayerUI.h"
+#include "PlayerEffectUI.h"
 #include "TooltipUI.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
@@ -21,6 +22,8 @@ AUI_manager::AUI_manager()
 {
     PrimaryActorTick.bCanEverTick = true;
     InitPlayerUI();
+    InitPlayerEffectUI();
+    InitPlayerEffectUI();
     InitInteractionUI();
     InitPlayerUI_Tex();
     InitInventoryWeaponTex();
@@ -32,14 +35,23 @@ void AUI_manager::BeginPlay()
     Super::BeginPlay();
     
     // 델리게이트 바인딩
-    auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
-
-    if (p_customGameInst)
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    {
         p_customGameInst->DeleUpdateInteractionWidgetComp.BindUFunction(this, "UpdateInteractionUI");
-
+        p_customGameInst->DeleRunEffectAnim.BindUFunction(this, "RunEffectAnim");
+    }
     SetPlayerUI();
     InitPlayerInventory();
     Set_weapon_UI();
+}
+
+void AUI_manager::InitInteractionUI()
+{
+    // 위젯 컴포넌트 블루프린트 초기화
+    auto widgetBP = ConstructorHelpers::FClassFinder<UInteractionUI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_InteractionUI.BP_InteractionUI_C'"));
+
+    if (widgetBP.Succeeded())
+        mInteractionWidgetBP = widgetBP.Class;
 }
 
 void AUI_manager::InitPlayerUI()
@@ -50,11 +62,12 @@ void AUI_manager::InitPlayerUI()
         mPlayerUI_BP = bp_playerUI.Class;
 }
 
-void AUI_manager::InitInteractionUI()
+void AUI_manager::InitPlayerEffectUI()
 {
-    // 위젯 컴포넌트 블루프린트 초기화
-    auto widgetBP = ConstructorHelpers::FClassFinder<UInteractionUI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_InteractionUI.BP_InteractionUI_C'"));
-    mInteractionWidgetBP = widgetBP.Class;
+    auto bp_playerEffectUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_PlayerEffectUI.BP_PlayerEffectUI_C'"));
+
+    if (bp_playerEffectUI.Succeeded())
+        mPlayerEffectUI_BP = bp_playerEffectUI.Class;
 }
 
 void AUI_manager::InitPlayerUI_Tex()
@@ -137,13 +150,19 @@ void AUI_manager::InitPlayerInventory()
 
 void AUI_manager::SetPlayerUI()
 {
-    UUserWidget* p_widget = CreateWidget(GetWorld(), mPlayerUI_BP);
+    // 플레이어 UI
+    UUserWidget* p_playerUI_Widget = CreateWidget(GetWorld(), mPlayerUI_BP);
 
-    if (p_widget)
+    if (p_playerUI_Widget)
     {
-        mpPlayer_UI = Cast<UPlayerUI>(p_widget);
+        mpPlayer_UI = Cast<UPlayerUI>(p_playerUI_Widget);
         mpPlayer_UI->AddToViewport(0);
     }
+    // 플레이어 상태 UI
+    UUserWidget* p_playerEffectUI_Widget = CreateWidget(GetWorld(), mPlayerEffectUI_BP);
+
+    if (p_playerEffectUI_Widget)
+        mpPlayerEffect_UI = Cast<UPlayerEffectUI>(p_playerEffectUI_Widget);
 }
 
 void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type)
@@ -157,6 +176,15 @@ void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type
 
     if (p_interactionUI)
         p_interactionUI->TitleTxt->SetText(FText::FromString(Type));
+}
+
+void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAnimType Type)
+{
+    if (mpPlayerEffect_UI)
+    {
+        mpPlayerEffect_UI->AddToViewport(3);
+        mpPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
+    }
 }
 
 UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)

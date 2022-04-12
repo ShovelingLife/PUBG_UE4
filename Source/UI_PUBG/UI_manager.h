@@ -12,11 +12,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SlotItemData.h"
+#include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/WeaponData.h"
 #include "PUBG_UE4/OtherWeaponData.h"
 #include "UI_manager.generated.h"
 
 class UPlayerUI;
+class UPlayerEffectUI;
 class UItemSlotUI;
 class AInventoryManager;
 class UTooltipUI;
@@ -29,11 +31,13 @@ class UI_PUBG_API AUI_manager : public AActor
 private:
     // ------- 현재 쓰이고있는 변수들 -------
 
-    /** * \brief 플레이어 UI BP */
-    TSubclassOf<UPlayerUI> mPlayerUI_BP;
-
     /** * \brief 플레이어 UI */
+    TSubclassOf<UPlayerUI> mPlayerUI_BP;
     UPROPERTY() UPlayerUI* mpPlayer_UI;
+
+    /** * \brief 플레이어 상태이상 UI */
+    TSubclassOf<UPlayerEffectUI> mPlayerEffectUI_BP;
+    UPROPERTY() UPlayerEffectUI* mpPlayerEffect_UI;
 
     /** * \brief 상호작용 UI 관련 */
     UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
@@ -62,54 +66,40 @@ protected:
 
 // 생성자 내 초기화 함수
 private:
-    /**
-     * \brief 최상위 플레이어 UI 초기화
-     */
-    void InitPlayerUI();
-
-    /**
-     * \brief 상호작용 UI 초기화
-     */
+    /** \brief 상호작용 UI 초기화 */
     void InitInteractionUI();
 
-    /**
-     * \brief 플레이어 UI 초기화
-     */
+    /** \brief 최상위 플레이어 UI 초기화 */
+    void InitPlayerUI();
+
+    /** \brief 플레이어 상태이상 UI 초기화 */
+    void InitPlayerEffectUI();
+
+    /** \brief 플레이어 UI 초기화 */
     void InitPlayerUI_Tex();
 
-    /**
-     * \brief 인벤토리 무기 UI 초기화
-     */
+    /** \brief 인벤토리 무기 UI 초기화 */
     void InitInventoryWeaponTex();
 
-    /**
-     * \brief 플레이어 무기 선택 UI 초기화
-     */
+    /** \brief 플레이어 무기 선택 UI 초기화 */
     void InitMainWeaponMat();
 
 // 시작 후 초기화
 public:
-    /**
-     * \brief 플레이어 인벤토리 설정
-     */
+    /** \brief 플레이어 인벤토리 설정 */
     void InitPlayerInventory();
 
-    /**
-     * \brief 플레이어 UI 띄움
-     */
+    /** \brief 플레이어 UI 띄움 */
     void SetPlayerUI();
 
-    /**
-     * \brief 미구현 상태
-     */
+    /** \brief 미구현 상태 */
     void Set_weapon_UI();
 
 public:
-    /**
-     * \brief 상호작용 UI 업데이트 (델리게이트)
-     */
-    UFUNCTION()
-    void UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
+    /** \brief 상호작용 UI 업데이트 (델리게이트) */
+    UFUNCTION() void UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
+
+    UFUNCTION() void RunEffectAnim(float StartTime, float WaitTime, EPlayerStateAnimType Type);
 
     static UTexture2D* GetTexture2D(FsSlotItemData ItemData);
 

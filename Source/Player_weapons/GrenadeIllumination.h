@@ -14,4 +14,7 @@ class PLAYER_WEAPONS_API AGrenadeIllumination : public ACoreThrowableWeapon
 
 public:
 	AGrenadeIllumination();
+	
+protected:
+	virtual void Explode() override;
 };

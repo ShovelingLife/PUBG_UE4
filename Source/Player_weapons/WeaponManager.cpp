@@ -183,7 +183,6 @@ void AWeaponManager::Attach(ABaseInteraction* pWeapon, FString SocketName, bool 
         return;
 
     pWeapon->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-    auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
 
     // 소켓 기반 무기 종류 판별 후 다운캐스팅
     if (SocketName == "HandGunSock")
@@ -212,19 +211,7 @@ void AWeaponManager::Attach(ABaseInteraction* pWeapon, FString SocketName, bool 
     {
         if (pWeapon->IsA<ACoreThrowableWeapon>())
         {
-            pThrowable = Cast<ACoreThrowableWeapon>(pWeapon);
-
-            if (pThrowable)
-            {
-                if      (auto p_capsuleColliderComp = pThrowable->GrenadeColliderComp)
-                         p_capsuleColliderComp->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-                else if (auto p_boxColliderComp = pThrowable->ColliderComp)
-                         p_boxColliderComp->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-                if (auto staticMeshComp = pThrowable->StaticMeshComp)
-                    staticMeshComp->SetCollisionProfileName("NoCollision");
-            }
+            pThrowable        = Cast<ACoreThrowableWeapon>(pWeapon);
             CurrentWeaponType = ECurrentWeaponType::THROWABLE;
         }
         else if (pWeapon->IsA<ACoreMeleeWeapon>())
@@ -235,6 +222,7 @@ void AWeaponManager::Attach(ABaseInteraction* pWeapon, FString SocketName, bool 
     }
     USkeletalMeshComponent* skeletalMeshComp = pWeapon->SkeletalMeshComp;
     UStaticMeshComponent*   staticMeshComp   = pWeapon->StaticMeshComp;
+    auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
 
     // 무기 메시를 플레이어 메시에 부착
     if      (skeletalMeshComp)
@@ -335,7 +323,7 @@ void AWeaponManager::PredictGrenadePath()
     if (GrenadeEndPoint)
     {
         GrenadeEndPoint->SetHidden(false);
-        GrenadeEndPoint->SetActorRelativeLocation(result.LastTraceDestination.Location);
+        GrenadeEndPoint->SetActorLocation(result.LastTraceDestination.Location);
     }
 }
 

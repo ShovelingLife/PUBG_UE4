@@ -32,11 +32,6 @@ struct FsOtherWeaponData : public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float MeshRotationX = 0.f;
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float MeshSize		= 0.f;
 
-	/** \brief 충돌체 컴포넌트 관련 */
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderPosZ	 = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderHeight = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ColliderSize	 = 0.f;
-
 	/** \brief 무기 정보 관련 */
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float Damage		  = 0.f;
 	UPROPERTY(BlueprintReadWrite, Category = Other_weapon_data) float ExplosionRadius = 0.f;

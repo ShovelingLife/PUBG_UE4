@@ -11,7 +11,9 @@
 
 #include "CoreMinimal.h"
 #include "WeaponEnum.h"
+#include "InterfaceExplodeFunc.h"
 #include "PUBG_UE4/BaseInteraction.h"
+#include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/OtherWeaponData.h"
 #include "CoreThrowableWeapon.generated.h"
 
@@ -19,7 +21,7 @@ class UCapsuleComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
-class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
+class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction, public IInterfaceExplodeFunc
 {
 	GENERATED_BODY()
 
@@ -28,7 +30,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;
 	FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
-    bool bTouched = false;
+    bool bTouchedFloor = false;
+    bool bThrowed = false;
 
 public:
     ACoreThrowableWeapon();
@@ -39,6 +42,8 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+    virtual void BeginDestroy() override;
+
     virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
@@ -59,6 +64,11 @@ protected:
 
     /** \brief 파티클 시스템 갱신 */
     void UpdateParticleSystem();
+
+    /** \brief 플레이어와 투척류 간 거리 계산= */
+    bool IsPlayerInRadius();
+
+    virtual void Explode() override;
 
 public:
     void Throw(FVector Velocity);

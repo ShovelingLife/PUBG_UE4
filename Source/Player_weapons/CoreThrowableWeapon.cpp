@@ -1,26 +1,38 @@
 ﻿#include "CoreThrowableWeapon.h"
+#include "TimerManager.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "PUBG_UE4/SoundManager.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Sound/SoundBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "Materials/Material.h"
 #include "Particles/ParticleSystemComponent.h"
-#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundBase.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 
 void ACoreThrowableWeapon::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 
-    if (!bTouched)
+    // 3초 후 터짐
+    if (bThrowed)
     {
-        StaticMeshComp->SetSimulatePhysics(false);
-        bTouched = true;
+        FTimerHandle waitHandle;
+        GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
+            {
+                Explode();
+            }), 3.f, false);
     }
+}
+
+void ACoreThrowableWeapon::BeginDestroy()
+{
+    Super::BeginDestroy();
+    bThrowed = false;
 }
 
 ACoreThrowableWeapon::ACoreThrowableWeapon()
@@ -38,7 +50,7 @@ void ACoreThrowableWeapon::BeginPlay()
         GrenadeColliderComp->SetRelativeLocation(FVector(component_location.X, component_location.Y, WeaponData.ColliderPosZ));
         //GrenadeColliderComp->AddRelativeLocation(FVector(0.f, 0.f, WeaponData.ColliderPosZ));
         GrenadeColliderComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(FMath::Abs(WeaponData.MeshRotationX), 0.f, 0.f)));
-        GrenadeColliderComp->SetCollisionProfileName("Object");
+        GrenadeColliderComp->SetCollisionProfileName("Explosive");
     }
     /*if(ColliderComp)
     {
@@ -98,8 +110,8 @@ void ACoreThrowableWeapon::InitMesh()
 
         // 강체 관련
         StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
-        StaticMeshComp->SetSimulatePhysics(true);
-        StaticMeshComp->SetCollisionProfileName("PhysicsActor");
+        StaticMeshComp->SetSimulatePhysics(false);
+        StaticMeshComp->SetCollisionProfileName("Explosive");
         StaticMeshComp->SetNotifyRigidBodyCollision(true);
     }
 }
@@ -122,14 +134,41 @@ void ACoreThrowableWeapon::UpdateCollider()
     }
 }
 
+bool ACoreThrowableWeapon::IsPlayerInRadius()
+{
+    // 범위 안에 들어가는지 확인 (원형 충돌감지)
+    FVector startPos = GetActorLocation();
+    FVector endPos   = startPos + FVector(0.f, 0.f, 0.1f);
+    TArray < TEnumAsByte<EObjectTypeQuery>> arrObjectTypeQuery;
+    TEnumAsByte<EObjectTypeQuery> ObjectTypeQuery = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn);
+    arrObjectTypeQuery.Add(ObjectTypeQuery);
+    TArray<AActor*> arrActorsToIgnore;
+    FHitResult radiusHitResult;
+    
+    if (UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), startPos, endPos, WeaponData.ExplosionRadius, arrObjectTypeQuery, false, arrActorsToIgnore, EDrawDebugTrace::None, radiusHitResult, true))
+    {
+        auto character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+        FHitResult lineHitResult;
+        FVector lineEndPos = character->GetActorLocation();
+        
+        if (GetWorld()->LineTraceSingleByChannel(lineHitResult, startPos, lineEndPos, ECollisionChannel::ECC_Camera))
+            return (lineHitResult.Actor == character);
+    }
+    return false;
+}
+
+void ACoreThrowableWeapon::Explode()
+{
+    
+}
+
 void ACoreThrowableWeapon::Throw(FVector Velocity)
 {
     if (!StaticMeshComp ||
         !ProjectileMovementComp)
         return;
 
-    StaticMeshComp->SetSimulatePhysics(true);
-    StaticMeshComp->SetCollisionProfileName("BlockAll");
     ProjectileMovementComp->AddForce(Velocity);
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);    
+    bThrowed = true;
 }

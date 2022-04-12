@@ -27,14 +27,16 @@ private:
 
 public:
     /** \brief 무기 관련 사운드 */
-    UPROPERTY(VisibleAnywhere, Category = Weapon_sound) TArray<USoundBase*> pArrShotSound;
-    UPROPERTY(VisibleAnywhere, Category = Weapon_sound) USoundBase*         pEmptyAmmoSound = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase*         pReloadSound    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = WeaponSound) TArray<USoundBase*> pArrShotSound;
+    UPROPERTY(VisibleAnywhere, Category = WeaponSound) USoundBase*         pEmptyAmmoSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase*         pReloadSound    = nullptr;
 
     /** \brief 플레이어 무기 사운드 관련 */
-    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* pItemFarmSound     = nullptr; 
-    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* pWeaponPickupSound = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Player_sound) USoundBase* pWeaponSwapSound   = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase* pItemFarmSound     = nullptr; 
+    UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase* pWeaponPickupSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase* pWeaponSwapSound   = nullptr;
+
+    TArray<USoundBase*> arrPlayerStateSound;
 
 private:
     /**
@@ -70,4 +72,6 @@ public:
       * \param SoundType  사운드 종류
       */
     void PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType);
+
+    void PlayPlayerEffectSound(int Index);
 };

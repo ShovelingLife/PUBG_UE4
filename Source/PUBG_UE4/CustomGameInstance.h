@@ -11,6 +11,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "MyEnum.h"
 #include "CustomGameInstance.generated.h"
 
 class UWidgetComponent;
@@ -20,6 +21,7 @@ class ABaseInteraction;
 
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
+DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
 /**
   * \brief 게임 인스턴스 클래스
@@ -34,6 +36,7 @@ public:
     UPROPERTY() ASoundManager*       pSoundManager;
     FDeleSetItemOntoInventory        DeleSetItemOntoInventory;
     FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
+    FDeleRunEffectAnim DeleRunEffectAnim;
 
 public:
     UCustomGameInstance();

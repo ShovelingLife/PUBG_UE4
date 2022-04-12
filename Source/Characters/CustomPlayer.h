@@ -41,13 +41,10 @@ private:
     UPROPERTY() AActor*         mpCollidedWeapon  = nullptr;
     UPROPERTY() ACoreVehicle*   mpCollidedVehicle = nullptr;
 
-
     UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp;
 
-    /**
-     * \brief 이동 관련 변수
-     */
+    /** \brief 이동 관련 변수 */
     FVector mDirectionUpDown    = FVector::ZeroVector;
     FVector mDirectionLeftRight = FVector::ZeroVector;
     float   mSprintTime         = 0.f;

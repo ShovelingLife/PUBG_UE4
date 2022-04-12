@@ -29,13 +29,20 @@ void ASoundManager::InitPlayerAudio()
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_EQUIP_SOUND(*(mkSoundPath + "Gun_pickup"));
 
     if (BP_EQUIP_SOUND.Succeeded())
-        pWeaponPickupSound = Cast<USoundBase>(BP_EQUIP_SOUND.Object);
+        pWeaponPickupSound = BP_EQUIP_SOUND.Object;
 
     // 무기 교체 사운드
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_SWAP_SOUND(*(mkSoundPath + "Gun_swap"));
 
     if (BP_SWAP_SOUND.Succeeded())
-        pWeaponSwapSound = Cast<USoundBase>(BP_SWAP_SOUND.Object);
+        pWeaponSwapSound = BP_SWAP_SOUND.Object;
+
+    // 플레이어 상태 사운드
+    const FString effectSoundPath = "/Game/SFX/EffectSounds/";
+    static ConstructorHelpers::FObjectFinder<USoundWave> BP_BLIND_SOUND(*(effectSoundPath + "EarRing"));
+
+    if (BP_BLIND_SOUND.Succeeded())
+        arrPlayerStateSound.Add(BP_BLIND_SOUND.Object);
 }
 
 void ASoundManager::InitWeaponAudio()
@@ -44,13 +51,13 @@ void ASoundManager::InitWeaponAudio()
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_EMPTY_AMMO_SOUND(*(mkSoundPath + "Empty_shot"));
 
     if (BP_EMPTY_AMMO_SOUND.Succeeded())
-        pEmptyAmmoSound = Cast<USoundBase>(BP_EMPTY_AMMO_SOUND.Object);
+        pEmptyAmmoSound = BP_EMPTY_AMMO_SOUND.Object;
 
     // 재장전 사운드
     static ConstructorHelpers::FObjectFinder<USoundWave> BP_RELOAD_AMMO_SOUND(*(mkSoundPath + "Gun_reload"));
 
     if (BP_RELOAD_AMMO_SOUND.Succeeded())
-        pReloadSound = Cast<USoundBase>(BP_RELOAD_AMMO_SOUND.Object);
+        pReloadSound = BP_RELOAD_AMMO_SOUND.Object;
 
     // 총알 발사 사운드
     for (int i = 0; i < ADataTableManager::ArrWeaponData.Num(); i++)
@@ -58,7 +65,7 @@ void ASoundManager::InitWeaponAudio()
         ConstructorHelpers::FObjectFinder<USoundWave> BP_SHOT_SOUND(*(mkSoundPath + ADataTableManager::ArrWeaponData[i].Type + "_shot"));
 
         if (BP_SHOT_SOUND.Succeeded())
-            pArrShotSound.Add(Cast<USoundBase>(BP_SHOT_SOUND.Object));
+            pArrShotSound.Add(BP_SHOT_SOUND.Object);
     }
 }
 
@@ -96,4 +103,9 @@ void ASoundManager::PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType
         AudioComp->SetSound(tmpSound);
         AudioComp->Play();
     }
+}
+
+void ASoundManager::PlayPlayerEffectSound(int Index)
+{
+    UGameplayStatics::PlaySound2D(GetWorld(), arrPlayerStateSound[Index]);
 }

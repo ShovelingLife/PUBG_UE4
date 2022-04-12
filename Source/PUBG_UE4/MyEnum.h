@@ -110,3 +110,12 @@ enum class EWeaponSoundType
     SHOT,
     RELOAD
 };
+
+UENUM()
+enum class EPlayerStateAnimType
+{
+    BLINDED, // ¼¶±¤Åº
+    BURNED,  // È­¿°º´
+    INJURED,  // ºÎ»ó
+    NONE
+};
