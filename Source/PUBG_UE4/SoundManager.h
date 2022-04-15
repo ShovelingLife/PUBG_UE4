@@ -29,9 +29,16 @@ public:
     /** \brief 무기 관련 사운드 */
     UPROPERTY(VisibleAnywhere, Category = WeaponSound) TArray<USoundBase*> pArrShotSound;
     UPROPERTY(VisibleAnywhere, Category = WeaponSound) USoundBase*         pEmptyAmmoSound = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase*         pReloadSound    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = WeaponSound) USoundBase*         pReloadSound    = nullptr;
 
-    /** \brief 플레이어 무기 사운드 관련 */
+    UPROPERTY(VisibleAnywhere, Category = GrenadeSound) USoundBase* pClaymoreSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = GrenadeSound) USoundBase* pFragmentationSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = GrenadeSound) USoundBase* pIlluminationSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = GrenadeSound) USoundBase* pMolotovSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = GrenadeSound) USoundBase* pSmokeSound = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = GrenadeSound) USoundBase* pStickSound = nullptr;
+
+    /** \brief 플레이어 사운드 관련 */
     UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase* pItemFarmSound     = nullptr; 
     UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase* pWeaponPickupSound = nullptr;
     UPROPERTY(VisibleAnywhere, Category = PlayerSound) USoundBase* pWeaponSwapSound   = nullptr;
@@ -58,20 +65,21 @@ protected:
     virtual void Tick(float DeltaTime) override;
 
 public:
-    /**
-      * \brief 무기 오디오 재생
-      * \param AudioComp  오디오 컴포넌트 
-      * \param SoundType   사운드 종류 
-      * \param WeaponIndex 사운드 인덱스
-      */
-    void PlayWeaponSound(UAudioComponent* AudioComp, EWeaponSoundType SoundType, int WeaponIndex = 0);
-
-    /**
-      * \brief 플레이어 오디오 재생
+    /** * \brief 플레이어 오디오 재생
       * \param AudioComp 오디오 컴포넌트 
       * \param SoundType  사운드 종류
       */
     void PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType);
 
     void PlayPlayerEffectSound(int Index);
+
+    /**
+      * \brief 무기 오디오 재생
+      * \param AudioComp  오디오 컴포넌트
+      * \param SoundType   사운드 종류
+      * \param WeaponIndex 사운드 인덱스
+      */
+    void PlayGunSound(UAudioComponent* AudioComp, EWeaponSoundType SoundType, int WeaponIndex = 0);
+
+    USoundBase* GetExplosiveSoundBase(int Type);
 };

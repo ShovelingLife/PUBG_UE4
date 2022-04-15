@@ -17,6 +17,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundBase.h"
 
@@ -33,12 +34,13 @@ void AWeaponManager::BeginPlay()
 	Super::BeginPlay();
 
     // 투척류 무기 맨 마지막 지점 오브젝트 생성
-    if (BP_GrenadeEndPoint &&
-        pThrowable)
-        GrenadeEndPoint = GetWorld()->SpawnActor<AActor>(BP_GrenadeEndPoint, pThrowable->StaticMeshComp->GetSocketTransform("GrenadeThrowSocket"));
+    if (BP_GrenadeEndPoint)
+    {
+        GrenadeEndPoint = GetWorld()->SpawnActor<AActor>(BP_GrenadeEndPoint, FTransform::Identity);
 
-    if (GrenadeEndPoint)
-        GrenadeEndPoint->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+        if (GrenadeEndPoint)
+            GrenadeEndPoint->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+    }
 }
 
 void AWeaponManager::Tick(float DeltaTime)
@@ -53,25 +55,6 @@ void AWeaponManager::Tick(float DeltaTime)
         CheckReloading(DeltaTime);
         CheckContinouslyShooting(DeltaTime);
     }
-    if (mbThrowingGrenade)
-    {
-        mPathTime += DeltaTime;
-
-        if(mPathTime > 0.5f)
-        {
-            // 경로 제거 및 메쉬 제거
-            SplineComp->ClearSplinePoints();
-
-            for (int i = 0; i < arrSplineMeshComp.Num(); i++)
-            {
-                if (auto splineMeshComp = arrSplineMeshComp[i])
-                    splineMeshComp->DestroyComponent();
-            }
-            arrSplineMeshComp.Empty();
-            mPathTime = 0.f;
-            mbThrowingGrenade = false;
-        }        
-    }
 }
 
 void AWeaponManager::CheckForEquippedWeapon()
@@ -81,8 +64,7 @@ void AWeaponManager::CheckForEquippedWeapon()
 
 void AWeaponManager::InitGrenadePath()
 {
-    SplineComp = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComp"));
-    SplineComp->SetMobility(EComponentMobility::Static);
+    SplineComp = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComp"));   
     RootComponent = SplineComp;
 
     auto BP_GrenadeEndPointRef = ConstructorHelpers::FClassFinder<AActor>(TEXT("/Game/UI/PredictGrenadePath/BP_PredictEndpoint.BP_PredictEndpoint_C"));
@@ -150,7 +132,7 @@ void AWeaponManager::PlaySound(EWeaponSoundType SoundType)
     if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
     {
         if (auto p_soundManager = p_customGameInst->pSoundManager)
-            p_soundManager->PlayWeaponSound(p_arrCurrentWeapon[index]->AudioComp, SoundType, weaponIndex);
+            p_soundManager->PlayGunSound(p_arrCurrentWeapon[index]->AudioComp, SoundType, weaponIndex);
     }
 }
 
@@ -267,24 +249,17 @@ void AWeaponManager::PredictGrenadePath()
         return;
 
     mbThrowingGrenade = true;
-    mPathTime         = 0.f;
     // 투척류 예측 경로 데이터 설정
     FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSocket");
-    FVector launchVelocity;
-
-    if (auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-        launchVelocity = UKismetMathLibrary::GetForwardVector(p_playerController->GetControlRotation()) * 1000.f;
-
-    RootComponent->SetMobility(EComponentMobility::Movable);
-    RootComponent->SetWorldLocation(socketPos);
-    RootComponent->SetMobility(EComponentMobility::Static);
-    FPredictProjectilePathParams predictParams(25.f, socketPos, launchVelocity, 2.f, ECC_WorldStatic, UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * (UKismetMathLibrary::Abs(GrenadeDirection) * 1500.f);
+    FPredictProjectilePathParams predictParams(25.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
+    predictParams.bTraceWithCollision = true;
     predictParams.SimFrequency     = 15.f;
-    predictParams.OverrideGravityZ = 0.f;
+    predictParams.OverrideGravityZ = 0.f;    
     FPredictProjectilePathResult result;
     UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, result);
     mGrenadeVelocity = predictParams.LaunchVelocity;
-
+    
     // 경로 지정    
     for (int i = 0; i < result.PathData.Num(); i++)
          SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
@@ -294,7 +269,13 @@ void AWeaponManager::PredictGrenadePath()
         // 라인 메쉬 생성
         if (auto splineMeshComp = NewObject<USplineMeshComponent>(GetWorld(), USplineMeshComponent::StaticClass()))
         {
+            splineMeshComp->SetMobility(EComponentMobility::Movable);
+            splineMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            splineMeshComp->AttachToComponent(SplineComp, FAttachmentTransformRules::KeepRelativeTransform);
+            splineMeshComp->RegisterComponentWithWorld(GetWorld());
+
             // 위치 설정
+            //splineMeshComp->SetRelativeTransform(FTransform::Identity);
             FVector startPos, startTangent, endPos, endTangent;
             SplineComp->GetLocationAndTangentAtSplinePoint(i, startPos, startTangent, ESplineCoordinateSpace::World);
             SplineComp->GetLocationAndTangentAtSplinePoint(i + 1, endPos, endTangent, ESplineCoordinateSpace::World);
@@ -309,21 +290,14 @@ void AWeaponManager::PredictGrenadePath()
             splineMeshComp->SetStaticMesh(PathMesh);
             splineMeshComp->SetMaterial(0, PathMat);
             splineMeshComp->SetVisibility(true);
-
-            splineMeshComp->SetMobility(EComponentMobility::Static);
-            splineMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-            splineMeshComp->RegisterComponentWithWorld(GetWorld());
-            splineMeshComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
             arrSplineMeshComp.Add(splineMeshComp);
         }
     }
-    auto length = SplineComp->GetSplineLength();
-
     // 도착 지점에 생성 및 설정
     if (GrenadeEndPoint)
     {
         GrenadeEndPoint->SetHidden(false);
-        GrenadeEndPoint->SetActorLocation(result.LastTraceDestination.Location);
+        GrenadeEndPoint->SetActorRelativeLocation(result.LastTraceDestination.Location);
     }
 }
 
@@ -485,8 +459,36 @@ void AWeaponManager::ThrowGrenade()
     {
         pThrowable->Throw(mGrenadeVelocity);
         pThrowable = nullptr;
+        mGrenadeVelocity = FVector::ZeroVector;
+        mbThrowingGrenade = false;
+        GrenadeDirection = 0.f;
+
+        if (GrenadeEndPoint)
+            GrenadeEndPoint->SetHidden(true);
     }
-    mGrenadeVelocity = FVector::ZeroVector;
+    ResetGrenadePath();
+}
+
+void AWeaponManager::ResetGrenadePath()
+{
+    // 경로 제거 및 메쉬 제거
+    SplineComp->ClearSplinePoints();
+
+    for (int i = 0; i < arrSplineMeshComp.Num(); i++)
+    {
+        if (auto splineMeshComp = arrSplineMeshComp[i])
+            splineMeshComp->DestroyComponent();
+    }
+    arrSplineMeshComp.Empty();
+}
+
+void AWeaponManager::UpdateGrenadePath()
+{
+    if (mbThrowingGrenade)
+    {
+        ResetGrenadePath();
+        PredictGrenadePath();
+    }
 }
 
 bool AWeaponManager::ScrollSelect(FString Pos)

@@ -11,6 +11,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 
+void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);    
+}
+
 ABaseInteraction::ABaseInteraction()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -41,7 +46,9 @@ void ABaseInteraction::InitStaticMesh(FString Path)
     if (SkeletalMeshComp)
         SkeletalMeshComp->DestroyComponent();
 
-    StaticMeshComp->SetupAttachment(RootComponent);
+    if (StaticMeshComp != RootComponent)
+        StaticMeshComp->SetupAttachment(RootComponent);
+
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*Path);
 
@@ -98,13 +105,18 @@ void ABaseInteraction::InitParticleSystem(FString Path)
 {
     // 파티클 컴포넌트 초기화
     ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
+    ParticleComp->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
     ParticleComp->bAutoActivate = false;
+    ParticleComp->SecondsBeforeInactive = 0.f;
 
     // 파티클 설정
     ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(*Path);
 
     if (PARTICLE.Succeeded())
+    {
         ParticleComp->SetTemplate(PARTICLE.Object);
+        Particle = PARTICLE.Object;
+    }
 }
 
 void ABaseInteraction::AttachComponents()

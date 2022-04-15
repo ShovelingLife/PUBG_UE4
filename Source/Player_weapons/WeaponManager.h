@@ -37,7 +37,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
     FVector mGrenadeVelocity;
-	float mPathTime = 0.f;
     bool  mbThrowingGrenade = false;
 
 	// 총기 관련
@@ -57,6 +56,7 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
+    float GrenadeDirection;
 	bool			   bArrWeaponEquipped[5]{ false };
 	bool			   bShooting = false;
 
@@ -136,6 +136,10 @@ public:
 	void Reload();
 
 	void ThrowGrenade();
+
+	void ResetGrenadePath();
+
+	void UpdateGrenadePath();
 
 	/**
 	 * \brief 마우스 휠 통해 무기 교체

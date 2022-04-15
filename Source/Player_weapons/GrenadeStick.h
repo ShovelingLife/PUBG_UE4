@@ -14,7 +14,4 @@ class PLAYER_WEAPONS_API AGrenadeStick : public ACoreThrowableWeapon
 	
 public:
 	AGrenadeStick();
-
-protected:
-	virtual void Explode() override;
 };

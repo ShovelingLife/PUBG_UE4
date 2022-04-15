@@ -38,7 +38,7 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Mesh)     USkeletalMeshComponent*   SkeletalMeshComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Sound)    UAudioComponent*          AudioComp        = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp     = nullptr;
-
+    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystem*          Particle         = nullptr;
     FString ObjectGroupType = "";
     FString ObjectType      = "";
     int     UI_index        = 0;
@@ -46,6 +46,9 @@ public:
 
 public:
     ABaseInteraction();
+
+public:
+    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
     virtual void BeginPlay() override;

@@ -1,10 +1,9 @@
 ﻿#include "CoreThrowableWeapon.h"
 #include "TimerManager.h"
+#include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "PUBG_UE4/SoundManager.h"
 #include "Components/AudioComponent.h"
-#include "Components/BoxComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -14,56 +13,37 @@
 #include "Sound/SoundBase.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 
-void ACoreThrowableWeapon::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
-{
-    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-
-    // 3초 후 터짐
-    if (bThrowed)
-    {
-        FTimerHandle waitHandle;
-        GetWorld()->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
-            {
-                Explode();
-            }), 3.f, false);
-    }
-}
-
-void ACoreThrowableWeapon::BeginDestroy()
-{
-    Super::BeginDestroy();
-    bThrowed = false;
-}
-
 ACoreThrowableWeapon::ACoreThrowableWeapon()
 {
     PrimaryActorTick.bCanEverTick = true;
 }
 
+void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+
+    /*if (ProjectileMovementComp)
+        ProjectileMovementComp->Deactivate();*/
+}
+
 void ACoreThrowableWeapon::BeginPlay()
 {
     Super::BeginPlay();
-
-    if (GrenadeColliderComp)
-    {
-        auto component_location = GrenadeColliderComp->GetComponentLocation();
-        GrenadeColliderComp->SetRelativeLocation(FVector(component_location.X, component_location.Y, WeaponData.ColliderPosZ));
-        //GrenadeColliderComp->AddRelativeLocation(FVector(0.f, 0.f, WeaponData.ColliderPosZ));
-        GrenadeColliderComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(FMath::Abs(WeaponData.MeshRotationX), 0.f, 0.f)));
-        GrenadeColliderComp->SetCollisionProfileName("Explosive");
-    }
-    /*if(ColliderComp)
-    {
-        ABaseInteraction::SetCollisionSettingsForObjects();
-        ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 4.f));
-        ColliderComp->SetBoxExtent(FVector(15.f, 15.f, 5.f));
-        StaticMeshComp->AddRelativeLocation(FVector(0.f, 0.f, 18.f));
-    }*/
 }
     
 void ACoreThrowableWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    if (GrenadeParticleComp)
+    {
+        static float currentTime = 0.f;
+
+        currentTime += DeltaTime;
+
+        if (currentTime >= 3.5f)
+            this->Destroy();
+    }
 }
 
 void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
@@ -74,11 +54,35 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
     ObjectGroupType = WeaponData.GroupType;
 
     InitMesh();
-    //UpdateCollider();
     InitProjectileMovementComp();
     Super::AttachComponents();
-    Super::InitParticleSystem(WeaponData.ParticlePath);
 
+    FString particlePath = "";
+
+    switch (WeaponType)
+    {
+    case EThrowableWeaponType::FRAGMENTATION1:
+    case EThrowableWeaponType::FRAGMENTATION2:
+    case EThrowableWeaponType::CLAYMORE:
+        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'";
+        break;
+
+    case EThrowableWeaponType::ILLUMINATION:
+    case EThrowableWeaponType::STICK:
+        particlePath = "ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'";
+        break;
+
+    case EThrowableWeaponType::GRAY_SMOKE:
+    case EThrowableWeaponType::RED_SMOKE:
+        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Smoke.P_Explosion_Smoke'";
+        break;
+
+    case EThrowableWeaponType::MOLOTOV:
+        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Molotov.P_Molotov'";
+        break;
+    }
+    Super::InitParticleSystem(particlePath);
+    
     if (SceneComp)
         SceneComp->DestroyComponent();
 }
@@ -89,9 +93,11 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
         return;
 
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
-    ProjectileMovementComp->bShouldBounce = true;
-    ProjectileMovementComp->InitialSpeed  = 100.f;
-    ProjectileMovementComp->MaxSpeed      = 100.f;
+    ProjectileMovementComp->InitialSpeed  = 0.f;
+    ProjectileMovementComp->MaxSpeed      = 0.f;
+    ProjectileMovementComp->bShouldBounce = false;
+    ProjectileMovementComp->bAutoActivate = false;
+    ProjectileMovementComp->Velocity = FVector(0.1f, 0.f, 0.f);
 }
 
 void ACoreThrowableWeapon::InitMesh()
@@ -113,24 +119,6 @@ void ACoreThrowableWeapon::InitMesh()
         StaticMeshComp->SetSimulatePhysics(false);
         StaticMeshComp->SetCollisionProfileName("Explosive");
         StaticMeshComp->SetNotifyRigidBodyCollision(true);
-    }
-}
-
-void ACoreThrowableWeapon::UpdateCollider()
-{
-    if (CurrentWeaponType != EThrowableWeaponType::CLAYMORE)
-    {
-        GrenadeColliderComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
-
-        if (GrenadeColliderComp)
-        {
-            RootComponent->DestroyComponent();
-            GrenadeColliderComp->SetCapsuleRadius(0.f);
-            GrenadeColliderComp->SetCapsuleHalfHeight(0.f);
-            GrenadeColliderComp->SetCapsuleHalfHeight(WeaponData.ColliderHeight);
-            GrenadeColliderComp->SetCapsuleRadius(WeaponData.ColliderSize);
-            RootComponent = GrenadeColliderComp;
-        }
     }
 }
 
@@ -157,18 +145,53 @@ bool ACoreThrowableWeapon::IsPlayerInRadius()
     return false;
 }
 
-void ACoreThrowableWeapon::Explode()
-{
-    
-}
-
 void ACoreThrowableWeapon::Throw(FVector Velocity)
 {
     if (!StaticMeshComp ||
         !ProjectileMovementComp)
         return;
 
-    ProjectileMovementComp->AddForce(Velocity);
-    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);    
-    bThrowed = true;
+    ProjectileMovementComp->Velocity = Velocity;
+    ProjectileMovementComp->Activate();
+    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    this->SetActorScale3D(FVector(WeaponData.MeshSize));
+
+    FTimerHandle waitHandle;
+    auto p_world = GetWorld();
+
+    if (!p_world)
+        return;
+
+    p_world->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
+        {
+            auto location = GetActorLocation();
+            static bool b_once = false;
+
+            // 사운드 재생
+            if (auto p_world = GetWorld())
+            {
+                if (auto p_subGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+                {
+                    if (auto p_soundManager = p_subGameInst->pSoundManager)
+                        UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)CurrentWeaponType), location);
+                }
+            }
+            // 효과 재생
+            if (IsPlayerInRadius())
+                mCallBack.ExecuteIfBound();
+
+            // 이펙트 재생 
+            if (CurrentWeaponType == EThrowableWeaponType::GRAY_SMOKE ||
+                CurrentWeaponType == EThrowableWeaponType::RED_SMOKE  ||
+                CurrentWeaponType == EThrowableWeaponType::MOLOTOV)
+            {
+                StaticMeshComp->SetVisibility(false);
+                GrenadeParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location, FRotator::ZeroRotator, false);
+            }
+            else
+            {
+                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location);
+                this->Destroy();
+            }
+        }), 3.f, false);
 }

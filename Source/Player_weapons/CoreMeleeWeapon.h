@@ -39,7 +39,4 @@ protected:
 
     /** \brief 메쉬 초기화 */
     void InitMesh();
-
-    /** \brief 콜라이더 정보 갱신 */
-    void UpdateCollider();
 };

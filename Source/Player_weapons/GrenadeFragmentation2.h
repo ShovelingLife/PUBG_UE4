@@ -14,7 +14,4 @@ class PLAYER_WEAPONS_API AGrenadeFragmentation2 : public ACoreThrowableWeapon
 	
 public:
 	AGrenadeFragmentation2();
-
-protected:
-	virtual void Explode() override;
 };

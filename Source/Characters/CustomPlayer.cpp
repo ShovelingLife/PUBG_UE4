@@ -51,8 +51,8 @@ void ACustomPlayer::BeginPlay()
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
 
-    /*if (mpWeaponManager)
-        mpWeaponManager->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);*/
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+        p_customGameInst->DeleDealPlayerDmg.BindUFunction(this, "DealDmg");
 
     // UI용 캐릭터 생성
     pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
@@ -69,6 +69,16 @@ void ACustomPlayer::Tick(float DeltaTime)
     //Play_walk_sound();
     CheckForObject();
     TryToInteract();
+
+    if (CurrentHealth == 0.f &&
+        CurrentState != EPlayerState::DEAD)
+        CurrentState = EPlayerState::INJURED;
+
+    if (CurrentInjuredHealth == 0.f)
+    {
+        CurrentState = EPlayerState::DEAD;
+        GetWorld()->GetFirstPlayerController()->UnPossess();
+    }
 }
 
 void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -345,34 +355,65 @@ void ACustomPlayer::TryToInteract()
 void ACustomPlayer::MoveForwardBack(float Value)
 {
     if (!bAnimationPlaying)
-        AddMovementInput(GetActorForwardVector() * Value * mSprintMultiplier);
+    {
+        if (CurrentState == EPlayerState::INJURED)
+            AddMovementInput(GetActorForwardVector() * (Value / 4));
+
+        else
+            AddMovementInput(GetActorForwardVector() * Value * mSprintMultiplier);
+    }
+
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::MoveLeftRight(float Value)
 {
     if (!bAnimationPlaying)
-        AddMovementInput(GetActorRightVector() * Value * mSprintMultiplier);
+    {
+        if (CurrentState == EPlayerState::INJURED)
+            AddMovementInput(GetActorRightVector() * (Value / 4));
+            
+        else
+            AddMovementInput(GetActorRightVector() * Value * mSprintMultiplier);
+    }
+
+    mpWeaponManager->UpdateGrenadePath();
 }
 
-void ACustomPlayer::LookUp(float _Value)
+void ACustomPlayer::LookUp(float Value)
 {
     if (!mbInventoryOpened)
-        AddControllerPitchInput(_Value);
+        AddControllerPitchInput(Value);
+
+    // 경로 거리 설정
+    auto grenadeDirection = mpWeaponManager->GrenadeDirection;
+    auto target = (Value / 10.f) + grenadeDirection;
+    auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDirection, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
+    
+    if (interptVal < 0.7f &&
+        interptVal > -0.1f)
+        mpWeaponManager->GrenadeDirection = interptVal;
+    
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::Turn(float _Value)
 {
     if (!mbInventoryOpened)
         AddControllerYawInput(_Value);
+
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::CustomJump()
 {
     if (CurrentState == EPlayerState::CROUCH ||
-        CurrentState == EPlayerState::PRONING)
+        CurrentState == EPlayerState::PRONING ||
+        CurrentState == EPlayerState::INJURED)
         return;
 
     Jump();
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::CustomCrouch()
@@ -425,7 +466,8 @@ void ACustomPlayer::Proning()
 
 void ACustomPlayer::BeginSprint()
 {
-    if (!GetVelocity().IsZero())
+    if (!GetVelocity().IsZero() &&
+        CurrentState != EPlayerState::INJURED)
         CurrentState = EPlayerState::SPRINT;
 }
 
@@ -546,4 +588,18 @@ void ACustomPlayer::ExitFromVehicle(FVector ExitPos)
     SetActorLocation(ExitPos);
     SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+}
+
+void ACustomPlayer::DealDmg(float DmgVal)
+{
+    // 예시) 현재 HP 50 / 받은 데미지 75 = 추가 HP 25만큼 차감
+    auto extraDmgVal = CurrentHealth - DmgVal;
+
+    if(extraDmgVal < 0)
+    {
+        CurrentHealth = 0.f;
+        CurrentInjuredHealth -= extraDmgVal;
+    }
+    else
+        CurrentHealth -= DmgVal;
 }

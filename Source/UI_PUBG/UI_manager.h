@@ -37,7 +37,6 @@ private:
 
     /** * \brief 플레이어 상태이상 UI */
     TSubclassOf<UPlayerEffectUI> mPlayerEffectUI_BP;
-    UPROPERTY() UPlayerEffectUI* mpPlayerEffect_UI;
 
     /** * \brief 상호작용 UI 관련 */
     UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
@@ -57,6 +56,7 @@ public:
     static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
 
     UPROPERTY() AInventoryManager* pInventoryManager;
+    UPROPERTY() UPlayerEffectUI*   pPlayerEffect_UI;
 
 public:
     AUI_manager();

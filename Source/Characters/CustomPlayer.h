@@ -68,19 +68,18 @@ public:
      * \brief 플레이어 상태 관련 변수
      */
     EPlayerState CurrentState;
-    const float    kMaxHealth        = 100.f;
-    float          CurrentHealth     = 100;
-    float          CurrentOxygen     = 1.f;
-    bool           bSprinting        = false;
-    bool           bAnimationPlaying = false;
-    bool           bAiming           = false;
-    bool           bWeaponEquipped   = false;
+    const float  kMaxHealth           = 100.f;
+    float        CurrentHealth        = 100.f;
+    float        CurrentInjuredHealth = 100.f;
+    float        CurrentOxygen        = 1.f;
+    bool         bSprinting           = false;
+    bool         bAnimationPlaying    = false;
+    bool         bAiming              = false;
+    bool         bWeaponEquipped      = false;
     
-    /**
-     * \brief 차량 관련 변수
-     */
-    ESeatType    CurrentSeatType = ESeatType::NONE;
-    bool           bInVehicle     = false;
+    /** \brief 차량 관련 변수 */
+    ESeatType CurrentSeatType = ESeatType::NONE;
+    bool      bInVehicle      = false;
 
 public:
     ACustomPlayer();
@@ -217,4 +216,6 @@ public:
     void ExitFromVehicle(FVector ExitLocation);
 
     AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
+
+    UFUNCTION() void DealDmg(float DmgVal);
 };

@@ -26,7 +26,6 @@ void ACoreMeleeWeapon::Init(EMeleeWeaponType WeaponType)
     this->CurrentWeaponType = WeaponType;
     ObjectType = WeaponData.Type;    
 
-    UpdateCollider();
     InitMesh();
 
     if (SceneComp)
@@ -38,11 +37,4 @@ void ACoreMeleeWeapon::InitMesh()
     ABaseInteraction::InitStaticMesh(WeaponData.MeshPath);
     StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
     StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
-}
-
-void ACoreMeleeWeapon::UpdateCollider()
-{
-    //ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
-    ColliderComp->SetBoxExtent(FVector(WeaponData.ColliderSize));
-    ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
 }

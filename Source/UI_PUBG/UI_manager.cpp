@@ -162,7 +162,7 @@ void AUI_manager::SetPlayerUI()
     UUserWidget* p_playerEffectUI_Widget = CreateWidget(GetWorld(), mPlayerEffectUI_BP);
 
     if (p_playerEffectUI_Widget)
-        mpPlayerEffect_UI = Cast<UPlayerEffectUI>(p_playerEffectUI_Widget);
+        pPlayerEffect_UI = Cast<UPlayerEffectUI>(p_playerEffectUI_Widget);
 }
 
 void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type)
@@ -180,10 +180,10 @@ void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type
 
 void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAnimType Type)
 {
-    if (mpPlayerEffect_UI)
+    if (pPlayerEffect_UI)
     {
-        mpPlayerEffect_UI->AddToViewport(3);
-        mpPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
+        pPlayerEffect_UI->AddToViewport(3);
+        pPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
     }
 }
 

@@ -11,24 +11,28 @@
 
 #include "CoreMinimal.h"
 #include "WeaponEnum.h"
-#include "InterfaceExplodeFunc.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/OtherWeaponData.h"
 #include "CoreThrowableWeapon.generated.h"
 
-class UCapsuleComponent;
+DECLARE_DELEGATE(FDeleExplosionEvent)
+
 class UProjectileMovementComponent;
+class UParticleSystemComponent;
 
 UCLASS()
-class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction, public IInterfaceExplodeFunc
+class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 {
 	GENERATED_BODY()
 
+protected:
+    FDeleExplosionEvent mCallBack;
+
 public:
-    UPROPERTY(VisibleAnywhere, Category = Collider) UCapsuleComponent* GrenadeColliderComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;
-	FsOtherWeaponData    WeaponData;
+    UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
+    UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
+    FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
     bool bTouchedFloor = false;
     bool bThrowed = false;
@@ -36,15 +40,13 @@ public:
 public:
     ACoreThrowableWeapon();
 
+public:
+    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
-public:
-    virtual void BeginDestroy() override;
-
-    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
     /**
@@ -59,16 +61,11 @@ protected:
     /** \brief 메쉬 초기화 */
     void InitMesh();
 
-    /** \brief 콜라이더 정보 갱신 */
-    void UpdateCollider();
-
-    /** \brief 파티클 시스템 갱신 */
-    void UpdateParticleSystem();
+    /** \brief 파티클 시스템 생성 */
+    void InitParticleSystem();
 
     /** \brief 플레이어와 투척류 간 거리 계산= */
     bool IsPlayerInRadius();
-
-    virtual void Explode() override;
 
 public:
     void Throw(FVector Velocity);

@@ -14,7 +14,4 @@ class PLAYER_WEAPONS_API AGrenadeRedSmoke : public ACoreThrowableWeapon
 
 public:
 	AGrenadeRedSmoke();
-
-protected:
-	virtual void Explode() override;
 };

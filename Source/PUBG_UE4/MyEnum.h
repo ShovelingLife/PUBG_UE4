@@ -116,6 +116,7 @@ enum class EPlayerStateAnimType
 {
     BLINDED, // º∂±§≈∫
     BURNED,  // »≠ø∞∫¥
-    INJURED,  // ∫ŒªÛ
+    INJURED, // ∫ŒªÛ
+    FIELD,   // ¿⁄±‚¿Â
     NONE
 };

@@ -1,8 +1,10 @@
 ﻿#include "PlayerStateUI.h"
+#include "PlayerEffectUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/WeaponManager.h"
+#include "PUBG_UE4/CustomGameInstance.h"
 #include "Components/ProgressBar.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -14,17 +16,21 @@ void UPlayerStateUI::NativeConstruct()
     p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
-void UPlayerStateUI::NativeTick(const FGeometry& _InGeometry, float _DeltaTime)
+void UPlayerStateUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
-    Super::NativeTick(_InGeometry, _DeltaTime);
+    Super::NativeTick(InGeometry, DeltaTime);
 
     if (!mpUI_manager)
         mpUI_manager = Cast<AUI_manager>(UGameplayStatics::GetActorOfClass(GetWorld(), AUI_manager::StaticClass()));
 
-    UpdateAimUI();
-    UpdateBulletCountUI();
-    UpdateShootMode();
-    UpdateOxygenBarUI(_DeltaTime);
+    if (p_player)
+    {
+        UpdateAimUI();
+        UpdateBulletCountUI();
+        UpdateShootMode();
+        UpdateHealthBarUI(DeltaTime);
+        UpdateOxygenBarUI(DeltaTime);
+    }
 }
 
 void UPlayerStateUI::UpdateAimUI()
@@ -45,9 +51,6 @@ void UPlayerStateUI::UpdateAimUI()
 
 void UPlayerStateUI::UpdateBulletCountUI()
 {
-    if (!p_player)
-        return;
-
     auto p_weaponManager = p_player->GetWeaponManager();
     auto p_weapon        = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
 
@@ -65,11 +68,8 @@ void UPlayerStateUI::UpdateBulletCountUI()
 
 void UPlayerStateUI::UpdateShootMode()
 {
-    if (!p_player)
-        return;
-
     auto p_weaponManager = p_player->GetWeaponManager();
-    auto p_weapon         = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
+    auto p_weapon        = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
 
     if (!p_weapon)
         return;
@@ -85,11 +85,38 @@ void UPlayerStateUI::UpdateShootMode()
         BoltActionImg->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UPlayerStateUI::UpdateOxygenBarUI(float _DeltaTime)
+void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
 {
-    if (!p_player)
+    if (p_player->CurrentState == EPlayerState::DEAD)
+    {
+        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("플레이어가 사망한 상태입니다.")));
         return;
+    }
+    float currentHealth = p_player->CurrentHealth;
 
+    if (currentHealth > 0.f)
+        HP_bar->SetPercent(currentHealth);
+
+    else
+    {
+        if (UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+            p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(0.f, 3.f, EPlayerStateAnimType::INJURED);
+
+        // 부상 타이머 설정
+        mCurrentTime += DeltaTime;
+
+        if (mCurrentTime >= 0.5f)
+        {
+            p_player->CurrentInjuredHealth -= 2.5f;
+            mCurrentTime = 0.f;
+        }
+        HP_bar->SetVisibility(ESlateVisibility::Hidden);
+        Injured_HP_bar->SetPercent(p_player->CurrentInjuredHealth / 100.f);
+    }
+}
+
+void UPlayerStateUI::UpdateOxygenBarUI(float DeltaTime)
+{
     // 현재 뛰고있음
     if      (p_player->bSprinting &&
              p_player->CurrentOxygen > 0.f)
@@ -97,7 +124,7 @@ void UPlayerStateUI::UpdateOxygenBarUI(float _DeltaTime)
 
     else if (!p_player->bSprinting &&
               p_player->CurrentOxygen < 1.f)
-              p_player->CurrentOxygen += (_DeltaTime * 0.03);
+              p_player->CurrentOxygen += (DeltaTime * 0.03);
 
     OxygenBar->SetPercent(p_player->CurrentOxygen);
 }
