@@ -18,30 +18,37 @@
 
 DECLARE_DELEGATE(FDeleExplosionEvent)
 
+class USphereComponent;
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class UCustomGameInstance;
 
 UCLASS()
 class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 {
 	GENERATED_BODY()
 
+private:
+    FTimerHandle mWaitHandle;
+    bool mbPlayed = false;
+    bool mbExploded = false;
+
 protected:
     FDeleExplosionEvent mCallBack;
 
 public:
+    UPROPERTY(EditAnywhere, category = Collider) class USphereComponent* SphereComp;
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
     FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
-    bool bTouchedFloor = false;
-    bool bThrowed = false;
-
-public:
-    ACoreThrowableWeapon();
 
 public:
     virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
+    UFUNCTION() void BeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+    UFUNCTION() void EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 protected:
 	virtual void BeginPlay() override;
@@ -63,6 +70,8 @@ protected:
 
     /** \brief 파티클 시스템 생성 */
     void InitParticleSystem();
+
+    void InitSphereComp();
 
     /** \brief 플레이어와 투척류 간 거리 계산= */
     bool IsPlayerInRadius();

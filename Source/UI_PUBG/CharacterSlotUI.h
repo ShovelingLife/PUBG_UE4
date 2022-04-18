@@ -20,8 +20,8 @@ private:
     FVector2D mCharacterUIClickPos = FVector2D::ZeroVector;
 
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* HighlightImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CharacterImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      HighlightImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      CharacterImg;
 
     // 장비 관련
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* HeadSlotUI;
@@ -44,8 +44,8 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* BackpackFreeSpaceBar;
 
     // 방탄복 관련
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     ArmorIconImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* ArmorDurabilityText;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      ArmorIconImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*  ArmorDurabilityText;
 
     // 스킨 관련
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* HatSlotUI;

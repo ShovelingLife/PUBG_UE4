@@ -19,6 +19,8 @@ class ASoundManager;
 class AWeaponManager;
 class ABaseInteraction;
 
+DECLARE_DELEGATE(FDeleKillUI_Anim)
+DECLARE_DELEGATE_OneParam(FDeleSetPlayerOtherState, EPlayerOtherState)
 DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
@@ -35,10 +37,12 @@ class PUBG_UE4_API UCustomGameInstance : public UGameInstance
 public:
     /** \brief 전역 변수 */
     UPROPERTY() ASoundManager*       pSoundManager;
-    FDeleDealPlayerDmg DeleDealPlayerDmg;
+    FDeleSetPlayerOtherState DeleSetPlayerOtherState;
+    FDeleDealPlayerDmg               DeleDealPlayerDmg;
     FDeleSetItemOntoInventory        DeleSetItemOntoInventory;
     FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
-    FDeleRunEffectAnim DeleRunEffectAnim;
+    FDeleRunEffectAnim               DeleRunEffectAnim;
+    FDeleKillUI_Anim DeleKillUI_Anim;
 
 public:
     UCustomGameInstance();

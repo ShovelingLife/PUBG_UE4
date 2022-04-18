@@ -4,6 +4,7 @@
 AGrenadeFragmentation2::AGrenadeFragmentation2()
 {
     Init(EThrowableWeaponType::FRAGMENTATION2);
+
     mCallBack.BindLambda([&]()
         {
             if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))

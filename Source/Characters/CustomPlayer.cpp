@@ -52,8 +52,10 @@ void ACustomPlayer::BeginPlay()
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
 
     if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    {
+        p_customGameInst->DeleSetPlayerOtherState.BindUFunction(this, "SetOtherState");
         p_customGameInst->DeleDealPlayerDmg.BindUFunction(this, "DealDmg");
-
+    }
     // UI용 캐릭터 생성
     pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
 
@@ -69,16 +71,7 @@ void ACustomPlayer::Tick(float DeltaTime)
     //Play_walk_sound();
     CheckForObject();
     TryToInteract();
-
-    if (CurrentHealth == 0.f &&
-        CurrentState != EPlayerState::DEAD)
-        CurrentState = EPlayerState::INJURED;
-
-    if (CurrentInjuredHealth == 0.f)
-    {
-        CurrentState = EPlayerState::DEAD;
-        GetWorld()->GetFirstPlayerController()->UnPossess();
-    }
+    UpdateHealth();
 }
 
 void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -177,37 +170,32 @@ void ACustomPlayer::CheckIfMoving()
     {
         if (mbMoving)
         {
-            if      (CurrentState == EPlayerState::CROUCH_WALK)
-                     CurrentState = EPlayerState::CROUCH;
+            switch (CurrentState)
+            {
+            case EPlayerState::CROUCH_WALK:  CurrentState = EPlayerState::CROUCH; break;
+            case EPlayerState::PRONING_WALK: CurrentState = EPlayerState::PRONING; break;
+            case EPlayerState::AIM_WALK:     CurrentState = EPlayerState::AIM; break;
 
-            else if (CurrentState == EPlayerState::PRONING_WALK)
-                     CurrentState = EPlayerState::PRONING;
-
-            else if (CurrentState == EPlayerState::AIM_WALK)
-                     CurrentState = EPlayerState::AIM;
-
-            else
-                     CurrentState = EPlayerState::IDLE;
+            default: CurrentState = EPlayerState::IDLE; break;
+            }
         }
         mbMoving  = false;
         bSprinting = false;
     }
     else
     {
-        // 숙이고 있음
-        if      (CurrentState == EPlayerState::CROUCH ||
-                 CurrentState == EPlayerState::CROUCH_AIM)
-                 CurrentState = EPlayerState::CROUCH_WALK;
-
-        // 엎드리고 있음
-        else if (CurrentState == EPlayerState::PRONING)
-                 CurrentState = EPlayerState::PRONING_WALK;
-
-        else if (CurrentState == EPlayerState::AIM)
-                 CurrentState = EPlayerState::AIM_WALK;
-
-        else
+        switch (CurrentState)
         {
+        // 숙이고 있음
+        case EPlayerState::CROUCH:
+        case EPlayerState::CROUCH_AIM:
+            CurrentState = EPlayerState::CROUCH_WALK;
+            break;
+
+        case EPlayerState::PRONING: CurrentState = EPlayerState::PRONING_WALK; break;
+        case EPlayerState::AIM:     CurrentState = EPlayerState::AIM_WALK; break;
+
+        default:
             // 떨어지고 있음
             if (GetCharacterMovement()->IsFalling())
             {
@@ -230,7 +218,7 @@ void ACustomPlayer::CheckIfMoving()
                 {
                     if (CurrentOxygen < 0)
                     {
-                        CurrentState       = EPlayerState::IDLE;
+                        CurrentState = EPlayerState::IDLE;
                         mSprintMultiplier = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
                         bSprinting = false;
@@ -246,9 +234,10 @@ void ACustomPlayer::CheckIfMoving()
                 }
                 // 
                 else if (CurrentState == EPlayerState::IDLE ||
-                         CurrentState == EPlayerState::JUMP)
-                         CurrentState = EPlayerState::WALK;
+                    CurrentState == EPlayerState::JUMP)
+                    CurrentState = EPlayerState::WALK;
             }
+            break;
         }
         mbMoving = true;
     }
@@ -258,7 +247,7 @@ void ACustomPlayer::CheckForObject()
 {
     FVector    direction = GetActorForwardVector() * 50;
     FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
-    FVector    endPos = beginPos + direction;
+    FVector    endPos    = beginPos + direction;
     FHitResult hitResult;
     bool       b_collided = false;
     
@@ -362,7 +351,6 @@ void ACustomPlayer::MoveForwardBack(float Value)
         else
             AddMovementInput(GetActorForwardVector() * Value * mSprintMultiplier);
     }
-
     mpWeaponManager->UpdateGrenadePath();
 }
 
@@ -376,7 +364,6 @@ void ACustomPlayer::MoveLeftRight(float Value)
         else
             AddMovementInput(GetActorRightVector() * Value * mSprintMultiplier);
     }
-
     mpWeaponManager->UpdateGrenadePath();
 }
 
@@ -491,6 +478,16 @@ void ACustomPlayer::OpenInventory()
         DeleCloseInventory.ExecuteIfBound();
         mbInventoryOpened = false;
     }
+}
+
+void ACustomPlayer::UpdateHealth()
+{
+    if (CurrentHealth == 0.f &&
+        CurrentState != EPlayerState::DEAD)
+        CurrentState = EPlayerState::INJURED;
+
+    if (CurrentInjuredHealth == 0.f)
+        CurrentState = EPlayerState::DEAD;
 }
 
 void ACustomPlayer::BeginShooting()

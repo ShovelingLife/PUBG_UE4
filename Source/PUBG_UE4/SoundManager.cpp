@@ -122,7 +122,7 @@ void ASoundManager::PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType
 
 void ASoundManager::PlayPlayerEffectSound(int Index)
 {
-    if (Index > arrPlayerStateSound.Num())
+    if (Index >= arrPlayerStateSound.Num())
         return;
 
     UGameplayStatics::PlaySound2D(GetWorld(), arrPlayerStateSound[Index]);

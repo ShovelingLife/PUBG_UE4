@@ -8,6 +8,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
+#include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 void UPlayerStateUI::NativeConstruct()
@@ -87,21 +88,47 @@ void UPlayerStateUI::UpdateShootMode()
 
 void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
 {
-    if (p_player->CurrentState == EPlayerState::DEAD)
+    UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
+    auto currentState = p_player->CurrentState;
+
+    if (!p_customGameInst)
+        return;
+
+    if (currentState == EPlayerState::DEAD)
     {
+        if (p_customGameInst)
+            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+        
+        auto controller = GetWorld()->GetFirstPlayerController();
+        controller->DisableInput(controller);
         GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("플레이어가 사망한 상태입니다.")));
         return;
     }
     float currentHealth = p_player->CurrentHealth;
+    float maxHealth = p_player->kMaxHealth;
 
+    // 현재 HP 설정
     if (currentHealth > 0.f)
-        HP_bar->SetPercent(currentHealth);
+    {
+        // 화상 타이머 설정
+        if (p_player->CurrentOtherState == EPlayerOtherState::BURNED)
+        {
+            mCurrentTime += DeltaTime;
 
+            if (mCurrentTime >= 0.5f)
+            {
+                p_player->CurrentHealth -= 2.5f;
+                mCurrentTime = 0.f;
+            }
+            p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(0.f, 3.f, EPlayerStateAnimType::BURNED);
+        }
+        HP_bar->SetPercent(currentHealth / maxHealth);
+    }
+    // 추가 HP 설정
     else
     {
-        if (UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
-            p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(0.f, 3.f, EPlayerStateAnimType::INJURED);
-
+        HP_bar->SetVisibility(ESlateVisibility::Hidden);
+        
         // 부상 타이머 설정
         mCurrentTime += DeltaTime;
 
@@ -110,8 +137,8 @@ void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
             p_player->CurrentInjuredHealth -= 2.5f;
             mCurrentTime = 0.f;
         }
-        HP_bar->SetVisibility(ESlateVisibility::Hidden);
-        Injured_HP_bar->SetPercent(p_player->CurrentInjuredHealth / 100.f);
+        p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(0.f, 3.f, EPlayerStateAnimType::INJURED);
+        Injured_HP_bar->SetPercent(p_player->CurrentInjuredHealth / maxHealth);
     }
 }
 

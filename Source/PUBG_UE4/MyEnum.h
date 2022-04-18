@@ -37,6 +37,13 @@ enum class EPlayerState
     PRONING_AIM
 };
 
+UENUM()
+enum class EPlayerOtherState
+{
+    BURNED,
+    NONE
+};
+
 /**
   * \brief 섭취 아이템 종류
  */

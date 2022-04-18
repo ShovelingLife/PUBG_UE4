@@ -1,9 +1,11 @@
 ﻿#include "CoreThrowableWeapon.h"
+#include "RadiusCheck.h"
 #include "TimerManager.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "PUBG_UE4/SoundManager.h"
 #include "Components/AudioComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -13,17 +15,45 @@
 #include "Sound/SoundBase.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 
-ACoreThrowableWeapon::ACoreThrowableWeapon()
-{
-    PrimaryActorTick.bCanEverTick = true;
-}
-
 void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 
     /*if (ProjectileMovementComp)
         ProjectileMovementComp->Deactivate();*/
+}
+
+UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Overlap Begin");
+    auto p_world = GetWorld();
+
+    if (!p_world)
+        return;
+
+    if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
+    {
+        if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
+    }
+}
+
+UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Cyan, "Overlap End");
+    auto p_world = GetWorld();
+
+    if (!p_world)
+        return;
+
+    if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
+    {
+        if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+        {
+            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
+            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+        }
+    }
 }
 
 void ACoreThrowableWeapon::BeginPlay()
@@ -34,23 +64,39 @@ void ACoreThrowableWeapon::BeginPlay()
 void ACoreThrowableWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    auto p_world = GetWorld();
 
-    if (GrenadeParticleComp)
+    if (!p_world)
+        return;
+
+    /*if (GrenadeParticleComp)
     {
         static float currentTime = 0.f;
 
         currentTime += DeltaTime;
 
         if (currentTime >= 3.5f)
+        {
+            if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+                p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+
+            p_world->GetTimerManager().ClearTimer(mWaitHandle);
+            TArray<AActor*> arrAttachedActors;
+            this->GetAttachedActors(arrAttachedActors);
+
+            if (auto radiusCheckActor = arrAttachedActors[0])
+                radiusCheckActor->Destroy();
+
             this->Destroy();
-    }
+        }
+    }*/
 }
 
 void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
 {
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
     this->CurrentWeaponType = WeaponType;
-    ObjectType = WeaponData.Type;
+    WeaponData      = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    ObjectType      = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
     InitMesh();
@@ -97,6 +143,9 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
     ProjectileMovementComp->MaxSpeed      = 0.f;
     ProjectileMovementComp->bShouldBounce = false;
     ProjectileMovementComp->bAutoActivate = false;
+    ProjectileMovementComp->Bounciness = 0.5f;
+    ProjectileMovementComp->Friction = 0.5f;
+    ProjectileMovementComp->BounceVelocityStopSimulatingThreshold = 5.f;
     ProjectileMovementComp->Velocity = FVector(0.1f, 0.f, 0.f);
 }
 
@@ -120,6 +169,24 @@ void ACoreThrowableWeapon::InitMesh()
         StaticMeshComp->SetCollisionProfileName("Explosive");
         StaticMeshComp->SetNotifyRigidBodyCollision(true);
     }
+}
+
+void ACoreThrowableWeapon::InitParticleSystem()
+{
+    
+}
+
+void ACoreThrowableWeapon::InitSphereComp()
+{
+    SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
+    SphereComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    SphereComp->SetGenerateOverlapEvents(false);
+    SphereComp->SetSphereRadius(300.f);
+    SphereComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+    SphereComp->SetCollisionProfileName("OverlapOnlyPawn");
+    SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ACoreThrowableWeapon::BeginOverlap);
+    SphereComp->OnComponentEndOverlap.AddDynamic(this, &ACoreThrowableWeapon::EndOverlap);
+    SphereComp->Deactivate();
 }
 
 bool ACoreThrowableWeapon::IsPlayerInRadius()
@@ -151,31 +218,33 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
         !ProjectileMovementComp)
         return;
 
+    mbExploded = true;
+    ProjectileMovementComp->bShouldBounce = true;
     ProjectileMovementComp->Velocity = Velocity;
     ProjectileMovementComp->Activate();
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     this->SetActorScale3D(FVector(WeaponData.MeshSize));
 
-    FTimerHandle waitHandle;
-    auto p_world = GetWorld();
-
-    if (!p_world)
-        return;
-
-    p_world->GetTimerManager().SetTimer(waitHandle, FTimerDelegate::CreateLambda([&]()
+    float time = (CurrentWeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f;
+    GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {
-            auto location = GetActorLocation();
-            static bool b_once = false;
+            auto location = GetActorLocation();  
 
             // 사운드 재생
             if (auto p_world = GetWorld())
             {
-                if (auto p_subGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+                if(UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
                 {
-                    if (auto p_soundManager = p_subGameInst->pSoundManager)
-                        UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)CurrentWeaponType), location);
-                }
-            }
+                    if (auto p_soundManager = p_customGameInst->pSoundManager)
+                    {
+                        if (!mbPlayed)
+                        {
+                            UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)CurrentWeaponType), location);
+                            mbPlayed = true;
+                        }
+                    }
+                } 
+            }       
             // 효과 재생
             if (IsPlayerInRadius())
                 mCallBack.ExecuteIfBound();
@@ -186,12 +255,17 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 CurrentWeaponType == EThrowableWeaponType::MOLOTOV)
             {
                 StaticMeshComp->SetVisibility(false);
-                GrenadeParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location, FRotator::ZeroRotator, false);
+
+                if (!GrenadeParticleComp)
+                    GrenadeParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location, FRotator::ZeroRotator, false);
+                
+                if (SphereComp)
+                    SphereComp->SetGenerateOverlapEvents(true);
             }
             else
             {
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location);
                 this->Destroy();
             }
-        }), 3.f, false);
+        }), time, false);
 }

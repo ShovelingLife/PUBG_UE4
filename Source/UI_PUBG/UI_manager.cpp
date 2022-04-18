@@ -5,6 +5,7 @@
 #include "PlayerUI.h"
 #include "PlayerEffectUI.h"
 #include "TooltipUI.h"
+#include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "Blueprint/UserWidget.h"
@@ -39,6 +40,7 @@ void AUI_manager::BeginPlay()
     {
         p_customGameInst->DeleUpdateInteractionWidgetComp.BindUFunction(this, "UpdateInteractionUI");
         p_customGameInst->DeleRunEffectAnim.BindUFunction(this, "RunEffectAnim");
+        p_customGameInst->DeleKillUI_Anim.BindUFunction(this, "KillAnim");
     }
     SetPlayerUI();
     InitPlayerInventory();
@@ -182,9 +184,18 @@ void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAn
 {
     if (pPlayerEffect_UI)
     {
-        pPlayerEffect_UI->AddToViewport(3);
-        pPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
+        if (!pPlayerEffect_UI->IsAnyAnimationPlaying())
+        {
+            pPlayerEffect_UI->AddToViewport(3);
+            pPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
+        }
     }
+}
+
+void AUI_manager::KillAnim()
+{
+    if (pPlayerEffect_UI)
+        pPlayerEffect_UI->RemoveFromParent();
 }
 
 UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)

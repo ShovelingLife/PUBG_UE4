@@ -101,6 +101,8 @@ public:
 
     UFUNCTION() void RunEffectAnim(float StartTime, float WaitTime, EPlayerStateAnimType Type);
 
+    UFUNCTION() void KillAnim();
+
     static UTexture2D* GetTexture2D(FsSlotItemData ItemData);
 
     static UTexture2D* GetTexture2D(int Index, FString Type = "");

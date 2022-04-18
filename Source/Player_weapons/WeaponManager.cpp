@@ -251,7 +251,8 @@ void AWeaponManager::PredictGrenadePath()
     mbThrowingGrenade = true;
     // 투척류 예측 경로 데이터 설정
     FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSocket");
-    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * (UKismetMathLibrary::Abs(GrenadeDirection) * 1500.f);
+    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * 
+                            (UKismetMathLibrary::Abs(GrenadeDirection) * 1500.f);
     FPredictProjectilePathParams predictParams(25.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
     predictParams.bTraceWithCollision = true;
     predictParams.SimFrequency     = 15.f;

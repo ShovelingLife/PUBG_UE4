@@ -64,10 +64,9 @@ public:
     FDeleOpenInventory  DeleOpenInventory;
     FDeleCloseInventory DeleCloseInventory;
 
-    /**
-     * \brief 플레이어 상태 관련 변수
-     */
+    /** \brief 플레이어 상태 관련 변수 */
     EPlayerState CurrentState;
+    EPlayerOtherState CurrentOtherState = EPlayerOtherState::NONE;
     const float  kMaxHealth           = 100.f;
     float        CurrentHealth        = 100.f;
     float        CurrentInjuredHealth = 100.f;
@@ -168,6 +167,8 @@ private:
     /** \brief 인벤토리 열음/닫음 */
     void OpenInventory();
 
+    void UpdateHealth();
+
     // ------- 무기 관련 -------
 
     /** \brief 사격 */
@@ -218,4 +219,6 @@ public:
     AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
 
     UFUNCTION() void DealDmg(float DmgVal);
+
+    UFUNCTION() void SetOtherState(EPlayerOtherState OtherState) { this->CurrentOtherState = OtherState; }
 };

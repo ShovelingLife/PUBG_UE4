@@ -6,6 +6,7 @@
 AGrenadeIllumination::AGrenadeIllumination()
 {
     Init(EThrowableWeaponType::ILLUMINATION);
+
     mCallBack.BindLambda([&]()
         {
             if (UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
