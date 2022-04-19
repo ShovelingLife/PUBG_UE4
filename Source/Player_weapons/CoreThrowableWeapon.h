@@ -33,6 +33,9 @@ private:
     bool mbPlayed = false;
     bool mbExploded = false;
 
+public:
+    FVector GrenadeEndPos;
+
 protected:
     FDeleExplosionEvent mCallBack;
 
@@ -50,12 +53,17 @@ public:
 
     UFUNCTION() void EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+    virtual void BeginDestroy() override;
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+    /** \brief 파티클 시스템 생성 */
+    virtual void InitParticleSystem(FString Path = "") override;
+
     /**
       * \brief 투척류 무기 초기화
       * \param _weapon_type 무기 종류
@@ -67,9 +75,6 @@ protected:
 
     /** \brief 메쉬 초기화 */
     void InitMesh();
-
-    /** \brief 파티클 시스템 생성 */
-    void InitParticleSystem();
 
     void InitSphereComp();
 

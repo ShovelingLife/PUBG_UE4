@@ -195,7 +195,10 @@ void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAn
 void AUI_manager::KillAnim()
 {
     if (pPlayerEffect_UI)
+    {
+        pPlayerEffect_UI->StopAllAnimations();
         pPlayerEffect_UI->RemoveFromParent();
+    }
 }
 
 UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)

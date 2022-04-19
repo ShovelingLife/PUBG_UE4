@@ -251,9 +251,8 @@ void AWeaponManager::PredictGrenadePath()
     mbThrowingGrenade = true;
     // 투척류 예측 경로 데이터 설정
     FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSocket");
-    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * 
-                            (UKismetMathLibrary::Abs(GrenadeDirection) * 1500.f);
-    FPredictProjectilePathParams predictParams(25.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
+    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) *  GrenadeDirection * 1500.f;
+    FPredictProjectilePathParams predictParams(50.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
     predictParams.bTraceWithCollision = true;
     predictParams.SimFrequency     = 15.f;
     predictParams.OverrideGravityZ = 0.f;    
@@ -297,8 +296,12 @@ void AWeaponManager::PredictGrenadePath()
     // 도착 지점에 생성 및 설정
     if (GrenadeEndPoint)
     {
+        auto endPos = result.LastTraceDestination.Location;
         GrenadeEndPoint->SetHidden(false);
-        GrenadeEndPoint->SetActorRelativeLocation(result.LastTraceDestination.Location);
+        GrenadeEndPoint->SetActorRelativeLocation(endPos);
+
+        if (pThrowable)
+            pThrowable->GrenadeEndPos = endPos;
     }
 }
 

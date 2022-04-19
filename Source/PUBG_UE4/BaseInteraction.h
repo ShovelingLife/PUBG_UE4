@@ -82,7 +82,7 @@ protected:
       * \brief 파티클 시스템 초기화
       * \param Path 파티클 경로
      */
-    void InitParticleSystem(FString Path);
+    virtual void InitParticleSystem(FString Path = "");
 
     void AttachComponents();
 

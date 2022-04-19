@@ -117,19 +117,30 @@ void ACustomPlayer::UpdatePlayerSettings()
 
 void ACustomPlayer::InitCameraComp()
 {
+    // ------- FPS (1인칭) -------
+
+    FPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("FPS_SpringArm"));
+    FPS_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_Camera"));
+    FPS_SpringArmComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "FPS_CameraSocket");
+    FPS_CameraComp->SetupAttachment(FPS_SpringArmComp);
+    FPS_SpringArmComp->TargetArmLength = 0.f;
+    FPS_SpringArmComp->bUsePawnControlRotation = true;
+
+    // ------- TPS (3인칭) -------
+    
     // 카메라 컴포넌트 초기화
-    SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-    CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+    TPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("TPS_SpringArm"));
+    TPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("TPS_Camera"));
 
     // 카메라를 부모 컴포넌트에 부착
-    SpringArmComp->SetupAttachment(GetCapsuleComponent());
-    CameraComp->SetupAttachment(SpringArmComp);
+    TPS_SpringArmComp->SetupAttachment(GetCapsuleComponent());
+    TPS_CameraComp->SetupAttachment(TPS_SpringArmComp);
 
     // 카메라 설정
-    SpringArmComp->TargetArmLength = 150.f;
-    SpringArmComp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
-    SpringArmComp->SetWorldLocation(FVector(0.f, 0.f, 80.f));
-    SpringArmComp->bUsePawnControlRotation = true;
+    TPS_SpringArmComp->TargetArmLength = 150.f;
+    TPS_SpringArmComp->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 80.f), FRotator(-20.f, 0.f, 0.f));
+    TPS_SpringArmComp->bUsePawnControlRotation = true;
+    TPS_SpringArmComp->Deactivate();
 }
 
 void ACustomPlayer::InitMeshComp()
@@ -374,7 +385,7 @@ void ACustomPlayer::LookUp(float Value)
 
     // 경로 거리 설정
     auto grenadeDirection = mpWeaponManager->GrenadeDirection;
-    auto target = (Value / 10.f) + grenadeDirection;
+    auto target = ((Value * -1) / 10.f) + grenadeDirection;
     auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDirection, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
     
     if (interptVal < 0.7f &&
@@ -409,7 +420,7 @@ void ACustomPlayer::CustomCrouch()
         GetCharacterMovement()->IsFalling())
         return;
 
-    SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+    TPS_SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
 
     // 숙이고 있음
     if (GetCharacterMovement()->IsCrouching())
@@ -448,7 +459,7 @@ void ACustomPlayer::Proning()
 
     default: return;
     }
-    SpringArmComp->SetRelativeLocation((CurrentState == EPlayerState::PRONING || CurrentState == EPlayerState::PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
+    TPS_SpringArmComp->SetRelativeLocation((CurrentState == EPlayerState::PRONING || CurrentState == EPlayerState::PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
 }
 
 void ACustomPlayer::BeginSprint()
@@ -474,7 +485,7 @@ void ACustomPlayer::OpenInventory()
     }
     else
     {
-        SpringArmComp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
+        TPS_SpringArmComp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
         DeleCloseInventory.ExecuteIfBound();
         mbInventoryOpened = false;
     }
@@ -583,7 +594,7 @@ void ACustomPlayer::ExitFromVehicle(FVector ExitPos)
     CurrentSeatType = ESeatType::NONE;
     bInVehicle      = false;
     SetActorLocation(ExitPos);
-    SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+    TPS_SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 

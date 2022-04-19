@@ -56,6 +56,12 @@ UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* Ove
     }
 }
 
+void ACoreThrowableWeapon::BeginDestroy()
+{
+    Super::BeginDestroy();
+    GrenadeEndPos = FVector::ZeroVector;
+}
+
 void ACoreThrowableWeapon::BeginPlay()
 {
     Super::BeginPlay();
@@ -92,20 +98,11 @@ void ACoreThrowableWeapon::Tick(float DeltaTime)
     }*/
 }
 
-void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
+void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 {
-    this->CurrentWeaponType = WeaponType;
-    WeaponData      = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
-    ObjectType      = WeaponData.Type;
-    ObjectGroupType = WeaponData.GroupType;
-
-    InitMesh();
-    InitProjectileMovementComp();
-    Super::AttachComponents();
-
     FString particlePath = "";
 
-    switch (WeaponType)
+    switch (CurrentWeaponType)
     {
     case EThrowableWeaponType::FRAGMENTATION1:
     case EThrowableWeaponType::FRAGMENTATION2:
@@ -119,6 +116,9 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
         break;
 
     case EThrowableWeaponType::GRAY_SMOKE:
+        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Smoke.P_Explosion_Smoke'";
+        break;
+    
     case EThrowableWeaponType::RED_SMOKE:
         particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Smoke.P_Explosion_Smoke'";
         break;
@@ -128,6 +128,19 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
         break;
     }
     Super::InitParticleSystem(particlePath);
+}
+
+void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
+{
+    this->CurrentWeaponType = WeaponType;
+    WeaponData      = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    ObjectType      = WeaponData.Type;
+    ObjectGroupType = WeaponData.GroupType;
+
+    this->InitMesh();
+    this->InitProjectileMovementComp();
+    Super::AttachComponents();
+    this->InitParticleSystem();
     
     if (SceneComp)
         SceneComp->DestroyComponent();
@@ -171,19 +184,20 @@ void ACoreThrowableWeapon::InitMesh()
     }
 }
 
-void ACoreThrowableWeapon::InitParticleSystem()
-{
-    
-}
-
 void ACoreThrowableWeapon::InitSphereComp()
 {
     SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
-    SphereComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    SphereComp->SetupAttachment(GrenadeParticleComp);
+
+    // 충돌체 관련 설정
     SphereComp->SetGenerateOverlapEvents(false);
     SphereComp->SetSphereRadius(300.f);
     SphereComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
     SphereComp->SetCollisionProfileName("OverlapOnlyPawn");
+    SphereComp->BodyInstance.bLockTranslation = true;
+    SphereComp->BodyInstance.bLockRotation = true;
+
+    // 델리게이트 바인딩
     SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ACoreThrowableWeapon::BeginOverlap);
     SphereComp->OnComponentEndOverlap.AddDynamic(this, &ACoreThrowableWeapon::EndOverlap);
     SphereComp->Deactivate();
@@ -228,7 +242,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
     float time = (CurrentWeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f;
     GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {
-            auto location = GetActorLocation();  
+            auto location = StaticMeshComp->GetComponentLocation();
 
             // 사운드 재생
             if (auto p_world = GetWorld())
@@ -257,10 +271,16 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 StaticMeshComp->SetVisibility(false);
 
                 if (!GrenadeParticleComp)
+                {
                     GrenadeParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location, FRotator::ZeroRotator, false);
-                
-                if (SphereComp)
+                    GrenadeParticleComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+                }
+                if (SphereComp &&
+                    GrenadeParticleComp)
+                {
                     SphereComp->SetGenerateOverlapEvents(true);
+                    //SphereComp->SetWorldLocationAndRotation(FVector(300.f, GrenadeEndPos.Y, GrenadeEndPos.Z), FRotator::ZeroRotator);
+                }
             }
             else
             {
