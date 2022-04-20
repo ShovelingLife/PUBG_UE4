@@ -14,6 +14,7 @@
 #include "InventoryManager.generated.h"
 
 class USceneComponent;
+class UInventoryUI;
 class UInventoryListUI;
 
 UCLASS()
@@ -54,4 +55,7 @@ public:
 
     /** \brief 플레이어가 인벤토리를 열음 (델리게이트) */
     UFUNCTION() void CloseInventory();
+
+public:
+    UInventoryListUI* GetInventoryListUI();
 };

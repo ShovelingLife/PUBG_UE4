@@ -19,6 +19,7 @@ class UImage;
 class UListView;
 class USizeBox;
 class UTextBlock;
+class ACoreThrowableWeapon;
 
 UCLASS()
 class UI_PUBG_API UInventoryListUI : public UUserWidget
@@ -111,4 +112,8 @@ public:
     UFUNCTION() void SwapWeaponSlot(UItemSlotUI* pWeaponSlot);
 
     UFUNCTION() void SetItemOntoInventory(class ABaseInteraction* pWeapon, bool bDeleteFromList = false);
+    
+
+public:
+    UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
 };

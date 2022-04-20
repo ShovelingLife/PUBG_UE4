@@ -73,3 +73,8 @@ void AInventoryManager::CloseInventory()
     p_playerController->SetShowMouseCursor(false);
     UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 }
+
+UInventoryListUI* AInventoryManager::GetInventoryListUI()
+{
+    return pInventoryUI->InventoryListUI;
+}

@@ -22,7 +22,7 @@ void ACoreMeleeWeapon::BeginPlay()
 
 void ACoreMeleeWeapon::Init(EMeleeWeaponType WeaponType)
 {
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];    
     this->CurrentWeaponType = WeaponType;
     ObjectType = WeaponData.Type;    
 

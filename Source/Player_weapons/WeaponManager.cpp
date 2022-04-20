@@ -85,15 +85,15 @@ void AWeaponManager::InitGrenadePath()
 
 bool AWeaponManager::IsAmmoInsufficient(int BulletCount)
 {
-    bool b_ammo = (BulletCount != 0);
+    bool b_empty = (BulletCount == 0);
 
-    if (b_ammo)
+    if (!b_empty) // 탄알이 하나라도 있을 시
         Reload();
 
     else
         PlaySound(EWeaponSoundType::EMPTY_AMMO);
 
-    return b_ammo;
+    return b_empty;
 }
 
 void AWeaponManager::UpdateCurrentWeaponArr()
@@ -112,9 +112,6 @@ void AWeaponManager::UpdateCurrentWeaponArr()
 
 void AWeaponManager::PlaySound(EWeaponSoundType SoundType)
 {
-    if (CurrentWeaponType == ECurrentWeaponType::NONE)
-        return;
-
     TArray< ABaseInteraction*> p_arrCurrentWeapon
     {
         pFirstGun,
@@ -123,16 +120,19 @@ void AWeaponManager::PlaySound(EWeaponSoundType SoundType)
         pMelee,
         pThrowable
     };
-    int index       = (int)CurrentWeaponType;
-    int weaponIndex = GetWeaponType(p_arrCurrentWeapon[index]);
-
-    if (weaponIndex == -1)
-        return;
-
-    if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    if (CurrentWeaponType != ECurrentWeaponType::NONE)
     {
-        if (auto p_soundManager = p_customGameInst->pSoundManager)
-            p_soundManager->PlayGunSound(p_arrCurrentWeapon[index]->AudioComp, SoundType, weaponIndex);
+        int index       = (int)CurrentWeaponType;
+        int weaponIndex = GetWeaponType(p_arrCurrentWeapon[index]);
+
+        if (weaponIndex != -1)
+        {
+            if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
+            {
+                if (auto p_soundManager = p_customGameInst->pSoundManager)
+                    p_soundManager->PlayGunSound(p_arrCurrentWeapon[index]->AudioComp, SoundType, weaponIndex);
+            }
+        }
     }
 }
 
@@ -448,7 +448,7 @@ void AWeaponManager::Reload()
 
         if (weaponData.CurrentBulletCount != weaponData.MaxBulletCount)
         {
-            int result = (weaponData.CurrentBulletCount > 0) ? weaponData.MaxBulletCount - weaponData.CurrentBulletCount : p_gun->WeaponData.MaxBulletCount;
+            int result = (weaponData.CurrentBulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.CurrentBulletCount) : p_gun->WeaponData.MaxBulletCount;
             p_gun->WeaponData.MaxBulletCount     -= result;
             p_gun->WeaponData.CurrentBulletCount += result;
             PlaySound(EWeaponSoundType::RELOAD);
@@ -630,8 +630,15 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
 
         if (pThrowable != p_newThrowable)
         {
-            pThrowable = p_newThrowable;
-            return 1;
+            if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+            {
+                p_customGameInst->DeleSwapInventoryExplosive.ExecuteIfBound(p_newThrowable, pThrowable);
+                Attach(p_newThrowable, p_newThrowable->ObjectType + "Socket");
+                pThrowable = p_newThrowable;
+                return 1;
+            }
+            else
+                return ERROR;
         }
         else
             return ERROR;
@@ -665,8 +672,8 @@ void AWeaponManager::ChangeShootMode()
                  maxGunShootType = (int)EGunShootType::BURST;
 
         // 오직 단발만 가능
-        else if (weaponGroup == "HandGun" ||
-                 weaponGroup == "SniperGun"  ||
+        else if (weaponGroup == "HandGun"   ||
+                 weaponGroup == "SniperGun" ||
                  weaponGroup == "Special")
                  maxGunShootType = (int)EGunShootType::SINGLE;
 
@@ -720,6 +727,7 @@ void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
 
 bool AWeaponManager::IsWeaponAvailable(ECurrentWeaponType WeaponType)
 {
+    // 착용 중인 무기가 있는지 확인
     auto p_weapon = GetWeaponByIndex(WeaponType);
 
     if (p_weapon)
@@ -728,52 +736,54 @@ bool AWeaponManager::IsWeaponAvailable(ECurrentWeaponType WeaponType)
     return (p_weapon != nullptr);
 }
 
-int AWeaponManager::GetMaxBulletCount(ECurrentWeaponType WeaponType)
-{
-    ABaseInteraction* p_weapon = GetWeaponByIndex(WeaponType);
-
-    if (p_weapon &&
-        p_weapon->IsA<ACoreWeapon>())
-        return Cast<ACoreWeapon>(p_weapon)->WeaponData.CurrentMaxBulletCount;
-
-    else
-        return 1;
-}
+//int AWeaponManager::GetMaxBulletCount(ECurrentWeaponType WeaponType)
+//{
+//    ABaseInteraction* p_weapon = GetWeaponByIndex(WeaponType);
+//
+//    if (p_weapon &&
+//        p_weapon->IsA<ACoreWeapon>())
+//        return Cast<ACoreWeapon>( p_weapon)->WeaponData.CurrentMaxBulletCount;
+//
+//    else
+//        return 1;
+//}
 
 ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType WeaponType)
 {
-    ABaseInteraction* p_weapon = nullptr;
+    if (WeaponType == ECurrentWeaponType::NONE)
+        return nullptr;
 
-    switch (WeaponType)
+    // 원소 인덱스에 따라 현재 무기를 가져옴
+    TArray<ABaseInteraction*> arrWeapon
     {
-    case ECurrentWeaponType::FIRST:      p_weapon = pFirstGun;  break;
-    case ECurrentWeaponType::SECOND:     p_weapon = pSecondGun; break;
-    case ECurrentWeaponType::PISTOL:     p_weapon = pPistol;    break;
-    case ECurrentWeaponType::MELEE:      p_weapon = pMelee;     break;
-    case ECurrentWeaponType::THROWABLE:  p_weapon = pThrowable; break;
-    }
-    return p_weapon;
+        pFirstGun,
+        pSecondGun,
+        pPistol,
+        pMelee,
+        pThrowable
+    };
+    int index = (int)WeaponType;
+    return arrWeapon[index - 1];
 }
 
 ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon)
 {
-    if      (pWeapon == pFirstGun)
-             return ECurrentWeaponType::FIRST;
-
-    else if (pWeapon == pSecondGun)
-             return ECurrentWeaponType::SECOND;
-
-    else if (pWeapon == pPistol)
-             return ECurrentWeaponType::PISTOL;
-
-    else if (pWeapon == pMelee)
-             return ECurrentWeaponType::THROWABLE;
-
-    else if (pWeapon == pThrowable)
-             return ECurrentWeaponType::THROWABLE;
-
-    else
-             return ECurrentWeaponType::NONE;
+    // 원소랑 일치한 데이터를 찾음
+    TArray<Chaos::Pair<ABaseInteraction*, ECurrentWeaponType>> arrCurrentWeaponType
+    {
+        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(nullptr,    ECurrentWeaponType::NONE),
+        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pFirstGun,  ECurrentWeaponType::FIRST),
+        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pSecondGun, ECurrentWeaponType::SECOND),
+        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pPistol,    ECurrentWeaponType::PISTOL),
+        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pMelee,     ECurrentWeaponType::MELEE),
+        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pThrowable, ECurrentWeaponType::THROWABLE)
+    };
+    for (auto item : arrCurrentWeaponType )
+    {
+        if (item.First == pWeapon)
+            return item.Second;
+    }
+    return ECurrentWeaponType::NONE;
 }
 
 int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon)
@@ -795,13 +805,12 @@ int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon)
 
 void AWeaponManager::Drop(ECurrentWeaponType WeaponType)
 {
-    auto playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-
-    if (!playerCharacter)
-        return;
-
-    ResetAfterDetaching(GetWeaponByIndex(WeaponType), FTransform(playerCharacter->GetActorRotation(), playerCharacter->GetActorLocation() + FVector(0.f, 75.f, 20.f)));
-    SetNull(WeaponType);
+    // 무기를 맵에다 드롭
+    if (auto playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+    {
+        ResetAfterDetaching(GetWeaponByIndex(WeaponType), FTransform(playerCharacter->GetActorRotation(), playerCharacter->GetActorLocation() + FVector(0.f, 75.f, 20.f)));
+        SetNull(WeaponType);
+    }
 }
 
 void AWeaponManager::SetNull(ECurrentWeaponType WeaponType)

@@ -183,15 +183,14 @@ void ACustomPlayer::CheckIfMoving()
         {
             switch (CurrentState)
             {
-            case EPlayerState::CROUCH_WALK:  CurrentState = EPlayerState::CROUCH; break;
+            case EPlayerState::CROUCH_WALK:  CurrentState = EPlayerState::CROUCH;  break;
             case EPlayerState::PRONING_WALK: CurrentState = EPlayerState::PRONING; break;
-            case EPlayerState::AIM_WALK:     CurrentState = EPlayerState::AIM; break;
+            case EPlayerState::AIM_WALK:     CurrentState = EPlayerState::AIM;     break;
 
             default: CurrentState = EPlayerState::IDLE; break;
             }
         }
         mbMoving  = false;
-        bSprinting = false;
     }
     else
     {
@@ -209,16 +208,9 @@ void ACustomPlayer::CheckIfMoving()
         default:
             // 떨어지고 있음
             if (GetCharacterMovement()->IsFalling())
-            {
                 // 뛰면서 점프후 착지
-                if (mSprintMultiplier > 1.f)
-                {
-                    bSprinting = true;
-                    CurrentState = EPlayerState::SPRINT_JUMP;
-                }
-                else // 점프함
-                    CurrentState = EPlayerState::JUMP;
-            }
+                CurrentState = (mSprintMultiplier > 1.f) ? EPlayerState::SPRINT_JUMP : EPlayerState::JUMP;
+
             else // 지면에 닿고있음
             {
                 if (CurrentState == EPlayerState::SPRINT_JUMP)
@@ -232,11 +224,7 @@ void ACustomPlayer::CheckIfMoving()
                         CurrentState = EPlayerState::IDLE;
                         mSprintMultiplier = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
-                        bSprinting = false;
-                        return;
                     }
-                    bSprinting = true;
-
                     if (mSprintMultiplier < 1.75f)
                     {
                         mSprintMultiplier += 0.25f;
@@ -245,8 +233,8 @@ void ACustomPlayer::CheckIfMoving()
                 }
                 // 
                 else if (CurrentState == EPlayerState::IDLE ||
-                    CurrentState == EPlayerState::JUMP)
-                    CurrentState = EPlayerState::WALK;
+                         CurrentState == EPlayerState::JUMP)
+                         CurrentState = EPlayerState::WALK;
             }
             break;
         }
@@ -263,7 +251,7 @@ void ACustomPlayer::CheckForObject()
     bool       b_collided = false;
     
     GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
-    DrawDebugLine(GetWorld(), beginPos, endPos,FColor::Red);
+    //DrawDebugLine(GetWorld(), beginPos, endPos,FColor::Red);
     AActor* p_hittedActor = hitResult.GetActor();
 
     // 충돌한 오브젝트가 있을 시
@@ -405,7 +393,7 @@ void ACustomPlayer::Turn(float _Value)
 
 void ACustomPlayer::CustomJump()
 {
-    if (CurrentState == EPlayerState::CROUCH ||
+    if (CurrentState == EPlayerState::CROUCH  ||
         CurrentState == EPlayerState::PRONING ||
         CurrentState == EPlayerState::INJURED)
         return;
@@ -416,14 +404,16 @@ void ACustomPlayer::CustomJump()
 
 void ACustomPlayer::CustomCrouch()
 {
+    auto characterMovement = GetCharacterMovement();
+
     if (mbMoving ||
-        GetCharacterMovement()->IsFalling())
+        characterMovement->IsFalling())
         return;
 
     TPS_SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
 
     // 숙이고 있음
-    if (GetCharacterMovement()->IsCrouching())
+    if (characterMovement->IsCrouching())
     {
         CurrentState = (CurrentState == EPlayerState::CROUCH_AIM) ? EPlayerState::AIM : EPlayerState::IDLE;
         UnCrouch();
@@ -459,7 +449,8 @@ void ACustomPlayer::Proning()
 
     default: return;
     }
-    TPS_SpringArmComp->SetRelativeLocation((CurrentState == EPlayerState::PRONING || CurrentState == EPlayerState::PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
+    TPS_SpringArmComp->SetRelativeLocation((CurrentState == EPlayerState::PRONING || 
+                                            CurrentState == EPlayerState::PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
 }
 
 void ACustomPlayer::BeginSprint()
@@ -471,8 +462,8 @@ void ACustomPlayer::BeginSprint()
 
 void ACustomPlayer::EndSprint()
 {
-    CurrentState                         = EPlayerState::IDLE;
-    mSprintMultiplier                    = 1;
+    CurrentState = EPlayerState::IDLE;
+    mSprintMultiplier = 1;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
 }
 

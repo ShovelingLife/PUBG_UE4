@@ -1,5 +1,4 @@
 ﻿#include "CoreThrowableWeapon.h"
-#include "RadiusCheck.h"
 #include "TimerManager.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
@@ -60,6 +59,12 @@ void ACoreThrowableWeapon::BeginDestroy()
 {
     Super::BeginDestroy();
     GrenadeEndPos = FVector::ZeroVector;
+
+    if(auto p_world = GetWorld())
+    {
+        if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+    }
 }
 
 void ACoreThrowableWeapon::BeginPlay()
@@ -70,10 +75,6 @@ void ACoreThrowableWeapon::BeginPlay()
 void ACoreThrowableWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    auto p_world = GetWorld();
-
-    if (!p_world)
-        return;
 
     /*if (GrenadeParticleComp)
     {
@@ -83,16 +84,7 @@ void ACoreThrowableWeapon::Tick(float DeltaTime)
 
         if (currentTime >= 3.5f)
         {
-            if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
-                p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
-
-            p_world->GetTimerManager().ClearTimer(mWaitHandle);
-            TArray<AActor*> arrAttachedActors;
-            this->GetAttachedActors(arrAttachedActors);
-
-            if (auto radiusCheckActor = arrAttachedActors[0])
-                radiusCheckActor->Destroy();
-
+            GetWorld()->GetTimerManager().ClearTimer(mWaitHandle);
             this->Destroy();
         }
     }*/

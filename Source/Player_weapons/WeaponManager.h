@@ -184,13 +184,6 @@ public:
 
 	// ------- 부착 관련 함수 -------
 
-	/**
-	 * \brief 총기 최대 총알 개수를 가지고 옴
-	 * \param WeaponType 무기 종류
-	 * \return 총알 최대 개수
-	 */
-    int GetMaxBulletCount(ECurrentWeaponType WeaponType);
-
     /**
      * \brief 현재 착용 중인 무기를 갖고옴
      * \param WeaponType 무기 종류

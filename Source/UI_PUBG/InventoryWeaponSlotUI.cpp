@@ -329,49 +329,47 @@ void UInventoryWeaponSlotUI::UpdateVisibility()
 
 void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
 {
-    if (!pGameInstanceSubSystemUI)
-        return;
-
-    auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
-
-    if (!p_weaponManager)
-        return;
-
-    // 첫번째 무기
-    if(auto p_firstGun = p_weaponManager->pFirstGun)
+    if (pGameInstanceSubSystemUI)
     {
-        auto weaponData = p_firstGun->WeaponData;
-        FirstGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_firstGun->WeaponType, "Gun"));
-        FirstGunNameTxt->SetText(FText::FromString(weaponData.Type));
-        FirstGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
-    }
-    // 두번째 무기
-    if (auto p_secondGun = p_weaponManager->pSecondGun)
-    {
-        auto weaponData = p_secondGun->WeaponData;
-        SecondGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_secondGun->WeaponType, "Gun"));
-        SecondGunNameTxt->SetText(FText::FromString(weaponData.Type));
-        SecondGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
-    }
-    // 세번째 무기
-    if (auto p_pistol = p_weaponManager->pPistol)
-    {
-        auto weaponData = p_pistol->WeaponData;
-        PistolSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_pistol->WeaponType, "Gun"));
-        PistolNameTxt->SetText(FText::FromString(weaponData.Type));
-        PistolBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
-    }
-    // 네번째 무기
-    if (auto p_melee = p_weaponManager->pMelee)
-    {
-        MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->CurrentWeaponType));
-        MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
-    }
-    // 다섯번째 무기
-    if (auto p_throwable = p_weaponManager->pThrowable)
-    {
-        GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->CurrentWeaponType));
-        GrenadeNameTxt->SetText(FText::FromString(p_throwable->WeaponData.Type));
+        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
+        {
+            // 첫번째 무기
+            if (auto p_firstGun = p_weaponManager->pFirstGun)
+            {
+                auto weaponData = p_firstGun->WeaponData;
+                FirstGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_firstGun->WeaponType, "Gun"));
+                FirstGunNameTxt->SetText(FText::FromString(weaponData.Type));
+                FirstGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
+            }
+            // 두번째 무기
+            if (auto p_secondGun = p_weaponManager->pSecondGun)
+            {
+                auto weaponData = p_secondGun->WeaponData;
+                SecondGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_secondGun->WeaponType, "Gun"));
+                SecondGunNameTxt->SetText(FText::FromString(weaponData.Type));
+                SecondGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
+            }
+            // 세번째 무기
+            if (auto p_pistol = p_weaponManager->pPistol)
+            {
+                auto weaponData = p_pistol->WeaponData;
+                PistolSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_pistol->WeaponType, "Gun"));
+                PistolNameTxt->SetText(FText::FromString(weaponData.Type));
+                PistolBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
+            }
+            // 네번째 무기
+            if (auto p_melee = p_weaponManager->pMelee)
+            {
+                MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->CurrentWeaponType));
+                MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
+            }
+            // 다섯번째 무기
+            if (auto p_throwable = p_weaponManager->pThrowable)
+            {
+                GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->CurrentWeaponType));
+                GrenadeNameTxt->SetText(FText::FromString(p_throwable->WeaponData.Type));
+            }
+        }
     }
 }
 
@@ -381,25 +379,22 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
         return;
 
     // 선택된 무기 인덱스 구함
-    if      (FirstGunSlotImg->GetVisibility() == ESlateVisibility::Visible &&
-             FirstGunSlotImg->IsHovered())
-             mSelectedWeaponIndex = ECurrentWeaponType::FIRST;
+    TArray<Chaos::Pair<UImage*, ECurrentWeaponType>> arrWeaponImg
+    {
+        Chaos::MakePair<UImage*, ECurrentWeaponType>(FirstGunSlotImg,  ECurrentWeaponType::FIRST),
+        Chaos::MakePair<UImage*, ECurrentWeaponType>(SecondGunSlotImg, ECurrentWeaponType::SECOND),
+        Chaos::MakePair<UImage*, ECurrentWeaponType>(PistolSlotImg,    ECurrentWeaponType::PISTOL),
+        Chaos::MakePair<UImage*, ECurrentWeaponType>(MeleeSlotImg,     ECurrentWeaponType::MELEE),
+        Chaos::MakePair<UImage*, ECurrentWeaponType>(GrenadeSlotImg,   ECurrentWeaponType::THROWABLE)
+    };
+    for (auto item : arrWeaponImg)
+    {
+        auto weaponImg = item.First;
 
-    else if (SecondGunSlotImg->GetVisibility() == ESlateVisibility::Visible &&
-             SecondGunSlotImg->IsHovered())
-             mSelectedWeaponIndex = ECurrentWeaponType::SECOND;
-
-    else if (PistolSlotImg->GetVisibility() == ESlateVisibility::Visible &&
-             PistolSlotImg->IsHovered())
-             mSelectedWeaponIndex = ECurrentWeaponType::PISTOL;
-
-    else if (MeleeSlotImg->GetVisibility() == ESlateVisibility::Visible &&
-             MeleeSlotImg->IsHovered())
-             mSelectedWeaponIndex = ECurrentWeaponType::MELEE;
-
-    else if (GrenadeSlotImg->GetVisibility() == ESlateVisibility::Visible &&
-             GrenadeSlotImg->IsHovered())
-             mSelectedWeaponIndex = ECurrentWeaponType::THROWABLE;
+        if (weaponImg->GetVisibility() == ESlateVisibility::Visible &&
+            weaponImg->IsHovered())
+            mSelectedWeaponIndex = item.Second;
+    }
 }
 
 void UInventoryWeaponSlotUI::UpdateHighlightImgPos()

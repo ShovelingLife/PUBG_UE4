@@ -74,7 +74,6 @@ public:
     float        CurrentHealth        = 100.f;
     float        CurrentInjuredHealth = 100.f;
     float        CurrentOxygen        = 1.f;
-    bool         bSprinting           = false;
     bool         bAnimationPlaying    = false;
     bool         bAiming              = false;
     bool         bWeaponEquipped      = false;

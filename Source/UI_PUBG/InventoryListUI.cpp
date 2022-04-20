@@ -6,6 +6,7 @@
 #include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
+#include "Player_weapons/CoreThrowableWeapon.h"
 #include "Player_weapons/WeaponManager.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -26,8 +27,10 @@ void UInventoryListUI::NativeConstruct()
 
     // 인벤토리에 아이템 추가되는 델리게이트 설정
     if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+    {
         p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
-
+        p_customGameInst->DeleSwapInventoryExplosive.BindUFunction(this, "SwapInventoryExplosive");
+    }
     pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
@@ -280,4 +283,24 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDel
     p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
     InventoryListView->AddItem(p_slot);
+}
+
+void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)
+{
+    // 인벤토리 리스트부터 순차적으로 검색
+    for (int i = 0; i < InventoryListView->GetNumItems(); i++)
+    {
+        if (auto p_slot = Cast<UItemSlotUI>(InventoryListView->GetItemAt(i)))
+        {
+            // 발견 시 해당하는 아이템 삭제
+            auto currentExplosive = Cast<ACoreThrowableWeapon>(p_slot->pDraggedItem);
+
+            if (currentExplosive == OldExplosive)
+            {
+                InventoryListView->RemoveItem(p_slot);
+                SetItemOntoInventory(Cast<ABaseInteraction>(NewExplosive));
+                break;
+            }
+        }
+    }
 }

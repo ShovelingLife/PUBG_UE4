@@ -35,6 +35,14 @@ void AUI_manager::BeginPlay()
 {
     Super::BeginPlay();
     
+    BindDelegate();
+    SetPlayerUI();
+    InitPlayerInventory();
+    Set_weapon_UI();
+}
+
+void AUI_manager::BindDelegate()
+{
     // 델리게이트 바인딩
     if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
     {
@@ -42,9 +50,6 @@ void AUI_manager::BeginPlay()
         p_customGameInst->DeleRunEffectAnim.BindUFunction(this, "RunEffectAnim");
         p_customGameInst->DeleKillUI_Anim.BindUFunction(this, "KillAnim");
     }
-    SetPlayerUI();
-    InitPlayerInventory();
-    Set_weapon_UI();
 }
 
 void AUI_manager::InitInteractionUI()

@@ -66,6 +66,8 @@ protected:
 
 // 생성자 내 초기화 함수
 private:
+    void BindDelegate();
+
     /** \brief 상호작용 UI 초기화 */
     void InitInteractionUI();
 
@@ -83,7 +85,7 @@ private:
 
     /** \brief 플레이어 무기 선택 UI 초기화 */
     void InitMainWeaponMat();
-
+    
 // 시작 후 초기화
 public:
     /** \brief 플레이어 인벤토리 설정 */

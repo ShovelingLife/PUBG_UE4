@@ -145,13 +145,16 @@ void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
 void UPlayerStateUI::UpdateOxygenBarUI(float DeltaTime)
 {
     // 현재 뛰고있음
-    if      (p_player->bSprinting &&
-             p_player->CurrentOxygen > 0.f)
-             p_player->CurrentOxygen -= 0.001f;
-
-    else if (!p_player->bSprinting &&
-              p_player->CurrentOxygen < 1.f)
-              p_player->CurrentOxygen += (DeltaTime * 0.03);
-
+    if (p_player->CurrentState == EPlayerState::SPRINT ||
+        p_player->CurrentState == EPlayerState::SPRINT_JUMP)
+    {
+        if (p_player->CurrentOxygen > 0.f)
+            p_player->CurrentOxygen -= 0.001f;
+    }
+    else
+    {
+        if (p_player->CurrentOxygen < 1.f)
+            p_player->CurrentOxygen += (DeltaTime * 0.03);
+    }
     OxygenBar->SetPercent(p_player->CurrentOxygen);
 }

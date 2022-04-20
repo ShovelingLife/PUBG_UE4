@@ -19,7 +19,6 @@ class UI_PUBG_API UInventoryUI : public UUserWidget
 	GENERATED_BODY()
 
 private:
-    AUI_manager* mpUI_manager;
     UItemSlotUI* mpCurrentItemSlot;
 
 public:
