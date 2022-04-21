@@ -32,7 +32,6 @@ protected:
     float mCurrentTime = 0.f;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Collider) USceneComponent*          SceneComp        = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*            ColliderComp     = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)     UStaticMeshComponent*     StaticMeshComp   = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)     USkeletalMeshComponent*   SkeletalMeshComp = nullptr;
@@ -90,4 +89,6 @@ protected:
 
 public:
     void DestroyComponentsForUI();
+
+    void SetForDummyCharacter(class USceneComponent* RootComp, FString SocketName);
 };

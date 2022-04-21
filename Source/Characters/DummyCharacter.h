@@ -14,7 +14,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = RenderedActors) TArray<AActor*> mArrActorToShow;
 
 public:
-	UPROPERTY(EditAnywhere, Category = Mesh)		 class USkeletalMeshComponent*	 SkeletalMeshComp;
+	UPROPERTY(EditAnywhere, Category = Mesh)		 class USkeletalMeshComponent*	 DummySkeletalMeshComp;
     UPROPERTY(EditAnywhere, Category = SceneCapture) class USceneCaptureComponent2D* SceneCaptureComp;
 
 public:

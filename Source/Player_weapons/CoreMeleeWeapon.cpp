@@ -27,9 +27,6 @@ void ACoreMeleeWeapon::Init(EMeleeWeaponType WeaponType)
     ObjectType = WeaponData.Type;    
 
     InitMesh();
-
-    if (SceneComp)
-        SceneComp->DestroyComponent();
 }
 
 void ACoreMeleeWeapon::InitMesh()

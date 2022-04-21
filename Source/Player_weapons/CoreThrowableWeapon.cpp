@@ -133,9 +133,6 @@ void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
     this->InitProjectileMovementComp();
     Super::AttachComponents();
     this->InitParticleSystem();
-    
-    if (SceneComp)
-        SceneComp->DestroyComponent();
 }
 
 void ACoreThrowableWeapon::InitProjectileMovementComp()

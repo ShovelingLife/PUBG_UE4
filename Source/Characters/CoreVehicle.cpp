@@ -29,9 +29,7 @@ void ACoreVehicle::BeginPlay()
     Super::BeginPlay();
     
     // 상호작용 UI 업데이트
-    auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
-
-    if (p_customGameInst)
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(InteractionWidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));
 }
 
@@ -42,14 +40,8 @@ void ACoreVehicle::Tick(float DeltaTime)
     InteractionWidgetComp->SetVisibility(bCollided);
     UpdateCarPosData();
 
-    if(mpPlayer)
-    {
-        if (mpPlayer->CurrentSeatType == ESeatType::FIRST)
-            mbPlayerInFirstSeat = true;
-        
-        else
-            mbPlayerInFirstSeat = false;
-    }
+    if (mpPlayer)
+        mbPlayerInFirstSeat = (mpPlayer->CurrentSeatType == ESeatType::FIRST);
 }
 
 void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComp)
@@ -132,9 +124,9 @@ void ACoreVehicle::UpdateCarPosData()
 
     if (mVehicleData.MaxSeater == 4)
     {
-        MapDoorPos[ESeatType::THIRD] = ThirdDoorPosComp->GetComponentLocation();
+        MapDoorPos[ESeatType::THIRD]  = ThirdDoorPosComp->GetComponentLocation();
         MapDoorPos[ESeatType::FOURTH] = FourthDoorPosComp->GetComponentLocation();
-        MapSeatPos[ESeatType::THIRD] = ThirdSeatPosComp->GetComponentLocation();
+        MapSeatPos[ESeatType::THIRD]  = ThirdSeatPosComp->GetComponentLocation();
         MapSeatPos[ESeatType::FOURTH] = FourthSeatPosComp->GetComponentLocation();
     }
 }

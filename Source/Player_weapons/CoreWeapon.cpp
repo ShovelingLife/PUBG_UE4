@@ -18,17 +18,17 @@ ACoreWeapon::ACoreWeapon()
 void ACoreWeapon::BeginPlay()
 {
     Super::BeginPlay();
-    ABaseInteraction::SetCollisionSettingsForObjects();
+    Super::SetCollisionSettingsForObjects();
 }
 
 void ACoreWeapon::NotifyActorBeginOverlap(AActor* CollidedActor)
 {
-    ABaseInteraction::NotifyActorBeginOverlap(CollidedActor);
+    Super::NotifyActorBeginOverlap(CollidedActor);
 }
 
 void ACoreWeapon::NotifyActorEndOverlap(AActor* ColliderActor)
 {
-    ABaseInteraction::NotifyActorEndOverlap(ColliderActor);
+    Super::NotifyActorEndOverlap(ColliderActor);
 }
 
 void ACoreWeapon::Tick(float DeltaTime)
@@ -43,20 +43,17 @@ void ACoreWeapon::Init(EWeaponType _WeaponType)
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
-    ABaseInteraction::AttachComponents();
+    Super::AttachComponents();
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     InitMesh();
     InitBullet();
     UpdateCollider();
     UpdateParticleSystem();
-
-    if (SceneComp)
-        SceneComp->DestroyComponent();
 }
 
 void ACoreWeapon::InitMesh()
 {
-    ABaseInteraction::InitSkeletalMesh(WeaponData.MeshPath);
+    Super::InitSkeletalMesh(WeaponData.MeshPath);
     SkeletalMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
     SkeletalMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }
@@ -66,10 +63,7 @@ void ACoreWeapon::InitBullet()
     ConstructorHelpers::FClassFinder<AActor> BP_BULLET(*(WeaponData.BulletBP_path));
 
     if (BP_BULLET.Succeeded())
-    {
-        auto p_bp_bullet = BP_BULLET.Class;
-        pBullet          = p_bp_bullet->GetDefaultObject<ACoreBullet>();
-    }
+        pBullet = BP_BULLET.Class->GetDefaultObject<ACoreBullet>();
 }
 
 void ACoreWeapon::UpdateCollider()

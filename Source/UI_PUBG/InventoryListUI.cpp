@@ -87,14 +87,12 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_ItemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
     
-    if (!p_slot ||
-        !mpSlotObj)
+    if (!p_slot    ||
+        !mpSlotObj ||
+        !pGameInstanceSubsystemUI)
         return;
 
-    // 슬롯 설정
-    if (!pGameInstanceSubsystemUI)
-        return;
-
+    // 슬롯 설정    
     pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
 
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
@@ -110,7 +108,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_dragOperation->DefaultDragVisual = p_slot;
     p_dragOperation->Pivot             = EDragPivot::MouseDown;
     p_dragOperation->ItemData          = mpSlotObj->ItemData;
-    p_dragOperation->bFromList = true;
+    p_dragOperation->bFromInventoryList = true;
     OutOperation  = p_dragOperation;
 }
 
@@ -120,12 +118,12 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
     auto p_dragOperation = Cast<UCustomDragDropOperation>(Operation);
     auto p_slot          = p_dragOperation->pSlotUI;
 
-    if (!p_slot)
+    if (!p_slot ||
+        !mpSlotObj)
         return false;
 
     // 같은 아이템일 시
-    if (mpSlotObj &&
-        p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
+    if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
         return false;
 
     // 마우스 위치 구하기
@@ -207,12 +205,12 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
     if (movePos.X == 100.f)
     {
         movePos.X = 0.f;
-        movePos.Y = ((int)movePos.Y > 86.f) ? movePos.Y + 5.f : 86.f;
+        movePos.Y = ((int)movePos.Y > 86) ? (movePos.Y + 5.f) : 86.f;
     }
     else
     {
         movePos.X = 255.f;
-        movePos.Y = ((int)movePos.Y > 82.f) ? movePos.Y + 5.f : 82.f;
+        movePos.Y = ((int)movePos.Y > 82) ? (movePos.Y + 5.f) : 82.f;
     }
     if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
         p_canvasPanelSlot->SetPosition(movePos);
@@ -295,11 +293,18 @@ void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive
             // 발견 시 해당하는 아이템 삭제
             auto currentExplosive = Cast<ACoreThrowableWeapon>(p_slot->pDraggedItem);
 
-            if (currentExplosive == OldExplosive)
+            if (currentExplosive && 
+                p_slot->ItemData.Name == OldExplosive->WeaponData.Type)
             {
-                InventoryListView->RemoveItem(p_slot);
-                SetItemOntoInventory(Cast<ABaseInteraction>(NewExplosive));
-                break;
+                // 장착 중인 무기가 인벤토리에 1개 이상 있음
+                if (p_slot->ItemData.Count > 0)
+                    p_slot->ItemData.Count++;
+
+                else
+                {
+                    InventoryListView->RemoveItem(p_slot);
+                    SetItemOntoInventory(Cast<ABaseInteraction>(NewExplosive));
+                }
             }
         }
     }

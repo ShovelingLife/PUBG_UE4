@@ -3,7 +3,6 @@
 #include "CustomGameInstance.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
-#include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
@@ -72,7 +71,6 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
 
 void ABaseInteraction::InitComponents()
 {
-    SceneComp        = CreateDefaultSubobject<UBoxComponent>(TEXT("SceneComp"));
     ColliderComp     = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComp"));
     RootComponent    = ColliderComp;
     WidgetComp       = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidgetComp"));    
@@ -99,6 +97,34 @@ void ABaseInteraction::DestroyComponentsForUI()
 
     if (AudioComp)
         AudioComp->DestroyComponent();
+}
+
+void ABaseInteraction::SetForDummyCharacter(USceneComponent* RootComp, FString SocketName)
+{
+    DestroyComponentsForUI();
+
+    if (SocketName == "FirstGunSock"  ||
+        SocketName == "SecondGunSock" ||
+        SocketName == "HandGunSock")
+    {
+        this->SetRootComponent(SkeletalMeshComp);
+        SkeletalMeshComp->RegisterComponent();
+        SkeletalMeshComp->SetVisibility(true);
+        SkeletalMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+
+        if (StaticMeshComp)
+            StaticMeshComp->DestroyComponent();
+    }
+    else
+    {
+        this->SetRootComponent(StaticMeshComp);
+        StaticMeshComp->RegisterComponent();
+        StaticMeshComp->SetVisibility(true);
+        StaticMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+
+        if (SkeletalMeshComp)
+            SkeletalMeshComp->DestroyComponent();
+    }
 }
 
 void ABaseInteraction::InitParticleSystem(FString Path)
