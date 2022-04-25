@@ -24,6 +24,7 @@ public:
 	/** \brief 슬롯 데이터 관련 */
     UItemSlotUI*   pSlotUI   = nullptr;
     FsSlotItemData ItemData;
-	bool		   bFromInventoryList = false;
-	bool		   bGun		 = false;
+    bool		   bFromInventoryList = false;
+    bool		   bFromWeaponSlot = false;
+	bool		   bGun = false;
 };

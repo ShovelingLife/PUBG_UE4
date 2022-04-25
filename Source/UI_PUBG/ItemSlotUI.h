@@ -16,10 +16,12 @@
 #include "ItemSlotUI.generated.h" 
 
 class UItemSlotUI;
+class ACoreThrowableWeapon;
 
+DECLARE_DELEGATE(FDeleSetSlotNull)
 DECLARE_DELEGATE_OneParam(FDeleCheckForSlot, UObject*)
 DECLARE_DELEGATE_OneParam(FDeleSwapWeaponSlot, UItemSlotUI*)
-DECLARE_DELEGATE(FDeleSetSlotNull)
+DECLARE_DELEGATE_TwoParams(FDeleSwapInventoryExplosive, ACoreThrowableWeapon*, ACoreThrowableWeapon*)
 
 class ABaseInteraction;
 class UTooltipUI;
@@ -47,9 +49,10 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     CountTxt;
 
     UPROPERTY() ABaseInteraction* pDraggedItem;
+    FDeleSetSlotNull              DeleSetSlotNull;
     FDeleCheckForSlot             DeleCheckForSlot;
     FDeleSwapWeaponSlot           DeleSwapWeaponSlot;
-    FDeleSetSlotNull              DeleSetSlotNull;
+    FDeleSwapInventoryExplosive DeleSwapInventoryExplosive;
     FsSlotItemData                ItemData;
 
 protected:    

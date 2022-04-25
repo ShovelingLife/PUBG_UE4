@@ -85,6 +85,7 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseButtonUp(const FGeometry& InGeometry
     ResetHighlightImg();
     return FReply::Handled();
 }
+
 void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
@@ -98,7 +99,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     }
     auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
-
+        
     if (!p_slot   ||
         !p_weapon ||
         mItemData.IsEmpty())
@@ -115,22 +116,28 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     p_slot->SetAsCursor(mousePos);
 
     // 드래그 구현
-    auto p_customOperation = NewObject<UCustomDragDropOperation>();
+    if (auto p_customOperation = NewObject<UCustomDragDropOperation>())
+    {
+        if ((int)mSelectedWeaponIndex < 4)
+            p_customOperation->bGun = true;
 
-    if ((int)mSelectedWeaponIndex < 4)
-        p_customOperation->bGun = true;
-
-    p_customOperation->pSlotUI           = p_slot;
-    p_customOperation->DefaultDragVisual = p_slot;
-    p_customOperation->Pivot             = EDragPivot::MouseDown;
-    p_customOperation->ItemData          = mItemData;
-    OutOperation = p_customOperation;
+        p_customOperation->pSlotUI = p_slot;
+        p_customOperation->DefaultDragVisual = p_slot;
+        p_customOperation->Pivot = EDragPivot::MouseDown;
+        p_customOperation->ItemData = mItemData;
+        p_customOperation->bFromWeaponSlot = true;
+        OutOperation = p_customOperation;
+    }
 }
 
 bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     auto p_customOperation = Cast<UCustomDragDropOperation>(InOperation);
+
+    if (!p_customOperation)
+        return false;
+
     auto p_slot = p_customOperation->pSlotUI;
     AWeaponManager* p_weaponManager = nullptr;
 
@@ -144,16 +151,9 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     // 현재 선택하고 있는 인덱스 확인
     auto p_draggedWeapon  = p_slot->pDraggedItem;
 
-    if (!p_draggedWeapon)
-        return false;
-
-    // 총기가 수류탄 또는 근접무기 슬롯에 위치시킬 시
-    if ((int)mSelectedWeaponIndex < 4 &&
-        p_weaponManager->IsDuplicated(p_draggedWeapon, ECurrentWeaponType::NONE))
-        return false;
-
-    // 1 2번 슬롯 같은 경우 무기가 중복 여부 같은 슬롯 내에는 발생하지 않음
-    if (p_weaponManager->IsDuplicated(p_draggedWeapon, mSelectedWeaponIndex))
+    // 맞지 않는 슬롯에 위치시킬 시
+    if (!p_draggedWeapon ||
+        p_weaponManager->IsWrong(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
         return false;
 
     // 무기 선택
@@ -174,8 +174,12 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     {
         if (!p_customOperation->bFromInventoryList)
             p_slot->DeleSwapWeaponSlot.ExecuteIfBound(p_slot);
+
+        else
+            p_slot->DeleSwapInventoryExplosive.ExecuteIfBound(Cast<ACoreThrowableWeapon>(p_selectedWeapon), Cast<ACoreThrowableWeapon>(p_draggedWeapon));
     }
     p_customOperation->bFromInventoryList = false;
+    p_customOperation->bFromWeaponSlot = false;
     return true;
 }
 
@@ -288,31 +292,18 @@ void UInventoryWeaponSlotUI::UpdateVisibility()
         GrenadeNameTxt,
         GrenadeNumberBackground
     };
-
-    for (auto item : arrFirstGunWidget)
+    // 총기류 설정
+    for (int i = 0; i < 6; i++)
     {
-        if (item)
-            item->SetVisibility((p_weaponManager->pFirstGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        arrFirstGunWidget[i]->SetVisibility((p_weaponManager->pFirstGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        arrSecondGunWidget[i]->SetVisibility((p_weaponManager->pSecondGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        arrPistolWidget[i]->SetVisibility((p_weaponManager->pPistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     }
-    for (auto item : arrSecondGunWidget)
+    // 기타 무기 설정
+    for (int i = 0; i < 3; i++)
     {
-        if (item)
-            item->SetVisibility((p_weaponManager->pSecondGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    }
-    for (auto item : arrPistolWidget)
-    {
-        if (item)
-            item->SetVisibility((p_weaponManager->pPistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    }
-    for (auto item : arrMeleeWidget)
-    {
-        if (item)
-            item->SetVisibility((p_weaponManager->pMelee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    }
-    for (auto item : arrThrowableWidget)
-    {
-        if (item)
-            item->SetVisibility((p_weaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        arrMeleeWidget[i]->SetVisibility((p_weaponManager->pMelee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        arrThrowableWidget[i]->SetVisibility((p_weaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     }
 }
 

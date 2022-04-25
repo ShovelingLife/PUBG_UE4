@@ -21,6 +21,7 @@ DECLARE_DELEGATE(FDeleExplosionEvent)
 class USphereComponent;
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class UStaticMeshComponent;
 class UCustomGameInstance;
 
 UCLASS()
@@ -45,6 +46,16 @@ public:
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
     FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
+
+public:
+    // 대입 연산자
+    FORCEINLINE	ACoreThrowableWeapon& operator=(ACoreThrowableWeapon& Src)
+    {
+        // swap 함수 사용함으로서 복사 오버헤드 방지
+        std::swap<UStaticMeshComponent*>(this->StaticMeshComp, Src.StaticMeshComp);
+        std::swap<FsOtherWeaponData>(this->WeaponData, Src.WeaponData);
+        return *this;
+    }
 
 public:
     virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
@@ -82,5 +93,7 @@ protected:
     bool IsPlayerInRadius();
 
 public:
+    void SetupGrenade(ACoreThrowableWeapon* StaticMesh);
+
     void Throw(FVector Velocity);
 };

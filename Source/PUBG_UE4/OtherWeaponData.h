@@ -40,4 +40,23 @@ struct FsOtherWeaponData : public FTableRowBase
 
 public:
 	FsOtherWeaponData() = default;
+
+	//FORCEINLINE FsOtherWeaponData& operator=(const FsOtherWeaponData& Src)
+	//{
+	//	this->Type		= Src.Type;
+	//	this->GroupType = Src.GroupType;
+	//	this->AudioPath = Src.AudioPath;
+	//	this->ParticlePath = Src.ParticlePath;
+	//	this->Description = Src.Description;
+
+	//	// 메시 관련
+	//	this->MeshPos = Src.MeshPos;
+ //       this->MeshRotationX = Src.MeshRotationX;
+ //       this->MeshSize = Src.MeshSize;
+
+ //       this->Damage = Src.Damage;
+ //       this->ExplosionRadius = Src.ExplosionRadius;
+ //       this->ExplosionTime = Src.ExplosionTime;
+	//	return *this;
+	//}
 };

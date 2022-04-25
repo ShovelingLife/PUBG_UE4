@@ -27,10 +27,8 @@ void UInventoryListUI::NativeConstruct()
 
     // 인벤토리에 아이템 추가되는 델리게이트 설정
     if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
-    {
         p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
-        p_customGameInst->DeleSwapInventoryExplosive.BindUFunction(this, "SwapInventoryExplosive");
-    }
+
     pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
@@ -100,6 +98,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_slot->Priority     = 1;
     p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
+    p_slot->DeleSwapInventoryExplosive.BindUFunction(this, "SwapInventoryExplosive");
     p_slot->SetAsCursor(mousePos);
 
     // 드래그 구현
@@ -285,27 +284,28 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDel
 
 void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)
 {
+    if (!NewExplosive ||
+        !OldExplosive)
+        return;
+
     // 인벤토리 리스트부터 순차적으로 검색
     for (int i = 0; i < InventoryListView->GetNumItems(); i++)
     {
         if (auto p_slot = Cast<UItemSlotUI>(InventoryListView->GetItemAt(i)))
         {
             // 발견 시 해당하는 아이템 삭제
-            auto currentExplosive = Cast<ACoreThrowableWeapon>(p_slot->pDraggedItem);
-
-            if (currentExplosive && 
-                p_slot->ItemData.Name == OldExplosive->WeaponData.Type)
+            if (p_slot->ItemData.Name == NewExplosive->WeaponData.Type)
             {
                 // 장착 중인 무기가 인벤토리에 1개 이상 있음
                 if (p_slot->ItemData.Count > 0)
-                    p_slot->ItemData.Count++;
-
-                else
                 {
-                    InventoryListView->RemoveItem(p_slot);
-                    SetItemOntoInventory(Cast<ABaseInteraction>(NewExplosive));
+                    p_slot->ItemData.Count++;
+                    return;
                 }
             }
+            InventoryListView->RemoveItem(p_slot);
+            //SetItemOntoInventory(Cast<ABaseInteraction>(NewExplosive));
+            return;
         }
     }
 }

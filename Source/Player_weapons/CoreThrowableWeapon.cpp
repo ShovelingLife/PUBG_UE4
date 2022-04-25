@@ -125,8 +125,8 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
 {
     this->CurrentWeaponType = WeaponType;
-    WeaponData      = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
-    ObjectType      = WeaponData.Type;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
     this->InitMesh();
@@ -213,6 +213,21 @@ bool ACoreThrowableWeapon::IsPlayerInRadius()
             return (lineHitResult.Actor == character);
     }
     return false;
+}
+
+void ACoreThrowableWeapon::SetupGrenade(ACoreThrowableWeapon* OtherWeapon)
+{
+    DestroyComponentsForUI();
+
+    if (SkeletalMeshComp)
+    {
+        SkeletalMeshComp->DestroyComponent();
+        SkeletalMeshComp = nullptr;
+    }
+    this->SetRootComponent(StaticMeshComp);
+    StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    StaticMeshComp->SetStaticMesh(OtherWeapon->StaticMeshComp->GetStaticMesh());
+    WeaponData = OtherWeapon->WeaponData;
 }
 
 void ACoreThrowableWeapon::Throw(FVector Velocity)

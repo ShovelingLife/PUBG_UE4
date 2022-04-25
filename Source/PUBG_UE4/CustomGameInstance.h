@@ -25,7 +25,6 @@ DECLARE_DELEGATE_OneParam(FDeleSetPlayerOtherState, EPlayerOtherState)
 DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
-DECLARE_DELEGATE_TwoParams(FDeleSwapInventoryExplosive, ACoreThrowableWeapon*, ACoreThrowableWeapon*)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
 /**
@@ -45,7 +44,6 @@ public:
     FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
     FDeleRunEffectAnim               DeleRunEffectAnim;
     FDeleKillUI_Anim DeleKillUI_Anim;
-    FDeleSwapInventoryExplosive DeleSwapInventoryExplosive;
 
 public:
     UCustomGameInstance();

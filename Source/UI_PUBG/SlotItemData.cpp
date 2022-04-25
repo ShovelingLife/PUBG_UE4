@@ -10,9 +10,6 @@ const FsSlotItemData FsSlotItemData::EmptyData;
 
 FsSlotItemData FsSlotItemData::GetDataFrom(ABaseInteraction* pObj)
 {
-    if (!pObj)
-        return FsSlotItemData::EmptyData;
-
     // √—±‚¿œ Ω√
     if (auto p_gun = Cast<ACoreWeapon>(pObj))
     {

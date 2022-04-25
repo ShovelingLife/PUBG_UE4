@@ -209,5 +209,5 @@ public:
 
 	void SetMeshToPlayerUI(TArray<AActor*> pArrActor, USkeletalMeshComponent* SkeletalMeshComp);
 
-	bool IsDuplicated(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType);
+	bool IsWrong(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot);
 };
