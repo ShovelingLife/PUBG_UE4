@@ -1,6 +1,5 @@
 #include "GrenadeGraySmoke.h"
 
-AGrenadeGraySmoke::AGrenadeGraySmoke()
+AGrenadeGraySmoke::AGrenadeGraySmoke() : Super(EThrowableWeaponType::GRAY_SMOKE)
 {
-    Init(EThrowableWeaponType::GRAY_SMOKE);
 }

@@ -203,12 +203,11 @@ void ACustomPlayer::CheckIfMoving()
             break;
 
         case EPlayerState::PRONING: CurrentState = EPlayerState::PRONING_WALK; break;
-        case EPlayerState::AIM:     CurrentState = EPlayerState::AIM_WALK; break;
+        case EPlayerState::AIM:     CurrentState = EPlayerState::AIM_WALK;     break;
 
         default:
-            // 떨어지고 있음
+            // 뛰면서 점프후 착지
             if (GetCharacterMovement()->IsFalling())
-                // 뛰면서 점프후 착지
                 CurrentState = (mSprintMultiplier > 1.f) ? EPlayerState::SPRINT_JUMP : EPlayerState::JUMP;
 
             else // 지면에 닿고있음
@@ -343,26 +342,16 @@ void ACustomPlayer::TryToInteract()
 void ACustomPlayer::MoveForwardBack(float Value)
 {
     if (!bAnimationPlaying)
-    {
-        if (CurrentState == EPlayerState::INJURED)
-            AddMovementInput(GetActorForwardVector() * (Value / 4));
+        AddMovementInput(GetActorForwardVector() * ((CurrentState == EPlayerState::INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
 
-        else
-            AddMovementInput(GetActorForwardVector() * Value * mSprintMultiplier);
-    }
     mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::MoveLeftRight(float Value)
 {
     if (!bAnimationPlaying)
-    {
-        if (CurrentState == EPlayerState::INJURED)
-            AddMovementInput(GetActorRightVector() * (Value / 4));
-            
-        else
-            AddMovementInput(GetActorRightVector() * Value * mSprintMultiplier);
-    }
+        AddMovementInput(GetActorRightVector() * ((CurrentState == EPlayerState::INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
+
     mpWeaponManager->UpdateGrenadePath();
 }
 

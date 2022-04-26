@@ -1,9 +1,8 @@
 #include "Claymore.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 
-AClaymore::AClaymore()
+AClaymore::AClaymore() : Super(EThrowableWeaponType::CLAYMORE)
 {
-    Init(EThrowableWeaponType::CLAYMORE);
     mCallBack.BindLambda([&]()
         {
             if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))

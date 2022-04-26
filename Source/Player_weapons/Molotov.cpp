@@ -1,8 +1,7 @@
 #include "Molotov.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 
-AMolotov::AMolotov()
+AMolotov::AMolotov() : Super(EThrowableWeaponType::MOLOTOV)
 {
-    Init(EThrowableWeaponType::MOLOTOV);
     Super::InitSphereComp();
 }

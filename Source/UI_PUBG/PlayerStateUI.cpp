@@ -61,9 +61,12 @@ void UPlayerStateUI::UpdateBulletCountUI()
     // 현재 및 최대 총알 개수 설정
     if (p_weapon->IsA<ACoreWeapon>())
     {
-        auto p_gun = Cast<ACoreWeapon>(p_weapon);
-        MagazineCurrentTxt->SetText(FText::FromString(FString::FromInt(p_gun->WeaponData.CurrentBulletCount)));
-        MagazineTotalTxt->SetText(FText::FromString(FString::FromInt(p_gun->WeaponData.MaxBulletCount)));
+        if (auto p_gun = Cast<ACoreWeapon>(p_weapon))
+        {
+            auto weaponData = p_gun->WeaponData;
+            MagazineCurrentTxt->SetText(FText::FromString(FString::FromInt(weaponData.CurrentBulletCount)));
+            MagazineTotalTxt->SetText(FText::FromString(FString::FromInt(weaponData.MaxBulletCount)));
+        }
     }
 }
 
@@ -96,9 +99,7 @@ void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
 
     if (currentState == EPlayerState::DEAD)
     {
-        if (p_customGameInst)
-            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
-        
+        p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
         auto controller = GetWorld()->GetFirstPlayerController();
         controller->DisableInput(controller);
         GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("플레이어가 사망한 상태입니다.")));

@@ -59,9 +59,10 @@ void UItemSlotUI::SetAsCursor(FVector2D Pos)
 {
     auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(MainHorizontalBox->Slot);
     
-    if (p_canvasPanelSlot)
-        p_canvasPanelSlot->SetPosition(Pos);
+    if (!p_canvasPanelSlot)
+        return;
 
+    p_canvasPanelSlot->SetPosition(Pos);
     this->SetVisibility(ESlateVisibility::Visible);
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
     NameTxt->SetVisibility(ESlateVisibility::Hidden);

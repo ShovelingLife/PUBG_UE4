@@ -3,18 +3,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 
-AGrenadeIllumination::AGrenadeIllumination()
+AGrenadeIllumination::AGrenadeIllumination() : Super(EThrowableWeaponType::ILLUMINATION)
 {
-    Init(EThrowableWeaponType::ILLUMINATION);
-
-    mCallBack.BindLambda([&]()
-        {
-            if (UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
-            {
-                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-                float startTime = (distance >= 300) ? 2.5f : 0.f;
-                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
-                p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
-            }
-        });
 }

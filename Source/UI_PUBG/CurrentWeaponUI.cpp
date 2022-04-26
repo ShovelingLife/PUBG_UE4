@@ -105,18 +105,13 @@ void UCurrentWeaponUI::SetIconUI()
             if (auto p_pistol = p_weaponManager->pPistol)
                 ThirdWeaponImg->SetBrushFromMaterial(AUI_manager::GetMaterial((int)p_pistol->WeaponType));
 
-            //// 네번쨰 무기
-            //if (mp_weapon_manager->p_melee)
-            //{
-            //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_melee->weapon_type);
-            //    Fourth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);
-            //}
-            //// 다섯번째 무기
-            //if (mp_weapon_manager->p_throwable)
-            //{
-            //    index = ((int)e_weapon_type::MAX) + ((int)mp_weapon_manager->p_throwable->weapon_type);
-            //    Fifth_weapon_img->SetBrushFromMaterial(mp_UI_manager->map_main_weapon_ui_mat[index]);
-            //}
+            // 네번쨰 무기
+            //if (auto p_melee = p_weaponManager->pMelee)
+            //    FourthWeaponImg->SetBrushFromMaterial(AUI_manager::GetMaterial((int)p_melee->Wea);
+
+            // 다섯번째 무기
+            if (auto p_throwable = p_weaponManager->pThrowable)
+                FifthWeaponImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->CurrentWeaponType));
         }
     }
 }

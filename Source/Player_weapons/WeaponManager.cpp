@@ -609,8 +609,10 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
             return ERROR;
 
         // 오브젝트 생성 후 투척류로 지정
-        pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
-        pThrowable->SetupGrenade(newThrowable);
+        if (!pThrowable)
+            pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
+        
+        pThrowable->Setup(newThrowable);
         Attach(pThrowable, pThrowable->WeaponData.Type + "Sock");
     }
     break;

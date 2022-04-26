@@ -14,6 +14,23 @@
 #include "Sound/SoundBase.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 
+ACoreThrowableWeapon::ACoreThrowableWeapon()
+{
+    this->InitProjectileMovementComp();    
+}
+
+ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType WeaponType) : ACoreThrowableWeapon()
+{
+    this->CurrentWeaponType = WeaponType;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    ObjectType = WeaponData.Type;
+    ObjectGroupType = WeaponData.GroupType;
+
+    this->InitMesh();
+    this->InitParticleSystem();
+    Super::AttachComponents();
+}
+
 void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
@@ -75,7 +92,6 @@ void ACoreThrowableWeapon::BeginPlay()
 void ACoreThrowableWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
     /*if (GrenadeParticleComp)
     {
         static float currentTime = 0.f;
@@ -88,6 +104,38 @@ void ACoreThrowableWeapon::Tick(float DeltaTime)
             this->Destroy();
         }
     }*/
+}
+
+void ACoreThrowableWeapon::BindFunc()
+{
+    switch (CurrentWeaponType)
+    {
+    case EThrowableWeaponType::ILLUMINATION:
+
+        mCallBack.BindLambda([&]()
+            {
+                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+                float startTime = (distance >= 300) ? 2.5f : 0.f;
+                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
+
+                if (UCustomGameInstance * p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+                    p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
+            });
+
+        break;
+
+    case EThrowableWeaponType::STICK:
+    case EThrowableWeaponType::FRAGMENTATION1:
+    case EThrowableWeaponType::FRAGMENTATION2:
+    case EThrowableWeaponType::CLAYMORE:
+
+        mCallBack.BindLambda([&]()
+            {
+                if (UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+                    p_customGameInst->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);                
+            });
+        break;
+    }
 }
 
 void ACoreThrowableWeapon::InitParticleSystem(FString Path)
@@ -119,32 +167,24 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
         particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Molotov.P_Molotov'";
         break;
     }
-    Super::InitParticleSystem(particlePath);
-}
+    // 파티클 설정
+    ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(*particlePath);
 
-void ACoreThrowableWeapon::Init(EThrowableWeaponType WeaponType)
-{
-    this->CurrentWeaponType = WeaponType;
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
-    ObjectType = WeaponData.Type;
-    ObjectGroupType = WeaponData.GroupType;
-
-    this->InitMesh();
-    this->InitProjectileMovementComp();
-    Super::AttachComponents();
-    this->InitParticleSystem();
+    if (PARTICLE.Succeeded())
+        Particle = PARTICLE.Object;
 }
 
 void ACoreThrowableWeapon::InitProjectileMovementComp()
 {
     if (CurrentWeaponType == EThrowableWeaponType::CLAYMORE)
         return;
-
+    
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
     ProjectileMovementComp->InitialSpeed  = 0.f;
     ProjectileMovementComp->MaxSpeed      = 0.f;
     ProjectileMovementComp->bShouldBounce = false;
     ProjectileMovementComp->bAutoActivate = false;
+    ProjectileMovementComp->bInitialVelocityInLocalSpace = false;
     ProjectileMovementComp->Bounciness = 0.5f;
     ProjectileMovementComp->Friction = 0.5f;
     ProjectileMovementComp->BounceVelocityStopSimulatingThreshold = 5.f;
@@ -215,19 +255,27 @@ bool ACoreThrowableWeapon::IsPlayerInRadius()
     return false;
 }
 
-void ACoreThrowableWeapon::SetupGrenade(ACoreThrowableWeapon* OtherWeapon)
+void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
 {
     DestroyComponentsForUI();
 
+    // 메시 설정
     if (SkeletalMeshComp)
     {
         SkeletalMeshComp->DestroyComponent();
         SkeletalMeshComp = nullptr;
     }
-    this->SetRootComponent(StaticMeshComp);
+    SetRootComponent(StaticMeshComp);
     StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     StaticMeshComp->SetStaticMesh(OtherWeapon->StaticMeshComp->GetStaticMesh());
+    
+    // 데이터 설정
     WeaponData = OtherWeapon->WeaponData;
+    CurrentWeaponType = OtherWeapon->CurrentWeaponType;
+    
+    // 이펙트 정보 설정
+    Particle = OtherWeapon->Particle;
+    BindFunc();
 }
 
 void ACoreThrowableWeapon::Throw(FVector Velocity)
@@ -236,14 +284,18 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
         !ProjectileMovementComp)
         return;
 
-    mbExploded = true;
-    ProjectileMovementComp->bShouldBounce = true;
-    ProjectileMovementComp->Velocity = Velocity;
-    ProjectileMovementComp->Activate();
-    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    this->SetActorScale3D(FVector(WeaponData.MeshSize));
+    // 메쉬 설정
+    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    SetActorScale3D(FVector(WeaponData.MeshSize));
+    StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+    StaticMeshComp->SetCollisionProfileName("Explosive");
 
-    float time = (CurrentWeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f;
+    // 발사체 컴포넌트 설정
+    ProjectileMovementComp->Activate();
+    ProjectileMovementComp->Velocity = Velocity;
+    ProjectileMovementComp->bShouldBounce = true;
+    return;
+
     GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {
             auto location = StaticMeshComp->GetComponentLocation();
@@ -289,7 +341,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
             else
             {
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location);
-                this->Destroy();
+                Destroy();
             }
-        }), time, false);
+        }), (CurrentWeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f, false);
 }

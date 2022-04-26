@@ -1,9 +1,8 @@
 #include "GrenadeStick.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 
-AGrenadeStick::AGrenadeStick()
+AGrenadeStick::AGrenadeStick() : Super(EThrowableWeaponType::STICK)
 {
-    Init(EThrowableWeaponType::STICK);
     mCallBack.BindLambda([&]()
         {
             if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))

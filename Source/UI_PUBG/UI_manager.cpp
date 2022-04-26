@@ -187,13 +187,11 @@ void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type
 
 void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAnimType Type)
 {
-    if (pPlayerEffect_UI)
+    if (pPlayerEffect_UI &&
+        !pPlayerEffect_UI->IsAnyAnimationPlaying())
     {
-        if (!pPlayerEffect_UI->IsAnyAnimationPlaying())
-        {
-            pPlayerEffect_UI->AddToViewport(3);
-            pPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
-        }
+        pPlayerEffect_UI->AddToViewport(3);
+        pPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
     }
 }
 
@@ -212,19 +210,18 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
     FString   weaponGroupType = ItemData.Category;
     int       imageIndex      = ItemData.ImageIndex;
 
+    if (imageIndex >= MapInventoryOtherWeaponTex.Num())
+        return nullptr;
+
     // 투척류 또는 근접무기일 시
     if (weaponGroupType == "Explosive" ||
         weaponGroupType == "Melee")
-    {
-        if (imageIndex < MapInventoryOtherWeaponTex.Num())
-            weaponTex = MapInventoryOtherWeaponTex[imageIndex];
-    }
+        weaponTex = MapInventoryOtherWeaponTex[imageIndex];
+
     // 총기 무기일 시
     else
-    {
-        if (imageIndex < MapInventoryGunWeaponTex.Num())
-            weaponTex = MapInventoryGunWeaponTex[imageIndex];
-    }
+        weaponTex = MapInventoryGunWeaponTex[imageIndex];
+
     return Cast<UTexture2D>(weaponTex);
 }
 

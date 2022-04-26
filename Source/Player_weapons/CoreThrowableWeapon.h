@@ -32,7 +32,6 @@ class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 private:
     FTimerHandle mWaitHandle;
     bool mbPlayed = false;
-    bool mbExploded = false;
 
 public:
     FVector GrenadeEndPos;
@@ -48,6 +47,10 @@ public:
 	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
 
 public:
+    ACoreThrowableWeapon();
+
+    ACoreThrowableWeapon(EThrowableWeaponType WeaponType);
+
     // 대입 연산자
     FORCEINLINE	ACoreThrowableWeapon& operator=(ACoreThrowableWeapon& Src)
     {
@@ -72,14 +75,11 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+    /** \brief 함수 포인터에 이벤트 바인딩 */
+    void BindFunc();
+
     /** \brief 파티클 시스템 생성 */
     virtual void InitParticleSystem(FString Path = "") override;
-
-    /**
-      * \brief 투척류 무기 초기화
-      * \param _weapon_type 무기 종류
-     */
-    void Init(EThrowableWeaponType WeaponType);
 
     /** \brief 이동 컴포넌트 초기화 */
     void InitProjectileMovementComp();
@@ -93,7 +93,8 @@ protected:
     bool IsPlayerInRadius();
 
 public:
-    void SetupGrenade(ACoreThrowableWeapon* StaticMesh);
+    // 투척류 기본 설정
+    void Setup(ACoreThrowableWeapon* OtherWeapon);
 
     void Throw(FVector Velocity);
 };
