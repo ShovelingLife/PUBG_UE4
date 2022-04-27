@@ -22,7 +22,14 @@ void UItemSlotUI::NativeConstruct()
 void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
-    
+
+    // 현재 관련된 UI에 적용
+    ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
+    NameTxt->SetText(FText::FromString(ItemData.Name));
+
+    if (ItemData.Count > 0)
+        CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
+
     if (this->IsHovered())
     {
         DeleCheckForSlot.ExecuteIfBound(this);
@@ -39,19 +46,11 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
     if (p_slot)
     {
         // 현재 변수들에 데이터 적용
-        auto itemData      = p_slot->ItemData;
-        pDraggedItem       = p_slot->pDraggedItem;
-        DeleCheckForSlot   = p_slot->DeleCheckForSlot;
-        DeleSwapWeaponSlot = p_slot->DeleSwapWeaponSlot;
-        DeleSetSlotNull    = p_slot->DeleSetSlotNull;
-        ItemData           = itemData;
-
-        // 현재 관련된 UI에 적용
-        ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(itemData));
-        NameTxt->SetText(FText::FromString(itemData.Name));
-
-        if (ItemData.Count > 0)
-            CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
+        pDraggedItem        = p_slot->pDraggedItem;
+        DeleCheckForSlot    = p_slot->DeleCheckForSlot;
+        DeleSwapWeaponSlot  = p_slot->DeleSwapWeaponSlot;
+        DeleDeleteFromList  = p_slot->DeleDeleteFromList;
+        ItemData            = p_slot->ItemData;
     }
 }
 

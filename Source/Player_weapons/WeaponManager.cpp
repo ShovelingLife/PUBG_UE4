@@ -807,6 +807,9 @@ void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor, USkeletalMeshC
 
 bool AWeaponManager::IsWrong(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot)
 {
+    if (!pWeapon)
+        return true;
+
     auto groupType = pWeapon->ObjectGroupType;
     
     switch (WeaponType)

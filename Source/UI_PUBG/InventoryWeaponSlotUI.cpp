@@ -112,7 +112,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData     = mItemData;
     p_slot->Priority     = 1;
-    p_slot->DeleSetSlotNull.BindUFunction(this, "SetSlotNull");
+    p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");
     p_slot->SetAsCursor(mousePos);
 
     // 드래그 구현
@@ -124,7 +124,6 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         p_customOperation->pSlotUI = p_slot;
         p_customOperation->DefaultDragVisual = p_slot;
         p_customOperation->Pivot = EDragPivot::MouseDown;
-        p_customOperation->ItemData = mItemData;
         p_customOperation->bFromWeaponSlot = true;
         OutOperation = p_customOperation;
     }
@@ -135,14 +134,12 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     auto p_customOperation = Cast<UCustomDragDropOperation>(InOperation);
 
-    if (!p_customOperation)
+    if (!p_customOperation ||
+        !pGameInstanceSubSystemUI)
         return false;
 
     auto p_slot = p_customOperation->pSlotUI;
-    AWeaponManager* p_weaponManager = nullptr;
-
-    if (pGameInstanceSubSystemUI)
-        p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
+    AWeaponManager* p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
 
     if (!p_weaponManager ||
         !p_slot)
@@ -152,24 +149,30 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     auto p_draggedWeapon  = p_slot->pDraggedItem;
 
     // 맞지 않는 슬롯에 위치시킬 시
-    if (!p_draggedWeapon ||
-        p_weaponManager->IsWrong(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
+    if (p_weaponManager->IsWrong(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
         return false;
 
     // 무기 선택
     ABaseInteraction* p_selectedWeapon = p_weaponManager->GetWeaponByIndex((ECurrentWeaponType)mSelectedWeaponIndex);
-    mItemData = (!p_selectedWeapon) ? FsSlotItemData::GetDataFrom(p_draggedWeapon) : FsSlotItemData::GetDataFrom(p_selectedWeapon);
-
-    p_slot->ItemData     = mItemData;
-    p_slot->pDraggedItem = p_selectedWeapon;
+    //mItemData = (!p_selectedWeapon) ? FsSlotItemData::GetDataFrom(p_draggedWeapon) : FsSlotItemData::GetDataFrom(p_selectedWeapon);
+    //p_slot->pDraggedItem = p_selectedWeapon;
 
     if (p_weaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex) == -1)
         return false;
 
     // 무기 배치 및 UI 설정이 완료 되었다면 초기화
     if (!p_selectedWeapon)
-        p_slot->DeleSetSlotNull.ExecuteIfBound();
+    {
+        auto itemData = p_slot->ItemData;
 
+        if (itemData.Count > 1)
+        {
+            p_slot->ItemData.Count--;
+            p_slot->DeleChangeItemCount.ExecuteIfBound(p_slot);
+        }
+        else
+            p_slot->DeleDeleteFromList.ExecuteIfBound();
+    }
     else
     {
         if (!p_customOperation->bFromInventoryList)
@@ -180,6 +183,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     }
     p_customOperation->bFromInventoryList = false;
     p_customOperation->bFromWeaponSlot = false;
+    p_customOperation->pSlotUI = p_slot;
     return true;
 }
 

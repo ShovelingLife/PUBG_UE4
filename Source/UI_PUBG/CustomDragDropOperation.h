@@ -23,7 +23,6 @@ class UI_PUBG_API UCustomDragDropOperation : public UDragDropOperation
 public:
 	/** \brief 슬롯 데이터 관련 */
     UItemSlotUI*   pSlotUI   = nullptr;
-    FsSlotItemData ItemData;
     bool		   bFromInventoryList = false;
     bool		   bFromWeaponSlot = false;
 	bool		   bGun = false;

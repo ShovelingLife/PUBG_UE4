@@ -18,9 +18,10 @@
 class UItemSlotUI;
 class ACoreThrowableWeapon;
 
-DECLARE_DELEGATE(FDeleSetSlotNull)
-DECLARE_DELEGATE_OneParam(FDeleCheckForSlot, UObject*)
+DECLARE_DELEGATE(FDeleDeleteFromList)
+DECLARE_DELEGATE_OneParam(FDeleCheckForSlot, UItemSlotUI*)
 DECLARE_DELEGATE_OneParam(FDeleSwapWeaponSlot, UItemSlotUI*)
+DECLARE_DELEGATE_OneParam(FDeleChangeItemCount, UItemSlotUI*)
 DECLARE_DELEGATE_TwoParams(FDeleSwapInventoryExplosive, ACoreThrowableWeapon*, ACoreThrowableWeapon*)
 
 class ABaseInteraction;
@@ -49,10 +50,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     CountTxt;
 
     UPROPERTY() ABaseInteraction* pDraggedItem;
-    FDeleSetSlotNull              DeleSetSlotNull;
+    FDeleDeleteFromList           DeleDeleteFromList;
     FDeleCheckForSlot             DeleCheckForSlot;
     FDeleSwapWeaponSlot           DeleSwapWeaponSlot;
-    FDeleSwapInventoryExplosive DeleSwapInventoryExplosive;
+    FDeleChangeItemCount          DeleChangeItemCount;
+    FDeleSwapInventoryExplosive   DeleSwapInventoryExplosive;
     FsSlotItemData                ItemData;
 
 protected:    
@@ -70,7 +72,7 @@ protected:
       * \param pObj 슬롯 오브젝트
      */
     virtual void NativeOnListItemObjectSet(UObject* pObj);
-
+    
 public:
     /**
       * \brief 슬롯 UI를 커서 중앙 지점에 설정

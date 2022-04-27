@@ -10,16 +10,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SlotItemData.h"
 #include "Blueprint/UserWidget.h"
 #include "InventoryListUI.generated.h"
-
-class UItemSlotUI;
 
 class UImage;
 class UListView;
 class USizeBox;
 class UTextBlock;
+
+class ABaseInteraction;
 class ACoreThrowableWeapon;
+class UItemSlotUI;
 
 UCLASS()
 class UI_PUBG_API UInventoryListUI : public UUserWidget
@@ -98,22 +100,24 @@ private:
     /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
     void GetItemListWidth();
 
-    bool IsItemAddedInList(FString ItemName);
+    UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pWeapon, FsSlotItemData ItemData);
+
+    UItemSlotUI* GetMatchingItemFromList(FString ItemName);
 
 public:
+    UFUNCTION() void DeleteFromList();
+
     /**
       * \brief 리스트 내 아이템 슬롯에서 선택할 시 호출함 (델리게이트)
       * \param pSlotObj 아이템 슬롯
      */
     UFUNCTION() void CheckForHoveredItem(UItemSlotUI* pSlotObj);
 
-    UFUNCTION() void DeleteFromList();
-
     UFUNCTION() void SwapWeaponSlot(UItemSlotUI* pWeaponSlot);
+
+    UFUNCTION() void ChangeItemCount(UItemSlotUI* pSlotObj);
 
     UFUNCTION() void SetItemOntoInventory(class ABaseInteraction* pWeapon, bool bDeleteFromList = false);
     
-
-public:
     UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
 };

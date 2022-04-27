@@ -42,32 +42,30 @@ void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other,
 UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Overlap Begin");
-    auto p_world = GetWorld();
 
-    if (!p_world)
-        return;
-
-    if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
+    if (auto p_world = GetWorld())
     {
-        if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
-            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
+        if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
+        {
+            if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+                p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
+        }
     }
 }
 
 UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
     GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Cyan, "Overlap End");
-    auto p_world = GetWorld();
 
-    if (!p_world)
-        return;
-
-    if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
+    if (auto p_world = GetWorld())
     {
-        if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+        if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
         {
-            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
-            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+            if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+            {
+                p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
+                p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+            }
         }
     }
 }
@@ -234,22 +232,23 @@ void ACoreThrowableWeapon::InitSphereComp()
 
 bool ACoreThrowableWeapon::IsPlayerInRadius()
 {
+    using TypeQueryByte = TEnumAsByte<EObjectTypeQuery>;
+
     // 범위 안에 들어가는지 확인 (원형 충돌감지)
-    FVector startPos = GetActorLocation();
-    FVector endPos   = startPos + FVector(0.f, 0.f, 0.1f);
-    TArray < TEnumAsByte<EObjectTypeQuery>> arrObjectTypeQuery;
-    TEnumAsByte<EObjectTypeQuery> ObjectTypeQuery = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn);
-    arrObjectTypeQuery.Add(ObjectTypeQuery);
+    FVector startPos = GetActorLocation(),
+            endPos = startPos + FVector(0.f, 0.f, 0.1f);
+    TArray<TypeQueryByte> arrObjectTypeQuery;
+    TypeQueryByte         objectTypeQuery = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn);
+    arrObjectTypeQuery.Add(objectTypeQuery);
     TArray<AActor*> arrActorsToIgnore;
     FHitResult radiusHitResult;
     
     if (UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), startPos, endPos, WeaponData.ExplosionRadius, arrObjectTypeQuery, false, arrActorsToIgnore, EDrawDebugTrace::None, radiusHitResult, true))
     {
-        auto character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+        auto       character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
         FHitResult lineHitResult;
-        FVector lineEndPos = character->GetActorLocation();
         
-        if (GetWorld()->LineTraceSingleByChannel(lineHitResult, startPos, lineEndPos, ECollisionChannel::ECC_Camera))
+        if (GetWorld()->LineTraceSingleByChannel(lineHitResult, startPos, character->GetActorLocation(), ECollisionChannel::ECC_Camera))
             return (lineHitResult.Actor == character);
     }
     return false;

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SlotItemData.h"
 #include "GameFramework/Actor.h"
 #include "InventoryManager.generated.h"
 

@@ -96,9 +96,10 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
     p_slot->ItemData     = mpSlotObj->ItemData;
     p_slot->Priority     = 1;
-    p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
+    p_slot->DeleDeleteFromList.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
     p_slot->DeleSwapInventoryExplosive.BindUFunction(this, "SwapInventoryExplosive");
+    p_slot->DeleChangeItemCount.BindUFunction(this, "ChangeItemCount");
     p_slot->SetAsCursor(mousePos);
 
     // 드래그 구현
@@ -106,7 +107,6 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_dragOperation->pSlotUI           = p_slot;
     p_dragOperation->DefaultDragVisual = p_slot;
     p_dragOperation->Pivot             = EDragPivot::MouseDown;
-    p_dragOperation->ItemData          = mpSlotObj->ItemData;
     p_dragOperation->bFromInventoryList = true;
     OutOperation  = p_dragOperation;
 }
@@ -136,7 +136,7 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
             return false;
 
         p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-        p_slot->DeleSetSlotNull.ExecuteIfBound();
+        p_slot->DeleDeleteFromList.ExecuteIfBound();
         WorldListView->AddItem(p_slot);
 
         if (auto p_weaponManager = pGameInstanceSubsystemUI->GetWeaponManager())
@@ -149,7 +149,7 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
             return false;
 
         p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-        p_slot->DeleSetSlotNull.ExecuteIfBound();
+        p_slot->DeleDeleteFromList.ExecuteIfBound();
         InventoryListView->AddItem(p_slot);
     }
     return true;
@@ -173,48 +173,28 @@ void UInventoryListUI::GetItemListWidth()
     }
 }
 
-bool UInventoryListUI::IsItemAddedInList(FString ItemName)
+UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pWeapon, FsSlotItemData ItemData)
+{
+    auto p_slot = NewObject<UItemSlotUI>();
+    p_slot->ItemData = ItemData;
+    p_slot->pDraggedItem = pWeapon;
+    p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
+    p_slot->DeleDeleteFromList.BindUFunction(this, "DeleteFromList");
+    p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
+    return p_slot;
+}
+
+UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName)
 {
     for (auto item : InventoryListView->GetListItems())
     {
         if (auto p_slot = Cast<UItemSlotUI>(item))
         {
             if (p_slot->ItemData.Name == ItemName)
-            {
-                p_slot->ItemData.Count++;                
-                InventoryListView->RemoveItem(p_slot);
-                InventoryListView->AddItem(p_slot);
-                return true;
-            }
+                return p_slot;
         }
     }
-    return false;
-}
-
-// this가 넘어오므로 널 체크 불필요
-void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
-{
-    // 현재 이미지 위치를 구함
-    FVector2D movePos = FVector2D::ZeroVector, dummy_vec;
-    auto      cachedGeometry = pSlotObj->GetCachedGeometry();
-    mpSlotObj = pSlotObj;
-    USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);   
-    
-    // 리스트 판별
-    if (movePos.X == 100.f)
-    {
-        movePos.X = 0.f;
-        movePos.Y = ((int)movePos.Y > 86) ? (movePos.Y + 5.f) : 86.f;
-    }
-    else
-    {
-        movePos.X = 255.f;
-        movePos.Y = ((int)movePos.Y > 82) ? (movePos.Y + 5.f) : 82.f;
-    }
-    if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
-        p_canvasPanelSlot->SetPosition(movePos);
-
-    HighlightImg->SetVisibility(ESlateVisibility::Visible);
+    return nullptr;
 }
 
 void UInventoryListUI::DeleteFromList()
@@ -252,11 +232,51 @@ void UInventoryListUI::DeleteFromList()
     }
 }
 
+// this가 넘어오므로 널 체크 불필요
+void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
+{
+    // 현재 이미지 위치를 구함
+    FVector2D movePos = FVector2D::ZeroVector, dummy_vec;
+    auto      cachedGeometry = pSlotObj->GetCachedGeometry();
+    mpSlotObj = pSlotObj;
+    USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);
+
+    // 리스트 판별
+    if (movePos.X == 100.f)
+    {
+        movePos.X = 0.f;
+        movePos.Y = ((int)movePos.Y > 86) ? (movePos.Y + 5.f) : 86.f;
+    }
+    else
+    {
+        movePos.X = 255.f;
+        movePos.Y = ((int)movePos.Y > 82) ? (movePos.Y + 5.f) : 82.f;
+    }
+    if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
+        p_canvasPanelSlot->SetPosition(movePos);
+
+    HighlightImg->SetVisibility(ESlateVisibility::Visible);
+}
+
 void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* pWeaponSlot)
 {
     DeleteFromList();
     pWeaponSlot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     WorldListView->AddItem(pWeaponSlot);
+}
+
+void UInventoryListUI::ChangeItemCount(UItemSlotUI* pSlotObj)
+{
+    if (!pSlotObj)
+        return;
+
+    // 차감 후 대입
+    if (auto p_slot = GetMatchingItemFromList(pSlotObj->ItemData.Name))
+    {
+        auto tmpSlot = GetInitializedSlotUI(pSlotObj->pDraggedItem, pSlotObj->ItemData);
+        InventoryListView->RemoveItem(p_slot);
+        InventoryListView->AddItem(tmpSlot);
+    }
 }
 
 void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDeleteFromList /* = false */)
@@ -267,19 +287,21 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDel
     if (bDeleteFromList)
         DeleteFromList();
 
-    UItemSlotUI*   p_slot   = NewObject<UItemSlotUI>();
     FsSlotItemData itemData = FsSlotItemData::GetDataFrom(pWeapon);
 
-    if (itemData.IsEmpty() ||
-        IsItemAddedInList(itemData.Name))
+    if (itemData.IsEmpty())
         return;
-    
-    p_slot->ItemData     = itemData;
-    p_slot->pDraggedItem = pWeapon;
-    p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-    p_slot->DeleSetSlotNull.BindUFunction(this, "DeleteFromList");
-    p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
-    InventoryListView->AddItem(p_slot);
+
+    // 현재 아이템이 있는지 확인
+    UItemSlotUI* p_existingSlot = GetMatchingItemFromList(itemData.Name);
+
+    // 아이템이 존재함
+    if (p_existingSlot)
+    {
+        p_existingSlot->ItemData.Count++;
+        InventoryListView->RemoveItem(p_existingSlot);
+    }
+    InventoryListView->AddItem((p_existingSlot) ? p_existingSlot : GetInitializedSlotUI(pWeapon, itemData));
 }
 
 void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)
