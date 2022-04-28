@@ -39,6 +39,7 @@ void ACoreWeapon::Tick(float DeltaTime)
 void ACoreWeapon::Init(EWeaponType _WeaponType)
 {
     WeaponData = ADataTableManager::ArrWeaponData[(int)_WeaponType];
+    WeaponData.CurrentBulletCount = WeaponData.MaxBulletCount;
     WeaponType = _WeaponType;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;

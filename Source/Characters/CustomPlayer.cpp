@@ -473,7 +473,7 @@ void ACustomPlayer::OpenInventory()
 
 void ACustomPlayer::UpdateHealth()
 {
-    if (CurrentHealth == 0.f &&
+    if (CurrentHealth == 0.f && 
         CurrentState != EPlayerState::DEAD)
         CurrentState = EPlayerState::INJURED;
 
@@ -487,7 +487,6 @@ void ACustomPlayer::BeginShooting()
         return;
 
     mpWeaponManager->bShooting = true;
-    mpWeaponManager->Shoot();
 }
 
 void ACustomPlayer::EndShooting()
@@ -495,7 +494,8 @@ void ACustomPlayer::EndShooting()
     if (mbInventoryOpened)
         return;
 
-    mpWeaponManager->bShooting = false;
+    if (mpWeaponManager)
+        mpWeaponManager->SetShootState(false);
 
     // 투척류 무기일 시 뗐을 때만 발동
     if (mpWeaponManager->bArrWeaponEquipped[4])

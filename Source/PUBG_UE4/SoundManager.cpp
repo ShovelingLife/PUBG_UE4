@@ -134,9 +134,16 @@ void ASoundManager::PlayGunSound(UAudioComponent* AudioComp, EWeaponSoundType So
 
     switch (SoundType)
     {
-    case EWeaponSoundType::EMPTY_AMMO: tmpSound = pEmptyAmmoSound;             break;
-    case EWeaponSoundType::SHOT:       tmpSound = pArrShotSound[WeaponIndex]; break;
-    case EWeaponSoundType::RELOAD:     tmpSound = pReloadSound;                break;
+    case EWeaponSoundType::EMPTY_AMMO: tmpSound = pEmptyAmmoSound; break;
+    case EWeaponSoundType::RELOAD:     tmpSound = pReloadSound;    break;
+
+    case EWeaponSoundType::SHOT:
+
+        if (WeaponIndex >= 0 && 
+            WeaponIndex < pArrShotSound.Num()) 
+            tmpSound = pArrShotSound[WeaponIndex]; 
+
+        break;
     }
     if (AudioComp &&
         tmpSound)

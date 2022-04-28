@@ -176,8 +176,9 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
 {
     if (CurrentWeaponType == EThrowableWeaponType::CLAYMORE)
         return;
-    
+
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
+    ProjectileMovementComp->SetUpdatedComponent(StaticMeshComp);
     ProjectileMovementComp->InitialSpeed  = 0.f;
     ProjectileMovementComp->MaxSpeed      = 0.f;
     ProjectileMovementComp->bShouldBounce = false;
@@ -186,7 +187,7 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
     ProjectileMovementComp->Bounciness = 0.5f;
     ProjectileMovementComp->Friction = 0.5f;
     ProjectileMovementComp->BounceVelocityStopSimulatingThreshold = 5.f;
-    ProjectileMovementComp->Velocity = FVector(0.1f, 0.f, 0.f);
+    ProjectileMovementComp->Velocity = FVector::ZeroVector;
 }
 
 void ACoreThrowableWeapon::InitMesh()
@@ -290,10 +291,11 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
     StaticMeshComp->SetCollisionProfileName("Explosive");
 
     // 발사체 컴포넌트 설정
+    Velocity.Z = 0.1f;
+    ProjectileMovementComp->bSimulationEnabled = true;
     ProjectileMovementComp->Activate();
     ProjectileMovementComp->Velocity = Velocity;
     ProjectileMovementComp->bShouldBounce = true;
-    return;
 
     GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {

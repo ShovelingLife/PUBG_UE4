@@ -36,13 +36,13 @@ private:
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
 	UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
+	int mBurstCount = 0;
     FVector mGrenadeVelocity;
     bool  mbThrowingGrenade = false;
 
 	// 총기 관련
     const float	mkReloadTime	   = 2.f;
     float		mCurrentReloadTime = 0.f;
-    float		mShootTime		   = 0.25f;
     float		mCurrentShootTime  = 0.f;
     bool		mbReloading		   = false;
 	bool		mbChangedShootType = true;
@@ -56,7 +56,7 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
-    float GrenadeDirection;
+    float			   GrenadeDirection;
 	bool			   bArrWeaponEquipped[5]{ false };
 	bool			   bShooting = false;
 
@@ -81,8 +81,6 @@ private:
     void CheckForEquippedWeapon();
 
     void InitGrenadePath();
-
-    bool IsAmmoInsufficient(int BulletCount);
 
 	/**
      * \brief 현재 장착 중인 무기에 따라 착용 여부 \n
@@ -131,6 +129,8 @@ public:
 
 	/** \brief 발사 */
 	void Shoot();
+
+	void SetShootState(bool bContinue);
 
 	/** \brief 재장전 */
 	void Reload();

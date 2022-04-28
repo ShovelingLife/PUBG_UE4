@@ -47,14 +47,8 @@ void AWeaponManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
     UpdateCurrentWeaponArr();
-
-    // 총기일 때마다 확인
-    if (bArrWeaponEquipped[3] &&
-        bArrWeaponEquipped[4])
-    {
-        CheckReloading(DeltaTime);
-        CheckContinouslyShooting(DeltaTime);
-    }
+    CheckReloading(DeltaTime);
+    CheckContinouslyShooting(DeltaTime);
 }
 
 void AWeaponManager::CheckForEquippedWeapon()
@@ -83,19 +77,6 @@ void AWeaponManager::InitGrenadePath()
         PathMat = PATH_MAT.Object;
 }
 
-bool AWeaponManager::IsAmmoInsufficient(int BulletCount)
-{
-    bool b_empty = (BulletCount == 0);
-
-    if (!b_empty) // 탄알이 하나라도 있을 시
-        Reload();
-
-    else
-        PlaySound(EWeaponSoundType::EMPTY_AMMO);
-
-    return b_empty;
-}
-
 void AWeaponManager::UpdateCurrentWeaponArr()
 {
     TArray< ABaseInteraction*> p_arrCurrentWeapon
@@ -122,16 +103,15 @@ void AWeaponManager::PlaySound(EWeaponSoundType SoundType)
     };
     if (CurrentWeaponType != ECurrentWeaponType::NONE)
     {
-        int index       = (int)CurrentWeaponType;
-        int weaponIndex = GetWeaponType(p_arrCurrentWeapon[index]);
-
-        if (weaponIndex != -1)
+        int index = ((int)CurrentWeaponType) - 1;
+        
+        if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
         {
-            if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
+            if (auto p_soundManager = p_customGameInst->pSoundManager)
             {
-                if (auto p_soundManager = p_customGameInst->pSoundManager)
-                    p_soundManager->PlayGunSound(p_arrCurrentWeapon[index]->AudioComp, SoundType, weaponIndex);
-            }
+                if (auto p_weapon = p_arrCurrentWeapon[index])
+                    p_soundManager->PlayGunSound(p_weapon->AudioComp, SoundType, GetWeaponType(p_weapon));
+            }   
         }
     }
 }
@@ -367,12 +347,22 @@ void AWeaponManager::Shoot()
         auto p_gun = Cast<ACoreWeapon>(p_weapon);
         auto weaponData = p_gun->WeaponData;
 
-        // 총알 부족
-        if (IsAmmoInsufficient(weaponData.CurrentBulletCount))
-            return;
+        // 총알 부족한지 확인
+        if (weaponData.CurrentBulletCount == 0)
+        {
+            // 총알이 하나라도 존재할 시
+            if (weaponData.CurrentMaxBulletCount > 0)
+                Reload();
 
+            else
+            {
+                PlaySound(EWeaponSoundType::EMPTY_AMMO);
+                bShooting = false;
+                return;
+            }
+        }   
         // 사운드 적용 및 총알 1개 차감
-        weaponData.CurrentBulletCount--;
+        p_gun->WeaponData.CurrentBulletCount--;
         PlaySound(EWeaponSoundType::SHOT);
 
         // 레이캐스트 적용
@@ -420,6 +410,15 @@ void AWeaponManager::Shoot()
     }
 }
 
+void AWeaponManager::SetShootState(bool bContinue)
+{
+    if (auto p_weapon = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
+    {
+        if (p_weapon->ShootType == EGunShootType::CONSECUTIVE)
+            bShooting = false;
+    }
+}
+
 void AWeaponManager::Reload()
 {
     ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentWeaponType);    
@@ -427,15 +426,11 @@ void AWeaponManager::Reload()
     if (auto p_gun = Cast<ACoreWeapon>(p_weapon))
     {
         auto& weaponData = p_gun->WeaponData;
-
-        if (weaponData.CurrentBulletCount != weaponData.MaxBulletCount)
-        {
-            int result = (weaponData.CurrentBulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.CurrentBulletCount) : p_gun->WeaponData.MaxBulletCount;
-            weaponData.MaxBulletCount     -= result;
-            weaponData.CurrentBulletCount += result;
-            PlaySound(EWeaponSoundType::RELOAD);
-            mbReloading = true;
-        }
+        int result = (weaponData.CurrentBulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.CurrentBulletCount) : p_gun->WeaponData.MaxBulletCount;
+        weaponData.MaxBulletCount -= result;
+        weaponData.CurrentBulletCount += result;
+        PlaySound(EWeaponSoundType::RELOAD);
+        mbReloading = true;
     }
 }
 
@@ -677,15 +672,51 @@ void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
 {
     if (bShooting)
     {
-        // 총기일 경우 쿨타임 적용
-        mCurrentShootTime += TranscurredTime;
-
-        if (mCurrentShootTime > mShootTime)
+        if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
         {
-            Shoot();
-            mCurrentShootTime = 0.f;
-            bShooting = mbChangedShootType;
+            mCurrentShootTime += TranscurredTime;
+            GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt((int)p_gun->ShootType));
+            switch (p_gun->ShootType)
+            {
+            case EGunShootType::SINGLE:
+
+                Shoot();
+                bShooting = false;
+                break;
+
+            case EGunShootType::BURST:
+
+                if (mCurrentShootTime > 0.1f)
+                {
+                    Shoot();
+                    mCurrentShootTime = 0.f;
+                    mBurstCount++;
+                }
+                if (mBurstCount == 3)
+                {
+                    mBurstCount = 0;
+                    bShooting = false;
+                }
+                break;
+
+                // 쿨타임 적용
+            case EGunShootType::CONSECUTIVE:
+
+                if (mCurrentShootTime > 0.25f)
+                {
+                    Shoot();
+                    mCurrentShootTime = 0.f;
+                }
+                break;
+
+            default: mCurrentShootTime = 0.f;
+            }
         }
+    }
+    else
+    {
+        mCurrentShootTime = 0.f;
+        mBurstCount = 0;
     }
 }
 
@@ -752,17 +783,17 @@ ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon)
 
 int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon)
 {
-    int weaponType = -1;
+    int weaponType = 0;
 
     // 총기일시
-    if      (auto p_gun = Cast<ACoreWeapon>(pWeapon))
-             weaponType = (int)p_gun->WeaponType;
+    if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
+        weaponType = (int)p_gun->WeaponType;
 
     else if (auto p_melee = Cast<ACoreMeleeWeapon>(pWeapon))
-             weaponType = (int)p_melee->CurrentWeaponType;
+        weaponType = (int)p_melee->CurrentWeaponType;
 
     else if (auto p_throwable = Cast<ACoreThrowableWeapon>(pWeapon))
-             weaponType = (int)p_throwable->CurrentWeaponType;
+        weaponType = (int)p_throwable->CurrentWeaponType;
 
     return weaponType;
 }
