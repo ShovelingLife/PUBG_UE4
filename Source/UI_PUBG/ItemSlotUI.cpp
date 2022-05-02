@@ -41,9 +41,7 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 
 void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
 {
-    auto p_slot = Cast<UItemSlotUI>(pObj);
-
-    if (p_slot)
+    if (auto p_slot = Cast<UItemSlotUI>(pObj))
     {
         // 현재 변수들에 데이터 적용
         pDraggedItem        = p_slot->pDraggedItem;

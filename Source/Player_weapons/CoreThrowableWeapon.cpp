@@ -119,7 +119,6 @@ void ACoreThrowableWeapon::BindFunc()
                 if (UCustomGameInstance * p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
                     p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
             });
-
         break;
 
     case EThrowableWeaponType::STICK:

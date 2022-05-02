@@ -26,78 +26,52 @@ void UPlayerStateUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 
     if (p_player)
     {
-        UpdateAimUI();
-        UpdateBulletCountUI();
-        UpdateShootMode();
+        if (auto p_weaponManager = p_player->GetWeaponManager())
+        {
+            if (auto p_weapon = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType))
+            {
+                UpdateBulletCountUI(p_weapon);
+                UpdateShootMode(p_weapon);
+            }
+        }
         UpdateHealthBarUI(DeltaTime);
         UpdateOxygenBarUI(DeltaTime);
     }
 }
 
-void UPlayerStateUI::UpdateAimUI()
+void UPlayerStateUI::UpdateBulletCountUI(ABaseInteraction* pWeapon)
 {
-    //// ?먯엫
-    //if (is_aiming)
-    //{
-    //    FWidgetTransform reticle_img_trans;
-    //    float mouse_posX = 0.f, mouse_posY = 0.f;
-    //    mp_user_ui->Reticle_img->SetVisibility(ESlateVisibility::Visible);
-    //    reticle_img_trans.Translation.Set(mouse_posX, mouse_posY);
-    //    UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouse_posX, mouse_posY);
-    //    mp_user_ui->Reticle_img->SetRenderTransform(reticle_img_trans);
-    //}
-    //else
-    //    mp_user_ui->Reticle_img->SetVisibility(ESlateVisibility::Hidden);
+    // 현재 및 최대 총알 개수 설정
+    if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
+    {
+        auto weaponData = p_gun->WeaponData;
+        MagazineCurrentTxt->SetText(FText::FromString(FString::FromInt(weaponData.CurrentBulletCount)));
+        MagazineTotalTxt->SetText(FText::FromString(FString::FromInt(weaponData.MaxBulletCount)));
+    }
 }
 
-void UPlayerStateUI::UpdateBulletCountUI()
+void UPlayerStateUI::UpdateShootMode(ABaseInteraction* pWeapon)
 {
-    auto p_weaponManager = p_player->GetWeaponManager();
-    auto p_weapon        = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
-
-    if (!p_weapon)
-        return;
-
-    // 현재 및 최대 총알 개수 설정
-    if (p_weapon->IsA<ACoreWeapon>())
+    // 총기 격발 방식 변경 (단발/점사/연사)
+    if (mpUI_manager)
     {
-        if (auto p_gun = Cast<ACoreWeapon>(p_weapon))
+        if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
         {
-            auto weaponData = p_gun->WeaponData;
-            MagazineCurrentTxt->SetText(FText::FromString(FString::FromInt(weaponData.CurrentBulletCount)));
-            MagazineTotalTxt->SetText(FText::FromString(FString::FromInt(weaponData.MaxBulletCount)));
+            int index = (int)p_gun->ShootType;
+            BoltActionImg->SetVisibility(ESlateVisibility::Visible);
+            BoltActionImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapPlayerTex[index]));
         }
     }
-}
-
-void UPlayerStateUI::UpdateShootMode()
-{
-    auto p_weaponManager = p_player->GetWeaponManager();
-    auto p_weapon        = p_weaponManager->GetWeaponByIndex(p_weaponManager->CurrentWeaponType);
-
-    if (!p_weapon)
-        return;
-
-    if (mpUI_manager &&
-        p_weapon->IsA<ACoreWeapon>())
-    {
-        auto p_gun = Cast<ACoreWeapon>(p_weapon);
-        BoltActionImg->SetVisibility(ESlateVisibility::Visible);
-        BoltActionImg->SetBrushFromTexture(Cast<UTexture2D>(mpUI_manager->MapPlayerTex[(int)p_gun->ShootType]));
-    }
-    else
-        BoltActionImg->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
 {
     UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
-    auto currentState = p_player->CurrentState;
 
     if (!p_customGameInst)
         return;
 
-    if (currentState == EPlayerState::DEAD)
+    if (p_player->CurrentState == EPlayerState::DEAD)
     {
         p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
         auto controller = GetWorld()->GetFirstPlayerController();

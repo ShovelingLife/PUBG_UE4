@@ -483,19 +483,21 @@ void ACustomPlayer::UpdateHealth()
 
 void ACustomPlayer::BeginShooting()
 {
-    if (mbInventoryOpened)
+    if (mbInventoryOpened ||
+        !mpWeaponManager)
         return;
 
+    mpWeaponManager->SetShootState(true);
     mpWeaponManager->bShooting = true;
 }
 
 void ACustomPlayer::EndShooting()
 {
-    if (mbInventoryOpened)
+    if (mbInventoryOpened ||
+        !mpWeaponManager)
         return;
 
-    if (mpWeaponManager)
-        mpWeaponManager->SetShootState(false);
+    mpWeaponManager->SetShootState(false);
 
     // 투척류 무기일 시 뗐을 때만 발동
     if (mpWeaponManager->bArrWeaponEquipped[4])
@@ -508,14 +510,6 @@ void ACustomPlayer::Reload()
 
 void ACustomPlayer::Aim()
 {
-    bool b_firstEquipped  = false;
-    bool b_secondEquipped = false;
-
-    // 무기 장착하고 있지 않은 상태
-    if (!b_firstEquipped &&
-        !b_secondEquipped)
-        return;
-
     switch (CurrentState)
     {
     // 기본자세 > 에임
@@ -528,7 +522,7 @@ void ACustomPlayer::Aim()
     case EPlayerState::CROUCH_AIM:  CurrentState = EPlayerState::CROUCH;      bAiming = false; break;
     case EPlayerState::PRONING_AIM: CurrentState = EPlayerState::PRONING;     bAiming = false; break;
     }
-    mpWeaponManager->ChangeAimPose((int)bAiming);
+    mpWeaponManager->ChangeAimPose(bAiming);
 }
 
 void ACustomPlayer::ChangeShootMode()
@@ -541,24 +535,22 @@ void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponT
     auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
     bool bPlayAudio = false;
 
-    if (!p_customGameInst)
+    if (!p_customGameInst ||
+        !mpWeaponManager)
         return;
 
-    if (mpWeaponManager)
+    if (auto p_soundManager = p_customGameInst->pSoundManager)
     {
-        if (auto p_soundManager = p_customGameInst->pSoundManager)
-        {
-            // 마우스 휠로 무기 선택
-            if      (Direction != "")
-                     bPlayAudio = mpWeaponManager->ScrollSelect(Direction);
+        // 마우스 휠로 무기 선택
+        if (Direction != "")
+            bPlayAudio = mpWeaponManager->ScrollSelect(Direction);
 
-            // 키보드 숫자 키로 무기 선택
-            else if ((int)WeaponType > 0)
-                     bPlayAudio = mpWeaponManager->IsWeaponAvailable((WeaponType));
+        // 키보드 숫자 키로 무기 선택
+        else if ((int)WeaponType > 0)
+            bPlayAudio = mpWeaponManager->IsWeaponAvailable((WeaponType));
 
-            if (bPlayAudio)
-                p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-        }
+        if (bPlayAudio)
+            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
     }
 }
 

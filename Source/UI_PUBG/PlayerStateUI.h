@@ -17,6 +17,7 @@ class UProgressBar;
 class UImage;
 class UTextBlock;
 class AUI_manager;
+class ABaseInteraction;
 class ACustomPlayer;
 
 UCLASS()
@@ -53,9 +54,6 @@ public:
     /** \brief 자세 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* PostureImg;
 
-    /** \brief 조준선 이미지 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ReticleImg;
-
     UPROPERTY() ACustomPlayer* p_player;
 
 protected:
@@ -64,14 +62,11 @@ protected:
 	void NativeTick(const FGeometry&, float) override;
 
 public:
-    /** \brief 조준선 갱신 */
-    void UpdateAimUI();
-
     /** \brief 발사 방법 UI 갱신 */
-    void UpdateShootMode();
+    void UpdateShootMode(ABaseInteraction* pWeapon);
 
     /** \brief 총알 개수 UI 갱신 */
-    void UpdateBulletCountUI();
+    void UpdateBulletCountUI(ABaseInteraction* pWeapon);
 
     /** \brief 체력 바 UI 갱신 */
     void UpdateHealthBarUI(float DeltaTime);

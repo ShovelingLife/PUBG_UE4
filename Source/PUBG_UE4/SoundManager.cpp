@@ -98,8 +98,7 @@ void ASoundManager::InitWeaponAudio()
     auto stickSound = ConstructorHelpers::FObjectFinder<USoundWave>(*(k_grenadeSoundPath + "Stick"));
 
     if (stickSound.Succeeded())
-        pStickSound = stickSound.Object;
-    
+        pStickSound = stickSound.Object;    
 }
 
 void ASoundManager::PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType)

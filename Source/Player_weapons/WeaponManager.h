@@ -162,7 +162,7 @@ public:
 	void ChangeShootMode();
 
 	// 미구현 상태
-	void ChangeAimPose(int);
+	void ChangeAimPose(bool bAiming);
 
 	/**
 	 * \brief 재장전 중인지 확인

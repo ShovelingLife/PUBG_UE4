@@ -20,16 +20,17 @@ class AWeaponManager;
 class ABaseInteraction;
 class ACoreThrowableWeapon;
 
-DECLARE_DELEGATE(FDeleKillUI_Anim)
 DECLARE_DELEGATE_OneParam(FDeleSetPlayerOtherState, EPlayerOtherState)
+
+// UI 관련 델리게이트
+DECLARE_DELEGATE(FDeleKillUI_Anim)
 DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
+DECLARE_DELEGATE_OneParam(FDeleSetShootTypeNotificationTxt, int)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
-/**
-  * \brief 게임 인스턴스 클래스
- */
+/** \brief 게임 인스턴스 클래스 */
 UCLASS()
 class PUBG_UE4_API UCustomGameInstance : public UGameInstance
 {
@@ -40,6 +41,7 @@ public:
     UPROPERTY() ASoundManager*       pSoundManager;
     FDeleSetPlayerOtherState DeleSetPlayerOtherState;
     FDeleDealPlayerDmg               DeleDealPlayerDmg;
+    FDeleSetShootTypeNotificationTxt DeleSetShootTypeNotificationTxt;
     FDeleSetItemOntoInventory        DeleSetItemOntoInventory;
     FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
     FDeleRunEffectAnim               DeleRunEffectAnim;

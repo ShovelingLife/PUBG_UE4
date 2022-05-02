@@ -188,21 +188,20 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
     if (!pWeapon)
         return;
 
-    USkeletalMeshComponent* skeletalMeshComp = pWeapon->SkeletalMeshComp;
-    UStaticMeshComponent*   staticMeshComp   = pWeapon->StaticMeshComp;
+    UMeshComponent* meshComponent = nullptr;
+
+    if      (pWeapon->SkeletalMeshComp)
+             meshComponent = pWeapon->SkeletalMeshComp;
     
+    else if (pWeapon->StaticMeshComp)
+             meshComponent = pWeapon->StaticMeshComp;
+
     // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
-    if (skeletalMeshComp)
+    if (meshComponent)
     {
-        skeletalMeshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        skeletalMeshComp->AttachToComponent(pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        skeletalMeshComp->ResetRelativeTransform();
-    }
-    else if (staticMeshComp)
-    {
-        staticMeshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-        staticMeshComp->AttachToComponent(pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        staticMeshComp->ResetRelativeTransform();
+        meshComponent->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+        meshComponent->AttachToComponent(pWeapon->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        meshComponent->ResetRelativeTransform();
     }
     // 현재 무기를 탈착 후 월드에 소환
     pWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
@@ -414,8 +413,16 @@ void AWeaponManager::SetShootState(bool bContinue)
 {
     if (auto p_weapon = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
     {
-        if (p_weapon->ShootType == EGunShootType::CONSECUTIVE)
-            bShooting = false;
+        auto shootType = p_weapon->ShootType;
+
+        if(shootType == EGunShootType::CONSECUTIVE)
+        {
+            if (!bContinue)
+                bShooting = false;
+
+            else
+                Shoot();
+        }    
     }
 }
 
@@ -645,12 +652,40 @@ void AWeaponManager::ChangeShootMode()
         // 격발 방식 변경
         int currentGunShootType = (int)p_gun->ShootType;
         p_gun->ShootType = (currentGunShootType < maxShootType) ? (EGunShootType)++currentGunShootType : EGunShootType::SINGLE;
+
+        if (auto p_gameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+            p_gameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound((int)p_gun->ShootType);
     }
 }
 
-void AWeaponManager::ChangeAimPose(int _type)
+void AWeaponManager::ChangeAimPose(bool bAiming)
 {
-    //
+    // 현재 착용 중인 무기를 가지고옴
+    ACoreWeapon* p_gun = nullptr;
+    FString socketName = "";
+
+    switch (CurrentWeaponType)
+    {
+    case ECurrentWeaponType::FIRST:  p_gun = pFirstGun;  socketName = "FirstGunSock";  break;
+    case ECurrentWeaponType::SECOND: p_gun = pSecondGun; socketName = "SecondGunSock"; break;
+    case ECurrentWeaponType::PISTOL: p_gun = pPistol;    socketName = "HandGunSock";   break;
+    }
+    if (!p_gun)
+        return;
+
+    // 캐릭터 메쉬에다 부착
+    USkeletalMeshComponent* skeletalMeshComp = nullptr;
+
+    if (auto p_character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+        skeletalMeshComp = p_character->GetMesh();
+
+    if (!skeletalMeshComp)  
+        return;
+    
+    if (bAiming)
+        socketName = "EquippedWeaponPosSock";
+
+    p_gun->AttachToComponent(skeletalMeshComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *socketName);
 }
 
 void AWeaponManager::CheckReloading(float TranscurredTime)
@@ -674,8 +709,9 @@ void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
     {
         if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
         {
+            float timeToWait = 0.25f;
             mCurrentShootTime += TranscurredTime;
-            GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt((int)p_gun->ShootType));
+
             switch (p_gun->ShootType)
             {
             case EGunShootType::SINGLE:
@@ -686,7 +722,7 @@ void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
 
             case EGunShootType::BURST:
 
-                if (mCurrentShootTime > 0.1f)
+                if (mCurrentShootTime > timeToWait)
                 {
                     Shoot();
                     mCurrentShootTime = 0.f;
@@ -702,7 +738,7 @@ void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
                 // 쿨타임 적용
             case EGunShootType::CONSECUTIVE:
 
-                if (mCurrentShootTime > 0.25f)
+                if (mCurrentShootTime > timeToWait)
                 {
                     Shoot();
                     mCurrentShootTime = 0.f;
