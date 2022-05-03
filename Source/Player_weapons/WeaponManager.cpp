@@ -11,7 +11,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SplineComponent.h"
-#include "Components/SplineMeshComponent.h"
+#include "Components/SplineMeshComponent.h" 
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -235,6 +235,8 @@ void AWeaponManager::PredictGrenadePath()
     for (int i = 0; i < SplineComp->GetNumberOfSplinePoints(); i++)
     {
         // 라인 메쉬 생성
+        // 특이사항) 컴포넌트들은 NewObject으로 생성 가능하나 UI와 달리 하나의 엑터라고 볼 수가 있음
+        // 따라서 StaticClass()으로 해줌으로서 엑터 오브젝트라는걸 명시해야됨.
         if (auto splineMeshComp = NewObject<USplineMeshComponent>(GetWorld(), USplineMeshComponent::StaticClass()))
         {
             splineMeshComp->SetMobility(EComponentMobility::Movable);

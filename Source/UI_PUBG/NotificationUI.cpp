@@ -9,6 +9,7 @@ void UNotificationUI::NativeConstruct()
 {
     Super::NativeConstruct();
 	
+	// 처음 시작할 때만 바인딩
 	if (auto p_gameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
 		p_gameInst->DeleSetShootTypeNotificationTxt.BindUFunction(this, "UpdateNotificationText");
 }
@@ -16,54 +17,55 @@ void UNotificationUI::NativeConstruct()
 void UNotificationUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
-
-	/*for (auto item : NotificationListView->GetListItems())
-	{
-		if (auto p_notificationText = Cast<UNotificationTextUI>(item))
-		{
-			if (!p_notificationText->IsAnyAnimationPlaying())
-				NotificationListView->RemoveItem(p_notificationText);
-		}
-	}*/
 }
 
+// 문제점1) 추후 응집도 향상 시켜야함 
 void UNotificationUI::UpdateNotificationText(int GunShootType)
 {
-	const FString str	 = "Current type : ";
-	FString shootTypeStr = "";
+	const FString str				  = "Current type : ";
+	FString		  shootTypeStr		  = "";
 	EGunShootType currentGunShootType = (EGunShootType)GunShootType;
 
-	switch (currentGunShootType)
+	switch (currentGunShootType) // 현재 격발 상태에 따라 
 	{
-	case EGunShootType::SINGLE:		 shootTypeStr = str + "Single";		 break;
-	case EGunShootType::BURST:		 shootTypeStr = str + "Burst";		 break;
-	case EGunShootType::CONSECUTIVE: shootTypeStr = str + "Consecutive"; break;
+	case EGunShootType::SINGLE:		 shootTypeStr = "Single";	   break;
+	case EGunShootType::BURST:		 shootTypeStr = "Burst";	   break;
+	case EGunShootType::CONSECUTIVE: shootTypeStr = "Consecutive"; break;
 	}
+	// CreateWidget 함수를 여러번 사용할 경우 생성 > 삭제가 아닌
+	// WidgetTree(UI 코어)에 노드로서 존재
+	// 따라서 _0 부터 _3까지 존재하며 재활용함 (퍼포먼스 저하 우려 X)
 	if (auto p_obj = CreateWidget<UNotificationTextUI>(this, BP_NotificationText))
     {
-		p_obj->TxtStr = shootTypeStr;
+		// 4개일 시 아이템을 1개 추가한 후 강제로 없앰 (리스트 최대 개수 3개) 
+        p_obj->TxtStr = str + shootTypeStr;
         p_obj->DeleDeleteNotificationTextUI.BindUFunction(this, "DeleteNotificationTextUI");
         mQueueNotificationText.Enqueue(p_obj);
         NotificationListView->AddItem(p_obj);
 
         if (NotificationListView->GetNumItems() > 3)
         {
+            // 큐에서 원소 1개 삭제 후 리스트에 재삽입 
             mQueueNotificationText.Pop();
             NotificationListView->ClearListItems();
 
+			// 큐가 비워질 때까지 반복 (여기서 해당 원소들을 삽입할 시 무한루프에 빠질 수가 있음)
             while (!mQueueNotificationText.IsEmpty())
             {
                 UNotificationTextUI* p_notificationTextUI = nullptr;
                 mQueueNotificationText.Dequeue(p_notificationTextUI);
                 NotificationListView->AddItem(p_notificationTextUI);
             }
+			// 완료 후 큐에 기존 원소들을 재삽입
 			for (auto item : NotificationListView->GetListItems())
-				mQueueNotificationText.Enqueue(Cast<UNotificationTextUI>(item));
+				 mQueueNotificationText.Enqueue(Cast<UNotificationTextUI>(item));
         }
 	}
-}
+}	
 
 UFUNCTION() void UNotificationUI::DeleteNotificationTextUI(UNotificationTextUI* pNotificationTextUI)
 {
-	NotificationListView->RemoveItem(pNotificationTextUI);
+	// 애니메이션이 끝났을 시 강제로 삭제
+	mQueueNotificationText.Pop();
+	NotificationListView->RemoveItem(NotificationListView->GetItemAt(0));
 }

@@ -14,6 +14,9 @@ UCLASS()
 class UI_PUBG_API UNotificationTextUI : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
+
+private:
+	bool mbForcefullyEnd = false;
 	
 public:
 	FDeleDeleteNotificationTextUI DeleDeleteNotificationTextUI;
@@ -26,6 +29,8 @@ protected:
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
+	virtual void NativeOnEntryReleased() override;
+
 public:
-	UFUNCTION() void OnAnimationEnded();
+	UFUNCTION() void DeleteNotificationText();
 };
