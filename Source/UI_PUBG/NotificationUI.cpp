@@ -19,26 +19,15 @@ void UNotificationUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
     Super::NativeTick(MyGeometry, InDeltaTime);
 }
 
-// 문제점1) 추후 응집도 향상 시켜야함 
-void UNotificationUI::UpdateNotificationText(int GunShootType)
+void UNotificationUI::UpdateNotificationText(FString Msg)
 {
-	const FString str				  = "Current type : ";
-	FString		  shootTypeStr		  = "";
-	EGunShootType currentGunShootType = (EGunShootType)GunShootType;
-
-	switch (currentGunShootType) // 현재 격발 상태에 따라 
-	{
-	case EGunShootType::SINGLE:		 shootTypeStr = "Single";	   break;
-	case EGunShootType::BURST:		 shootTypeStr = "Burst";	   break;
-	case EGunShootType::CONSECUTIVE: shootTypeStr = "Consecutive"; break;
-	}
 	// CreateWidget 함수를 여러번 사용할 경우 생성 > 삭제가 아닌
 	// WidgetTree(UI 코어)에 노드로서 존재
 	// 따라서 _0 부터 _3까지 존재하며 재활용함 (퍼포먼스 저하 우려 X)
 	if (auto p_obj = CreateWidget<UNotificationTextUI>(this, BP_NotificationText))
     {
 		// 4개일 시 아이템을 1개 추가한 후 강제로 없앰 (리스트 최대 개수 3개) 
-        p_obj->TxtStr = str + shootTypeStr;
+        p_obj->TxtStr = Msg;
         p_obj->DeleDeleteNotificationTextUI.BindUFunction(this, "DeleteNotificationTextUI");
         mQueueNotificationText.Enqueue(p_obj);
         NotificationListView->AddItem(p_obj);

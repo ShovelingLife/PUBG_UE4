@@ -19,13 +19,9 @@ class CHARACTERS_API ACustomGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	/**
-	 * \brief 기본 플레이어 및 컨트롤러 지정
-	 */
+	/** \brief 기본 플레이어 및 컨트롤러 지정 */
 	ACustomGameModeBase();
 
-	/**
-	 * \brief 게임모드로 즉시 전환
-	 */
+	/** \brief 게임모드로 즉시 전환 */
 	virtual void StartPlay() override;
 };

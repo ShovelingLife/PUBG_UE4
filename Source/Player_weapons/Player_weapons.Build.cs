@@ -9,6 +9,6 @@ public class Player_weapons : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
  
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "PUBG_UE4" });
-        PrivateDependencyModuleNames.AddRange(new string[] {  });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Niagara" });
     }
 }

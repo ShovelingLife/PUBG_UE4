@@ -38,8 +38,8 @@ void ADataTableManager::InitWeaponData()
         FsWeaponData data   = *p_row;
         data.MeshPath       = mkWeaponMeshPath + data.GroupType + "/SK_" + data.MeshPath;
         data.MagMeshPath    = mkWeaponMeshPath + data.Type + data.MagMeshPath;
-        data.BulletMeshPath = mkWeaponMeshPath + "Ammunition/SM_Shell_" + data.BulletMeshPath;
-        data.BulletBP_path  = mkBulletBP_path + data.Type + "_bullet";
+        data.BulletMeshPath = "/Game/AmmoPack/Models/" + data.BulletMeshPath;
+        data.BulletBP_path  = mkBulletBP_path + data.Type + "_Bullet";
         //data. = mkRendertargetMeshPath + data.type;
         ArrWeaponData.Add(data);
     }

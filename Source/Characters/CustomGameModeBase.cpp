@@ -1,4 +1,5 @@
 ﻿#include "CustomGameModeBase.h"
+#include "CustomHUD.h"
 #include "CustomPlayer.h"
 #include "CustomPlayerController.h"
 #include "PUBG_UE4/CustomGameInstance.h"
@@ -9,6 +10,7 @@ ACustomGameModeBase::ACustomGameModeBase()
 {
     DefaultPawnClass      = ACustomPlayer::StaticClass();
     PlayerControllerClass = ACustomPlayerController::StaticClass();    
+    HUDClass = ACustomHUD::StaticClass();
 }
 
 void ACustomGameModeBase::StartPlay()

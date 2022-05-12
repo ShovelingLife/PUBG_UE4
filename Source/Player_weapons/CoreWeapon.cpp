@@ -64,7 +64,7 @@ void ACoreWeapon::InitBullet()
     ConstructorHelpers::FClassFinder<AActor> BP_BULLET(*(WeaponData.BulletBP_path));
 
     if (BP_BULLET.Succeeded())
-        pBullet = BP_BULLET.Class->GetDefaultObject<ACoreBullet>();
+        BP_Bullet = BP_BULLET.Class;
 }
 
 void ACoreWeapon::UpdateCollider()

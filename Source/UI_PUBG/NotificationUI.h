@@ -27,7 +27,7 @@ protected:
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
-    UFUNCTION() void UpdateNotificationText(int GunShootType);
+    UFUNCTION() void UpdateNotificationText(FString Msg);
 
     UFUNCTION() void DeleteNotificationTextUI(UNotificationTextUI* pNotificationTextUI);
 };

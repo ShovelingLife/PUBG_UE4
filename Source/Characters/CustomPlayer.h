@@ -58,8 +58,10 @@ private:
 public:
     UPROPERTY(EditAnywhere) TSubclassOf<ADummyCharacter> BP_DummyCharacter;
     UPROPERTY() ADummyCharacter* pDummyCharacter;
+
     UPROPERTY(VisibleAnywhere, Category = FPS_Variable) USpringArmComponent* FPS_SpringArmComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = FPS_Variable) UCameraComponent*    FPS_CameraComp    = nullptr;
+
     UPROPERTY(VisibleAnywhere, Category = TPS_Variable) USpringArmComponent* TPS_SpringArmComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UCameraComponent*    TPS_CameraComp    = nullptr;
     //UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UStaticMeshComponent*    TPS_MeshComp    = nullptr;

@@ -17,6 +17,9 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float _DeltaSeconds)
     // 캐릭터가 널이 아닐 시
     if (p_player)
     {
+        // 에임 오프셋 적용
+        auto tmpAimRotationPitch = p_player->GetBaseAimRotation().Pitch;
+        AimRotationPitch = (tmpAimRotationPitch >= 180.f) ? tmpAimRotationPitch : tmpAimRotationPitch - 360.f;
         // 값 적용
         PlayerState = (p_player->bInVehicle) ? EPlayerAnimationState::IDLE : (EPlayerAnimationState)p_player->CurrentState;
         auto velocity = p_player->GetVelocity();        

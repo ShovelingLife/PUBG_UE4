@@ -25,7 +25,7 @@ DECLARE_DELEGATE_OneParam(FDeleSetPlayerOtherState, EPlayerOtherState)
 // UI 관련 델리게이트
 DECLARE_DELEGATE(FDeleKillUI_Anim)
 DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
-DECLARE_DELEGATE_OneParam(FDeleSetShootTypeNotificationTxt, int)
+DECLARE_DELEGATE_OneParam(FDeleSetShootTypeNotificationTxt, FString)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)

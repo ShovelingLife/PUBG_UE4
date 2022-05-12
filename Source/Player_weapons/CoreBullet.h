@@ -16,6 +16,8 @@
 #include "CoreBullet.generated.h"
 
 class UCapsuleComponent;
+class UNiagaraComponent;
+class UNiagaraSystem;
 class USceneComponent;
 class UStaticMeshComponent;
 class UProjectileMovementComponent;
@@ -31,44 +33,37 @@ protected:
     const float	 mkLifeTime       = 3.f;
     float		 mCurrentLifeTime = 0.f;
     float		 mCurrentSpeed    = 0.f;
+    bool mCollided = false;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Scene_comp) USceneComponent*              SceneComp;
-    UPROPERTY(VisibleAnywhere, Category = Collider)   UCapsuleComponent*            ColliderComp;
     UPROPERTY(VisibleAnywhere, Category = Mesh)       UStaticMeshComponent*         MeshComp;
     UPROPERTY(VisibleAnywhere, Category = Bullet)     UProjectileMovementComponent* ProjectileMovementComp;
+
+    // 이펙트 관련
+    UPROPERTY(VisibleAnywhere, Category = Effect) UNiagaraComponent* NiagaraComp;
+    UPROPERTY(VisibleAnywhere, Category = Effect) UNiagaraSystem* TrailEffect;
+    UPROPERTY(VisibleAnywhere, Category = Effect) UNiagaraSystem* ImpactEffect;
 
 public:
     ACoreBullet();
 
-
 protected:
     virtual void BeginPlay() override;
 
-    /**
-      * \brief 충돌 시 오브젝트 소멸 (UFUNCTION)
-     */
-    UFUNCTION()
-    void OnHit(class UPrimitiveComponent* _my_comp, AActor* _other, class UPrimitiveComponent* _other_comp, FVector _normal_impulse, const FHitResult& _hit);
+    /** \brief 충돌 시 오브젝트 소멸 */
+    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 public:
     virtual void Tick(float) override;
 
 private:
-    /**
-      * \brief 메시 컴포넌트 초기화
-     */
+    /** \brief 메시 컴포넌트 초기화 */
     void InitMesh();
 
-    /**
-      * \brief 충돌체 컴포넌트 초기화
-     */
-    void InitCollider();
-
-    /**
-      * \brief 총알 컴포넌트 초기화
-     */
+    /** \brief 총알 컴포넌트 초기화 */
     void InitProjectileMovementComp();
+
+    void InitVFX();
 
 protected:
     /**

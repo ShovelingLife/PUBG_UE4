@@ -3,6 +3,8 @@
 #include "CoreMeleeWeapon.h"
 #include "CoreThrowableWeapon.h"
 #include "CoreWeapon.h"
+#include "CoreBullet.h"
+#include "DrawDebugHelpers.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/SoundManager.h"
@@ -367,33 +369,15 @@ void AWeaponManager::Shoot()
         PlaySound(EWeaponSoundType::SHOT);
 
         // 레이캐스트 적용
-        APlayerCameraManager* cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-        FVector               beginPos = p_gun->SkeletalMeshComp->GetSocketLocation("MuzzleSock");
-        FVector               forwardVec = cameraManager->GetActorForwardVector() * 500;
-        FHitResult            hitResult;
-        FVector               endPos = beginPos + forwardVec;
+        auto        cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
+        FVector     beginPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
+        FVector     forwardVec = cameraManager->GetActorForwardVector() * 500;
+        FHitResult  hitResult;
+        FVector     endPos = beginPos + forwardVec;
         GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Pawn));
         FRotator bulletRotation = UKismetMathLibrary::FindLookAtRotation(beginPos, endPos);
-        //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
-        //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
-        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Cyan, bullet_rotation.ToString());
-        AActor* p_bullet = nullptr;
-
-        if (p_gun->pBullet)
-        {
-            // 총알 회전값 수정 요망
-            auto test_rotation = FRotator::MakeFromEuler(FVector(endPos.X, bulletRotation.Pitch, bulletRotation.Yaw));
-            test_rotation.Yaw += 100.f;
-            p_bullet = GetWorld()->SpawnActor(p_gun->pBullet->GetClass(), &beginPos, &bulletRotation);
-            //GEngine->AddOnScreenDebugMessage(0, 5.f, FColor::Cyan, test_rotation.ToString());
-            /*ACore_bullet* core_bullet = Cast<ACore_bullet>(bullet);
-
-            if (core_bullet)
-                core_bullet->mesh->SetRelativeRotation(bullet_rotation);*/
-        }
-        //if(another_character)
-
-        // 파티클 적용
+        //DrawDebugLine(GetWorld(), beginPos, endPos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
+        GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, beginPos, bulletRotation);
         p_gun->ParticleComp->Activate(true);
     }
     // 근접 무기
@@ -654,9 +638,18 @@ void AWeaponManager::ChangeShootMode()
         // 격발 방식 변경
         int currentGunShootType = (int)p_gun->ShootType;
         p_gun->ShootType = (currentGunShootType < maxShootType) ? (EGunShootType)++currentGunShootType : EGunShootType::SINGLE;
+        
+        // 팝업 UI 설정
+        FString	shootTypeStr = "";
 
+        switch (p_gun->ShootType) // 현재 격발 상태에 따라 
+        {
+        case EGunShootType::SINGLE:		 shootTypeStr = "Single";	   break;
+        case EGunShootType::BURST:		 shootTypeStr = "Burst";	   break;
+        case EGunShootType::CONSECUTIVE: shootTypeStr = "Consecutive"; break;
+        }
         if (auto p_gameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
-            p_gameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound((int)p_gun->ShootType);
+            p_gameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound("Current type : " + shootTypeStr);
     }
 }
 

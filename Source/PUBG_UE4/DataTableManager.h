@@ -27,7 +27,7 @@ public:
       * \brief 게임 오브젝트 데이터 배열 (static)
      */
     static TArray<FsWeaponData>      ArrWeaponData;
-    static TArray<FsOtherWeaponData> ArrOtherWeaponData;
+    static TArray<FsOtherWeaponData> ArrOtherWeaponData;    
     static TArray<FsVehicleData>     ArrVehicleData;
 
 private:
@@ -37,7 +37,7 @@ private:
     UPROPERTY(VisibleAnywhere) UDataTable* mpWeaponDataTable;
 
     const FString mkWeaponMeshPath       = "/Game/AdvanceWeaponPack/Mesh/Weapon/";
-    const FString mkBulletBP_path        = "/Game/Blueprints/Weapons/Ammo/BP_";
+    const FString mkBulletBP_path        = "/Game/Blueprints/Items/Weapons/Ammo/BP_";
     const FString mkRendertargetMeshPath = "/Game/Materials/Weapon_UI/UI_material_";
     const FString mkWeaponSoundPath      = "/Game/SFX/Gun_sounds/";
 

@@ -66,6 +66,7 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Direction = 0.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Speed     = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float AimRotationPitch = 0.f;
 
 
     /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch")
