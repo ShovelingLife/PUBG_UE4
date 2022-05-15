@@ -583,3 +583,12 @@ void ACustomPlayer::DealDmg(float DmgVal)
     else
         CurrentHealth -= DmgVal;
 }
+
+ACoreWeapon* ACustomPlayer::GetCurrentWeapon()
+{
+    if (mpWeaponManager)
+        return Cast<ACoreWeapon>(mpWeaponManager->GetWeaponByIndex(mpWeaponManager->CurrentWeaponType));
+
+    else
+        return nullptr;
+}

@@ -13,7 +13,9 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerStateUI.generated.h"
 
+class UTexture2D;
 class UProgressBar;
+class UCanvas;
 class UImage;
 class UTextBlock;
 class AUI_manager;
@@ -26,8 +28,7 @@ class UI_PUBG_API UPlayerStateUI : public UUserWidget
 	GENERATED_BODY()
 	
 private:
-    /** \brief UI 매니저 */
-    UPROPERTY() AUI_manager* mpUI_manager;
+    UTexture2D* mCrossHairTex = nullptr;
     float mCurrentTime = 0.f;
 
 public:
@@ -54,7 +55,7 @@ public:
     /** \brief 자세 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* PostureImg;
 
-    UPROPERTY() ACustomPlayer* p_player;
+    UPROPERTY() ACustomPlayer* pPlayer;
 
 protected:
 	void NativeConstruct() override;

@@ -225,4 +225,6 @@ public:
     UFUNCTION() void DealDmg(float DmgVal);
 
     UFUNCTION() void SetOtherState(EPlayerOtherState OtherState) { this->CurrentOtherState = OtherState; }
+
+    ACoreWeapon* GetCurrentWeapon();
 };

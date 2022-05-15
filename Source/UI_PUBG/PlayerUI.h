@@ -26,6 +26,10 @@ class UI_PUBG_API UPlayerUI : public UUserWidget
 {
 	GENERATED_BODY()
 
+private:
+    // 현재 쓰여지는 이미지 배열
+    UPROPERTY(VisibleAnywhere) TArray<UImage*> mArrImage;
+
 public:
     /** \brief 파티원 정보 UI */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UMemberStateUI* MemberStateUI; 
@@ -45,7 +49,12 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UNotificationUI* NotificationUI;
 
     /** \brief 조준선 이미지 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairUpImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairDownImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairLeftImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairRightImg;
+
+    UPROPERTY(EditAnywhere) float TmpPosVal = 0.f;
 
 protected:
     void NativeConstruct() override;
@@ -55,4 +64,6 @@ protected:
 private:
     /** \brief 발사 방법 UI 갱신 */
     void UpdateAimUI();
+
+    void UpdateCrossHair();
 };

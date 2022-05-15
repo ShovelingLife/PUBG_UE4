@@ -35,6 +35,8 @@
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Modular Interface Pack $
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Car Sound Effects Pack. Vol. 1 (100+ SFX) $
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Icon Creator $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Ammo Pack $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Niagara Mega VFX Pack vol. 1 $
 #### &#x2B1B; 유니티 에셋 스토어)
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; SFX bundle
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; ProgressBars #4
