@@ -35,7 +35,6 @@ void ACoreBullet::Tick(float _DeltaTime)
 void ACoreBullet::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Collided");
     NiagaraComp->SetAsset(ImpactEffect);
     mCollided = true;
 }

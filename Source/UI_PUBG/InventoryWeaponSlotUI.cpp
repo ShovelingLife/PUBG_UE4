@@ -344,13 +344,13 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
             // 네번째 무기
             if (auto p_melee = p_weaponManager->pMelee)
             {
-                MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->CurrentWeaponType));
+                MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType));
                 MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
             }
             // 다섯번째 무기
             if (auto p_throwable = p_weaponManager->pThrowable)
             {
-                GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->CurrentWeaponType));
+                GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->WeaponType));
                 GrenadeNameTxt->SetText(FText::FromString(p_throwable->WeaponData.Type));
             }
         }

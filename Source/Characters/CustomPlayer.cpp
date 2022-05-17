@@ -57,10 +57,11 @@ void ACustomPlayer::BeginPlay()
         p_customGameInst->DeleDealPlayerDmg.BindUFunction(this, "DealDmg");
     }
     // UI용 캐릭터 생성
-    pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
-
-    if (pDummyCharacter)
-        pDummyCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+    if (auto p_dummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter))
+    {
+        p_dummyCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+        pDummyCharacter = p_dummyCharacter;
+    }
 }
 
 void ACustomPlayer::Tick(float DeltaTime)
@@ -82,7 +83,7 @@ void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
     InputComponent->BindAxis(FName(TEXT("UpDown")),    this, &ACustomPlayer::MoveForwardBack);
     InputComponent->BindAxis(FName(TEXT("LeftRight")), this, &ACustomPlayer::MoveLeftRight);
     InputComponent->BindAxis(FName(TEXT("LookUp")),    this, &ACustomPlayer::LookUp);
-    InputComponent->BindAxis(FName(TEXT("Turn")),       this, &ACustomPlayer::Turn);
+    InputComponent->BindAxis(FName(TEXT("Turn")),      this, &ACustomPlayer::Turn);
 
     InputComponent->BindAction(FName(TEXT("Jump")),   IE_Pressed,  this, &ACustomPlayer::CustomJump);
     InputComponent->BindAction(FName(TEXT("Crouch")), IE_Pressed,  this, &ACustomPlayer::CustomCrouch);
@@ -458,6 +459,10 @@ void ACustomPlayer::EndSprint()
 
 void ACustomPlayer::OpenInventory()
 {
+    if (mpWeaponManager &&
+        mpWeaponManager->bShooting)
+        return;
+
     if (!mbInventoryOpened)
     {
         DeleOpenInventory.ExecuteIfBound();
@@ -487,7 +492,12 @@ void ACustomPlayer::BeginShooting()
         !mpWeaponManager)
         return;
 
-    mpWeaponManager->SetShootState(true);
+    // 연사일 때만 한번 발 사
+    if (auto p_gun = mpWeaponManager->GetCurrentWeapon())
+    {
+        if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
+            mpWeaponManager->Shoot(); 
+    }
     mpWeaponManager->bShooting = true;
 }
 
@@ -497,8 +507,12 @@ void ACustomPlayer::EndShooting()
         !mpWeaponManager)
         return;
 
-    mpWeaponManager->SetShootState(false);
-
+    // 연사일 때만 마우스 뗏을 시 멈춤
+    if(auto p_gun= mpWeaponManager->GetCurrentWeapon())
+    {
+        if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
+            mpWeaponManager->bShooting = false;
+    }
     // 투척류 무기일 시 뗐을 때만 발동
     if (mpWeaponManager->bArrWeaponEquipped[4])
         mpWeaponManager->ThrowGrenade();
@@ -533,24 +547,28 @@ void ACustomPlayer::ChangeShootMode()
 void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */)
 {
     auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-    bool bPlayAudio = false;
+    auto p_soundManager = p_customGameInst->pSoundManager;
 
     if (!p_customGameInst ||
-        !mpWeaponManager)
+        !mpWeaponManager  ||
+        !p_soundManager)
         return;
 
-    if (auto p_soundManager = p_customGameInst->pSoundManager)
+    // 마우스 휠로 무기 선택
+    if (Direction != "")
     {
-        // 마우스 휠로 무기 선택
-        if (Direction != "")
-            bPlayAudio = mpWeaponManager->ScrollSelect(Direction);
-
-        // 키보드 숫자 키로 무기 선택
-        else if ((int)WeaponType > 0)
-            bPlayAudio = mpWeaponManager->IsWeaponAvailable((WeaponType));
-
-        if (bPlayAudio)
+        if (mpWeaponManager->ScrollSelect(Direction))
             p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+    }
+    // 키보드 숫자 키로 무기 선택
+    else if (WeaponType != ECurrentWeaponType::NONE &&
+             WeaponType != mpWeaponManager->CurrentWeaponType)
+    {
+        if (mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)
+        {
+            mpWeaponManager->Swap(WeaponType);
+            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+        }
     }
 }
 
@@ -586,9 +604,5 @@ void ACustomPlayer::DealDmg(float DmgVal)
 
 ACoreWeapon* ACustomPlayer::GetCurrentWeapon()
 {
-    if (mpWeaponManager)
-        return Cast<ACoreWeapon>(mpWeaponManager->GetWeaponByIndex(mpWeaponManager->CurrentWeaponType));
-
-    else
-        return nullptr;
+    return (mpWeaponManager) ? mpWeaponManager->GetCurrentWeapon() : nullptr;
 }

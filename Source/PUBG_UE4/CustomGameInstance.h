@@ -16,7 +16,6 @@
 
 class UWidgetComponent;
 class ASoundManager;
-class AWeaponManager;
 class ABaseInteraction;
 class ACoreThrowableWeapon;
 

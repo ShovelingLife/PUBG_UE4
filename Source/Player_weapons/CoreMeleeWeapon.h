@@ -22,7 +22,7 @@ class PLAYER_WEAPONS_API ACoreMeleeWeapon : public ABaseInteraction
 
 public:
     FsOtherWeaponData WeaponData;
-    EMeleeWeaponType  CurrentWeaponType;	
+    EMeleeWeaponType  WeaponType;	
 
 public:
     ACoreMeleeWeapon();

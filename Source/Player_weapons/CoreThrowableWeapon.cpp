@@ -19,10 +19,10 @@ ACoreThrowableWeapon::ACoreThrowableWeapon()
     this->InitProjectileMovementComp();    
 }
 
-ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType WeaponType) : ACoreThrowableWeapon()
+ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThrowableWeapon()
 {
-    this->CurrentWeaponType = WeaponType;
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];
+    this->WeaponType = Type;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)Type];
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
@@ -106,7 +106,7 @@ void ACoreThrowableWeapon::Tick(float DeltaTime)
 
 void ACoreThrowableWeapon::BindFunc()
 {
-    switch (CurrentWeaponType)
+    switch (WeaponType)
     {
     case EThrowableWeaponType::ILLUMINATION:
 
@@ -137,32 +137,23 @@ void ACoreThrowableWeapon::BindFunc()
 
 void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 {
+    const FString explosionPath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/";
     FString particlePath = "";
 
-    switch (CurrentWeaponType)
+    switch (WeaponType)
     {
     case EThrowableWeaponType::FRAGMENTATION1:
     case EThrowableWeaponType::FRAGMENTATION2:
     case EThrowableWeaponType::CLAYMORE:
-        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'";
-        break;
+        particlePath = explosionPath + "P_Explosion_Big_A.P_Explosion_Big_A'"; break;
 
     case EThrowableWeaponType::ILLUMINATION:
     case EThrowableWeaponType::STICK:
-        particlePath = "ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'";
-        break;
+        particlePath = "ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'"; break;
 
-    case EThrowableWeaponType::GRAY_SMOKE:
-        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Smoke.P_Explosion_Smoke'";
-        break;
-    
-    case EThrowableWeaponType::RED_SMOKE:
-        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Smoke.P_Explosion_Smoke'";
-        break;
-
-    case EThrowableWeaponType::MOLOTOV:
-        particlePath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Molotov.P_Molotov'";
-        break;
+    case EThrowableWeaponType::GRAY_SMOKE: particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
+    case EThrowableWeaponType::RED_SMOKE:  particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
+    case EThrowableWeaponType::MOLOTOV:    particlePath = explosionPath + "P_Molotov.P_Molotov'"; break;
     }
     // 파티클 설정
     ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(*particlePath);
@@ -173,7 +164,7 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 
 void ACoreThrowableWeapon::InitProjectileMovementComp()
 {
-    if (CurrentWeaponType == EThrowableWeaponType::CLAYMORE)
+    if (WeaponType == EThrowableWeaponType::CLAYMORE)
         return;
 
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
@@ -270,7 +261,7 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
     
     // 데이터 설정
     WeaponData = OtherWeapon->WeaponData;
-    CurrentWeaponType = OtherWeapon->CurrentWeaponType;
+    WeaponType = OtherWeapon->WeaponType;
     
     // 이펙트 정보 설정
     Particle = OtherWeapon->Particle;
@@ -309,7 +300,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                     {
                         if (!mbPlayed)
                         {
-                            UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)CurrentWeaponType), location);
+                            UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)WeaponType), location);
                             mbPlayed = true;
                         }
                     }
@@ -320,9 +311,9 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 mCallBack.ExecuteIfBound();
 
             // 이펙트 재생 
-            if (CurrentWeaponType == EThrowableWeaponType::GRAY_SMOKE ||
-                CurrentWeaponType == EThrowableWeaponType::RED_SMOKE  ||
-                CurrentWeaponType == EThrowableWeaponType::MOLOTOV)
+            if (WeaponType == EThrowableWeaponType::GRAY_SMOKE ||
+                WeaponType == EThrowableWeaponType::RED_SMOKE  ||
+                WeaponType == EThrowableWeaponType::MOLOTOV)
             {
                 StaticMeshComp->SetVisibility(false);
 
@@ -343,5 +334,5 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location);
                 Destroy();
             }
-        }), (CurrentWeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f, false);
+        }), (WeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f, false);
 }

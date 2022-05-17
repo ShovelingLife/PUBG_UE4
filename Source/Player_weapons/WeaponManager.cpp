@@ -50,7 +50,7 @@ void AWeaponManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
     UpdateCurrentWeaponArr();
     CheckReloading(DeltaTime);
-    CheckContinouslyShooting(DeltaTime);
+    CheckShooting(DeltaTime);
 }
 
 void AWeaponManager::CheckForEquippedWeapon()
@@ -376,7 +376,6 @@ void AWeaponManager::Shoot()
         FVector     endPos = beginPos + forwardVec;
         GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Pawn));
         FRotator bulletRotation = UKismetMathLibrary::FindLookAtRotation(beginPos, endPos);
-        //DrawDebugLine(GetWorld(), beginPos, endPos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
         GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, beginPos, bulletRotation);
         p_gun->ParticleComp->Activate(true);
     }
@@ -390,25 +389,8 @@ void AWeaponManager::Shoot()
     {
         // 크레모아가 아닌 무기일 때만 투척 경로 지정
         if (pThrowable &&
-            pThrowable->CurrentWeaponType != EThrowableWeaponType::CLAYMORE)
+            pThrowable->WeaponType != EThrowableWeaponType::CLAYMORE)
             PredictGrenadePath();
-    }
-}
-
-void AWeaponManager::SetShootState(bool bContinue)
-{
-    if (auto p_weapon = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
-    {
-        auto shootType = p_weapon->ShootType;
-
-        if(shootType == EGunShootType::CONSECUTIVE)
-        {
-            if (!bContinue)
-                bShooting = false;
-
-            else
-                Shoot();
-        }    
     }
 }
 
@@ -420,7 +402,7 @@ void AWeaponManager::Reload()
     {
         auto& weaponData = p_gun->WeaponData;
         int result = (weaponData.CurrentBulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.CurrentBulletCount) : p_gun->WeaponData.MaxBulletCount;
-        weaponData.MaxBulletCount -= result;
+        weaponData.MaxBulletCount     -= result;
         weaponData.CurrentBulletCount += result;
         PlaySound(EWeaponSoundType::RELOAD);
         mbReloading = true;
@@ -468,8 +450,9 @@ void AWeaponManager::UpdateGrenadePath()
 bool AWeaponManager::ScrollSelect(FString Pos)
 {
     // 현재 무기 인덱스 갖고와서 선택
+    auto tmpWeaponType = CurrentWeaponType;
     int currentIndex = (int)CurrentWeaponType;
-    int totalWeapon  = -1;
+    int totalWeapon  = 0;
 
     for (int i = 0; i < 5; i++)
     {
@@ -513,6 +496,7 @@ bool AWeaponManager::ScrollSelect(FString Pos)
             CurrentWeaponType = (finalIndex == ECurrentWeaponType::NONE) ? GetWeaponIndex("Up", 1) : finalIndex;
         }
     }
+    Swap(tmpWeaponType, true);
     return true;
 }
 
@@ -520,6 +504,34 @@ void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWea
 {
     ResetAfterDetaching(pNewWeapon, pCurrentWeapon->GetActorTransform());
     Attach(Cast<ABaseInteraction>(pCurrentWeapon), SocketName);
+}
+
+void AWeaponManager::Swap(ECurrentWeaponType WeaponType, bool bScrolling /* = false */)
+{
+    auto playerMesh      = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
+    auto attachmentRules = FAttachmentTransformRules::SnapToTargetIncludingScale;
+    auto typeToAttach    = (bScrolling) ? CurrentWeaponType : WeaponType;
+    auto typeToDettach   = (bScrolling) ? WeaponType : CurrentWeaponType;
+
+    // 장착하고자 하는 무기를 장착
+    switch (typeToAttach)
+    {
+    case ECurrentWeaponType::FIRST:   pFirstGun->AttachToComponent(playerMesh, attachmentRules, "EquippedWeaponPosSock"); break;
+    case ECurrentWeaponType::SECOND: pSecondGun->AttachToComponent(playerMesh, attachmentRules, "EquippedWeaponPosSock"); break;
+    case ECurrentWeaponType::PISTOL:    pPistol->AttachToComponent(playerMesh, attachmentRules, "EquippedWeaponPosSock"); break;
+    case ECurrentWeaponType::MELEE: break;
+    case ECurrentWeaponType::THROWABLE: pThrowable->AttachToComponent(playerMesh, attachmentRules, *(pThrowable->WeaponData.Type + "Sock")); break;
+    }
+    // 장착 되있던 무기를 탈착
+    switch (typeToDettach)
+    {
+    case ECurrentWeaponType::FIRST:   pFirstGun->AttachToComponent(playerMesh, attachmentRules, "FirstGunSock");  break;
+    case ECurrentWeaponType::SECOND: pSecondGun->AttachToComponent(playerMesh, attachmentRules, "SecondGunSock"); break;
+    case ECurrentWeaponType::PISTOL:    pPistol->AttachToComponent(playerMesh, attachmentRules, "HandGunSock");   break;
+    case ECurrentWeaponType::MELEE: break;
+    case ECurrentWeaponType::THROWABLE: break;
+    }
+    CurrentWeaponType = typeToAttach;
 }
 
 int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurrentWeapon /* = nullptr */, ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */)
@@ -669,18 +681,11 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
         return;
 
     // 캐릭터 메쉬에다 부착
-    USkeletalMeshComponent* skeletalMeshComp = nullptr;
-
     if (auto p_character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-        skeletalMeshComp = p_character->GetMesh();
-
-    if (!skeletalMeshComp)  
-        return;
-    
-    if (bAiming)
-        socketName = "EquippedWeaponPosSock";
-
-    p_gun->AttachToComponent(skeletalMeshComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *socketName);
+    {
+        if (USkeletalMeshComponent* skeletalMeshComp = p_character->GetMesh())
+            p_gun->AttachToComponent(skeletalMeshComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *((bAiming) ? "EquippedWeaponPosSock" : socketName));
+    }
 }
 
 void AWeaponManager::CheckReloading(float TranscurredTime)
@@ -698,12 +703,13 @@ void AWeaponManager::CheckReloading(float TranscurredTime)
     }
 }
 
-void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
+void AWeaponManager::CheckShooting(float TranscurredTime)
 {
     if (bShooting)
     {
         if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
         {
+            static bool bShooted = false;
             float timeToWait = 0.25f;
             mCurrentShootTime += TranscurredTime;
 
@@ -751,17 +757,6 @@ void AWeaponManager::CheckContinouslyShooting(float TranscurredTime)
     }
 }
 
-bool AWeaponManager::IsWeaponAvailable(ECurrentWeaponType WeaponType)
-{
-    // 착용 중인 무기가 있는지 확인
-    auto p_weapon = GetWeaponByIndex(WeaponType);
-
-    if (p_weapon)
-        CurrentWeaponType = WeaponType;
-
-    return (p_weapon != nullptr);
-}
-
 //int AWeaponManager::GetMaxBulletCount(ECurrentWeaponType WeaponType)
 //{
 //    ABaseInteraction* p_weapon = GetWeaponByIndex(WeaponType);
@@ -792,6 +787,11 @@ ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType WeaponType
     return arrWeapon[index - 1];
 }
 
+ACoreWeapon* AWeaponManager::GetCurrentWeapon()
+{
+    return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType));
+}
+
 ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon)
 {
     // 원소랑 일치한 데이터를 찾음
@@ -817,14 +817,14 @@ int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon)
     int weaponType = 0;
 
     // 총기일시
-    if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
-        weaponType = (int)p_gun->WeaponType;
+    if      (auto p_gun = Cast<ACoreWeapon>(pWeapon))
+             weaponType = (int)p_gun->WeaponType;
 
     else if (auto p_melee = Cast<ACoreMeleeWeapon>(pWeapon))
-        weaponType = (int)p_melee->CurrentWeaponType;
+             weaponType = (int)p_melee->WeaponType;
 
     else if (auto p_throwable = Cast<ACoreThrowableWeapon>(pWeapon))
-        weaponType = (int)p_throwable->CurrentWeaponType;
+             weaponType = (int)p_throwable->WeaponType;
 
     return weaponType;
 }
@@ -883,9 +883,9 @@ bool AWeaponManager::IsWrong(ABaseInteraction* pWeapon, ECurrentWeaponType Weapo
         auto p_gun = Cast<ACoreWeapon>(pWeapon);
         return (bFromWeaponSlot) ? (groupType == "Handgun") : (p_gun == pFirstGun || p_gun == pSecondGun);
     }
-    case ECurrentWeaponType::PISTOL: return (Cast<ACoreWeapon>(pWeapon) == pPistol || groupType != "HandGun");
-    case ECurrentWeaponType::MELEE:  return (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee || groupType != "Melee");
-    case ECurrentWeaponType::THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable  || groupType != "Explosive");
+    case ECurrentWeaponType::PISTOL:    return (Cast<ACoreWeapon>(pWeapon)          == pPistol    || groupType != "HandGun");
+    case ECurrentWeaponType::MELEE:     return (Cast<ACoreMeleeWeapon>(pWeapon)     == pMelee     || groupType != "Melee");
+    case ECurrentWeaponType::THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable || groupType != "Explosive");
     }
     return true;
 }

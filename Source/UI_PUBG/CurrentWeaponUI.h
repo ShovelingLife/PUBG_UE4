@@ -14,6 +14,7 @@
 #include "CurrentWeaponUI.generated.h"
 
 class UImage;
+class AWeaponManager;
 
 UCLASS()
 class UI_PUBG_API UCurrentWeaponUI : public UUserWidget
@@ -47,7 +48,7 @@ public:
 
 	/** \brief 현재 이미지 배열 */
 	UPROPERTY() TArray<UImage*> pArrImg;
-	UPROPERTY() class UGameInstanceSubsystemUI* pGameInstanceSubSystemUI;
+	UPROPERTY() AWeaponManager* pWeaponManager;
 
 protected:
 	void NativeConstruct() override;

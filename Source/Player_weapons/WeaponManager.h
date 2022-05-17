@@ -36,9 +36,9 @@ private:
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
 	UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
-	int mBurstCount = 0;
     FVector mGrenadeVelocity;
-    bool  mbThrowingGrenade = false;
+	int		mBurstCount = 0;
+    bool	mbThrowingGrenade = false;
 
 	// 총기 관련
     const float	mkReloadTime	   = 2.f;
@@ -130,8 +130,6 @@ public:
 	/** \brief 발사 */
 	void Shoot();
 
-	void SetShootState(bool bContinue);
-
 	/** \brief 재장전 */
 	void Reload();
 
@@ -155,7 +153,10 @@ public:
 	 */
 	void SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName);
 
-	// Exit Code = -1 Error / 0 Succeded / 1 Is Melee or Is Throwable
+	// 현재 착용 중인 무기랑 교체
+	void Swap(ECurrentWeaponType WeaponType, bool bScrolling = false);
+
+	// 반환값 = -1 에러 / 0 성공 / 1 근접 또는 투척 무기
 	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, ECurrentWeaponType WeaponType = ECurrentWeaponType::NONE);
 
 	/** \brief 착용 중인 무기를 체크함 */
@@ -174,13 +175,8 @@ public:
 	 * \brief 연사 하고있는 중인지 체크
 	 * \param TranscurredTime 발사 시간 간격
 	 */
-	void CheckContinouslyShooting(float TranscurredTime);
+	void CheckShooting(float TranscurredTime);
 
-	/**
-	 * \brief 무기 변경 가능한지 확인
-	 * \param WeaponType 무기 종류
-	 */
-	bool IsWeaponAvailable(ECurrentWeaponType WeaponType);
 
 	// ------- 부착 관련 함수 -------
 
@@ -190,6 +186,8 @@ public:
      * \return 현재 착용 중인 무기
      */
 	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType WeaponType);
+
+	ACoreWeapon* GetCurrentWeapon();
 
 	// 무기의 인덱스를 구함
 	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* pWeapon);

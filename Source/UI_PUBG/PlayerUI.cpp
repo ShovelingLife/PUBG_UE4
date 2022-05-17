@@ -41,11 +41,9 @@ void UPlayerUI::UpdateCrossHair()
 {
     if (auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
     {
-        // 위치 값
-        auto playerSpeed = UKismetMathLibrary::Round(p_player->GetCharacterMovement()->Velocity.Size());
-
-        // 색상 값
-        float increaseVal = UKismetMathLibrary::MapRangeClamped(((playerSpeed / 35) * -1.f) + 96.f, 96.f, 78.f, 1.f, 0.05f);
+        // 플레이어 위치 기반으로 > 공식 통해 78부터 96까지, 범위는 0.05부터 1까지
+        auto  playerSpeed = UKismetMathLibrary::Round(p_player->GetCharacterMovement()->Velocity.Size());
+        float increaseVal = UKismetMathLibrary::MapRangeClamped(((playerSpeed / 35) * -1.f) + 96.f, 78.f, 96.f, 0.05f, 1.f);
         increaseVal -= 0.15f;
         FLinearColor color(1.f, 0.f, 0.f, increaseVal);
 
@@ -60,8 +58,8 @@ void UPlayerUI::UpdateCrossHair()
 
                 switch (i)
                 {
-                case 0: posY = (increaseVal * 15.f)  - 35.f; break; // 위쪽
-                case 1: posX = (increaseVal * 15.f)  - 35.f; break; // 왼쪽
+                case 0: posY = (increaseVal *  15.f) - 35.f; break; // 위쪽
+                case 1: posX = (increaseVal *  15.f) - 35.f; break; // 왼쪽
                 case 2: posX = (increaseVal * -15.f) + 35.f; break; // 오른쪽
                 case 3: posY = (increaseVal * -15.f) + 35.f; break; // 아래쪽
                 }

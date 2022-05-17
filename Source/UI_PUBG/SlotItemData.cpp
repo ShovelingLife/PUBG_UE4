@@ -19,12 +19,12 @@ FsSlotItemData FsSlotItemData::GetDataFrom(ABaseInteraction* pObj)
     else if (auto p_melee = Cast<ACoreMeleeWeapon>(pObj))
     {
         FsOtherWeaponData data = p_melee->WeaponData;
-        return FsSlotItemData(data.Type, data.GroupType, data.Description, (int)p_melee->CurrentWeaponType);
+        return FsSlotItemData(data.Type, data.GroupType, data.Description, (int)p_melee->WeaponType);
     }
     else if (auto p_throwable = Cast<ACoreThrowableWeapon>(pObj))
     {
         FsOtherWeaponData data = p_throwable->WeaponData;
-        return FsSlotItemData(data.Type, data.GroupType, data.Description, (int)p_throwable->CurrentWeaponType);
+        return FsSlotItemData(data.Type, data.GroupType, data.Description, (int)p_throwable->WeaponType);
     }
     else
         return EmptyData;

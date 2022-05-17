@@ -20,10 +20,10 @@ void ACoreMeleeWeapon::BeginPlay()
     ABaseInteraction::SetCollisionSettingsForObjects();
 }
 
-void ACoreMeleeWeapon::Init(EMeleeWeaponType WeaponType)
+void ACoreMeleeWeapon::Init(EMeleeWeaponType Type)
 {
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)WeaponType];    
-    this->CurrentWeaponType = WeaponType;
+    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)Type];    
+    this->WeaponType = Type;
     ObjectType = WeaponData.Type;    
 
     InitMesh();

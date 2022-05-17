@@ -36,11 +36,11 @@ void ACoreWeapon::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void ACoreWeapon::Init(EWeaponType _WeaponType)
+void ACoreWeapon::Init(EWeaponType Type)
 {
-    WeaponData = ADataTableManager::ArrWeaponData[(int)_WeaponType];
+    WeaponData = ADataTableManager::ArrWeaponData[(int)Type];
     WeaponData.CurrentBulletCount = WeaponData.MaxBulletCount;
-    WeaponType = _WeaponType;
+    WeaponType = Type;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 

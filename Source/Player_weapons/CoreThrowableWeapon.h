@@ -44,7 +44,7 @@ public:
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
     FsOtherWeaponData    WeaponData;
-	EThrowableWeaponType CurrentWeaponType = EThrowableWeaponType::MAX;
+	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
 
 public:
     ACoreThrowableWeapon();

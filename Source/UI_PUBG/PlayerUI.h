@@ -38,10 +38,10 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UPlayerStateUI* PlayerStateUI;
     
     /** \brief 사망자 띄워주는 UI */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UKillLogBoxUI*    KillLogBoxUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UKillLogBoxUI* KillLogBoxUI;
     
     /** \brief 미니맵을 띄워주는 UI */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UMiniMapUI*       MinimapUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UMiniMapUI* MinimapUI;
     
     /** \brief 현재 착용 중인 무기 UI */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCurrentWeaponUI* CurrentWeaponUI;

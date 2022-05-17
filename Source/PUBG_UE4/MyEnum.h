@@ -101,7 +101,8 @@ enum class EPlayerSoundType
 {
     ITEM_FARM,
     WEAPON_EQUIP,
-    WEAPON_SWAP
+    WEAPON_SWAP,
+    NONE
 };
 
 /**
