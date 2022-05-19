@@ -44,11 +44,11 @@ void UCurrentWeaponUI::InitArrImg()
 
 void UCurrentWeaponUI::UpdateIconVisibility()
 {
-    FirstWeaponImg->SetVisibility((pWeaponManager->pFirstGun)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    SecondWeaponImg->SetVisibility(pWeaponManager->pSecondGun  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    ThirdWeaponImg->SetVisibility((pWeaponManager->pPistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    FourthWeaponImg->SetVisibility((pWeaponManager->pMelee)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    FifthWeaponImg->SetVisibility((pWeaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+     FirstWeaponImg->SetVisibility((pWeaponManager->pFirstGun)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    SecondWeaponImg->SetVisibility(pWeaponManager->pSecondGun   ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+     ThirdWeaponImg->SetVisibility((pWeaponManager->pPistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    FourthWeaponImg->SetVisibility((pWeaponManager->pMelee)     ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+     FifthWeaponImg->SetVisibility((pWeaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UCurrentWeaponUI::UpdateIconColor()
@@ -80,8 +80,8 @@ void UCurrentWeaponUI::UpdateIconColor()
             currentBulletCount = p_gun->WeaponData.CurrentBulletCount;
         }
         else if (p_weapon->IsA<ACoreMeleeWeapon>() ||
-            p_weapon->IsA<ACoreThrowableWeapon>())
-            currentBulletCount = 1;
+                 p_weapon->IsA<ACoreThrowableWeapon>())
+                 currentBulletCount = 1;
     }
     pArrImg[index]->SetColorAndOpacity((currentBulletCount == 0) ? mkSelectedNoAmmoColor : mkSelectedColor);
 }

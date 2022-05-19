@@ -104,7 +104,7 @@ void ACoreThrowableWeapon::Tick(float DeltaTime)
     }*/
 }
 
-void ACoreThrowableWeapon::BindFunc()
+void ACoreThrowableWeapon::BindExplosionFunc()
 {
     switch (WeaponType)
     {
@@ -251,10 +251,8 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
 
     // 메시 설정
     if (SkeletalMeshComp)
-    {
         SkeletalMeshComp->DestroyComponent();
-        SkeletalMeshComp = nullptr;
-    }
+
     SetRootComponent(StaticMeshComp);
     StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     StaticMeshComp->SetStaticMesh(OtherWeapon->StaticMeshComp->GetStaticMesh());
@@ -265,7 +263,7 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
     
     // 이펙트 정보 설정
     Particle = OtherWeapon->Particle;
-    BindFunc();
+    BindExplosionFunc();
 }
 
 void ACoreThrowableWeapon::Throw(FVector Velocity)

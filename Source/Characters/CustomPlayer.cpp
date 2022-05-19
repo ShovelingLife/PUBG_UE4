@@ -362,15 +362,19 @@ void ACustomPlayer::LookUp(float Value)
         AddControllerPitchInput(Value);
 
     // 경로 거리 설정
-    auto grenadeDirection = mpWeaponManager->GrenadeDirection;
-    auto target = ((Value * -1) / 10.f) + grenadeDirection;
-    auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDirection, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
-    
-    if (interptVal < 0.7f &&
-        interptVal > -0.1f)
-        mpWeaponManager->GrenadeDirection = interptVal;
-    
-    mpWeaponManager->UpdateGrenadePath();
+    if(mpWeaponManager)
+    {
+        auto grenadeDirection = mpWeaponManager->GrenadeDirection;
+        auto target = ((Value * -1) / 10.f) + grenadeDirection;
+        auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDirection, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
+
+        if (interptVal < 0.7f &&
+            interptVal > -0.1f)
+            mpWeaponManager->GrenadeDirection = interptVal;
+
+        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::SanitizeFloat(interptVal));
+        mpWeaponManager->UpdateGrenadePath();
+    }
 }
 
 void ACustomPlayer::Turn(float _Value)
@@ -378,7 +382,8 @@ void ACustomPlayer::Turn(float _Value)
     if (!mbInventoryOpened)
         AddControllerYawInput(_Value);
 
-    mpWeaponManager->UpdateGrenadePath();
+    if (mpWeaponManager)
+        mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::CustomJump()
@@ -389,7 +394,9 @@ void ACustomPlayer::CustomJump()
         return;
 
     Jump();
-    mpWeaponManager->UpdateGrenadePath();
+
+    if (mpWeaponManager)
+        mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::CustomCrouch()
@@ -496,8 +503,12 @@ void ACustomPlayer::BeginShooting()
     if (auto p_gun = mpWeaponManager->GetCurrentWeapon())
     {
         if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
-            mpWeaponManager->Shoot(); 
+            mpWeaponManager->ClickEvent(); 
     }
+    // 투척류일 시 경로 예측
+    if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
+        mpWeaponManager->ClickEvent();
+
     mpWeaponManager->bShooting = true;
 }
 
@@ -513,8 +524,8 @@ void ACustomPlayer::EndShooting()
         if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
             mpWeaponManager->bShooting = false;
     }
-    // 투척류 무기일 시 뗐을 때만 발동
-    if (mpWeaponManager->bArrWeaponEquipped[4])
+    // 투척류 무기일 시 뗐을 때만 발동    
+    if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
         mpWeaponManager->ThrowGrenade();
 }
 

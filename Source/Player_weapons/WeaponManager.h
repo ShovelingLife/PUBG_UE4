@@ -26,6 +26,8 @@ class USplineMeshComponent;
 class UStaticMesh;
 class UMaterial;
 
+DECLARE_DELEGATE_OneParam(FDeleSetExplosive, ACoreThrowableWeapon*)
+
 UCLASS()
 class PLAYER_WEAPONS_API AWeaponManager : public AActor
 {
@@ -46,6 +48,7 @@ private:
     float		mCurrentShootTime  = 0.f;
     bool		mbReloading		   = false;
 	bool		mbChangedShootType = true;
+	bool mbAiming = false;
 
 public:
 	/** \brief 현재 착용 중인 무기 */
@@ -54,6 +57,7 @@ public:
     UPROPERTY() ACoreWeapon*		  pPistol	 = nullptr;
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
+	FDeleSetExplosive DeleSetExplosive;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
     float			   GrenadeDirection;
@@ -128,7 +132,7 @@ public:
 	void Equip(AActor* pWeapon, bool bCheck = true);
 
 	/** \brief 발사 */
-	void Shoot();
+	void ClickEvent();
 
 	/** \brief 재장전 */
 	void Reload();
@@ -176,6 +180,8 @@ public:
 	 * \param TranscurredTime 발사 시간 간격
 	 */
 	void CheckShooting(float TranscurredTime);
+
+	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);
 
 
 	// ------- 부착 관련 함수 -------

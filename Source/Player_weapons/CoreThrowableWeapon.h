@@ -76,7 +76,7 @@ protected:
 
 protected:
     /** \brief 함수 포인터에 이벤트 바인딩 */
-    void BindFunc();
+    void BindExplosionFunc();
 
     /** \brief 파티클 시스템 생성 */
     virtual void InitParticleSystem(FString Path = "") override;

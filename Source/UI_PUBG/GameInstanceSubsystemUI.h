@@ -43,5 +43,5 @@ public:
 
     bool IsMouseLeftFromUI(FVector2D Distance, bool bFirst = false);
 
-    AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager();
+    AWeaponManager* GetWeaponManager();
 };

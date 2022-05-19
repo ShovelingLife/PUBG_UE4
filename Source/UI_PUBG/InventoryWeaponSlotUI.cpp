@@ -12,6 +12,7 @@
 #include "Player_weapons/CoreThrowableWeapon.h"
 #include "Player_weapons/WeaponManager.h"
 #include "PUBG_UE4/CustomGameInstance.h"
+#include "PUBG_UE4/Global.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -28,6 +29,7 @@ void UInventoryWeaponSlotUI::NativeConstruct()
 {
     Super::NativeConstruct();
     HideAllSlotUI_background();
+    UpdateThrowable(nullptr);
 
     pGameInstanceSubSystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
@@ -38,7 +40,17 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
     CheckForHoveredWeaponSlot();
     UpdateVisibility();
     UpdateInventoryWeaponUI();
-    UpdateHighlightImgPos(); 
+    UpdateHighlightImgPos();
+
+    if (pGameInstanceSubSystemUI)
+    {
+        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
+        {
+            if (!p_weaponManager->DeleSetExplosive.IsBound())
+                p_weaponManager->DeleSetExplosive.BindUFunction(this, "UpdateThrowable");
+        }
+            
+    }
 }
 
 void UInventoryWeaponSlotUI::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
@@ -107,7 +119,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
 
     // 슬롯 설정
     if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
+        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, Hidden);
 
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData     = mItemData;
@@ -289,26 +301,16 @@ void UInventoryWeaponSlotUI::UpdateVisibility()
         MeleeNumberBackground
 
     };
-    // 다섯번째 무기
-    TArray<UWidget*> arrThrowableWidget
-    {
-        GrenadeSlotImg,
-        GrenadeNameTxt,
-        GrenadeNumberBackground
-    };
     // 총기류 설정
     for (int i = 0; i < 6; i++)
     {
-        arrFirstGunWidget[i]->SetVisibility((p_weaponManager->pFirstGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-        arrSecondGunWidget[i]->SetVisibility((p_weaponManager->pSecondGun) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-        arrPistolWidget[i]->SetVisibility((p_weaponManager->pPistol) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        arrFirstGunWidget[i]->SetVisibility((p_weaponManager->pFirstGun) ? Visible : Hidden);
+        arrSecondGunWidget[i]->SetVisibility((p_weaponManager->pSecondGun) ? Visible : Hidden);
+        arrPistolWidget[i]->SetVisibility((p_weaponManager->pPistol) ? Visible : Hidden);
     }
     // 기타 무기 설정
     for (int i = 0; i < 3; i++)
-    {
-        arrMeleeWidget[i]->SetVisibility((p_weaponManager->pMelee) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-        arrThrowableWidget[i]->SetVisibility((p_weaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    }
+         arrMeleeWidget[i]->SetVisibility((p_weaponManager->pMelee) ? Visible : Hidden);
 }
 
 void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
@@ -346,12 +348,6 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
             {
                 MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType));
                 MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
-            }
-            // 다섯번째 무기
-            if (auto p_throwable = p_weaponManager->pThrowable)
-            {
-                GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->WeaponType));
-                GrenadeNameTxt->SetText(FText::FromString(p_throwable->WeaponData.Type));
             }
         }
     }
@@ -401,7 +397,7 @@ void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
     if (p_canvasPanelSlot)
     {
         p_canvasPanelSlot->SetSize(FVector2D(sizeX, 191.f));
-        HighlightImg->SetVisibility(ESlateVisibility::Visible);
+        HighlightImg->SetVisibility(Visible);
         HighlightImg->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.1f });
     }
 }
@@ -418,28 +414,28 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     case ECurrentWeaponType::THROWABLE: GrenadeCanvasPanel->RemoveChild(HighlightImg);   break;
     }
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
-    HighlightImg->SetVisibility(ESlateVisibility::Hidden);
+    HighlightImg->SetVisibility(Hidden);
     mSelectedWeaponIndex = ECurrentWeaponType::NONE;
     mbClicked = false;
 }
 
 void UInventoryWeaponSlotUI::HideAllSlotUI_background()
 {
-    FirstGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    FirstGunGripSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    FirstGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    FirstGunStockSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    FirstGunScopeSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    FirstGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    FirstGunGripSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    FirstGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    FirstGunStockSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    FirstGunScopeSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
     
-    SecondGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    SecondGunGripSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    SecondGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    SecondGunStockSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    SecondGunScopeSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    SecondGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    SecondGunGripSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    SecondGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    SecondGunStockSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    SecondGunScopeSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
     
-    PistolMuzzleSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    PistolMagazineSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-    PistolScopeSlotUI->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    PistolMuzzleSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    PistolMagazineSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
+    PistolScopeSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
 }
 
 void UInventoryWeaponSlotUI::SetSlotNull()
@@ -454,4 +450,22 @@ void UInventoryWeaponSlotUI::SetSlotNull()
             mItemData.Reset();
         }
     }
+}
+
+UFUNCTION() void UInventoryWeaponSlotUI::UpdateThrowable(ACoreThrowableWeapon* pThrowable)
+{
+    TArray<UWidget*> arrThrowableWidget
+    {
+        GrenadeSlotImg,
+        GrenadeNameTxt,
+        GrenadeNumberBackground
+    };
+    // 수류탄 UI 설정
+    if (pThrowable)
+    {
+        GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)pThrowable->WeaponType));
+        GrenadeNameTxt->SetText(FText::FromString(pThrowable->WeaponData.Type));
+    }
+    for (int i = 0; i < arrThrowableWidget.Num(); i++)
+         arrThrowableWidget[i]->SetVisibility(pThrowable ? Visible : Hidden);
 }

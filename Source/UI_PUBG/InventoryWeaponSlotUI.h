@@ -18,6 +18,7 @@
 
 class AUI_manager;
 class AWeaponManager;
+class ACoreThrowableWeapon;
 class UItemSlotUI;
 class UBorder;
 class UCanvasPanel;
@@ -174,6 +175,7 @@ private:
 
 public:
     // 슬롯 초기화
-    UFUNCTION()
-    void SetSlotNull();
+    UFUNCTION() void SetSlotNull();
+    
+    UFUNCTION() void UpdateThrowable(ACoreThrowableWeapon* pGrenade);
 };
