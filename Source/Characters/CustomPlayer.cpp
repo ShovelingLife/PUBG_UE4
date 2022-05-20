@@ -365,14 +365,9 @@ void ACustomPlayer::LookUp(float Value)
     if(mpWeaponManager)
     {
         auto grenadeDirection = mpWeaponManager->GrenadeDirection;
-        auto target = ((Value * -1) / 10.f) + grenadeDirection;
+        auto target = (Value / 10.f) + grenadeDirection;
         auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDirection, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
-
-        if (interptVal < 0.7f &&
-            interptVal > -0.1f)
-            mpWeaponManager->GrenadeDirection = interptVal;
-
-        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::SanitizeFloat(interptVal));
+        mpWeaponManager->GrenadeDirection = interptVal;
         mpWeaponManager->UpdateGrenadePath();
     }
 }
@@ -503,13 +498,16 @@ void ACustomPlayer::BeginShooting()
     if (auto p_gun = mpWeaponManager->GetCurrentWeapon())
     {
         if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
-            mpWeaponManager->ClickEvent(); 
+        {
+            mpWeaponManager->bShooting = true;
+            mpWeaponManager->ClickEvent();
+        }
+        else
+            mpWeaponManager->bShooting = true;
     }
     // 투척류일 시 경로 예측
     if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
         mpWeaponManager->ClickEvent();
-
-    mpWeaponManager->bShooting = true;
 }
 
 void ACustomPlayer::EndShooting()
@@ -535,6 +533,9 @@ void ACustomPlayer::Reload()
 
 void ACustomPlayer::Aim()
 {
+    if (mbInventoryOpened)
+        return;
+
     switch (CurrentState)
     {
     // 기본자세 > 에임

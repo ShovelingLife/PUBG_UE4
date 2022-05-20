@@ -112,7 +112,7 @@ private:
 	 * \param SocketName 소켓 이름
 	 * \param bCheck 무기 중복 여부 체크
      */
-    void Attach(ABaseInteraction* pNewWeapon, FString SocketName, bool bCheck = true);
+    void AttachWeapon(ABaseInteraction* pNewWeapon, FString SocketName, bool bCheck = true);
 
 	/**
 	 * \brief 무기 버린 후 초기화

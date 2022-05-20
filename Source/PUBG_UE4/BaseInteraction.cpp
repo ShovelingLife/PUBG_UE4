@@ -127,6 +127,15 @@ void ABaseInteraction::SetForDummyCharacter(USceneComponent* RootComp, FString S
     }
 }
 
+void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
+{
+    if (ColliderComp)
+    {
+        ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
+        ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+    }
+}
+
 void ABaseInteraction::InitParticleSystem(FString Path)
 {
     // 파티클 컴포넌트 초기화

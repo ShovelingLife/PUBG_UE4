@@ -141,7 +141,7 @@ ECurrentWeaponType AWeaponManager::GetWeaponIndex(FString Direction, int StartIn
     return ECurrentWeaponType::NONE;
 }
 
-void AWeaponManager::Attach(ABaseInteraction* pWeapon, FString SocketName, bool bCheck /* = true */)
+void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName, bool bCheck /* = true */)
 {
     if (!pWeapon)
         return;
@@ -186,7 +186,7 @@ void AWeaponManager::Attach(ABaseInteraction* pWeapon, FString SocketName, bool 
     auto p_rootComp = pWeapon->GetRootComponent();
     auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
     pWeapon->AttachToComponent(playerMesh, (p_rootComp->IsA< USkeletalMeshComponent>()) ? FAttachmentTransformRules::SnapToTargetNotIncludingScale : FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
-    pWeapon->RegisterAllComponents();
+    pWeapon->ChangeCollisionSettings(false);
 }
 
 void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform NewPos)
@@ -212,6 +212,7 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
     // 현재 무기를 탈착 후 월드에 소환
     pWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     pWeapon->SetActorTransform(NewPos);
+    pWeapon->ChangeCollisionSettings(true);
 }
 
 void AWeaponManager::PredictGrenadePath()
@@ -228,16 +229,16 @@ void AWeaponManager::PredictGrenadePath()
     FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * GrenadeDirection * 1500.f;
     FPredictProjectilePathParams predictParams(50.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
     predictParams.bTraceWithCollision = true;
-    predictParams.SimFrequency     = 15.f;
-    predictParams.OverrideGravityZ = 0.f;    
+    predictParams.SimFrequency = 15.f;
+    predictParams.OverrideGravityZ = 0.f;
     FPredictProjectilePathResult result;
     UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, result);
     mGrenadeVelocity = predictParams.LaunchVelocity;
-    
+
     GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("Num : %d, Launch Velocity : %s"), result.PathData.Num(), *predictParams.LaunchVelocity.ToString()));
     // 경로 지정
     for (int i = 0; i < result.PathData.Num(); i++)
-         SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
+        SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
 
     for (int i = 0; i < SplineComp->GetNumberOfSplinePoints(); i++)
     {
@@ -298,7 +299,7 @@ void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
         if (Cast<ACoreWeapon>(pWeapon)->WeaponData.GroupType == "HandGun")
         {
             if (!pPistol)
-                Attach(p_collidedWeapon, "HandGunSock", bCheck);
+                AttachWeapon(p_collidedWeapon, "HandGunSock", bCheck);
 
             else
                 SwapWorld(pPistol, pWeapon, "HandGunSock");
@@ -307,12 +308,12 @@ void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
         else
         {
             if (!pFirstGun) // 첫번째 무기가 없을 시
-                Attach(p_collidedWeapon, "FirstGunSock", bCheck);
+                AttachWeapon(p_collidedWeapon, "FirstGunSock", bCheck);
 
             else
             {
                 if (!pSecondGun) // 두번째 무기가 없을 시
-                    Attach(p_collidedWeapon, "SecondGunSock", bCheck);
+                    AttachWeapon(p_collidedWeapon, "SecondGunSock", bCheck);
 
                 else
                 {
@@ -329,7 +330,7 @@ void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
     }
     // 근접 종류
     else if (pWeapon->IsA<ACoreMeleeWeapon>())
-             Attach(p_collidedWeapon, "EquippedWeaponPosSock", bCheck);
+             AttachWeapon(p_collidedWeapon, "EquippedWeaponPosSock", bCheck);
 
     // 투척류
     else if (pWeapon->IsA<ACoreThrowableWeapon>())
@@ -510,9 +511,8 @@ bool AWeaponManager::ScrollSelect(FString Pos)
 void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName)
 {
     ResetAfterDetaching(pNewWeapon, pCurrentWeapon->GetActorTransform());
-    Attach(Cast<ABaseInteraction>(pCurrentWeapon), SocketName);
+    AttachWeapon(Cast<ABaseInteraction>(pCurrentWeapon), SocketName);
 }
-
 
 void AWeaponManager::Swap(ECurrentWeaponType WeaponType, bool bScrolling /* = false */)
 {
@@ -525,15 +525,16 @@ void AWeaponManager::Swap(ECurrentWeaponType WeaponType, bool bScrolling /* = fa
     // 장착 되있던 무기를 탈착
     switch (typeToDettach)
     {
-    case ECurrentWeaponType::FIRST:     Attach(pFirstGun, "FirstGunSock");  break;
-    case ECurrentWeaponType::SECOND:    Attach(pSecondGun, "SecondGunSock"); break;
-    case ECurrentWeaponType::PISTOL:    Attach(pPistol, "HandGunSock");   break;
-    case ECurrentWeaponType::MELEE:     Attach(pMelee, "");      break;
+    case ECurrentWeaponType::FIRST:     if (pFirstGun) pFirstGun->AttachToComponent(playerMesh, attachmentRules, "FirstGunSock"); break;
+    case ECurrentWeaponType::SECOND:    if (pSecondGun) pSecondGun->AttachToComponent(playerMesh, attachmentRules, "SecondGunSock"); break;
+    case ECurrentWeaponType::PISTOL:    if (pPistol) pPistol->AttachToComponent(playerMesh, attachmentRules, "HandGunSock"); break;
+    case ECurrentWeaponType::MELEE:     AttachWeapon(pMelee, "");      break;
     case ECurrentWeaponType::THROWABLE:
         if (pThrowable) pThrowable->Destroy(); break;
     }
-    if(CurrentWeaponType == ECurrentWeaponType::THROWABLE)
-        CreateExplosive();
+    // 탈착 되있던 무기를 장착
+    if (CurrentWeaponType == ECurrentWeaponType::THROWABLE)
+        CreateExplosive(pThrowable);
     
     else
         ChangeAimPose(mbAiming);
@@ -541,10 +542,10 @@ void AWeaponManager::Swap(ECurrentWeaponType WeaponType, bool bScrolling /* = fa
     //// 장착하고자 하는 무기를 장착
     //switch (typeToAttach)
     //{
-    //case ECurrentWeaponType::FIRST:     Attach(pFirstGun, "EquippedWeaponPosSock");  break;
-    //case ECurrentWeaponType::SECOND:    Attach(pSecondGun, "EquippedWeaponPosSock"); break;
-    //case ECurrentWeaponType::PISTOL:    Attach(pPistol, "EquippedWeaponPosSock");   break;
-    //case ECurrentWeaponType::MELEE:     Attach(pMelee, "");      break;
+    //case ECurrentWeaponType::FIRST:     AttachWeapon(pFirstGun, "EquippedWeaponPosSock");  break;
+    //case ECurrentWeaponType::SECOND:    AttachWeapon(pSecondGun, "EquippedWeaponPosSock"); break;
+    //case ECurrentWeaponType::PISTOL:    AttachWeapon(pPistol, "EquippedWeaponPosSock");   break;
+    //case ECurrentWeaponType::MELEE:     AttachWeapon(pMelee, "");      break;
     //case ECurrentWeaponType::THROWABLE: 
 
     //    CreateExplosive();
@@ -577,15 +578,15 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
         if (p_newWeapon     == pFirstGun &&
             p_currentWeapon == pSecondGun)
         {
-            Attach(p_newWeapon,     "SecondGunSock", false);
-            Attach(p_currentWeapon, "FirstGunSock",  false);
+            AttachWeapon(p_newWeapon,     "SecondGunSock", false);
+            AttachWeapon(p_currentWeapon, "FirstGunSock",  false);
         }
         // 두번째 총과 첫번째 총 교체
         else if (p_currentWeapon == pFirstGun &&
                  p_newWeapon     == pSecondGun)
         {
-            Attach(p_currentWeapon, "SecondGunSock", false);
-            Attach(p_newWeapon,     "FirstGunSock",  false);
+            AttachWeapon(p_currentWeapon, "SecondGunSock", false);
+            AttachWeapon(p_newWeapon,     "FirstGunSock",  false);
         }
         // 인벤토리 총과 첫번째 총 교체
         else
@@ -760,7 +761,7 @@ void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr
     // 오브젝트 생성 후 투척류로 지정
     pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
     pThrowable->Setup(pGrenade);
-    Attach(pThrowable, pThrowable->WeaponData.Type + "Sock");
+    AttachWeapon(pThrowable, pThrowable->WeaponData.Type + "Sock");
     DeleSetExplosive.ExecuteIfBound(pThrowable);
 }
 

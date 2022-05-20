@@ -91,4 +91,6 @@ public:
     void DestroyComponentsForUI();
 
     void SetForDummyCharacter(class USceneComponent* RootComp, FString SocketName);
+
+    void ChangeCollisionSettings(bool bTurned);
 };
