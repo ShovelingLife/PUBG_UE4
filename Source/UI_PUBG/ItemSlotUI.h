@@ -26,6 +26,7 @@ DECLARE_DELEGATE_TwoParams(FDeleSwapInventoryExplosive, ACoreThrowableWeapon*, A
 
 class ABaseInteraction;
 class UTooltipUI;
+class UCanvasPanel;
 class UImage;
 class UTextBlock;
 class USizeBox;
@@ -42,6 +43,7 @@ private:
 
 public:
     /** \brief 현재 쓰여지는 변수 */
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel*   MainCanvasPanel;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UHorizontalBox* MainHorizontalBox;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*       BackgroundSizeBox;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*        ItemBorder;
@@ -74,6 +76,9 @@ protected:
     virtual void NativeOnListItemObjectSet(UObject* pObj);
     
 public:
+    // 무기 부착품 UI용으로 초기화
+    void SetForAttachmentUI();
+
     /**
       * \brief 슬롯 UI를 커서 중앙 지점에 설정
       * \param Pos 슬롯 UI 위치 

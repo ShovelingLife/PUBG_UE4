@@ -28,11 +28,25 @@ class UTextBlock;
 UCLASS()
 class UI_PUBG_API UInventoryWeaponSlotUI : public UUserWidget
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
 private:
+    // 부속품 UI 관련
+    TArray<UBorder*>     mArrFirstGunAttachmentBorder;
+    TArray<UBorder*>     mArrSecondGunAttachmentBorder;
+    TArray<UBorder*>     mArrPistolAttachmentBorder;
+    TArray<UItemSlotUI*> mArrFirstGunAttachmentUI;
+    TArray<UItemSlotUI*> mArrSecondGunAttachmentUI;
+    TArray<UItemSlotUI*> mArrPistolAttachmentUI;
+    const int mkTotalGunAttachmentUI    = 5;
+    const int mkTotalPistolAttachmentUI = 3;
+
+
     /** \brief 현재 쓰여지는 변수 */
+    AWeaponManager* mpWeaponManager = nullptr;
     FsSlotItemData     mItemData;
+
+    // 플레이어 상호작용 하고있는 변수 관련
     ECurrentWeaponType mSelectedWeaponIndex;
     ECurrentWeaponType mDraggedWeaponIndex;
     bool               mbClicked = false;
@@ -41,9 +55,9 @@ public:
     /** \brief 선택 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       HighlightImg;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* MainCanvasPanel;
-             
+
     /** \brief 1번 슬롯 UI 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* FirstGunCanvasPanel;       
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* FirstGunCanvasPanel;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      FirstGunNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   FirstGunNameTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   FirstGunBulletTypeTxt;
@@ -132,12 +146,12 @@ protected:
     /**
       * \brief 좌클릭 시 (선택된 UI에 맞게끔 슬롯 변환 > 드래그) / 우클릭 시 맵에 드롭
       * 선택 이미지 초기화
-      * \param _InGeometry UI 정보 
+      * \param _InGeometry UI 정보
       * \param _InMouseEvent 마우스 이벤트
       * \return FReply 마우스 처리 이벤트
      */
     virtual FReply NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent) override;
-    
+
     /**
       * \brief 마우스 버튼 땠을 시 선택 이미지 및 클릭된 UI 정보 삭제
       * \param _in_geometry UI 정보 \param _in_mouse_event 마우스 이벤트
@@ -158,24 +172,27 @@ protected:
     virtual bool NativeOnDragOver(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation) override;
 
 private:
-    /**
-      * \brief UI 상태 업데이트
-     */
-    void UpdateVisibility();
+    // 무기 아이콘 및 슬롯 관한 함수
+    void InitSettings();
+
+    /** \brief UI 상태 업데이트 */
+    void SetWeaponSlotVisibility();
+
+    void UpdateAttachmentSlot();
 
     void UpdateInventoryWeaponUI();
 
     void CheckForHoveredWeaponSlot();
 
+    // 선택하고 있는 UI 갱신
     void UpdateHighlightImgPos();
 
     void ResetHighlightImg();
 
-    void HideAllSlotUI_background();
 
 public:
     // 슬롯 초기화
     UFUNCTION() void SetSlotNull();
-    
+
     UFUNCTION() void UpdateThrowable(ACoreThrowableWeapon* pGrenade);
 };

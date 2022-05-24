@@ -7,10 +7,16 @@
 #include "GameInstanceSubsystemUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
+#include "Farmable_items/CoreBarrel.h"
+#include "Farmable_items/CoreForend.h"
+#include "Farmable_items/CoreGrip.h"
+#include "Farmable_items/CoreSight.h"
+#include "Farmable_items/CoreStock.h"
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
 #include "Player_weapons/WeaponManager.h"
+#include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/Global.h"
 #include "Blueprint/DragDropOperation.h"
@@ -28,7 +34,7 @@
 void UInventoryWeaponSlotUI::NativeConstruct()
 {
     Super::NativeConstruct();
-    HideAllSlotUI_background();
+    InitSettings();
     UpdateThrowable(nullptr);
 
     pGameInstanceSubSystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
@@ -37,19 +43,27 @@ void UInventoryWeaponSlotUI::NativeConstruct()
 void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
-    CheckForHoveredWeaponSlot();
-    UpdateVisibility();
-    UpdateInventoryWeaponUI();
-    UpdateHighlightImgPos();
 
-    if (pGameInstanceSubSystemUI)
+    if (pGameInstanceSubSystemUI &&
+        !mpWeaponManager)
+        mpWeaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
+
+    if (mpWeaponManager)
     {
-        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
-        {
-            if (!p_weaponManager->DeleSetExplosive.IsBound())
-                p_weaponManager->DeleSetExplosive.BindUFunction(this, "UpdateThrowable");
-        }
-            
+        auto deleSetExplosive = mpWeaponManager->DeleSetExplosive;
+
+        if (!deleSetExplosive.IsBound())
+            deleSetExplosive.BindUFunction(this, "UpdateThrowable");
+
+        SetWeaponSlotVisibility();
+        UpdateInventoryWeaponUI();
+        UpdateAttachmentSlot();
+        UpdateAttachmentSlot();
+    }
+    if (!mbClicked)
+    {
+        CheckForHoveredWeaponSlot();
+        UpdateHighlightImgPos();
     }
 }
 
@@ -64,25 +78,25 @@ void UInventoryWeaponSlotUI::NativeOnMouseLeave(const FPointerEvent& InMouseEven
 FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
     Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
-    
+
     if (!pGameInstanceSubSystemUI)
         return FReply::Unhandled();
 
     // 왼쪽 클릭 / 마우스 커서 변경
-    if(InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+    if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
-        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
-            mItemData = FsSlotItemData::GetDataFrom(p_weaponManager->GetWeaponByIndex(mSelectedWeaponIndex));
+        if (mpWeaponManager)
+            mItemData = FsSlotItemData::GetDataFrom(mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex));
 
         HighlightImg->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.35f });
-        mbClicked           = true;
+        mbClicked = true;
         mDraggedWeaponIndex = mSelectedWeaponIndex;
     }
     // 오른쪽 클릭 / 맵에다가 무기를 버림
     else if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
     {
-        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
-            p_weaponManager->Drop(mSelectedWeaponIndex);
+        if (mpWeaponManager)
+            mpWeaponManager->Drop(mSelectedWeaponIndex);
 
         ResetHighlightImg();
     }
@@ -109,10 +123,10 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
             p_weapon = p_weaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
     }
-    auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
+    auto      p_slot = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
-        
-    if (!p_slot   ||
+
+    if (!p_slot ||
         !p_weapon ||
         mItemData.IsEmpty())
         return;
@@ -122,8 +136,8 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, Hidden);
 
     p_slot->pDraggedItem = p_weapon;
-    p_slot->ItemData     = mItemData;
-    p_slot->Priority     = 1;
+    p_slot->ItemData = mItemData;
+    p_slot->Priority = 1;
     p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");
     p_slot->SetAsCursor(mousePos);
 
@@ -158,7 +172,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
         return false;
 
     // 현재 선택하고 있는 인덱스 확인
-    auto p_draggedWeapon  = p_slot->pDraggedItem;
+    auto p_draggedWeapon = p_slot->pDraggedItem;
 
     // 맞지 않는 슬롯에 위치시킬 시
     if (p_weaponManager->IsWrong(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
@@ -219,10 +233,10 @@ void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragD
 
 bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);    
+    Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
     ResetHighlightImg();
 
-     TArray< UCanvasPanel* >p_arrCanvasPanel
+    TArray< UCanvasPanel* >p_arrCanvasPanel
     {
         FirstGunCanvasPanel,
         SecondGunCanvasPanel,
@@ -253,16 +267,64 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
     return true;
 }
 
-void UInventoryWeaponSlotUI::UpdateVisibility()
+void UInventoryWeaponSlotUI::InitSettings()
 {
-    if (!pGameInstanceSubSystemUI)
-        return;
+    TArray< UCanvasPanel*> arrCanvasPanel
+    {
+        FirstGunCanvasPanel,
+        SecondGunCanvasPanel,
+        PistolCanvasPanel
+    };
+    for (int i = 0; i < arrCanvasPanel.Num(); i++)
+    {
+    	for (auto UI_item : arrCanvasPanel[i]->GetAllChildren())
+    	{
+            FString UI_itemName = (UI_item) ? UI_item->GetName() : "";
+            
+            // 뒷배경 Border > r
+            if (UI_itemName.EndsWith("r"))
+            {
+                auto p_border = Cast<UBorder>(UI_item);
 
-    auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
+                switch (i)
+                {
+                case 0: mArrFirstGunAttachmentBorder.Add(p_border);  break;
+                case 1: mArrSecondGunAttachmentBorder.Add(p_border); break;
+                case 2: mArrPistolAttachmentBorder.Add(p_border);    break;
+                }
+                // 슬롯 UI는 뒷배경의 자식 UI임
+                if (p_border)
+                {
+                    if (auto p_slotUI = Cast<UItemSlotUI>(p_border->GetChildAt(0)))
+                    {
+                        switch (i)
+                        {
+                        case 0: mArrFirstGunAttachmentUI.Add(p_slotUI);  break;
+                        case 1: mArrSecondGunAttachmentUI.Add(p_slotUI); break;
+                        case 2: mArrPistolAttachmentUI.Add(p_slotUI);    break;
+                        }
+                    }
+                }
+            }
+    	}
+    }
+    for (int i = 0; i < mkTotalGunAttachmentUI; i++)
+    {
+        if (auto p_firstGunAttachmentUI = mArrFirstGunAttachmentUI[i])
+            p_firstGunAttachmentUI->SetForAttachmentUI();
 
-    if (!p_weaponManager)
-        return;
+        if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
+            p_secondGunAttachmentUI->SetForAttachmentUI();
+    }
+    for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
+    {
+        if (auto p_pistolAttachmentUI = mArrPistolAttachmentUI[i])
+            p_pistolAttachmentUI->SetForAttachmentUI();
+    }
+}
 
+void UInventoryWeaponSlotUI::SetWeaponSlotVisibility()
+{
     // 첫번째 무기
     TArray<UWidget*> arrFirstGunWidget
     {
@@ -304,60 +366,160 @@ void UInventoryWeaponSlotUI::UpdateVisibility()
     // 총기류 설정
     for (int i = 0; i < 6; i++)
     {
-        arrFirstGunWidget[i]->SetVisibility((p_weaponManager->pFirstGun) ? Visible : Hidden);
-        arrSecondGunWidget[i]->SetVisibility((p_weaponManager->pSecondGun) ? Visible : Hidden);
-        arrPistolWidget[i]->SetVisibility((p_weaponManager->pPistol) ? Visible : Hidden);
+        arrFirstGunWidget[i]->SetVisibility((mpWeaponManager->pFirstGun) ? Visible : Hidden);
+        arrSecondGunWidget[i]->SetVisibility((mpWeaponManager->pSecondGun) ? Visible : Hidden);
+        arrPistolWidget[i]->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
     }
     // 기타 무기 설정
     for (int i = 0; i < 3; i++)
-         arrMeleeWidget[i]->SetVisibility((p_weaponManager->pMelee) ? Visible : Hidden);
+        arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? Visible : Hidden);
+}
+
+void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
+{
+    // 뒷배경 색상 관련
+    FLinearColor WhiteColor(1.f, 1.f, 1.f, 0.25f),
+                 BlackColor(0.f, 0.f, 0.f, 0.25f);
+
+    // 총기 부착물 UI 갱신
+    for (int i = 0; i < mkTotalGunAttachmentUI; i++)
+    {
+        // 첫번째 무기
+        {
+            TArray<UTexture*> arrAttachmentTex;
+            ACoreBarrel* p_barrel = nullptr;
+            ACoreGrip*   p_grip   = nullptr;
+            ACoreForend* p_forend = nullptr;
+            ACoreStock*  p_stock  = nullptr;
+            ACoreSight*  p_scope  = nullptr;
+
+            // 텍스처 설정
+            if (auto p_firstGun = mpWeaponManager->pFirstGun)
+            {
+                p_barrel = p_firstGun->CurrentBarrel;
+                p_grip   = p_firstGun->CurrentGrip;
+                p_forend = p_firstGun->CurrentForend;
+                p_stock  = p_firstGun->CurrentStock;
+                p_scope  = p_firstGun->CurrentSight;
+            }
+            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex   : nullptr);
+            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex     : nullptr);
+            arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
+            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex    : nullptr);
+            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex    : nullptr);
+
+            // 뒷배경
+            if (auto p_firstGunAttachmentBorder = mArrFirstGunAttachmentBorder[i])
+            {
+                p_firstGunAttachmentBorder->SetVisibility((mpWeaponManager->pFirstGun) ? Visible : Hidden);
+                p_firstGunAttachmentBorder->SetBrushColor((arrAttachmentTex[i] != nullptr) ? WhiteColor : BlackColor);
+            }
+            // 아이템 UI
+            if (auto p_firstGunAttachmentUI = mArrFirstGunAttachmentUI[i])
+                p_firstGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
+        }
+        // 두번째 무기
+        {
+            TArray<UTexture*> arrAttachmentTex;
+            ACoreBarrel* p_barrel = nullptr;
+            ACoreGrip*   p_grip   = nullptr;
+            ACoreForend* p_forend = nullptr;
+            ACoreStock*  p_stock  = nullptr;
+            ACoreSight*  p_scope  = nullptr;
+
+            // 텍스처 설정
+            if (auto p_secondGun = mpWeaponManager->pSecondGun)
+            {
+                p_barrel = p_secondGun->CurrentBarrel;
+                p_grip   = p_secondGun->CurrentGrip;
+                p_forend = p_secondGun->CurrentForend;
+                p_stock  = p_secondGun->CurrentStock;
+                p_scope  = p_secondGun->CurrentSight;
+            }
+            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex   : nullptr);
+            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex     : nullptr);
+            arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
+            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex    : nullptr);
+            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex    : nullptr);
+
+            // 뒷배경
+            if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
+            {
+                p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? Visible : Hidden);
+                p_secondGunAttachmentBorder->SetBrushColor((arrAttachmentTex[i] != nullptr) ? WhiteColor : BlackColor);
+            }
+            // 아이템 UI
+            if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
+                p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
+        }
+    }
+    // 세번쨰 무기
+    for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
+    {
+        TArray<UTexture*> arrAttachmentTex;
+        ACoreBarrel* p_barrel = nullptr;
+        ACoreForend* p_forend = nullptr;
+        ACoreSight*  p_scope  = nullptr;
+
+        // 텍스처 설정
+        if (auto p_pistol = mpWeaponManager->pFirstGun)
+        {
+            p_barrel = p_pistol->CurrentBarrel;
+            p_forend = p_pistol->CurrentForend;
+            p_scope  = p_pistol->CurrentSight;
+        }
+        arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex   : nullptr);
+        arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
+        arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex    : nullptr);
+
+        // 뒷배경
+        if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
+        {
+            p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
+            p_pistolAttachmentBorder->SetBrushColor((arrAttachmentTex[i] != nullptr) ? WhiteColor : BlackColor);
+        }
+        // 아이템 UI
+        if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
+            p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
+    }
 }
 
 void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
 {
-    if (pGameInstanceSubSystemUI)
+    // 첫번째 무기
+    if (auto p_firstGun = mpWeaponManager->pFirstGun)
     {
-        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
-        {
-            // 첫번째 무기
-            if (auto p_firstGun = p_weaponManager->pFirstGun)
-            {
-                auto weaponData = p_firstGun->WeaponData;
-                FirstGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_firstGun->WeaponType, "Gun"));
-                FirstGunNameTxt->SetText(FText::FromString(weaponData.Type));
-                FirstGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
-            }
-            // 두번째 무기
-            if (auto p_secondGun = p_weaponManager->pSecondGun)
-            {
-                auto weaponData = p_secondGun->WeaponData;
-                SecondGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_secondGun->WeaponType, "Gun"));
-                SecondGunNameTxt->SetText(FText::FromString(weaponData.Type));
-                SecondGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
-            }
-            // 세번째 무기
-            if (auto p_pistol = p_weaponManager->pPistol)
-            {
-                auto weaponData = p_pistol->WeaponData;
-                PistolSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_pistol->WeaponType, "Gun"));
-                PistolNameTxt->SetText(FText::FromString(weaponData.Type));
-                PistolBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
-            }
-            // 네번째 무기
-            if (auto p_melee = p_weaponManager->pMelee)
-            {
-                MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType));
-                MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
-            }
-        }
+        auto weaponData = p_firstGun->WeaponData;
+        FirstGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_firstGun->WeaponType, "Gun"));
+        FirstGunNameTxt->SetText(FText::FromString(weaponData.Type));
+        FirstGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
+    }
+    // 두번째 무기
+    if (auto p_secondGun = mpWeaponManager->pSecondGun)
+    {
+        auto weaponData = p_secondGun->WeaponData;
+        SecondGunSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_secondGun->WeaponType, "Gun"));
+        SecondGunNameTxt->SetText(FText::FromString(weaponData.Type));
+        SecondGunBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
+    }
+    // 세번째 무기
+    if (auto p_pistol = mpWeaponManager->pPistol)
+    {
+        auto weaponData = p_pistol->WeaponData;
+        PistolSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_pistol->WeaponType, "Gun"));
+        PistolNameTxt->SetText(FText::FromString(weaponData.Type));
+        PistolBulletTypeTxt->SetText(FText::FromString(weaponData.BulletType));
+    }
+    // 네번째 무기
+    if (auto p_melee = mpWeaponManager->pMelee)
+    {
+        MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType));
+        MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
     }
 }
 
 void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 {
-    if (mbClicked)
-        return;
-
     // 선택된 무기 인덱스 구함
     TArray<Chaos::Pair<UImage*, ECurrentWeaponType>> arrWeaponImg
     {
@@ -379,14 +541,11 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 
 void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
 {
-    if (mbClicked)
-        return;
-
-    float sizeX = 0.f;    
+    float sizeX = 0.f;
     UCanvasPanelSlot* p_canvasPanelSlot = nullptr;
 
     // 무기가 선택됐을 시 이미지 설정
-    switch(mSelectedWeaponIndex)
+    switch (mSelectedWeaponIndex)
     {
     case ECurrentWeaponType::FIRST:     p_canvasPanelSlot = FirstGunCanvasPanel->AddChildToCanvas(HighlightImg);  sizeX = 545.f; break;
     case ECurrentWeaponType::SECOND:    p_canvasPanelSlot = SecondGunCanvasPanel->AddChildToCanvas(HighlightImg); sizeX = 545.f; break;
@@ -419,36 +578,14 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     mbClicked = false;
 }
 
-void UInventoryWeaponSlotUI::HideAllSlotUI_background()
-{
-    FirstGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    FirstGunGripSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    FirstGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    FirstGunStockSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    FirstGunScopeSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    
-    SecondGunMuzzleSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    SecondGunGripSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    SecondGunMagazineSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    SecondGunStockSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    SecondGunScopeSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    
-    PistolMuzzleSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    PistolMagazineSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-    PistolScopeSlotUI->BackgroundSizeBox->SetVisibility(Hidden);
-}
-
 void UInventoryWeaponSlotUI::SetSlotNull()
 {
-    if (pGameInstanceSubSystemUI)
+    if (mpWeaponManager)
     {
-        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
-        {
-            p_weaponManager->SetNull((ECurrentWeaponType)mDraggedWeaponIndex);
-            ResetHighlightImg();
-            mDraggedWeaponIndex = ECurrentWeaponType::NONE;
-            mItemData.Reset();
-        }
+        mpWeaponManager->SetNull((ECurrentWeaponType)mDraggedWeaponIndex);
+        ResetHighlightImg();
+        mDraggedWeaponIndex = ECurrentWeaponType::NONE;
+        mItemData.Reset();
     }
 }
 
@@ -467,5 +604,5 @@ UFUNCTION() void UInventoryWeaponSlotUI::UpdateThrowable(ACoreThrowableWeapon* p
         GrenadeNameTxt->SetText(FText::FromString(pThrowable->WeaponData.Type));
     }
     for (int i = 0; i < arrThrowableWidget.Num(); i++)
-         arrThrowableWidget[i]->SetVisibility(pThrowable ? Visible : Hidden);
+        arrThrowableWidget[i]->SetVisibility(pThrowable ? Visible : Hidden);
 }

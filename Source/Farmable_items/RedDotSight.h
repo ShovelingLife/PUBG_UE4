@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CoreAttachment.h"
-#include "CoreStock.generated.h"
+#include "CoreSight.h"
+#include "RedDotSight.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FARMABLE_ITEMS_API ACoreStock : public ACoreAttachment
+class FARMABLE_ITEMS_API ARedDotSight : public ACoreSight
 {
 	GENERATED_BODY()
 	

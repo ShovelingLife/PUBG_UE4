@@ -43,6 +43,8 @@ public:
     int     UI_index        = 0;
     bool    bPlayerNear     = false;
 
+    UPROPERTY() class UTexture* CurrentItemTex;
+
 public:
     ABaseInteraction();
 

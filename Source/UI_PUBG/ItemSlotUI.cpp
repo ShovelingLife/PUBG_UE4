@@ -4,8 +4,10 @@
 #include "TooltipUI.h"
 #include "UI_manager.h"
 #include "PUBG_UE4/CustomGameInstance.h"
+#include "PUBG_UE4/Global.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Border.h"
+#include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
@@ -32,10 +34,11 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 
     if (this->IsHovered())
     {
+        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
         DeleCheckForSlot.ExecuteIfBound(this);
 
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, ESlateVisibility::Visible);
+            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, Visible);
     }
 }
 
@@ -52,6 +55,14 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
     }
 }
 
+void UItemSlotUI::SetForAttachmentUI()
+{
+    NameTxt->RemoveFromParent();
+    CountTxt->RemoveFromParent();
+    BackgroundSizeBox->RemoveFromParent();
+    MainCanvasPanel->AddChildToCanvas(ItemBorder);
+}
+
 void UItemSlotUI::SetAsCursor(FVector2D Pos)
 {
     auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(MainHorizontalBox->Slot);
@@ -60,9 +71,9 @@ void UItemSlotUI::SetAsCursor(FVector2D Pos)
         return;
 
     p_canvasPanelSlot->SetPosition(Pos);
-    this->SetVisibility(ESlateVisibility::Visible);
+    this->SetVisibility(Visible);
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
-    NameTxt->SetVisibility(ESlateVisibility::Hidden);
-    CountTxt->SetVisibility(ESlateVisibility::Hidden);
-    BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
+    NameTxt->SetVisibility(Hidden);
+    CountTxt->SetVisibility(Hidden);
+    BackgroundSizeBox->SetVisibility(Hidden);
 }

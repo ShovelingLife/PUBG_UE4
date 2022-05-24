@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CoreAttachment.h"
-#include "CoreStock.generated.h"
+#include "CoreGrip.h"
+#include "Vertical02Grip.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FARMABLE_ITEMS_API ACoreStock : public ACoreAttachment
+class FARMABLE_ITEMS_API AVertical02Grip : public ACoreGrip
 {
 	GENERATED_BODY()
 	

@@ -92,7 +92,7 @@ void AUI_manager::InitPlayerUI_Tex()
 
 void AUI_manager::InitInventoryWeaponTex()
 {
-    const FString inventoryWeaponUI_Path = "/Game/UI/WeaponInventoryIcon/";
+    const FString inventoryWeaponUI_Path = "/Game/UI/InventoryWeaponIcon/";
 
     // 총기 아이콘 초기화
     for (int i = 0; i < ADataTableManager::ArrWeaponData.Num(); i++)

@@ -9,6 +9,6 @@ public class UI_PUBG : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
  
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "UMG", "InputCore" });
-        PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore", "PUBG_UE4", "Characters", "Player_weapons" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore", "PUBG_UE4", "Characters", "Player_weapons", "Farmable_items" });
     }
 }

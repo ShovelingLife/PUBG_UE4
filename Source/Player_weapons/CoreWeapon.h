@@ -20,6 +20,13 @@ class USoundBase;
 class ACoreBullet;
 class UParticleSystemComponent;
 
+// 부속품들
+class ACoreBarrel;
+class ACoreForend;
+class ACoreGrip;
+class ACoreSight;
+class ACoreStock;
+
 UCLASS()
 class PLAYER_WEAPONS_API ACoreWeapon : public ABaseInteraction
 {
@@ -33,6 +40,13 @@ public:
     FsWeaponData  WeaponData;
     EWeaponType   WeaponType = EWeaponType::MAX;
     EGunShootType ShootType  = EGunShootType::SINGLE;
+
+    // 부속품 관련 변수들
+    UPROPERTY(VisibleAnywhere) ACoreBarrel* CurrentBarrel;
+    UPROPERTY(VisibleAnywhere) ACoreForend* CurrentForend;
+    UPROPERTY(VisibleAnywhere) ACoreGrip* CurrentGrip;
+    UPROPERTY(VisibleAnywhere) ACoreSight* CurrentSight;
+    UPROPERTY(VisibleAnywhere) ACoreStock* CurrentStock;
 
 public:
     ACoreWeapon();
