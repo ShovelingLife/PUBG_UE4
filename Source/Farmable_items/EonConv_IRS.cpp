@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "EonConv_IRS.h"
 
+AEonConv_IRS::AEonConv_IRS()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::EON_CONV_IRS);
+}

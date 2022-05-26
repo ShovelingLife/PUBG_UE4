@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "DoubleBarrelStock.h"
 
+ADoubleBarrelStock::ADoubleBarrelStock()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::DOUBLE_BARREL_STOCK);
+}

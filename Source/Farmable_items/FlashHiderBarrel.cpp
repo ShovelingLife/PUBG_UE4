@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "FlashHiderBarrel.h"
 
+AFlashHiderBarrel::AFlashHiderBarrel()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::FLASH_HIDER_BARREL);
+}

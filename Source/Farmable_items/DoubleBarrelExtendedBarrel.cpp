@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "DoubleBarrelExtendedBarrel.h"
 
+ADoubleBarrelExtendedBarrel::ADoubleBarrelExtendedBarrel()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::DOUBLE_BARREL_EXTENDED_BARREL);
+}

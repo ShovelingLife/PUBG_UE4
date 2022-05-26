@@ -2,12 +2,14 @@
 #include "CoreVehicle.h"
 #include "CustomGameModeBase.h"
 #include "DummyCharacter.h"
+#include "AI_PUBG/AI_character.h"
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
 #include "Player_weapons/CoreBullet.h"
 #include "Player_weapons/WeaponManager.h"
-#include "AI_PUBG/AI_character.h"
+#include "Farmable_items/CoreFarmableItem.h"
+#include "Farmable_items/CoreAttachment.h"
 #include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/SoundManager.h" 
 #include "PUBG_UE4/CustomGameInstance.h" 
@@ -26,7 +28,6 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 
-// Sets default values
 ACustomPlayer::ACustomPlayer()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -50,11 +51,12 @@ void ACustomPlayer::BeginPlay()
 
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
+    mpCustomGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
 
-    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    if (mpCustomGameInst)
     {
-        p_customGameInst->DeleSetPlayerOtherState.BindUFunction(this, "SetOtherState");
-        p_customGameInst->DeleDealPlayerDmg.BindUFunction(this, "DealDmg");
+        mpCustomGameInst->DeleSetPlayerOtherState.BindUFunction(this, "SetOtherState");
+        mpCustomGameInst->DeleDealPlayerDmg.BindUFunction(this, "DealDmg");
     }
     // UI용 캐릭터 생성
     if (auto p_dummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter))
@@ -248,10 +250,8 @@ void ACustomPlayer::CheckForObject()
     FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
     FVector    endPos    = beginPos + direction;
     FHitResult hitResult;
-    bool       b_collided = false;
     
     GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
-    //DrawDebugLine(GetWorld(), beginPos, endPos,FColor::Red);
     AActor* p_hittedActor = hitResult.GetActor();
 
     // 충돌한 오브젝트가 있을 시
@@ -261,10 +261,12 @@ void ACustomPlayer::CheckForObject()
         if (p_hittedActor->IsA<ACoreWeapon>()          ||
             p_hittedActor->IsA<ACoreThrowableWeapon>() ||
             p_hittedActor->IsA<ACoreMeleeWeapon>())
-        {
-            b_collided = true;
             mpCollidedWeapon = p_hittedActor;
-        }
+
+        if (p_hittedActor->IsA<ACoreAttachment>())
+            mpCollidedWeaponAttachment = Cast<ACoreAttachment>(p_hittedActor);
+
+        // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시 
         if (auto p_obj = Cast<ABaseInteraction>(p_hittedActor))
             p_obj->bPlayerNear = true;
     }
@@ -275,6 +277,11 @@ void ACustomPlayer::CheckForObject()
         {
             Cast<ABaseInteraction>(mpCollidedWeapon)->bPlayerNear = false;
             mpCollidedWeapon = nullptr;
+        }
+        if (mpCollidedWeaponAttachment)
+        {
+            Cast<ABaseInteraction>(mpCollidedWeaponAttachment)->bPlayerNear = false;
+            mpCollidedWeaponAttachment = nullptr;
         }
     }
 }
@@ -290,7 +297,6 @@ void ACustomPlayer::CheckIfVehicleNear()
     FHitResult            hitResult;
     FVector               endPos        = beginPos + forwardVec;
     GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
-    //DrawDebugLine(p_world, begin_pos, end_pos, FColor::Red, true, 5.f, (uint8)0U, 1.f);
 
     // 차량을 감지
     AActor* pHittedActor = hitResult.GetActor();
@@ -317,16 +323,26 @@ void ACustomPlayer::TryToInteract()
 {
     if (mbInteracting)
     {
-        // 무기랑 충돌 시
-        if (mpCollidedWeapon)
+        // 충돌된 오브젝트 체크
+        if (mpCollidedWeapon ||
+            mpCollidedWeaponAttachment)
         {
-            if(auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+            if (mpCustomGameInst)
             {
-                if(auto p_soundManager = p_customGameInst->pSoundManager)
+                if (auto p_soundManager = mpCustomGameInst->pSoundManager)
                     p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
             }
-            mpWeaponManager->Equip(mpCollidedWeapon);
+            // 무기랑 충돌 시
+            if (mpCollidedWeapon)
+                mpWeaponManager->Equip(mpCollidedWeapon);
+
+            // 무기 부속품이랑 충돌 시
+            if (mpCollidedWeaponAttachment &&
+                mpCustomGameInst)
+                mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedWeaponAttachment, false);
+
         }
+        // 차량이랑 충돌 시
         if (mpCollidedVehicle)
         {
             //  차량 탑승 상태
@@ -558,11 +574,12 @@ void ACustomPlayer::ChangeShootMode()
 
 void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */)
 {
-    auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-    auto p_soundManager = p_customGameInst->pSoundManager;
+    ASoundManager* p_soundManager = nullptr;
+    
+    if (mpCustomGameInst)
+        p_soundManager = mpCustomGameInst->pSoundManager;
 
-    if (!p_customGameInst ||
-        !mpWeaponManager  ||
+    if (!mpWeaponManager  ||
         !p_soundManager)
         return;
 

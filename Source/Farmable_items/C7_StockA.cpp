@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "C7_StockA.h"
 
+AC7_StockA::AC7_StockA()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::C7_STOCKA);
+}

@@ -22,39 +22,39 @@ struct FsVehicleData : public FTableRowBase
     GENERATED_BODY()
 
     /** \brief 공통 차량 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FString Type                    = "";
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FString MeshPath                = "";
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FString AudioPath               = "";
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector ColliderSize            = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector ColliderPos             = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector InteractionColliderSize = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector InteractionColliderPos  = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString Type                    = "";
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString MeshPath                = "";
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString AudioPath               = "";
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector ColliderSize            = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector ColliderPos             = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector InteractionColliderSize = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector InteractionColliderPos  = FVector::ZeroVector;
 
     /** \brief 카메라 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector CameraLocation = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector CameraRotation = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector CameraLocation = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector CameraRotation = FVector::ZeroVector;
 
     /** \brief 플레이어 1 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation1       = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation1 = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatLocation1       = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatCameraLocation1 = FVector::ZeroVector;
 
     /** \brief 플레이어 2 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation2       = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation2 = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatLocation2       = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatCameraLocation2 = FVector::ZeroVector;
 
     /** \brief 플레이어 3 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation3       = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation3 = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatLocation3       = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatCameraLocation3 = FVector::ZeroVector;
 
     /** \brief 플레이어 4 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatLocation4       = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) FVector SeatCameraLocation4 = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatLocation4       = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatCameraLocation4 = FVector::ZeroVector;
 
     /** \brief 기타 테이터 */
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) float SpringArmLength = 0.f;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) int   MaxSeater       = 0;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) int   Durability      = 0;
-    UPROPERTY(BlueprintReadWrite, Category = Vehicle_data) int   Speed           = 0;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) float SpringArmLength = 0.f;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   MaxSeater       = 0;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   Durability      = 0;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   Speed           = 0;
 
     FString AnimInstancePath = "";
     std::pair<FVector, FVector> ArrPlayerSeatPos[4];

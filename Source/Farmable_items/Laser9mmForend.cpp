@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Laser9mmForend.h"
 
+ALaser9mmForend::ALaser9mmForend()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::LASER9MM_FOREND);
+}

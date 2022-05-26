@@ -173,11 +173,11 @@ void UInventoryListUI::GetItemListWidth()
     }
 }
 
-UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pWeapon, FsSlotItemData ItemData)
+UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData)
 {
     auto p_slot = NewObject<UItemSlotUI>();
     p_slot->ItemData = ItemData;
-    p_slot->pDraggedItem = pWeapon;
+    p_slot->pDraggedItem = pObj;
     p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     p_slot->DeleDeleteFromList.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
@@ -279,7 +279,7 @@ void UInventoryListUI::ChangeItemCount(UItemSlotUI* pSlotObj)
     }
 }
 
-void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDeleteFromList /* = false */)
+void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
 {
     if (!pGameInstanceSubsystemUI)
         return;
@@ -287,7 +287,7 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDel
     if (bDeleteFromList)
         DeleteFromList();
 
-    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(pWeapon);
+    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(pObj);
 
     if (itemData.IsEmpty())
         return;
@@ -301,7 +301,7 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pWeapon, bool bDel
         p_existingSlot->ItemData.Count++;
         InventoryListView->RemoveItem(p_existingSlot);
     }
-    InventoryListView->AddItem((p_existingSlot) ? p_existingSlot : GetInitializedSlotUI(pWeapon, itemData));
+    InventoryListView->AddItem((p_existingSlot) ? p_existingSlot : GetInitializedSlotUI(pObj, itemData));
 }
 
 void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)

@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SupressorBarrel.h"
 
+ASupressorBarrel::ASupressorBarrel()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::SUPRESSOR_BARREL);
+}

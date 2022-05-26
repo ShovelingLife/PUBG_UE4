@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ReflexSight.h"
 
+AReflexSight::AReflexSight()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::REFLEX_SIGHT);
+}

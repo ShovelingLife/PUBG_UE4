@@ -21,19 +21,19 @@ struct FsWeaponData : public FTableRowBase
 {
     GENERATED_BODY(BlueprintType)
 
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString Type           = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString GroupType      = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString BulletType     = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString Description    = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString MeshPath       = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString IconPath       = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString SlotIconPath   = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString BulletMeshPath = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FString MagMeshPath    = "";
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FVector ColliderSize   = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) FVector ColliderPos    = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) int     MaxBulletCount = 0;
-    UPROPERTY(BlueprintReadWrite, Category = Weapon_data) int     Damage         = 0;
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString Type           = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString GroupType      = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString BulletType     = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString Description    = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString MeshPath       = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString IconPath       = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString SlotIconPath   = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString BulletMeshPath = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FString MagMeshPath    = "";
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FVector ColliderSize   = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) FVector ColliderPos    = FVector::ZeroVector;
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) int     MaxBulletCount = 0;
+    UPROPERTY(BlueprintReadWrite, Category = WeaponData) int     Damage         = 0;
 
     FString BulletBP_path         = "";
     int     CurrentMaxBulletCount = 0;

@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "EON_StockB.h"
 
+AEON_StockB::AEON_StockB()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::EON_STOCKB);
+}

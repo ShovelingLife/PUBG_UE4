@@ -46,17 +46,10 @@ void ACoreWeapon::Init(EWeaponType Type)
 
     Super::AttachComponents();
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
-    InitMesh();
+    Super::InitSkeletalMesh(WeaponData.MeshPath);
     InitBullet();
     UpdateCollider();
     UpdateParticleSystem();
-}
-
-void ACoreWeapon::InitMesh()
-{
-    Super::InitSkeletalMesh(WeaponData.MeshPath);
-    SkeletalMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
-    SkeletalMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }
 
 void ACoreWeapon::InitBullet()

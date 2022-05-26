@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "KnifeForend.h"
 
+AKnifeForend::AKnifeForend()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::KNIFE_FOREND);
+}

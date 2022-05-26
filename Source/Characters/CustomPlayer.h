@@ -15,17 +15,17 @@
 #include "GameFramework/Character.h"
 #include "CustomPlayer.generated.h"
 
-/**
- * \brief 델리게이트 모음 (인벤토리 열기/닫기)
- */
+/** \brief 델리게이트 모음 (인벤토리 열기/닫기) */
 DECLARE_DELEGATE(FDeleOpenInventory)
 DECLARE_DELEGATE(FDeleCloseInventory)
 
 class ACoreWeapon;
 class ACoreVehicle;
+class ACoreAttachment;
 class ADummyCharacter;
 class AWeaponManager;
 class UAudioComponent;
+class UCustomGameInstance;
 class UParticleSystemComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -36,10 +36,12 @@ class CHARACTERS_API ACustomPlayer : public ACharacter
     GENERATED_BODY()
 
 private:
+    UPROPERTY() UCustomGameInstance* mpCustomGameInst;
     /** \brief 플레이어가 사용하는 변수 */
     UPROPERTY() AWeaponManager* mpWeaponManager;
-    UPROPERTY() AActor*         mpCollidedWeapon  = nullptr;
+    UPROPERTY() AActor*    mpCollidedWeapon  = nullptr;
     UPROPERTY() ACoreVehicle*   mpCollidedVehicle = nullptr;
+    UPROPERTY() ACoreAttachment* mpCollidedWeaponAttachment = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp;

@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "CoreFarmableItem.h"
 
 // Sets default values
@@ -24,4 +21,3 @@ void ACoreFarmableItem::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-

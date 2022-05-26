@@ -53,6 +53,9 @@ void ABaseInteraction::InitStaticMesh(FString Path)
 
     if (MESH.Succeeded())
         StaticMeshComp->SetStaticMesh(MESH.Object);
+
+    StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
+    StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }
 
 void ABaseInteraction::InitSkeletalMesh(FString Path)
@@ -67,6 +70,9 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
 
     if (MESH.Succeeded())
         SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
+
+    SkeletalMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
+    SkeletalMeshComp->SetRelativeLocation(FVector::ZeroVector);
 }
 
 void ABaseInteraction::InitComponents()
@@ -133,6 +139,14 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
     {
         ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
         ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+    }
+    else
+    {
+        if (StaticMeshComp)
+        {
+            StaticMeshComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
+            StaticMeshComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+        }
     }
 }
 

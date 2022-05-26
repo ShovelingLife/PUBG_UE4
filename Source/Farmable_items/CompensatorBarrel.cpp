@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "CompensatorBarrel.h"
 
+ACompensatorBarrel::ACompensatorBarrel()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::COMPENSATOR_BARREL);
+}

@@ -100,7 +100,7 @@ private:
     /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
     void GetItemListWidth();
 
-    UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pWeapon, FsSlotItemData ItemData);
+    UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData);
 
     UItemSlotUI* GetMatchingItemFromList(FString ItemName);
 
@@ -117,7 +117,7 @@ public:
 
     UFUNCTION() void ChangeItemCount(UItemSlotUI* pSlotObj);
 
-    UFUNCTION() void SetItemOntoInventory(class ABaseInteraction* pWeapon, bool bDeleteFromList = false);
+    UFUNCTION() void SetItemOntoInventory(class ABaseInteraction* pObj, bool bDeleteFromList = false);
     
     UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
 };

@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "HolographicSight.h"
 
+AHolographicSight::AHolographicSight()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::HOLOGRAPHIC_SIGHT);
+}

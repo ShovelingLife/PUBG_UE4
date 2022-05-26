@@ -44,27 +44,21 @@ enum class EPlayerOtherState
     NONE
 };
 
-/**
-  * \brief 섭취 아이템 종류
- */
+/** \brief 섭취 아이템 종류 */
 UENUM()
 enum class EConsumableType
 {
     NONE
 };
 
-/**
-  * \brief 방어구 종류
- */
+/** \brief 방어구 종류 */
 UENUM()
 enum class EEquipmentType
 {
     NONE
 };
 
-/**
-  * \brief 차량 종류
- */
+/** \brief 차량 종류 */
 UENUM()
 enum class EVehicleType
 {
@@ -77,9 +71,7 @@ enum class EVehicleType
     MAX
 };
 
-/**
-  * \brief 좌석 종류
- */
+/** \brief 좌석 종류 */
 UENUM()
 enum class ESeatType
 {

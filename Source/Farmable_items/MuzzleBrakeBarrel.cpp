@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MuzzleBrakeBarrel.h"
 
+AMuzzleBrakeBarrel::AMuzzleBrakeBarrel()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::MUZZLE_BRAKE_BARREL);
+}

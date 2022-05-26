@@ -67,9 +67,6 @@ protected:
      */
     void Init(EWeaponType WeaponType);
 
-    /** \brief 메쉬 초기화 */
-    void InitMesh();
-
     /** \brief 탄알 초기화 */
     void InitBullet();
 

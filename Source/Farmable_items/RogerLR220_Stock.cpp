@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "RogerLR220_Stock.h"
 
+ARogerLR220_Stock::ARogerLR220_Stock()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::ROGER_LR220);
+}

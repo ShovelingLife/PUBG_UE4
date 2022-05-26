@@ -1,5 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "C7_IRS.h"
 
+AC7_IRS::AC7_IRS()
+{
+    ACoreAttachment::Init(EWeaponAttachmentType::C7_IRS);
+}

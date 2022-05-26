@@ -23,15 +23,6 @@ enum class ECurrentWeaponType
 };
 
 /**
- * \brief 부속품 종류 \n
- */
-UENUM()
-enum class EAttachmentType
-{
-    NONE
-};
-
-/**
  * \brief 총기 종류 \n
  *
  * ------- 소총 : 최대 총알 30 ------- \n
