@@ -139,6 +139,7 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
     {
         ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
         ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+        ColliderComp->SetSimulatePhysics(false);
     }
     else
     {
@@ -146,6 +147,7 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
         {
             StaticMeshComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
             StaticMeshComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+            StaticMeshComp->SetSimulatePhysics(false);
         }
     }
 }

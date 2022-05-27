@@ -339,8 +339,12 @@ void ACustomPlayer::TryToInteract()
             // 무기 부속품이랑 충돌 시
             if (mpCollidedWeaponAttachment &&
                 mpCustomGameInst)
+            {
+                // 인벤토리에 추가한 뒤 맵에서 제거
                 mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedWeaponAttachment, false);
-
+                mpCollidedWeaponAttachment->Destroy();
+                mpCollidedWeaponAttachment = nullptr;
+            }
         }
         // 차량이랑 충돌 시
         if (mpCollidedVehicle)

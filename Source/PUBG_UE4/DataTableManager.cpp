@@ -151,6 +151,7 @@ void ADataTableManager::InitWeaponAttachmentData()
             groupType = "Stock";
 
         data.MeshPath = mkWeaponAttachmentMeshPath + groupType + "/SM_" + data.Type + "_" + data.GroupType;
+        data.Description = "Attachable in : " + data.WeaponMatchType;
         ArrWeaponAttachmentData.Add(data);
     }
 }

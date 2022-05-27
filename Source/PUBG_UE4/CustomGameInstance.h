@@ -38,7 +38,7 @@ class PUBG_UE4_API UCustomGameInstance : public UGameInstance
 public:
     /** \brief 전역 변수 */
     UPROPERTY() ASoundManager*       pSoundManager;
-    FDeleSetPlayerOtherState DeleSetPlayerOtherState;
+    FDeleSetPlayerOtherState         DeleSetPlayerOtherState;
     FDeleDealPlayerDmg               DeleDealPlayerDmg;
     FDeleSetShootTypeNotificationTxt DeleSetShootTypeNotificationTxt;
     FDeleSetItemOntoInventory        DeleSetItemOntoInventory;

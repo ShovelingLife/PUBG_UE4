@@ -28,6 +28,15 @@ class UI_PUBG_API AUI_manager : public AActor
 {
 	GENERATED_BODY()
 
+public:
+    static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
+
+    // 무기 관련 (인벤토리)
+    static TMap<int, UMaterial*> MapMainWeaponMat;      // 메인 무기 UI 벡터 이미지  
+    static TMap<int, UTexture*>  MapWeaponTex; // 인벤토리 무기 UI (총기)   
+    static TMap<int, UTexture*>  MapOtherWeaponTex; // 인벤토리 무기 UI (근접 및 투척류)
+    static TMap<int, UTexture*>  MapWeaponAttachmentTex; // 인벤토리 무기 UI (근접 및 투척류)
+
 private:
     // ------- 현재 쓰이고있는 변수들 -------
 
@@ -50,11 +59,6 @@ private:
     };
 
 public:
-    static TMap<int, UMaterial*> MapMainWeaponMat;      // 메인 무기 UI    
-    static TMap<int, UTexture*>  MapInventoryGunWeaponTex; // 인벤토리 무기 UI (총기)   
-    static TMap<int, UTexture*>  MapInventoryOtherWeaponTex; // 인벤토리 무기 UI (근접 및 투척류)
-    static TMap<int, UTexture*>  MapPlayerTex;          // 플레이어 UI
-
     UPROPERTY() AInventoryManager* pInventoryManager;
     UPROPERTY() UPlayerEffectUI*   pPlayerEffect_UI;
 
@@ -80,11 +84,11 @@ private:
     /** \brief 플레이어 UI 초기화 */
     void InitPlayerUI_Tex();
 
-    /** \brief 인벤토리 무기 UI 초기화 */
-    void InitInventoryWeaponTex();
-
     /** \brief 플레이어 무기 선택 UI 초기화 */
     void InitMainWeaponMat();
+
+    /** \brief 인벤토리 무기 UI 초기화 */
+    void InitInventoryWeaponTex();
     
 // 시작 후 초기화
 public:

@@ -34,7 +34,7 @@ void UTooltipUI::SetData(FsSlotItemData SlotItemData)
         Chaos::MakePair<UTextBlock*, FString>(DescriptionTxt, SlotItemData.Description),
         Chaos::MakePair<UTextBlock*, FString>(CapacityTxt, (SlotItemData.Capacity == 0) ? "" : FString::FromInt(SlotItemData.Capacity))
     };
-    for(auto item : arrTextPair)
+    for (auto item : arrTextPair)
     {
         if (item.First)
             item.First->SetText(FText::FromString(item.Second));
