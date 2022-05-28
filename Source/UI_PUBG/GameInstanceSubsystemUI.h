@@ -7,8 +7,10 @@
 class AUI_manager;
 class UItemSlotUI;
 class AWeaponManager;
+class ACoreAttachment;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
+DECLARE_DELEGATE_OneParam(FDeleVerifyAttachmentSlot, ACoreAttachment*)
 DECLARE_DELEGATE_TwoParams(FDeleSetTooltipVisibility, UItemSlotUI*, ESlateVisibility)
 
 UCLASS()
@@ -22,6 +24,7 @@ private:
 public:
     UPROPERTY() AUI_manager* pUImanager;
     FDeleSetTooltipVisibility DeleSetTooltipVisibility;
+    FDeleVerifyAttachmentSlot DeleVerifyAttachmentSlot;
 
 public:
 	UGameInstanceSubsystemUI();

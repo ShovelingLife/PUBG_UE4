@@ -7,9 +7,9 @@
 #include "ItemSlotUI.h"
 #include "TooltipUI.h"
 #include "UI_manager.h"
-#include "Kismet/GameplayStatics.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 void UInventoryUI::NativeConstruct()
 {

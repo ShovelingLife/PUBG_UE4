@@ -18,6 +18,7 @@
 
 class AUI_manager;
 class AWeaponManager;
+class ACoreAttachment;
 class ACoreThrowableWeapon;
 class UItemSlotUI;
 class UBorder;
@@ -157,19 +158,19 @@ protected:
       * \param _in_geometry UI 정보 \param _in_mouse_event 마우스 이벤트
       * \return FReply 마우스 처리 이벤트
      */
-    virtual FReply NativeOnMouseButtonUp(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent) override;
+    virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-    virtual void NativeOnDragDetected(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent, class UDragDropOperation*& _InOperation) override;
+    virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, class UDragDropOperation*& InOperation) override;
 
-    virtual bool NativeOnDrop(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, class UDragDropOperation* _InOperation) override;
+    virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, class UDragDropOperation* InOperation) override;
 
-    virtual void NativeOnDragEnter(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation) override;
+    virtual void NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
-    virtual void NativeOnDragLeave(const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation) override;
+    virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
-    virtual void NativeOnDragCancelled(const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation) override;
+    virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
-    virtual bool NativeOnDragOver(const FGeometry& _InGeometry, const FDragDropEvent& _InDragDropEvent, UDragDropOperation* _InOperation) override;
+    virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 private:
     // 무기 아이콘 및 슬롯 관한 함수
@@ -189,10 +190,14 @@ private:
 
     void ResetHighlightImg();
 
+    // 문자열에 따라 해당되는 부속품 슬롯 인덱스를 반환
+    int GetAttachmentSlotIndex(FString AttachmentType);
 
 public:
     // 슬롯 초기화
     UFUNCTION() void SetSlotNull();
 
     UFUNCTION() void UpdateThrowable(ACoreThrowableWeapon* pGrenade);
+
+    UFUNCTION() void VerifyAttachmentSlot(ACoreAttachment* pAttachment);
 };

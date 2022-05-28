@@ -7,6 +7,7 @@
 #include "GameInstanceSubsystemUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
+#include "Farmable_items/CoreAttachment.h"
 #include "Farmable_items/CoreBarrel.h"
 #include "Farmable_items/CoreForend.h"
 #include "Farmable_items/CoreGrip.h"
@@ -30,6 +31,7 @@
 #include "Components/Sizebox.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 
 void UInventoryWeaponSlotUI::NativeConstruct()
 {
@@ -37,7 +39,10 @@ void UInventoryWeaponSlotUI::NativeConstruct()
     InitSettings();
     UpdateThrowable(nullptr);
 
-    pGameInstanceSubSystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+    pGameInstanceSubSystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance());
+
+    if (pGameInstanceSubSystemUI)
+        pGameInstanceSubSystemUI->DeleVerifyAttachmentSlot.BindUFunction(this, "VerifyAttachmentSlot");
 }
 
 void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
@@ -57,7 +62,6 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
 
         SetWeaponSlotVisibility();
         UpdateInventoryWeaponUI();
-        UpdateAttachmentSlot();
         UpdateAttachmentSlot();
     }
     if (!mbClicked)
@@ -361,7 +365,6 @@ void UInventoryWeaponSlotUI::SetWeaponSlotVisibility()
         MeleeSlotImg,
         MeleeNameTxt,
         MeleeNumberBackground
-
     };
     // 총기류 설정
     for (int i = 0; i < 6; i++)
@@ -372,26 +375,22 @@ void UInventoryWeaponSlotUI::SetWeaponSlotVisibility()
     }
     // 기타 무기 설정
     for (int i = 0; i < 3; i++)
-        arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? Visible : Hidden);
+         arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? Visible : Hidden);
 }
 
 void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
 {
-    // 뒷배경 색상 관련
-    FLinearColor WhiteColor(1.f, 1.f, 1.f, 0.25f),
-                 BlackColor(0.f, 0.f, 0.f, 0.25f);
-
     // 총기 부착물 UI 갱신
     for (int i = 0; i < mkTotalGunAttachmentUI; i++)
     {
         // 첫번째 무기
         {
             TArray<UTexture*> arrAttachmentTex;
-            ACoreBarrel* p_barrel = nullptr;
-            ACoreGrip*   p_grip   = nullptr;
-            ACoreForend* p_forend = nullptr;
-            ACoreStock*  p_stock  = nullptr;
-            ACoreSight*  p_scope  = nullptr;
+            ACoreBarrel*      p_barrel = nullptr;
+            ACoreGrip*        p_grip   = nullptr;
+            ACoreForend*      p_forend = nullptr;
+            ACoreStock*       p_stock  = nullptr;
+            ACoreSight*       p_scope  = nullptr;
 
             // 텍스처 설정
             if (auto p_firstGun = mpWeaponManager->pFirstGun)
@@ -402,18 +401,16 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
                 p_stock  = p_firstGun->CurrentStock;
                 p_scope  = p_firstGun->CurrentSight;
             }
-            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex   : nullptr);
-            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex     : nullptr);
+            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
+            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex   : nullptr);
             arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex    : nullptr);
-            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex    : nullptr);
+            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex  : nullptr);
+            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
 
             // 뒷배경
             if (auto p_firstGunAttachmentBorder = mArrFirstGunAttachmentBorder[i])
-            {
                 p_firstGunAttachmentBorder->SetVisibility((mpWeaponManager->pFirstGun) ? Visible : Hidden);
-                p_firstGunAttachmentBorder->SetBrushColor((arrAttachmentTex[i] != nullptr) ? WhiteColor : BlackColor);
-            }
+
             // 아이템 UI
             if (auto p_firstGunAttachmentUI = mArrFirstGunAttachmentUI[i])
                 p_firstGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
@@ -421,11 +418,11 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
         // 두번째 무기
         {
             TArray<UTexture*> arrAttachmentTex;
-            ACoreBarrel* p_barrel = nullptr;
-            ACoreGrip*   p_grip   = nullptr;
-            ACoreForend* p_forend = nullptr;
-            ACoreStock*  p_stock  = nullptr;
-            ACoreSight*  p_scope  = nullptr;
+            ACoreBarrel*      p_barrel = nullptr;
+            ACoreGrip*        p_grip   = nullptr;
+            ACoreForend*      p_forend = nullptr;
+            ACoreStock*       p_stock  = nullptr;
+            ACoreSight*       p_scope  = nullptr;
 
             // 텍스처 설정
             if (auto p_secondGun = mpWeaponManager->pSecondGun)
@@ -436,18 +433,16 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
                 p_stock  = p_secondGun->CurrentStock;
                 p_scope  = p_secondGun->CurrentSight;
             }
-            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex   : nullptr);
-            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex     : nullptr);
+            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
+            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex   : nullptr);
             arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex    : nullptr);
-            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex    : nullptr);
+            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex  : nullptr);
+            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
 
             // 뒷배경
             if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
-            {
                 p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? Visible : Hidden);
-                p_secondGunAttachmentBorder->SetBrushColor((arrAttachmentTex[i] != nullptr) ? WhiteColor : BlackColor);
-            }
+
             // 아이템 UI
             if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
                 p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
@@ -457,9 +452,9 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
     for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
     {
         TArray<UTexture*> arrAttachmentTex;
-        ACoreBarrel* p_barrel = nullptr;
-        ACoreForend* p_forend = nullptr;
-        ACoreSight*  p_scope  = nullptr;
+        ACoreBarrel*      p_barrel = nullptr;
+        ACoreForend*      p_forend = nullptr;
+        ACoreSight*       p_scope  = nullptr;
 
         // 텍스처 설정
         if (auto p_pistol = mpWeaponManager->pFirstGun)
@@ -468,16 +463,14 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
             p_forend = p_pistol->CurrentForend;
             p_scope  = p_pistol->CurrentSight;
         }
-        arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex   : nullptr);
+        arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
         arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-        arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex    : nullptr);
+        arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
 
         // 뒷배경
         if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
-        {
             p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
-            p_pistolAttachmentBorder->SetBrushColor((arrAttachmentTex[i] != nullptr) ? WhiteColor : BlackColor);
-        }
+
         // 아이템 UI
         if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
             p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
@@ -578,6 +571,32 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     mbClicked = false;
 }
 
+int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType)
+{
+    int index = -1;
+
+    if      (AttachmentType == "Scope" ||
+             AttachmentType == "Sight" ||
+             AttachmentType == "IRS")
+             index = 0;
+
+    else if (AttachmentType == "Stock" ||
+             AttachmentType == "StockA" ||
+             AttachmentType == "StockB")
+             index = 1;
+
+    else if (AttachmentType == "Grip")
+             index = 2;
+
+    else if (AttachmentType == "Forend")
+             index = 3;
+
+    else if (AttachmentType == "Barrel")
+             index = 4;
+
+    return index;
+}
+
 void UInventoryWeaponSlotUI::SetSlotNull()
 {
     if (mpWeaponManager)
@@ -605,4 +624,83 @@ UFUNCTION() void UInventoryWeaponSlotUI::UpdateThrowable(ACoreThrowableWeapon* p
     }
     for (int i = 0; i < arrThrowableWidget.Num(); i++)
         arrThrowableWidget[i]->SetVisibility(pThrowable ? Visible : Hidden);
+}
+
+void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
+{
+    // 뒷배경 색상 관련
+    FLinearColor highlightColor(1.f, 1.f, 1.f, 1.f),
+                 normalColor(0.f, 0.f, 0.f, 0.25f);
+
+    if (pAttachment &&
+        mpWeaponManager)
+    {
+        auto attachmentData = pAttachment->WeaponAttachmentData;
+        auto groupType      = attachmentData.GroupType;
+        auto matchType      = attachmentData.WeaponMatchType;
+        int index = GetAttachmentSlotIndex(groupType);
+
+        // 전체 무기 착용 가능함
+        if (matchType == "All")
+        {
+            mArrFirstGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+            mArrSecondGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+
+            if (index < mkTotalPistolAttachmentUI)
+                mArrPistolAttachmentBorder[index]->SetBrushColor(highlightColor);
+        }
+        else
+        {
+            // , 기준으로 문자열을 잘라냄 
+            auto arrString = UKismetStringLibrary::ParseIntoArray(matchType, ",");
+
+            for (auto matchStr : arrString)
+            {
+                // 첫번째 총기
+                if (auto p_firstGun = mpWeaponManager->pFirstGun)
+                {
+                    auto data = p_firstGun->WeaponData;
+
+                    if (data.Type      == matchStr ||
+                        data.GroupType == matchStr)
+                        mArrFirstGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+                }
+                // 두번째 총기
+                if (auto p_secondGun = mpWeaponManager->pSecondGun)
+                {
+                    auto data = p_secondGun->WeaponData;
+
+                    if (data.Type      == matchStr ||
+                        data.GroupType == matchStr)
+                        mArrSecondGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+                }
+                // 세번째 총기
+                if (auto p_pistol = mpWeaponManager->pPistol)
+                {
+                    if (p_pistol->WeaponData.Type == matchStr)
+                        mArrPistolAttachmentBorder[index]->SetBrushColor(highlightColor);
+                }
+            }
+        }
+    }
+    // 원상복구 시킴
+    else
+    {
+        for (int i = 0; i < mkTotalGunAttachmentUI; i++)
+        {
+            // 첫번째 무기 뒷배경
+            if (auto p_firstGunAttachmentBorder = mArrFirstGunAttachmentBorder[i])
+                p_firstGunAttachmentBorder->SetBrushColor(normalColor);
+
+            // 두번째 무기 뒷배경
+            if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
+                p_secondGunAttachmentBorder->SetBrushColor(normalColor);
+        }
+        for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
+        {
+            // 세번째 무기 뒷배경
+            if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
+                p_pistolAttachmentBorder->SetBrushColor(normalColor);
+        }
+    }
 }

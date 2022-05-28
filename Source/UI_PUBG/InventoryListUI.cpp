@@ -4,6 +4,7 @@
 #include "GameInstanceSubsystemUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
+#include "Farmable_items/CoreAttachment.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
@@ -92,7 +93,6 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
 
     // 슬롯 설정    
     pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
-
     p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
     p_slot->ItemData     = mpSlotObj->ItemData;
     p_slot->Priority     = 1;
@@ -102,6 +102,10 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_slot->DeleChangeItemCount.BindUFunction(this, "ChangeItemCount");
     p_slot->SetAsCursor(mousePos);
 
+    // 무기 부속품일 시 해당되는 칸 설정
+    if (p_slot->ItemData.Category == "Attachment")
+        pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(Cast<ACoreAttachment>(p_slot->pDraggedItem));
+
     // 드래그 구현
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();
     p_dragOperation->pSlotUI           = p_slot;
@@ -109,6 +113,20 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_dragOperation->Pivot             = EDragPivot::MouseDown;
     p_dragOperation->bFromInventoryList = true;
     OutOperation  = p_dragOperation;
+}
+
+void UInventoryListUI::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+
+    if (!pGameInstanceSubsystemUI)
+        return;
+
+    if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
+    {
+        if (auto p_slot = p_customDragOp->pSlotUI)
+            pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
+    }
 }
 
 bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InMouseEvent, UDragDropOperation* Operation)

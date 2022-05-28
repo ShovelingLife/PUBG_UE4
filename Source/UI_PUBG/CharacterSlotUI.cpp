@@ -1,5 +1,6 @@
 ﻿#include "CharacterSlotUI.h"
 #include "CustomDragDropOperation.h"
+#include "GameInstanceSubsystemUI.h"
 #include "ItemSlotUI.h"
 #include "Characters/CustomPlayer.h"
 #include "Characters/DummyCharacter.h"
@@ -99,6 +100,15 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     mCharacterUIClickPos = FVector2D::ZeroVector;
+
+    if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
+    {
+        if (auto p_slot = p_customDragOp->pSlotUI)
+        {
+            if (auto pGameInstanceSubsystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance()))
+                pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
+        }
+    }
     return true;
 }
 

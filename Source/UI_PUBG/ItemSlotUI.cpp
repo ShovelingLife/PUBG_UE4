@@ -34,7 +34,6 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 
     if (this->IsHovered())
     {
-        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
         DeleCheckForSlot.ExecuteIfBound(this);
 
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
