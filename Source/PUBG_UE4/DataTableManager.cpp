@@ -1,9 +1,10 @@
 ﻿#include "DataTableManager.h"
 
-TArray<FsVehicleData>     ADataTableManager::ArrVehicleData;
-TArray<FsWeaponData>      ADataTableManager::ArrWeaponData;
-TArray<FsOtherWeaponData> ADataTableManager::ArrOtherWeaponData;
+TArray<FsVehicleData>          ADataTableManager::ArrVehicleData;
+TArray<FsWeaponData>           ADataTableManager::ArrWeaponData;
+TArray<FsOtherWeaponData>      ADataTableManager::ArrOtherWeaponData;
 TArray<FsWeaponAttachmentData> ADataTableManager::ArrWeaponAttachmentData;
+TArray<FsWeaponBulletData> ADataTableManager::ArrWeaponBulletData;
 
 // Sets default values
 ADataTableManager::ADataTableManager()
@@ -12,6 +13,7 @@ ADataTableManager::ADataTableManager()
     InitWeaponData();
     InitOtherWeaponData();
     InitWeaponAttachmentData();
+    InitWeaponBulletData();
 }
 
 void ADataTableManager::InitVehicleData()
@@ -153,5 +155,34 @@ void ADataTableManager::InitWeaponAttachmentData()
         data.MeshPath = mkWeaponAttachmentMeshPath + groupType + "/SM_" + data.Type + "_" + data.GroupType;
         data.Description = "Attachable in : " + data.WeaponMatchType;
         ArrWeaponAttachmentData.Add(data);
+    }
+}
+
+void ADataTableManager::InitWeaponBulletData()
+{
+    // CSV 로드
+    ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_ATTACHMENT_DATA_TABLE(TEXT("/Game/Data/WEAPON_BULLET_DATA_TABLE"));
+    UDataTable* pWeaponDataTable = nullptr;
+
+    if (WEAPON_ATTACHMENT_DATA_TABLE.Succeeded())
+        pWeaponDataTable = WEAPON_ATTACHMENT_DATA_TABLE.Object;
+
+    if (!pWeaponDataTable)
+        return;
+
+    // 모든 이름 가져오기
+    TArray<FName> arrRowName = pWeaponDataTable->GetRowNames();
+
+    // 갖고온 CSV로부터 데이터 할당
+    for (int i = 0; i < arrRowName.Num(); i++)
+    {
+        // row_name_arr 안에 정보 및 명칭
+        auto p_row = pWeaponDataTable->FindRow<FsWeaponBulletData>(arrRowName[i], arrRowName[i].ToString());
+
+        if (!p_row)
+            break;
+
+        FsWeaponBulletData data = *p_row;
+        ArrWeaponBulletData.Add(data);
     }
 }

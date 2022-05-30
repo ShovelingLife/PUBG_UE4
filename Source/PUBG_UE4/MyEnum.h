@@ -12,9 +12,7 @@
 #include "CoreMinimal.h"
 #include "MyEnum.generated.h"
 
- /**
-   * \brief 플레이어 상태 관련
-  */
+ /** \brief 플레이어 상태 관련 */
 UENUM()
 enum class EPlayerState
 {

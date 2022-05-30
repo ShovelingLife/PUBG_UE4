@@ -14,11 +14,12 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
-TMap<int, UTexture*>  AUI_manager::MapPlayerTex;
-TMap<int, UMaterial*> AUI_manager::MapMainWeaponMat;
-TMap<int, UTexture*>  AUI_manager::MapWeaponTex;
-TMap<int, UTexture*>  AUI_manager::MapOtherWeaponTex;
-TMap<int, UTexture*>  AUI_manager::MapWeaponAttachmentTex;
+TMap<int, UTexture*>  AUI_manager::MapPlayerIcon;
+TMap<int, UMaterial*> AUI_manager::MapMainWeaponIcon;
+TMap<int, UTexture*>  AUI_manager::MapWeaponIcon;
+TMap<int, UTexture*>  AUI_manager::MapOtherWeaponIcon;
+TMap<int, UTexture*>  AUI_manager::MapWeaponAttachmentIcon;
+TMap<int, UTexture*>  AUI_manager::MapAmmoBoxIcon;
 
 AUI_manager::AUI_manager()
 {
@@ -27,9 +28,10 @@ AUI_manager::AUI_manager()
     InitPlayerEffectUI();
     InitPlayerEffectUI();
     InitInteractionUI();
-    InitPlayerUI_Tex();
-    InitInventoryWeaponTex();
-    InitMainWeaponMat();
+    InitPlayerIcon();
+    InitInventoryWeaponIcon();
+    InitMainWeaponIcon();
+    InitBulletBoxIcon();
 }
 
 void AUI_manager::BeginPlay()
@@ -78,7 +80,7 @@ void AUI_manager::InitPlayerEffectUI()
         mPlayerEffectUI_BP = bp_playerEffectUI.Class;
 }
 
-void AUI_manager::InitPlayerUI_Tex()
+void AUI_manager::InitPlayerIcon()
 {
     for (int i = 0; i < mkArrPlayerUI_TexPath.Num(); i++)
     {
@@ -87,56 +89,77 @@ void AUI_manager::InitPlayerUI_Tex()
         auto    playerUI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*playerUI_path);
 
         if (playerUI_tex.Succeeded())
-            MapPlayerTex.Add(i, playerUI_tex.Object);
+            MapPlayerIcon.Add(i, playerUI_tex.Object);
     }
 }
 
-void AUI_manager::InitMainWeaponMat()
+void AUI_manager::InitMainWeaponIcon()
 {
-    for (int i = 0; i < ADataTableManager::ArrWeaponData.Num(); i++)
+    auto arrWeaponData = ADataTableManager::ArrWeaponData;
+
+    for (int i = 0; i < arrWeaponData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString weaponUI_path = "/Game/UI/WeaponIcon/" + ADataTableManager::ArrWeaponData[i].SlotIconPath;
+        FString weaponUI_path = "/Game/UI/WeaponIcon/T_" + arrWeaponData[i].SlotIconPath;
         auto    weaponUI_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weaponUI_path);
 
         if (weaponUI_mat.Succeeded())
-            AUI_manager::MapMainWeaponMat.Add(i, weaponUI_mat.Object);
+            AUI_manager::MapMainWeaponIcon.Add(i, weaponUI_mat.Object);
     }
 }
 
-void AUI_manager::InitInventoryWeaponTex()
+void AUI_manager::InitInventoryWeaponIcon()
 {
     const FString inventoryWeaponUI_Path = "/Game/UI/InventoryWeaponIcon/";
+    auto arrWeaponData           = ADataTableManager::ArrWeaponData;
+    auto arrOtherWeaponData      = ADataTableManager::ArrOtherWeaponData;
+    auto arrWeaponAttachmentData = ADataTableManager::ArrWeaponAttachmentData;
 
     // 총기 아이콘 초기화
-    for (int i = 0; i < ADataTableManager::ArrWeaponData.Num(); i++)
+    for (int i = 0; i < arrWeaponData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString UI_path = inventoryWeaponUI_Path + ADataTableManager::ArrWeaponData[i].IconPath;
+        FString UI_path = inventoryWeaponUI_Path + "T_" + arrWeaponData[i].IconPath;
         auto    UI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapWeaponTex.Add(i, UI_tex.Object);
+            AUI_manager::MapWeaponIcon.Add(i, UI_tex.Object);
     }
     // 근접 및 투척류 아이콘 초기화
-    for (int i = 0; i < ADataTableManager::ArrOtherWeaponData.Num(); i++)
+    for (int i = 0; i < arrOtherWeaponData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString UI_path = inventoryWeaponUI_Path + ADataTableManager::ArrOtherWeaponData[i].Type + "_icon";
-        auto    UI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+        FString UI_path = inventoryWeaponUI_Path + arrOtherWeaponData[i].Type + "_icon";
+        auto    UI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapOtherWeaponTex.Add(i, UI_tex.Object);
+            AUI_manager::MapOtherWeaponIcon.Add(i, UI_tex.Object);
     }
     // 부속품 아이콘 초기화
-    for (int i = 0; i < ADataTableManager::ArrWeaponAttachmentData.Num(); i++)
+    for (int i = 0; i < arrWeaponAttachmentData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString UI_path = inventoryWeaponUI_Path + "T_" +  ADataTableManager::ArrWeaponAttachmentData[i].Type + "_Icon";
+        FString UI_path = inventoryWeaponUI_Path + "T_" + arrWeaponAttachmentData[i].Type + "_Icon";
+        auto    UI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+
+        if (UI_tex.Succeeded())
+            AUI_manager::MapWeaponAttachmentIcon.Add(i, UI_tex.Object);
+    }
+}
+
+void AUI_manager::InitBulletBoxIcon()
+{
+    // 총알 박스 UI 초기화
+    auto arrWeaponBulletData = ADataTableManager::ArrWeaponBulletData;
+
+    for (int i = 0; i < arrWeaponBulletData.Num(); i++)
+    {
+        // 리소스를 불러온 후 데이터 테이블에 대입
+        FString UI_path = "/Game/UI/AmmoBoxIcon/AmmoBox" + arrWeaponBulletData[i].Type + "_Icon";
         auto    UI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapWeaponAttachmentTex.Add(i, UI_tex.Object);
+            AUI_manager::MapAmmoBoxIcon.Add(i, UI_tex.Object);
     }
 }
 
@@ -212,21 +235,21 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
     FString   weaponGroupType = ItemData.Category;
     int       imageIndex      = ItemData.ImageIndex;
 
-    if (imageIndex >= MapOtherWeaponTex.Num())
+    if (imageIndex >= MapOtherWeaponIcon.Num())
         return nullptr;
 
     // 투척류 또는 근접무기일 시
     if      (weaponGroupType == "Throwable" ||
              weaponGroupType == "Melee")
-             weaponTex = MapOtherWeaponTex[imageIndex];
+             weaponTex = MapOtherWeaponIcon[imageIndex];
 
     // 총기 무기일 시
     else if (weaponGroupType == "Gun")
-             weaponTex = MapWeaponTex[imageIndex];
+             weaponTex = MapWeaponIcon[imageIndex];
 
     // 무기 부속품일 시
     else if (weaponGroupType == "Attachment")
-             weaponTex=MapWeaponAttachmentTex[imageIndex];
+             weaponTex=MapWeaponAttachmentIcon[imageIndex];
 
     return Cast<UTexture2D>(weaponTex);
 }
@@ -234,13 +257,13 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
 UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
 {
     if (Type == "Gun")
-        return (Index < MapWeaponTex.Num()) ? Cast<UTexture2D>(MapWeaponTex[Index]) : nullptr;
+        return (Index < MapWeaponIcon.Num()) ? Cast<UTexture2D>(MapWeaponIcon[Index]) : nullptr;
 
     else
-        return (Index < MapOtherWeaponTex.Num()) ? Cast<UTexture2D>(MapOtherWeaponTex[Index]) : nullptr;
+        return (Index < MapOtherWeaponIcon.Num()) ? Cast<UTexture2D>(MapOtherWeaponIcon[Index]) : nullptr;
 }
 
 UMaterial* AUI_manager::GetMaterial(int Index)
 {
-    return (Index < MapMainWeaponMat.Num()) ? MapMainWeaponMat[Index] : nullptr;
+    return (Index < MapMainWeaponIcon.Num()) ? MapMainWeaponIcon[Index] : nullptr;
 }

@@ -37,6 +37,8 @@
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Icon Creator $
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Ammo Pack $
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Niagara Mega VFX Pack vol. 1 $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Ammo Pack $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Mixed VFX Pack2 (Niagara) $
 #### &#x2B1B; 유니티 에셋 스토어)
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; SFX bundle
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; ProgressBars #4

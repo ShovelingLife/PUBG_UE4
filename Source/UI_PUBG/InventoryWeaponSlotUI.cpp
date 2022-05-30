@@ -66,8 +66,9 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
     }
     if (!mbClicked)
     {
-        CheckForHoveredWeaponSlot();
         UpdateHighlightImgPos();
+        CheckForHoveredWeaponSlot();
+        CheckForHoveredAttachmentSlot();
     }
 }
 
@@ -184,9 +185,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
 
     // 무기 선택
     ABaseInteraction* p_selectedWeapon = p_weaponManager->GetWeaponByIndex((ECurrentWeaponType)mSelectedWeaponIndex);
-    //mItemData = (!p_selectedWeapon) ? FsSlotItemData::GetDataFrom(p_draggedWeapon) : FsSlotItemData::GetDataFrom(p_selectedWeapon);
-    //p_slot->pDraggedItem = p_selectedWeapon;
-
+    
     if (p_weaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex) == -1)
         return false;
 
@@ -522,6 +521,7 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
         Chaos::MakePair<UImage*, ECurrentWeaponType>(MeleeSlotImg,     ECurrentWeaponType::MELEE),
         Chaos::MakePair<UImage*, ECurrentWeaponType>(GrenadeSlotImg,   ECurrentWeaponType::THROWABLE)
     };
+    // 총 무기 다섯칸 중 어느거 선택했는지 확인
     for (auto item : arrWeaponImg)
     {
         auto weaponImg = item.First;
@@ -529,6 +529,46 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
         if (weaponImg->IsVisible() &&
             weaponImg->IsHovered())
             mSelectedWeaponIndex = item.Second;
+    }
+}
+
+void UInventoryWeaponSlotUI::CheckForHoveredAttachmentSlot()
+{
+    // 첫번째/두번째 무기 부속품 UI 슬롯 확인
+    for (int i = 0; i < mkTotalGunAttachmentUI; i++)
+    {
+        auto firstAttachmentBorder  = mArrFirstGunAttachmentBorder[i];
+        auto secondAttachmentBorder = mArrSecondGunAttachmentBorder[i];
+
+    	if (firstAttachmentBorder->IsHovered())
+        {
+            firstAttachmentBorder->SetBrushColor(mkHighlightColor);
+            mSelectedWeaponIndex = ECurrentWeaponType::FIRST;
+            
+        }
+        else
+            firstAttachmentBorder->SetBrushColor(mkNormalColor);
+
+        if (secondAttachmentBorder->IsHovered())
+        {
+            secondAttachmentBorder->SetBrushColor(mkHighlightColor);
+            mSelectedWeaponIndex = ECurrentWeaponType::SECOND;
+        }
+        else
+            secondAttachmentBorder->SetBrushColor(mkNormalColor);
+    }
+    // 세번째 무기 부속품 UI 슬롯 확인
+    for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
+    {
+        auto pistolAttachmentBorder = mArrPistolAttachmentBorder[i];
+
+        if (pistolAttachmentBorder->IsHovered())
+        {
+            pistolAttachmentBorder->SetBrushColor(mkHighlightColor);
+            mSelectedWeaponIndex = ECurrentWeaponType::PISTOL;
+        }
+        else
+            pistolAttachmentBorder->SetBrushColor(mkNormalColor);
     }
 }
 
@@ -628,10 +668,6 @@ UFUNCTION() void UInventoryWeaponSlotUI::UpdateThrowable(ACoreThrowableWeapon* p
 
 void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
 {
-    // 뒷배경 색상 관련
-    FLinearColor highlightColor(1.f, 1.f, 1.f, 1.f),
-                 normalColor(0.f, 0.f, 0.f, 0.25f);
-
     if (pAttachment &&
         mpWeaponManager)
     {
@@ -643,11 +679,11 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
         // 전체 무기 착용 가능함
         if (matchType == "All")
         {
-            mArrFirstGunAttachmentBorder[index]->SetBrushColor(highlightColor);
-            mArrSecondGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+            mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
+            mArrSecondGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
 
             if (index < mkTotalPistolAttachmentUI)
-                mArrPistolAttachmentBorder[index]->SetBrushColor(highlightColor);
+                mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
         }
         else
         {
@@ -663,7 +699,7 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
 
                     if (data.Type      == matchStr ||
                         data.GroupType == matchStr)
-                        mArrFirstGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+                        mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
                 }
                 // 두번째 총기
                 if (auto p_secondGun = mpWeaponManager->pSecondGun)
@@ -672,13 +708,13 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
 
                     if (data.Type      == matchStr ||
                         data.GroupType == matchStr)
-                        mArrSecondGunAttachmentBorder[index]->SetBrushColor(highlightColor);
+                        mArrSecondGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
                 }
                 // 세번째 총기
                 if (auto p_pistol = mpWeaponManager->pPistol)
                 {
                     if (p_pistol->WeaponData.Type == matchStr)
-                        mArrPistolAttachmentBorder[index]->SetBrushColor(highlightColor);
+                        mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
                 }
             }
         }
@@ -690,17 +726,17 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
         {
             // 첫번째 무기 뒷배경
             if (auto p_firstGunAttachmentBorder = mArrFirstGunAttachmentBorder[i])
-                p_firstGunAttachmentBorder->SetBrushColor(normalColor);
+                p_firstGunAttachmentBorder->SetBrushColor(mkNormalColor);
 
             // 두번째 무기 뒷배경
             if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
-                p_secondGunAttachmentBorder->SetBrushColor(normalColor);
+                p_secondGunAttachmentBorder->SetBrushColor(mkNormalColor);
         }
         for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
         {
             // 세번째 무기 뒷배경
             if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
-                p_pistolAttachmentBorder->SetBrushColor(normalColor);
+                p_pistolAttachmentBorder->SetBrushColor(mkNormalColor);
         }
     }
 }

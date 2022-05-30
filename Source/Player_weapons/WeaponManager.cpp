@@ -792,6 +792,10 @@ ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType WeaponType
         pThrowable
     };
     int index = (int)WeaponType;
+
+    if (index == 0)
+        return nullptr;
+
     return arrWeapon[index - 1];
 }
 

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/WeaponAttachmentData.h"
+#include "FarmableItemEnum.h"
 #include "CoreFarmableItem.generated.h"
 
 UCLASS()

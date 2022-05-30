@@ -54,3 +54,18 @@ enum class EWeaponAttachmentType
     VSS_STOCKA,
     VSS_STOCKB
 };
+
+UENUM()
+enum class EAmmoBoxType
+{
+    AMMO_12_GAUGE,
+    AMMO_20MM,
+    AMMO_22,
+    AMMO_45,
+    AMMO_50,
+    AMMO_500SW,
+    AMMO_5_45,
+    AMMO_7_62,
+    AMMO_9MM,
+    NONE
+};

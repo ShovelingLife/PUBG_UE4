@@ -53,7 +53,7 @@ void UPlayerStateUI::UpdateShootMode(ABaseInteraction* pWeapon)
         {
             int index = (int)p_gun->ShootType;
             BoltActionImg->SetVisibility(ESlateVisibility::Visible);
-            BoltActionImg->SetBrushFromTexture(Cast<UTexture2D>(pUI_manager->MapPlayerTex[index]));
+            BoltActionImg->SetBrushFromTexture(Cast<UTexture2D>(pUI_manager->MapPlayerIcon[index]));
         }
     }
 }

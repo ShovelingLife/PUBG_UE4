@@ -13,9 +13,7 @@
 #include "Engine/DataTable.h"
 #include "WeaponData.generated.h"
 
- /**
-   * \brief CSV로부터 가지고올 무기 정보 구조체
-  */
+ /** \brief CSV로부터 가지고올 무기 정보 구조체 */
 USTRUCT()
 struct FsWeaponData : public FTableRowBase
 {

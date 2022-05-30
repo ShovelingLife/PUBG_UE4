@@ -13,6 +13,7 @@
 #include "OtherWeaponData.h"
 #include "WeaponData.h"
 #include "WeaponAttachmentData.h"
+#include "WeaponBulletData.h"
 #include "GameFramework/Actor.h"
 #include "DataTableManager.generated.h"
 
@@ -25,16 +26,17 @@ class PUBG_UE4_API ADataTableManager : public AActor
         
 public:
     /** \brief 게임 오브젝트 데이터 배열 (static) */
-    static TArray<FsVehicleData>     ArrVehicleData;
-    static TArray<FsWeaponData>      ArrWeaponData;
-    static TArray<FsOtherWeaponData> ArrOtherWeaponData;    
-    static TArray<FsWeaponAttachmentData>     ArrWeaponAttachmentData;
+    static TArray<FsVehicleData>          ArrVehicleData;
+    static TArray<FsWeaponData>           ArrWeaponData;
+    static TArray<FsOtherWeaponData>      ArrOtherWeaponData;    
+    static TArray<FsWeaponAttachmentData> ArrWeaponAttachmentData;
+    static TArray<FsWeaponBulletData> ArrWeaponBulletData;
 
 private:
     /** \brief 차량 데이터 관련 */
-    const FString mkVehicleMeshPath = "/Game/Characters/Vehicles/Skeletons/";
-    const FString mkAnimInstancePath = "/Game/Blueprints/Vehicles/";
-    const FString mkVehicleSoundPath = "";
+    const FString mkVehicleMeshPath    = "/Game/Characters/Vehicles/Skeletons/";
+    const FString mkAnimInstancePath   = "/Game/Blueprints/Vehicles/";
+    const FString mkVehicleSoundPath   = "";
     int           mCurrentVehicleCount = 0;
 
     /** * \brief 무기 데이터 관련 */
@@ -48,6 +50,9 @@ private:
 
     /** \brief 무기 부속품 데이터 관련 */
     const FString mkWeaponAttachmentMeshPath = "/Game/AdvanceWeaponPack/Mesh/Attachment/";
+
+    /** \brief 총알 상자 데이터 관련 */
+    const FString mkAmmoBoxMeshPath = "/Game/UI/AmmoBoxIcon/AmmoBox/";
 
 public:
     ADataTableManager();
@@ -64,4 +69,7 @@ private:
 
     /** \brief 무기 부속품 데이터 초기화 */
     void InitWeaponAttachmentData();
+
+    /** \brief 무기 총알 상자 데이터 초기화 */
+    void InitWeaponBulletData();
 };
