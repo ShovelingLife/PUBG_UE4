@@ -17,6 +17,7 @@
 class USceneComponent;
 class UInventoryUI;
 class UInventoryListUI;
+class UItemSlotUI;
 
 UCLASS()
 class UI_PUBG_API AInventoryManager : public AActor
@@ -31,6 +32,9 @@ private:
     TSubclassOf<UUserWidget> BP_InventoryUI;
 
 public:
+    // 현재 인벤토리
+    TMap<FString, UItemSlotUI*> MapCurrentItems;
+
     /** \brief 인벤토리 UI */
     class UInventoryUI* pInventoryUI;
 
@@ -56,6 +60,9 @@ public:
 
     /** \brief 플레이어가 인벤토리를 열음 (델리게이트) */
     UFUNCTION() void CloseInventory();
+
+    // 인벤토리로부터 총알 개수를 확인하는 함수
+    UFUNCTION() int GetBulletCount(FString BulletType);
 
 public:
     UInventoryListUI* GetInventoryListUI();

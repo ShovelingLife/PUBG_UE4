@@ -8,8 +8,9 @@
 #include "Player_weapons/CoreThrowableWeapon.h"
 #include "Player_weapons/CoreBullet.h"
 #include "Player_weapons/WeaponManager.h"
-#include "Farmable_items/CoreFarmableItem.h"
+#include "Farmable_items/CoreAmmoBox.h"
 #include "Farmable_items/CoreAttachment.h"
+#include "Farmable_items/CoreFarmableItem.h"
 #include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/SoundManager.h" 
 #include "PUBG_UE4/CustomGameInstance.h" 
@@ -258,13 +259,18 @@ void ACustomPlayer::CheckForObject()
     if (p_hittedActor)
     {
         // 충돌한 오브젝트가 무기일 시
-        if (p_hittedActor->IsA<ACoreWeapon>()          ||
-            p_hittedActor->IsA<ACoreThrowableWeapon>() ||
-            p_hittedActor->IsA<ACoreMeleeWeapon>())
-            mpCollidedWeapon = p_hittedActor;
+        if      (p_hittedActor->IsA<ACoreWeapon>()          ||
+                 p_hittedActor->IsA<ACoreThrowableWeapon>() ||
+                 p_hittedActor->IsA<ACoreMeleeWeapon>())
+                 mpCollidedWeapon = p_hittedActor;
 
-        if (p_hittedActor->IsA<ACoreAttachment>())
-            mpCollidedWeaponAttachment = Cast<ACoreAttachment>(p_hittedActor);
+        // 무기 부속품일 시
+        else if (p_hittedActor->IsA<ACoreAttachment>())
+                 mpCollidedWeaponAttachment = Cast<ACoreAttachment>(p_hittedActor);
+
+        // 총기 탄알 상자일 시
+        else if (p_hittedActor->IsA<ACoreAmmoBox>())
+                 mpCollidedAmmoBox = Cast<ACoreAmmoBox>(p_hittedActor);
 
         // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시 
         if (auto p_obj = Cast<ABaseInteraction>(p_hittedActor))
@@ -321,30 +327,32 @@ void ACustomPlayer::CheckIfVehicleNear()
 
 void ACustomPlayer::TryToInteract()
 {
-    if (mbInteracting)
+    if (mbInteracting &&
+        mpCustomGameInst)
     {
         // 충돌된 오브젝트 체크
-        if (mpCollidedWeapon ||
-            mpCollidedWeaponAttachment)
+        if (mpCollidedWeapon)
         {
-            if (mpCustomGameInst)
-            {
-                if (auto p_soundManager = mpCustomGameInst->pSoundManager)
-                    p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
-            }
-            // 무기랑 충돌 시
-            if (mpCollidedWeapon)
-                mpWeaponManager->Equip(mpCollidedWeapon);
+            if (auto p_soundManager = mpCustomGameInst->pSoundManager)
+                p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
 
-            // 무기 부속품이랑 충돌 시
-            if (mpCollidedWeaponAttachment &&
-                mpCustomGameInst)
-            {
-                // 인벤토리에 추가한 뒤 맵에서 제거
-                mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedWeaponAttachment, false);
-                mpCollidedWeaponAttachment->Destroy();
-                mpCollidedWeaponAttachment = nullptr;
-            }
+            // 무기랑 충돌 시
+            mpWeaponManager->Equip(mpCollidedWeapon);
+        }
+        // 무기 부속품이랑 충돌 시
+        if (mpCollidedWeaponAttachment)
+        {
+            // 인벤토리에 추가한 뒤 맵에서 제거
+            mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedWeaponAttachment, false);
+            mpCollidedWeaponAttachment->Destroy();
+            mpCollidedWeaponAttachment = nullptr;
+        }
+        if (mpCollidedAmmoBox)
+        {
+            // 인벤토리에 추가한 뒤 맵에서 제거
+            mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedAmmoBox, false);
+            mpCollidedAmmoBox->Destroy();
+            mpCollidedAmmoBox = nullptr;
         }
         // 차량이랑 충돌 시
         if (mpCollidedVehicle)

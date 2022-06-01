@@ -182,7 +182,6 @@ void ADataTableManager::InitWeaponBulletData()
         if (!p_row)
             break;
 
-        FsWeaponBulletData data = *p_row;
-        ArrWeaponBulletData.Add(data);
+        ArrWeaponBulletData.Add(*p_row);
     }
 }

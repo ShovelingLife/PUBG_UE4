@@ -22,6 +22,7 @@ class UTextBlock;
 class ABaseInteraction;
 class ACoreThrowableWeapon;
 class UItemSlotUI;
+class UGameInstanceSubsystemUI;
 
 UCLASS()
 class UI_PUBG_API UInventoryListUI : public UUserWidget
@@ -29,7 +30,7 @@ class UI_PUBG_API UInventoryListUI : public UUserWidget
 	GENERATED_BODY()
 
 private:
-    UPROPERTY() UItemSlotUI*    mpSlotObj;
+    UPROPERTY() UItemSlotUI*    mpSlotObj = nullptr;
 
     float mWorldSizeBoxWidth     = 0.f;
     float mInventorySizeBoxWidth = 0.f;
@@ -104,7 +105,7 @@ private:
 
     UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData);
 
-    UItemSlotUI* GetMatchingItemFromList(FString ItemName);
+    UItemSlotUI* GetMatchingItemFromList(FString ItemName) const;
 
 public:
     UFUNCTION() void DeleteFromList();

@@ -42,11 +42,13 @@ public:
     EGunShootType ShootType  = EGunShootType::SINGLE;
 
     // 부속품 관련 변수들
-    UPROPERTY(VisibleAnywhere) ACoreBarrel* CurrentBarrel;
-    UPROPERTY(VisibleAnywhere) ACoreForend* CurrentForend;
-    UPROPERTY(VisibleAnywhere) ACoreGrip* CurrentGrip;
-    UPROPERTY(VisibleAnywhere) ACoreSight* CurrentSight;
-    UPROPERTY(VisibleAnywhere) ACoreStock* CurrentStock;
+    UPROPERTY(VisibleAnywhere) ACoreBarrel* CurrentBarrel = nullptr;
+    UPROPERTY(VisibleAnywhere) ACoreForend* CurrentForend = nullptr;
+    UPROPERTY(VisibleAnywhere) ACoreGrip*   CurrentGrip   = nullptr;
+    UPROPERTY(VisibleAnywhere) ACoreSight*  CurrentSight  = nullptr;
+    UPROPERTY(VisibleAnywhere) ACoreStock*  CurrentStock  = nullptr;
+
+    bool bInInventory = false;
 
 public:
     ACoreWeapon();

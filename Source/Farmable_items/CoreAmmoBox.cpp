@@ -3,9 +3,9 @@
 
 void ACoreAmmoBox::Init(EAmmoBoxType Type)
 {
-    auto weaponBulletData = ADataTableManager::ArrWeaponBulletData[(int)Type];
-    FString bulletType = "cal" + weaponBulletData.Type;
-    FString meshPath = "/Game/AmmoSet/Models/" + bulletType + "/" + bulletType + "_" + weaponBulletData.MeshType;
+    WeaponBulletData = ADataTableManager::ArrWeaponBulletData[(int)Type];
+    FString bulletType = "cal" + WeaponBulletData.Type;
+    FString meshPath = "/Game/AmmoSet/Models/" + bulletType + "/" + bulletType + "_" + WeaponBulletData.MeshType;
     AmmoBoxType = Type;
     ABaseInteraction::InitStaticMesh(meshPath);
 }

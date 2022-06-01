@@ -2,6 +2,7 @@
 #include "ItemSlotUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
+#include "InventoryManager.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "Farmable_items/CoreAttachment.h"
@@ -26,7 +27,7 @@ void UInventoryListUI::NativeConstruct()
     Super::NativeConstruct();
     GetItemListWidth();
 
-    // 인벤토리에 아이템 추가되는 델리게이트 설정
+    // 인벤토리에 아이템 추가되는 함수 바인딩
     if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
         p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
 
@@ -202,14 +203,16 @@ UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pObj, FsSl
     return p_slot;
 }
 
-UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName)
+UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName) const
 {
-    for (auto item : InventoryListView->GetListItems())
+    if (pGameInstanceSubsystemUI)
     {
-        if (auto p_slot = Cast<UItemSlotUI>(item))
+        if (auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager())
         {
-            if (p_slot->ItemData.Name == ItemName)
-                return p_slot;
+            auto mapCurrentItems = p_inventoryManager->MapCurrentItems;
+
+            if (auto p_item = mapCurrentItems.Find(ItemName))
+                return *p_item;
         }
     }
     return nullptr;
@@ -217,6 +220,9 @@ UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName)
 
 void UInventoryListUI::DeleteFromList()
 {
+    UItemSlotUI* p_itemSlotUI = nullptr;
+    bool b_found = false;
+
     if (!mpSlotObj)
         return;
 
@@ -228,25 +234,37 @@ void UInventoryListUI::DeleteFromList()
             // 발견 시 해당하는 아이템 삭제
             if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
             {
+                p_itemSlotUI = p_slot;
                 WorldListView->RemoveItem(p_slot);
                 mpSlotObj = nullptr;
-                return;
+                break;
             }
         }
     }
     // 인벤토리 리스트부터 순차적으로 검색
     for (int i = 0; i < InventoryListView->GetNumItems(); i++)
     {
+        if (p_itemSlotUI)
+            break;
+
         if (auto p_slot = Cast<UItemSlotUI>(InventoryListView->GetItemAt(i)))
         {
             // 발견 시 해당하는 아이템 삭제
             if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
             {
+                p_itemSlotUI = p_slot;
                 InventoryListView->RemoveItem(p_slot);
                 mpSlotObj = nullptr;
-                return;
+                break;
             }
         }
+    }
+    // 아이템 삭제
+    if (pGameInstanceSubsystemUI &&
+        p_itemSlotUI)
+    {
+        if (auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager())
+            p_inventoryManager->MapCurrentItems.Remove(p_itemSlotUI->ItemData.Category);
     }
 }
 
@@ -319,7 +337,17 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDelete
         p_existingSlot->ItemData.Count++;
         InventoryListView->RemoveItem(p_existingSlot);
     }
-    InventoryListView->AddItem((p_existingSlot) ? p_existingSlot : GetInitializedSlotUI(pObj, itemData));
+    else
+        p_existingSlot = GetInitializedSlotUI(pObj, itemData);
+
+    if (!p_existingSlot)
+        return;
+
+    // 인벤토리에 추가
+    if (auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager())
+        p_inventoryManager->MapCurrentItems.Add(p_existingSlot->ItemData.Name, p_existingSlot);
+
+    InventoryListView->AddItem(p_existingSlot);
 }
 
 void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)

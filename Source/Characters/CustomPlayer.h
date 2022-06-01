@@ -22,6 +22,7 @@ DECLARE_DELEGATE(FDeleCloseInventory)
 class ACoreWeapon;
 class ACoreVehicle;
 class ACoreAttachment;
+class ACoreAmmoBox;
 class ADummyCharacter;
 class AWeaponManager;
 class UAudioComponent;
@@ -36,15 +37,16 @@ class CHARACTERS_API ACustomPlayer : public ACharacter
     GENERATED_BODY()
 
 private:
-    UPROPERTY() UCustomGameInstance* mpCustomGameInst;
+    UPROPERTY() UCustomGameInstance* mpCustomGameInst = nullptr;
     /** \brief 플레이어가 사용하는 변수 */
-    UPROPERTY() AWeaponManager* mpWeaponManager;
-    UPROPERTY() AActor*    mpCollidedWeapon  = nullptr;
-    UPROPERTY() ACoreVehicle*   mpCollidedVehicle = nullptr;
+    UPROPERTY() AWeaponManager*  mpWeaponManager            = nullptr;
+    UPROPERTY() AActor*          mpCollidedWeapon           = nullptr;
+    UPROPERTY() ACoreVehicle*    mpCollidedVehicle          = nullptr;
     UPROPERTY() ACoreAttachment* mpCollidedWeaponAttachment = nullptr;
+    UPROPERTY() ACoreAmmoBox*    mpCollidedAmmoBox          = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp;
-    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp;
+    UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp = nullptr;
 
     /** \brief 이동 관련 변수 */
     FVector mDirectionUpDown    = FVector::ZeroVector;

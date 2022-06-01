@@ -146,6 +146,10 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
     if (!pWeapon)
         return;
 
+    // 총기일 때만 인벤토리 총알과 연동 용도
+    if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
+        p_gun->bInInventory = true;
+
     // 소켓 기반 무기 종류 판별 후 다운캐스팅
     if (SocketName == "HandGunSock")
     {
@@ -213,6 +217,12 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
     pWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     pWeapon->SetActorTransform(NewPos);
     pWeapon->ChangeCollisionSettings(true);
+
+    if(auto p_gun=Cast<ACoreWeapon>(pWeapon))
+    {
+        p_gun->WeaponData.CurrentMaxBulletCount = 0;
+        p_gun->bInInventory = false;
+    }
 }
 
 void AWeaponManager::PredictGrenadePath()

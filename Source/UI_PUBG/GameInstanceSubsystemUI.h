@@ -5,9 +5,10 @@
 #include "GameInstanceSubsystemUI.generated.h"
 
 class AUI_manager;
-class UItemSlotUI;
-class AWeaponManager;
 class ACoreAttachment;
+class AInventoryManager;
+class AWeaponManager;
+class UItemSlotUI;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
 DECLARE_DELEGATE_OneParam(FDeleVerifyAttachmentSlot, ACoreAttachment*)
@@ -47,4 +48,6 @@ public:
     bool IsMouseLeftFromUI(FVector2D Distance, bool bFirst = false);
 
     AWeaponManager* GetWeaponManager();
+
+    AInventoryManager* GetInventoryManager();
 };

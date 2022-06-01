@@ -1,5 +1,6 @@
 ﻿#include "CoreWeapon.h"
 #include "CoreBullet.h"
+#include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "PUBG_UE4/SoundManager.h"
 #include "Components/WidgetComponent.h"
@@ -34,6 +35,18 @@ void ACoreWeapon::NotifyActorEndOverlap(AActor* ColliderActor)
 void ACoreWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    // 현재 인벤토리에 있을 때만 총알 개수 갱신
+    if (bInInventory)
+    {
+        if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+        {
+            auto deleGetBulletCount = p_customGameInst->DeleGetBulletCount;
+
+            if (deleGetBulletCount.IsBound())
+                WeaponData.CurrentMaxBulletCount += p_customGameInst->DeleGetBulletCount.Execute(WeaponData.BulletType);
+        }
+    }
 }
 
 void ACoreWeapon::Init(EWeaponType Type)

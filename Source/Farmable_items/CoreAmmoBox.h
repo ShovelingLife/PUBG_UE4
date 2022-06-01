@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CoreFarmableItem.h"
+#include "PUBG_UE4/WeaponBulletData.h"
 #include "CoreAmmoBox.generated.h"
 
 class UTexture;
@@ -12,7 +13,8 @@ class FARMABLE_ITEMS_API ACoreAmmoBox : public ACoreFarmableItem
 	GENERATED_BODY()
 	
 public:
-	EAmmoBoxType AmmoBoxType;
+	FsWeaponBulletData WeaponBulletData;
+	EAmmoBoxType	   AmmoBoxType;
 
 protected:
 	void Init(EAmmoBoxType Type);

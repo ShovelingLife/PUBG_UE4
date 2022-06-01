@@ -1,4 +1,5 @@
 #include "GameInstanceSubsystemUI.h"
+#include "InventoryManager.h"
 #include "TooltipUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
@@ -68,9 +69,11 @@ bool UGameInstanceSubsystemUI::IsMouseLeftFromUI(FVector2D Distance, bool bFirst
 
 AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager()
 {
-    if (auto p_currentPlayer = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
-        return p_currentPlayer->GetWeaponManager();
-    
-    else
-        return nullptr;
+    auto p_currentPlayer = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    return (p_currentPlayer) ? p_currentPlayer->GetWeaponManager() : nullptr;
+}
+
+AInventoryManager* UGameInstanceSubsystemUI::GetInventoryManager()
+{
+    return (pUImanager) ? pUImanager->pInventoryManager : nullptr;
 }

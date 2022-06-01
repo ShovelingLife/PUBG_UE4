@@ -231,25 +231,28 @@ void AUI_manager::KillAnim()
 
 UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
 {
-    UTexture* weaponTex       = nullptr;
-    FString   weaponGroupType = ItemData.Category;
-    int       imageIndex      = ItemData.ImageIndex;
+    UTexture* weaponTex  = nullptr;
+    FString   category   = ItemData.Category;
+    int       imageIndex = ItemData.ImageIndex;
 
     if (imageIndex >= MapOtherWeaponIcon.Num())
         return nullptr;
 
     // 투척류 또는 근접무기일 시
-    if      (weaponGroupType == "Throwable" ||
-             weaponGroupType == "Melee")
+    if      (category == "Throwable" ||
+             category == "Melee")
              weaponTex = MapOtherWeaponIcon[imageIndex];
 
     // 총기 무기일 시
-    else if (weaponGroupType == "Gun")
+    else if (category == "Gun")
              weaponTex = MapWeaponIcon[imageIndex];
 
     // 무기 부속품일 시
-    else if (weaponGroupType == "Attachment")
+    else if (category == "Attachment")
              weaponTex=MapWeaponAttachmentIcon[imageIndex];
+
+    else if (category == "AmmoBox")
+             weaponTex = MapAmmoBoxIcon[imageIndex];
 
     return Cast<UTexture2D>(weaponTex);
 }

@@ -5,6 +5,7 @@
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/DataTableManager.h"
+#include "PUBG_UE4/CustomGameInstance.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
@@ -20,7 +21,6 @@ AInventoryManager::AInventoryManager()
     PrimaryActorTick.bCanEverTick = true;
     SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
     RootComponent = SceneComp;
-
     InitInventoryUI();
 }
 
@@ -36,6 +36,9 @@ void AInventoryManager::BeginPlay()
         p_player->DeleCloseInventory.BindUFunction(this, "CloseInventory");
         AttachToActor(p_player, FAttachmentTransformRules::KeepRelativeTransform);
     }
+    // 현재 총알 개수 확인하는 함수 바인딩
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+        p_customGameInst->DeleGetBulletCount.BindUFunction(this, "GetBulletCount");
 }
 
 void AInventoryManager::Tick(float DeltaTime)
@@ -73,6 +76,16 @@ void AInventoryManager::CloseInventory()
     pInventoryUI->SetVisibility(ESlateVisibility::Hidden);
     p_playerController->SetShowMouseCursor(false);
     UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
+}
+
+int AInventoryManager::GetBulletCount(FString BulletType)
+{
+    if (BulletType == "" ||
+        !MapCurrentItems.Contains(BulletType))
+        return 0;
+    
+    auto p_currentItem = MapCurrentItems[BulletType];
+    return (p_currentItem) ? p_currentItem->ItemData.Count : 0;
 }
 
 UInventoryListUI* AInventoryManager::GetInventoryListUI()
