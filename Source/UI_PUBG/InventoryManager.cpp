@@ -38,7 +38,10 @@ void AInventoryManager::BeginPlay()
     }
     // 현재 총알 개수 확인하는 함수 바인딩
     if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+    {
         p_customGameInst->DeleGetBulletCount.BindUFunction(this, "GetBulletCount");
+        p_customGameInst->DeleDeleteInventoryItem.BindUFunction(this, "DeleteInventoryItem");
+    }
 }
 
 void AInventoryManager::Tick(float DeltaTime)
@@ -86,6 +89,16 @@ int AInventoryManager::GetBulletCount(FString BulletType)
     
     auto p_currentItem = MapCurrentItems[BulletType];
     return (p_currentItem) ? p_currentItem->ItemData.Count : 0;
+}
+
+void AInventoryManager::DeleteInventoryItem(FString ItemType)
+{
+    // 아이템을 1개만큼 차감
+    if (MapCurrentItems.Contains(ItemType))
+    {
+        if (auto p_item = MapCurrentItems[ItemType])
+            p_item->ItemData.Count--;
+    }
 }
 
 UInventoryListUI* AInventoryManager::GetInventoryListUI()

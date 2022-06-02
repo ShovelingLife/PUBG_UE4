@@ -24,6 +24,7 @@ DECLARE_DELEGATE_OneParam(FDeleSetPlayerOtherState, EPlayerOtherState)
 // UI 관련 델리게이트
 DECLARE_DELEGATE(FDeleKillUI_Anim)
 DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
+DECLARE_DELEGATE_OneParam(FDeleDeleteInventoryItem, FString)
 DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
 DECLARE_DELEGATE_OneParam(FDeleSetShootTypeNotificationTxt, FString)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
@@ -41,6 +42,7 @@ public:
     UPROPERTY() ASoundManager*       pSoundManager;
     FDeleSetPlayerOtherState         DeleSetPlayerOtherState;
     FDeleDealPlayerDmg               DeleDealPlayerDmg;
+    FDeleDeleteInventoryItem         DeleDeleteInventoryItem;
     FDeleGetBulletCount              DeleGetBulletCount;
     FDeleSetShootTypeNotificationTxt DeleSetShootTypeNotificationTxt;
     FDeleSetItemOntoInventory        DeleSetItemOntoInventory;

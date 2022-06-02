@@ -195,7 +195,7 @@ void UInventoryListUI::GetItemListWidth()
 UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData)
 {
     auto p_slot = NewObject<UItemSlotUI>();
-    p_slot->ItemData = ItemData;
+    p_slot->ItemData     = ItemData;
     p_slot->pDraggedItem = pObj;
     p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     p_slot->DeleDeleteFromList.BindUFunction(this, "DeleteFromList");
@@ -303,51 +303,52 @@ void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* pWeaponSlot)
 
 void UInventoryListUI::ChangeItemCount(UItemSlotUI* pSlotObj)
 {
-    if (!pSlotObj)
+    auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager();
+
+    if (!pSlotObj           ||
+        !p_inventoryManager)
         return;
 
-    // 차감 후 대입
-    if (auto p_slot = GetMatchingItemFromList(pSlotObj->ItemData.Name))
-    {
-        auto tmpSlot = GetInitializedSlotUI(pSlotObj->pDraggedItem, pSlotObj->ItemData);
-        InventoryListView->RemoveItem(p_slot);
-        InventoryListView->AddItem(tmpSlot);
-    }
+    // 현재 인벤토리 배열에서 아이템 개수 갱신
+    auto mapCurrentItems = p_inventoryManager->MapCurrentItems;
+    auto itemName = pSlotObj->ItemData.Name;
+
+    // 아이템이 이미 있을 시 개수 추가
+    if (mapCurrentItems.Find(itemName))
+        mapCurrentItems[itemName]->ItemData.Count += pSlotObj->ItemData.Count;
+
+    else
+        mapCurrentItems.Add(itemName, pSlotObj);
+
+    // 아이템 모두 삭제 후 재추가
+    InventoryListView->ClearListItems();
+
+    for (auto item : mapCurrentItems )
+         InventoryListView->AddItem(item.Value);
 }
 
 void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
 {
-    if (!pGameInstanceSubsystemUI)
+    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(pObj);
+
+    if (!pGameInstanceSubsystemUI ||
+        itemData.IsEmpty())
         return;
 
     if (bDeleteFromList)
         DeleteFromList();
-
-    FsSlotItemData itemData = FsSlotItemData::GetDataFrom(pObj);
-
-    if (itemData.IsEmpty())
-        return;
 
     // 현재 아이템이 있는지 확인
     UItemSlotUI* p_existingSlot = GetMatchingItemFromList(itemData.Name);
 
     // 아이템이 존재함
     if (p_existingSlot)
-    {
-        p_existingSlot->ItemData.Count++;
-        InventoryListView->RemoveItem(p_existingSlot);
-    }
+        p_existingSlot->ItemData.Count += itemData.Count;
+
     else
         p_existingSlot = GetInitializedSlotUI(pObj, itemData);
 
-    if (!p_existingSlot)
-        return;
-
-    // 인벤토리에 추가
-    if (auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager())
-        p_inventoryManager->MapCurrentItems.Add(p_existingSlot->ItemData.Name, p_existingSlot);
-
-    InventoryListView->AddItem(p_existingSlot);
+    ChangeItemCount(p_existingSlot);
 }
 
 void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)

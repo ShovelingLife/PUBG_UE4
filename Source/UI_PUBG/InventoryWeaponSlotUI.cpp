@@ -55,7 +55,7 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
 
     if (mpWeaponManager)
     {
-        auto deleSetExplosive = mpWeaponManager->DeleSetExplosive;
+        auto deleSetExplosive = mpWeaponManager->DeleSetExplosiveUI;
 
         if (!deleSetExplosive.IsBound())
             deleSetExplosive.BindUFunction(this, "UpdateThrowable");
@@ -180,7 +180,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     auto p_draggedWeapon = p_slot->pDraggedItem;
 
     // 맞지 않는 슬롯에 위치시킬 시
-    if (p_weaponManager->IsWrong(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
+    if (p_weaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
         return false;
 
     // 무기 선택

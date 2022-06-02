@@ -44,7 +44,7 @@ void ACoreWeapon::Tick(float DeltaTime)
             auto deleGetBulletCount = p_customGameInst->DeleGetBulletCount;
 
             if (deleGetBulletCount.IsBound())
-                WeaponData.CurrentMaxBulletCount += p_customGameInst->DeleGetBulletCount.Execute(WeaponData.BulletType);
+                WeaponData.CurrentBulletCount = p_customGameInst->DeleGetBulletCount.Execute(WeaponData.BulletType);
         }
     }
 }

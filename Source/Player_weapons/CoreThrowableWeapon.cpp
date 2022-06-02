@@ -41,8 +41,6 @@ void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other,
 
 UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Overlap Begin");
-
     if (auto p_world = GetWorld())
     {
         if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
@@ -55,8 +53,6 @@ UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* Overlap
 
 UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Cyan, "Overlap End");
-
     if (auto p_world = GetWorld())
     {
         if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
@@ -273,8 +269,8 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
         return;
 
     // 메쉬 설정
-    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    SetActorScale3D(FVector(WeaponData.MeshSize));
+    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    this->SetActorScale3D(FVector(WeaponData.MeshSize));
     StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
     StaticMeshComp->SetCollisionProfileName("Explosive");
 

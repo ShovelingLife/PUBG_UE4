@@ -64,6 +64,9 @@ public:
     // 인벤토리로부터 총알 개수를 확인하는 함수
     UFUNCTION() int GetBulletCount(FString BulletType);
 
+    // 인벤토리로에서 1개만큼 아이템 차감
+    UFUNCTION() void DeleteInventoryItem(FString ItemType);
+
 public:
     UInventoryListUI* GetInventoryListUI();
 };

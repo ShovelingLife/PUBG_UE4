@@ -26,7 +26,7 @@ class USplineMeshComponent;
 class UStaticMesh;
 class UMaterial;
 
-DECLARE_DELEGATE_OneParam(FDeleSetExplosive, ACoreThrowableWeapon*)
+DECLARE_DELEGATE_OneParam(FDeleSetExplosiveUI, ACoreThrowableWeapon*)
 
 UCLASS()
 class PLAYER_WEAPONS_API AWeaponManager : public AActor
@@ -57,7 +57,7 @@ public:
     UPROPERTY() ACoreWeapon*		  pPistol	 = nullptr;
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
-	FDeleSetExplosive DeleSetExplosive;
+	FDeleSetExplosiveUI DeleSetExplosiveUI;
 
     ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
     float			   GrenadeDirection;
@@ -213,5 +213,5 @@ public:
 
 	void SetMeshToPlayerUI(TArray<AActor*> pArrActor, USkeletalMeshComponent* SkeletalMeshComp);
 
-	bool IsWrong(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot);
+	bool IsWrongType(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot);
 };
