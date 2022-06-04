@@ -118,9 +118,9 @@ public:
 
     UFUNCTION() void SwapWeaponSlot(UItemSlotUI* pWeaponSlot);
 
-    UFUNCTION() void ChangeItemCount(UItemSlotUI* pSlotObj);
+    UFUNCTION() void ChangeItemCount(ABaseInteraction* pObj, bool bAdd = true);
 
-    UFUNCTION() void SetItemOntoInventory(class ABaseInteraction* pObj, bool bDeleteFromList = false);
+    UFUNCTION() void SetItemOntoInventory(ABaseInteraction* pObj, bool bDeleteFromList = false);
     
     UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
 };

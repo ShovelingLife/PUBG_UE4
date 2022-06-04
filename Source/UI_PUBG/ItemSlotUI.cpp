@@ -25,16 +25,9 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
 
-    // 현재 관련된 UI에 적용
-    ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
-    NameTxt->SetText(FText::FromString(ItemData.Name));
-
-    if (ItemData.Count > 0)
-        CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
-
     if (this->IsHovered())
     {
-        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
+        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(ItemData.Count));
         DeleCheckForSlot.ExecuteIfBound(this);
 
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
@@ -44,14 +37,21 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 
 void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
 {
+    // 한번만 호출됨, CreateWidget 함수로 생성한 후 ListView에서 AddItem 할 시 
     if (auto p_slot = Cast<UItemSlotUI>(pObj))
     {
         // 현재 변수들에 데이터 적용
-        pDraggedItem        = p_slot->pDraggedItem;
-        DeleCheckForSlot    = p_slot->DeleCheckForSlot;
-        DeleSwapWeaponSlot  = p_slot->DeleSwapWeaponSlot;
-        DeleDeleteFromList  = p_slot->DeleDeleteFromList;
-        ItemData            = p_slot->ItemData;
+        GEngine->AddOnScreenDebugMessage(3, 1.f, FColor::Cyan, "ObjectSet");
+        pDraggedItem       = p_slot->pDraggedItem;
+        DeleCheckForSlot   = p_slot->DeleCheckForSlot;
+        DeleSwapWeaponSlot = p_slot->DeleSwapWeaponSlot;
+        DeleDeleteFromList = p_slot->DeleDeleteFromList;
+        ItemData           = p_slot->ItemData;
+
+        // 현재 관련된 UI에 적용
+        ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
+        NameTxt->SetText(FText::FromString(ItemData.Name));
+        CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
     }
 }
 

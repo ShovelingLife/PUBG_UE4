@@ -41,6 +41,8 @@ public:
 
     bool operator!=(FsSlotItemData& Other) { return !(*this == Other); }
 
+
+
 public:
     void Reset()
     {

@@ -195,10 +195,8 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
         auto itemData = p_slot->ItemData;
 
         if (itemData.Count > 1)
-        {
-            p_slot->ItemData.Count--;
-            p_slot->DeleChangeItemCount.ExecuteIfBound(p_slot);
-        }
+            p_slot->DeleChangeItemCount.ExecuteIfBound(p_draggedWeapon, false);
+
         else
             p_slot->DeleDeleteFromList.ExecuteIfBound();
     }
@@ -211,8 +209,8 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
             p_slot->DeleSwapInventoryExplosive.ExecuteIfBound(Cast<ACoreThrowableWeapon>(p_selectedWeapon), Cast<ACoreThrowableWeapon>(p_draggedWeapon));
     }
     p_customOperation->bFromInventoryList = false;
-    p_customOperation->bFromWeaponSlot = false;
-    p_customOperation->pSlotUI = p_slot;
+    p_customOperation->bFromWeaponSlot    = false;
+    p_customOperation->pSlotUI            = p_slot;
     return true;
 }
 
@@ -235,7 +233,7 @@ void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragD
 }
 
 bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
-{
+{ 
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
     ResetHighlightImg();
 

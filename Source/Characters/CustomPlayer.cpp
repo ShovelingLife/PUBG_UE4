@@ -522,8 +522,6 @@ void ACustomPlayer::BeginShooting()
         !mpWeaponManager)
         return;
 
-    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Clicked");
-
     // 연사일 때만 한번 발 사
     if (auto p_gun = mpWeaponManager->GetCurrentWeapon())
     {
@@ -542,7 +540,6 @@ void ACustomPlayer::BeginShooting()
 
 void ACustomPlayer::EndShooting()
 {
-    GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Blue, "UnClicked");
     if (mbInventoryOpened ||
         !mpWeaponManager)
         return;

@@ -15,23 +15,23 @@
 #include "SlotItemData.h"
 #include "ItemSlotUI.generated.h" 
 
-class UItemSlotUI;
 class ACoreThrowableWeapon;
+class ABaseInteraction;
+class UItemSlotUI;
+class UTooltipUI;
+
+class UBorder;
+class UCanvasPanel;
+class UHorizontalBox;
+class UImage;
+class USizeBox;
+class UTextBlock;
 
 DECLARE_DELEGATE(FDeleDeleteFromList)
 DECLARE_DELEGATE_OneParam(FDeleCheckForSlot, UItemSlotUI*)
 DECLARE_DELEGATE_OneParam(FDeleSwapWeaponSlot, UItemSlotUI*)
-DECLARE_DELEGATE_OneParam(FDeleChangeItemCount, UItemSlotUI*)
+DECLARE_DELEGATE_TwoParams(FDeleChangeItemCount, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleSwapInventoryExplosive, ACoreThrowableWeapon*, ACoreThrowableWeapon*)
-
-class ABaseInteraction;
-class UTooltipUI;
-class UCanvasPanel;
-class UImage;
-class UTextBlock;
-class USizeBox;
-class UBorder;
-class UHorizontalBox;
 
 UCLASS()
 class UI_PUBG_API UItemSlotUI : public UUserWidget, public IUserObjectListEntry
