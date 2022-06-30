@@ -27,7 +27,6 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 
     if (this->IsHovered())
     {
-        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(ItemData.Count));
         DeleCheckForSlot.ExecuteIfBound(this);
 
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
@@ -41,7 +40,6 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
     if (auto p_slot = Cast<UItemSlotUI>(pObj))
     {
         // 현재 변수들에 데이터 적용
-        GEngine->AddOnScreenDebugMessage(3, 1.f, FColor::Cyan, "ObjectSet");
         pDraggedItem       = p_slot->pDraggedItem;
         DeleCheckForSlot   = p_slot->DeleCheckForSlot;
         DeleSwapWeaponSlot = p_slot->DeleSwapWeaponSlot;

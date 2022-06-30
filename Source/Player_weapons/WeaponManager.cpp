@@ -794,19 +794,19 @@ ACoreWeapon* AWeaponManager::GetCurrentWeapon()
 ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon)
 {
     // 원소랑 일치한 데이터를 찾음
-    TArray<Chaos::Pair<ABaseInteraction*, ECurrentWeaponType>> arrCurrentWeaponType
+    TArray<TPair<ABaseInteraction*, ECurrentWeaponType>> arrCurrentWeaponType
     {
-        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(nullptr,    ECurrentWeaponType::NONE),
-        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pFirstGun,  ECurrentWeaponType::FIRST),
-        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pSecondGun, ECurrentWeaponType::SECOND),
-        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pPistol,    ECurrentWeaponType::PISTOL),
-        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pMelee,     ECurrentWeaponType::MELEE),
-        Chaos::MakePair<ABaseInteraction*, ECurrentWeaponType>(pThrowable, ECurrentWeaponType::THROWABLE)
+        TPair<ABaseInteraction*, ECurrentWeaponType>(nullptr,    ECurrentWeaponType::NONE),
+        TPair<ABaseInteraction*, ECurrentWeaponType>(pFirstGun,  ECurrentWeaponType::FIRST),
+        TPair<ABaseInteraction*, ECurrentWeaponType>(pSecondGun, ECurrentWeaponType::SECOND),
+        TPair<ABaseInteraction*, ECurrentWeaponType>(pPistol,    ECurrentWeaponType::PISTOL),
+        TPair<ABaseInteraction*, ECurrentWeaponType>(pMelee,     ECurrentWeaponType::MELEE),
+        TPair<ABaseInteraction*, ECurrentWeaponType>(pThrowable, ECurrentWeaponType::THROWABLE)
     };
     for (auto item : arrCurrentWeaponType )
     {
-        if (item.First == pWeapon)
-            return item.Second;
+        if (item.Key == pWeapon)
+            return item.Value;
     }
     return ECurrentWeaponType::NONE;
 }
@@ -824,7 +824,7 @@ int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon)
 
     else if (auto p_throwable = Cast<ACoreThrowableWeapon>(pWeapon))
              weaponType = (int)p_throwable->WeaponType;
-
+    
     return weaponType;
 }
 

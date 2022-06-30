@@ -9,7 +9,7 @@
 ACrateBox::ACrateBox()
 {
     PrimaryActorTick.bCanEverTick = true;
-    ObjectType = "보급상자";
+    ObjectType = "CrateBox";
     UpdateCollider();
     InitVfx();
     InitMeshes();

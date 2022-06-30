@@ -27,16 +27,16 @@ void UTooltipUI::SetData(FsSlotItemData SlotItemData)
     // 데이터 설정
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(SlotItemData));
 
-    Chaos::Pair<UTextBlock*, FString> arrTextPair[]
+    TArray<TPair<UTextBlock*, FString>> arrTextPair
     {
-        Chaos::MakePair<UTextBlock*, FString>(NameTxt, SlotItemData.Name),
-        Chaos::MakePair<UTextBlock*, FString>(CategoryTxt, SlotItemData.Category),
-        Chaos::MakePair<UTextBlock*, FString>(DescriptionTxt, SlotItemData.Description),
-        Chaos::MakePair<UTextBlock*, FString>(CapacityTxt, (SlotItemData.Capacity == 0) ? "" : FString::FromInt(SlotItemData.Capacity))
+        TPair<UTextBlock*, FString>{ NameTxt,        SlotItemData.Name },
+        TPair<UTextBlock*, FString>{ CategoryTxt,    SlotItemData.Category },
+        TPair<UTextBlock*, FString>{ DescriptionTxt, SlotItemData.Description },
+        TPair<UTextBlock*, FString>{ CapacityTxt,   (SlotItemData.Capacity == 0) ? "" : FString::FromInt(SlotItemData.Capacity) }
     };
     for (auto item : arrTextPair)
-    {
-        if (item.First)
-            item.First->SetText(FText::FromString(item.Second));
+    {        
+        if (auto p_textBlock = item.Key)
+            p_textBlock->SetText(FText::FromString(item.Value));
     }
 }

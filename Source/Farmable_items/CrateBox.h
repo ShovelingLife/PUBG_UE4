@@ -22,7 +22,6 @@ public:
 	ACrateBox();
 
 protected:
-    // Called every frame
     virtual void Tick(float) override;
 
 private:

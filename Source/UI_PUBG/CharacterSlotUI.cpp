@@ -138,26 +138,26 @@ void UCharacterSlotUI::InitSlotUI()
 void UCharacterSlotUI::UpdateHighlightImg()
 {
     UBorder* tmpBorder = nullptr;
-    TArray<Chaos::Pair<UBorder*, UImage*>> p_ArrSlot
+    TArray<TPair<UBorder*, UImage*>> p_ArrSlot
     {
-        Chaos::MakePair< UBorder*, UImage*>(HeadSlotBorder,      HeadSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(BodyArmorSlotBorder, BodyArmorSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(BackpackSlotBorder,  BackpackSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(BeltSlotBorder,      BeltSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(HatSlotBorder,       HatSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(MaskSlotBorder,      MaskSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(CoatSlotBorder,      CoatSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(ShirtSlotBorder,     ShirtSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(GlovesSlotBorder,    GlovesSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(PantsSlotBorder,     PantsSlotImg),
-        Chaos::MakePair< UBorder*, UImage*>(ShoesSlotBorder,     ShoesSlotImg)
+        TPair< UBorder*, UImage*>(HeadSlotBorder,      HeadSlotImg),
+        TPair< UBorder*, UImage*>(BodyArmorSlotBorder, BodyArmorSlotImg),
+        TPair< UBorder*, UImage*>(BackpackSlotBorder,  BackpackSlotImg),
+        TPair< UBorder*, UImage*>(BeltSlotBorder,      BeltSlotImg),
+        TPair< UBorder*, UImage*>(HatSlotBorder,       HatSlotImg),
+        TPair< UBorder*, UImage*>(MaskSlotBorder,      MaskSlotImg),
+        TPair< UBorder*, UImage*>(CoatSlotBorder,      CoatSlotImg),
+        TPair< UBorder*, UImage*>(ShirtSlotBorder,     ShirtSlotImg),
+        TPair< UBorder*, UImage*>(GlovesSlotBorder,    GlovesSlotImg),
+        TPair< UBorder*, UImage*>(PantsSlotBorder,     PantsSlotImg),
+        TPair< UBorder*, UImage*>(ShoesSlotBorder,     ShoesSlotImg)
     };
     for (const auto item : p_ArrSlot)
     {
         // 선택 되었을 시
-    	if (item.Second->IsHovered())
+    	if (item.Value->IsHovered())
         {
-            tmpBorder = item.First;
+            tmpBorder = item.Key;
             break;
         }
     }

@@ -39,10 +39,11 @@ void UInventoryWeaponSlotUI::NativeConstruct()
     InitSettings();
     UpdateThrowable(nullptr);
 
-    pGameInstanceSubSystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance());
-
-    if (pGameInstanceSubSystemUI)
+    if (auto pWorld = GetWorld())
+    {
+        pGameInstanceSubSystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(pWorld->GetGameInstance());
         pGameInstanceSubSystemUI->DeleVerifyAttachmentSlot.BindUFunction(this, "VerifyAttachmentSlot");
+    }
 }
 
 void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
@@ -68,7 +69,7 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
     {
         UpdateHighlightImgPos();
         CheckForHoveredWeaponSlot();
-        CheckForHoveredAttachmentSlot();
+        //CheckForHoveredAttachmentSlot();
     }
 }
 
@@ -125,8 +126,8 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
 
     if (pGameInstanceSubSystemUI)
     {
-        if (auto p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager())
-            p_weapon = p_weaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
+        if (mpWeaponManager)
+            p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
     }
     auto      p_slot = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
@@ -170,9 +171,8 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
         return false;
 
     auto p_slot = p_customOperation->pSlotUI;
-    AWeaponManager* p_weaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
 
-    if (!p_weaponManager ||
+    if (!mpWeaponManager ||
         !p_slot)
         return false;
 
@@ -180,13 +180,13 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     auto p_draggedWeapon = p_slot->pDraggedItem;
 
     // 맞지 않는 슬롯에 위치시킬 시
-    if (p_weaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
+    if (mpWeaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
         return false;
 
     // 무기 선택
-    ABaseInteraction* p_selectedWeapon = p_weaponManager->GetWeaponByIndex((ECurrentWeaponType)mSelectedWeaponIndex);
+    ABaseInteraction* p_selectedWeapon = mpWeaponManager->GetWeaponByIndex((ECurrentWeaponType)mSelectedWeaponIndex);
     
-    if (p_weaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex) == -1)
+    if (mpWeaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex) == -1)
         return false;
 
     // 무기 배치 및 UI 설정이 완료 되었다면 초기화
@@ -511,22 +511,22 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
 void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 {
     // 선택된 무기 인덱스 구함
-    TArray<Chaos::Pair<UImage*, ECurrentWeaponType>> arrWeaponImg
+    TArray<TPair<UImage*, ECurrentWeaponType>> arrWeaponImg
     {
-        Chaos::MakePair<UImage*, ECurrentWeaponType>(FirstGunSlotImg,  ECurrentWeaponType::FIRST),
-        Chaos::MakePair<UImage*, ECurrentWeaponType>(SecondGunSlotImg, ECurrentWeaponType::SECOND),
-        Chaos::MakePair<UImage*, ECurrentWeaponType>(PistolSlotImg,    ECurrentWeaponType::PISTOL),
-        Chaos::MakePair<UImage*, ECurrentWeaponType>(MeleeSlotImg,     ECurrentWeaponType::MELEE),
-        Chaos::MakePair<UImage*, ECurrentWeaponType>(GrenadeSlotImg,   ECurrentWeaponType::THROWABLE)
+        TPair<UImage*, ECurrentWeaponType>{ FirstGunSlotImg,  ECurrentWeaponType::FIRST },
+        TPair<UImage*, ECurrentWeaponType>{ SecondGunSlotImg, ECurrentWeaponType::SECOND },
+        TPair<UImage*, ECurrentWeaponType>{ PistolSlotImg,    ECurrentWeaponType::PISTOL },
+        TPair<UImage*, ECurrentWeaponType>{ MeleeSlotImg,     ECurrentWeaponType::MELEE },
+        TPair<UImage*, ECurrentWeaponType>{ GrenadeSlotImg,   ECurrentWeaponType::THROWABLE }
     };
     // 총 무기 다섯칸 중 어느거 선택했는지 확인
     for (auto item : arrWeaponImg)
     {
-        auto weaponImg = item.First;
+        auto weaponImg = item.Key;
 
         if (weaponImg->IsVisible() &&
             weaponImg->IsHovered())
-            mSelectedWeaponIndex = item.Second;
+            mSelectedWeaponIndex = item.Value;
     }
 }
 
@@ -618,7 +618,7 @@ int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType)
              AttachmentType == "IRS")
              index = 0;
 
-    else if (AttachmentType == "Stock" ||
+    else if (AttachmentType == "Stock"  ||
              AttachmentType == "StockA" ||
              AttachmentType == "StockB")
              index = 1;
@@ -687,32 +687,31 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
         {
             // , 기준으로 문자열을 잘라냄 
             auto arrString = UKismetStringLibrary::ParseIntoArray(matchType, ",");
-
+            TArray<ACoreWeapon*> arrWeapon
+            {
+                mpWeaponManager->pFirstGun,
+                mpWeaponManager->pSecondGun,
+                mpWeaponManager->pPistol
+            };
             for (auto matchStr : arrString)
             {
-                // 첫번째 총기
-                if (auto p_firstGun = mpWeaponManager->pFirstGun)
+                for (int i = 0; i < arrWeapon.Num(); i++)
                 {
-                    auto data = p_firstGun->WeaponData;
+                	if (auto p_gun = arrWeapon[i])
+                    {
+                        auto data = p_gun->WeaponData;
 
-                    if (data.Type      == matchStr ||
-                        data.GroupType == matchStr)
-                        mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
-                }
-                // 두번째 총기
-                if (auto p_secondGun = mpWeaponManager->pSecondGun)
-                {
-                    auto data = p_secondGun->WeaponData;
-
-                    if (data.Type      == matchStr ||
-                        data.GroupType == matchStr)
-                        mArrSecondGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
-                }
-                // 세번째 총기
-                if (auto p_pistol = mpWeaponManager->pPistol)
-                {
-                    if (p_pistol->WeaponData.Type == matchStr)
-                        mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
+                        if (data.Type      == matchStr ||
+                            data.GroupType == matchStr)
+                        {
+                            switch (i)
+                            {
+                            case 0: mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);  break;
+                            case 1: mArrSecondGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor); break;
+                            case 2: mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);    break;
+                            }
+                        }
+                    }
                 }
             }
         }

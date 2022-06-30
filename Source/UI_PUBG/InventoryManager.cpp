@@ -60,13 +60,18 @@ void AInventoryManager::InitInventoryUI()
 
 void AInventoryManager::InitInventoryWidget()
 {
-    UUserWidget* p_userWidget = CreateWidget(GetWorld(), BP_InventoryUI);
-    p_userWidget->AddToViewport(1);
-    pInventoryUI = Cast<UInventoryUI>(p_userWidget);
+    if (UUserWidget* p_userWidget = CreateWidget(GetWorld(), BP_InventoryUI))
+    {
+        p_userWidget->AddToViewport(1);
+        pInventoryUI = Cast<UInventoryUI>(p_userWidget);
+    }      
 }
 
 void AInventoryManager::OpenInventory()
 {
+    if (!pInventoryUI)
+        return;
+
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     pInventoryUI->SetVisibility(ESlateVisibility::Visible);
     p_playerController->SetShowMouseCursor(true);    
@@ -75,6 +80,9 @@ void AInventoryManager::OpenInventory()
 
 void AInventoryManager::CloseInventory()
 {
+    if (!pInventoryUI)
+        return;
+
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     pInventoryUI->SetVisibility(ESlateVisibility::Hidden);
     p_playerController->SetShowMouseCursor(false);
@@ -103,5 +111,8 @@ void AInventoryManager::DeleteInventoryItem(FString ItemType)
 
 UInventoryListUI* AInventoryManager::GetInventoryListUI()
 {
+    if (!pInventoryUI)
+        return nullptr;
+
     return pInventoryUI->InventoryListUI;
 }
