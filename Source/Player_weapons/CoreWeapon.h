@@ -72,9 +72,6 @@ protected:
     /** \brief 탄알 초기화 */
     void InitBullet();
 
-    /** \brief 콜라이더 정보 갱신 */
-    void UpdateCollider();
-
     /** \brief 파티클 시스템 갱신 */
     void UpdateParticleSystem();
 };

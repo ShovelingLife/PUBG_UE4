@@ -211,7 +211,5 @@ public:
 
 	void SetNull(ECurrentWeaponType WeaponType);
 
-	void SetMeshToPlayerUI(TArray<AActor*> pArrActor, USkeletalMeshComponent* SkeletalMeshComp);
-
 	bool IsWrongType(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot);
 };

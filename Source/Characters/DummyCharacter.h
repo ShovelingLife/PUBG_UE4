@@ -4,18 +4,22 @@
 #include "GameFramework/Actor.h"
 #include "DummyCharacter.generated.h"
 
+class ABaseInteraction;
+
+class USkeletalMeshComponent;
+class USceneCaptureComponent2D;
+
 UCLASS()
 class CHARACTERS_API ADummyCharacter : public AActor
 {
 	GENERATED_BODY()
 
 private:
-    UPROPERTY() class AWeaponManager* mpWeaponManager = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = RenderedActors) TArray<AActor*> mArrActorToShow;
 
 public:
-	UPROPERTY(EditAnywhere, Category = Mesh)		 class USkeletalMeshComponent*	 DummySkeletalMeshComp;
-    UPROPERTY(EditAnywhere, Category = SceneCapture) class USceneCaptureComponent2D* SceneCaptureComp;
+	UPROPERTY(EditAnywhere, Category = Mesh)		 USkeletalMeshComponent*	 DummySkeletalMeshComp;
+    UPROPERTY(EditAnywhere, Category = SceneCapture) USceneCaptureComponent2D* SceneCaptureComp;
 
 public:
 	// Sets default values for this character's properties
@@ -39,5 +43,5 @@ private:
 
     void InitWeaponUI();
 
-    void UpdateCharacterWeaponUI();
+    void UpdateWeapon();
 };

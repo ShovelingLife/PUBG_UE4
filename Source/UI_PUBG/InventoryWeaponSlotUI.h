@@ -17,6 +17,7 @@
 #include "InventoryWeaponSlotUI.generated.h"
 
 class AUI_manager;
+class ACoreWeapon;
 class AWeaponManager;
 class ACoreAttachment;
 class ACoreThrowableWeapon;
@@ -36,6 +37,16 @@ private:
     const FLinearColor mkHighlightColor = FLinearColor(1.f, 1.f, 1.f, 1.f),
                        mkNormalColor    = FLinearColor(0.f, 0.f, 0.f, 0.25f);
 
+    /** \brief 현재 쓰여지는 변수 */
+    TArray<ACoreWeapon*> mArrWeapon
+    {
+        nullptr,
+        nullptr,
+        nullptr
+    };
+    AWeaponManager* mpWeaponManager = nullptr;
+    FsSlotItemData  mItemData;
+
     // 부속품 UI 관련
     TArray<UBorder*>     mArrFirstGunAttachmentBorder;
     TArray<UBorder*>     mArrSecondGunAttachmentBorder;
@@ -45,11 +56,6 @@ private:
     TArray<UItemSlotUI*> mArrPistolAttachmentUI;
     const int mkTotalGunAttachmentUI    = 5;
     const int mkTotalPistolAttachmentUI = 3;
-
-
-    /** \brief 현재 쓰여지는 변수 */
-    AWeaponManager* mpWeaponManager = nullptr;
-    FsSlotItemData     mItemData;
 
     // 플레이어 상호작용 하고있는 변수 관련
     ECurrentWeaponType mSelectedWeaponIndex;

@@ -61,6 +61,10 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
         if (!deleSetExplosive.IsBound())
             deleSetExplosive.BindUFunction(this, "UpdateThrowable");
 
+        mArrWeapon[0] = mpWeaponManager->pFirstGun;
+        mArrWeapon[1] = mpWeaponManager->pSecondGun;
+        mArrWeapon[2] = mpWeaponManager->pPistol;
+
         SetWeaponSlotVisibility();
         UpdateInventoryWeaponUI();
         UpdateAttachmentSlot();
@@ -124,12 +128,10 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
 
     ABaseInteraction* p_weapon = nullptr;
 
-    if (pGameInstanceSubSystemUI)
-    {
-        if (mpWeaponManager)
-            p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
-    }
-    auto      p_slot = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
+    if (mpWeaponManager)
+        p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
+
+    auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_itemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (!p_slot ||
@@ -444,33 +446,35 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
             if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
                 p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
         }
-    }
-    // 세번쨰 무기
-    for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
-    {
-        TArray<UTexture*> arrAttachmentTex;
-        ACoreBarrel*      p_barrel = nullptr;
-        ACoreForend*      p_forend = nullptr;
-        ACoreSight*       p_scope  = nullptr;
-
-        // 텍스처 설정
-        if (auto p_pistol = mpWeaponManager->pFirstGun)
+        // 세번쨰 무기
         {
-            p_barrel = p_pistol->CurrentBarrel;
-            p_forend = p_pistol->CurrentForend;
-            p_scope  = p_pistol->CurrentSight;
+            if(i<mkTotalPistolAttachmentUI)
+            {
+                TArray<UTexture*> arrAttachmentTex;
+                ACoreBarrel* p_barrel = nullptr;
+                ACoreForend* p_forend = nullptr;
+                ACoreSight* p_scope = nullptr;
+
+                // 텍스처 설정
+                if (auto p_pistol = mpWeaponManager->pFirstGun)
+                {
+                    p_barrel = p_pistol->CurrentBarrel;
+                    p_forend = p_pistol->CurrentForend;
+                    p_scope = p_pistol->CurrentSight;
+                }
+                arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
+                arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
+                arrAttachmentTex.Add((p_scope) ? p_scope->CurrentItemTex : nullptr);
+
+                // 뒷배경
+                if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
+                    p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
+
+                // 아이템 UI
+                if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
+                    p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
+            }
         }
-        arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
-        arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-        arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
-
-        // 뒷배경
-        if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
-            p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
-
-        // 아이템 UI
-        if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
-            p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
     }
 }
 
@@ -687,17 +691,12 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
         {
             // , 기준으로 문자열을 잘라냄 
             auto arrString = UKismetStringLibrary::ParseIntoArray(matchType, ",");
-            TArray<ACoreWeapon*> arrWeapon
-            {
-                mpWeaponManager->pFirstGun,
-                mpWeaponManager->pSecondGun,
-                mpWeaponManager->pPistol
-            };
+            
             for (auto matchStr : arrString)
             {
-                for (int i = 0; i < arrWeapon.Num(); i++)
+                for (int i = 0; i < mArrWeapon.Num(); i++)
                 {
-                	if (auto p_gun = arrWeapon[i])
+                	if (auto p_gun = mArrWeapon[i])
                     {
                         auto data = p_gun->WeaponData;
 

@@ -92,7 +92,9 @@ protected:
 public:
     void DestroyComponentsForUI();
 
-    void SetForDummyCharacter(class USceneComponent* RootComp, FString SocketName);
+    void SetForDummyCharacter();
 
     void ChangeCollisionSettings(bool bTurned);
+
+    void UpdateMesh(USceneComponent* RootComp);
 };

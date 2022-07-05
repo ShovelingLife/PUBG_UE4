@@ -57,11 +57,11 @@ void ACoreWeapon::Init(EWeaponType Type)
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
-    Super::AttachComponents();
-    Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     Super::InitSkeletalMesh(WeaponData.MeshPath);
+    SkeletalMeshComp->SetCollisionProfileName("Object");
+    Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
+    Super::AttachComponents();
     InitBullet();
-    UpdateCollider();
     UpdateParticleSystem();
 }
 
@@ -71,16 +71,6 @@ void ACoreWeapon::InitBullet()
 
     if (BP_BULLET.Succeeded())
         BP_Bullet = BP_BULLET.Class;
-}
-
-void ACoreWeapon::UpdateCollider()
-{
-    if (!ColliderComp)
-        return;
-
-    ColliderComp->AddLocalOffset(WeaponData.ColliderPos);
-    ColliderComp->SetBoxExtent(WeaponData.ColliderSize);
-    ColliderComp->AddRelativeLocation(FVector(0.f, 0.f, 8.f));
 }
 
 void ACoreWeapon::UpdateParticleSystem()

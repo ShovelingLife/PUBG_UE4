@@ -5,6 +5,7 @@
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SceneComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -15,7 +16,6 @@
 ADummyCharacter::ADummyCharacter()
 {
     PrimaryActorTick.bCanEverTick = true;
-    RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
     InitMeshComp();
     InitAnimInstance();
     InitRenderTarget();
@@ -26,23 +26,22 @@ void ADummyCharacter::BeginPlay()
     Super::BeginPlay();
     mArrActorToShow.Add(this);
     InitWeaponUI();
-    mpWeaponManager = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->GetWeaponManager();
     DummySkeletalMeshComp->SetOwnerNoSee(true);
+    SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
 }
 
 void ADummyCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
     SetActorRelativeLocation(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());    
-    UpdateCharacterWeaponUI();
+    UpdateWeapon();
 }
 
 void ADummyCharacter::InitMeshComp()
 {
     // 메쉬 초기화
     DummySkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
-    DummySkeletalMeshComp->SetupAttachment(RootComponent);
+    this->SetRootComponent(DummySkeletalMeshComp);
 
     static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/Characters/UE4_Mannequin/Mesh/SK_Mannequin"));
     
@@ -70,46 +69,56 @@ void ADummyCharacter::InitRenderTarget()
 
 void ADummyCharacter::InitWeaponUI()
 {
-    // 1번째 무기
-    if (auto tmpFirstGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
+    auto p_world = GetWorld();
+
+    if (!p_world)
+        return;
+
+    auto tmpThrowable = p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
+
+    TArray<TPair<ABaseInteraction*, FString>> arrWeapons
     {
-        tmpFirstGun->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        tmpFirstGun->SetForDummyCharacter(this->DummySkeletalMeshComp, "FirstGunSock");
-        mArrActorToShow.Add(tmpFirstGun);
-    }
-    // 2번째 무기
-    if (auto tmpSecondGun = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
+        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "FirstGunSock"),
+        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "SecondGunSock"),
+        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "HandGunSock"),
+        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()), "MeleeSock"),
+        TPair<ABaseInteraction*, FString>(tmpThrowable, tmpThrowable->WeaponData.Type + "Sock")
+    };
+    for (auto item : arrWeapons)
     {
-        tmpSecondGun->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        tmpSecondGun->SetForDummyCharacter(this->DummySkeletalMeshComp, "SecondGunSock");
-        mArrActorToShow.Add(tmpSecondGun);
-    }
-    // 3번째 무기
-    if (auto tmpPistol = GetWorld()->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()))
-    {
-        tmpPistol->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        tmpPistol->SetForDummyCharacter(this->DummySkeletalMeshComp, "HandGunSock");
-        mArrActorToShow.Add(tmpPistol);
-    }
-    // 4번째 무기
-    if (auto tmpMelee = GetWorld()->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()))
-    {
-        tmpMelee->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        tmpMelee->SetForDummyCharacter(this->DummySkeletalMeshComp, "MeleeSock");
-        mArrActorToShow.Add(tmpMelee);
-    }
-    // 5번째 무기
-    if (auto tmpThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()))
-    {
-        tmpThrowable->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        tmpThrowable->SetForDummyCharacter(this->DummySkeletalMeshComp, tmpThrowable->WeaponData.Type + "Sock");
-        mArrActorToShow.Add(tmpThrowable);
+        if (auto p_weapon = item.Key)
+        {
+            p_weapon->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale, *item.Value);
+            Cast<ABaseInteraction>(p_weapon)->SetForDummyCharacter();
+            mArrActorToShow.Add(p_weapon);
+        }
     }
 }
 
-void ADummyCharacter::UpdateCharacterWeaponUI()
+void ADummyCharacter::UpdateWeapon()
 {
-    // 데이터 갱신
-    if (mpWeaponManager)
-        mpWeaponManager->SetMeshToPlayerUI(mArrActorToShow, DummySkeletalMeshComp);
-} 
+    auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+    if (p_player)
+    {
+        if (auto p_weaponManager = p_player->GetWeaponManager())
+        {
+            TArray<ABaseInteraction*> arr_tmpWeapon
+            {
+                p_weaponManager->pFirstGun,
+                p_weaponManager->pSecondGun,
+                p_weaponManager->pPistol,
+                p_weaponManager->pMelee,
+                p_weaponManager->pThrowable
+            };
+#define WEAPON_COUNT 5
+
+            // 렌더 타깃으로부터 렌더링이 될 액터 개수는 6개, 더미 캐릭터 제외 1번부터
+            for (int i = 0; i < WEAPON_COUNT; i++)
+            {
+                if (auto p_weapon = arr_tmpWeapon[i])
+                    Cast<ABaseInteraction>(mArrActorToShow[i + 1])->UpdateMesh(p_weapon->GetRootComponent());                
+            }
+        }
+    }
+}

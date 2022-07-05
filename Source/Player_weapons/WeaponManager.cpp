@@ -188,9 +188,8 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
             
     }
     auto p_rootComp = pWeapon->GetRootComponent();
-    auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-    pWeapon->AttachToComponent(playerMesh, (p_rootComp->IsA< USkeletalMeshComponent>()) ? FAttachmentTransformRules::SnapToTargetNotIncludingScale : FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
     pWeapon->ChangeCollisionSettings(false);
+    pWeapon->AttachToActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), (p_rootComp->IsA< USkeletalMeshComponent>()) ? FAttachmentTransformRules::SnapToTargetNotIncludingScale : FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
 }
 
 void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform NewPos)
@@ -849,21 +848,6 @@ void AWeaponManager::SetNull(ECurrentWeaponType WeaponType)
     case ECurrentWeaponType::MELEE:     pMelee     = nullptr; break;
     case ECurrentWeaponType::THROWABLE: pThrowable = nullptr; break;
     }
-}
-
-void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor, USkeletalMeshComponent* SkeletalMeshComp)
-{
-    ACoreWeapon*          p_firstGunUI  = Cast<ACoreWeapon>(         pArrActor[(int)ECurrentWeaponType::FIRST]);
-    ACoreWeapon*          p_secondGunUI = Cast<ACoreWeapon>(         pArrActor[(int)ECurrentWeaponType::SECOND]);
-    ACoreWeapon*          p_pistolUI    = Cast<ACoreWeapon>(         pArrActor[(int)ECurrentWeaponType::PISTOL]);
-    ACoreMeleeWeapon*     p_meleeUI     = Cast<ACoreMeleeWeapon>(    pArrActor[(int)ECurrentWeaponType::MELEE]);
-    ACoreThrowableWeapon* p_throwableUI = Cast<ACoreThrowableWeapon>(pArrActor[(int)ECurrentWeaponType::THROWABLE]);
-
-    p_firstGunUI->SkeletalMeshComp->SetSkeletalMesh( (pFirstGun)  ? pFirstGun->SkeletalMeshComp->SkeletalMesh   : nullptr);
-    p_secondGunUI->SkeletalMeshComp->SetSkeletalMesh((pSecondGun) ? pSecondGun->SkeletalMeshComp->SkeletalMesh  : nullptr);
-    p_pistolUI->SkeletalMeshComp->SetSkeletalMesh(   (pPistol)    ? pPistol->SkeletalMeshComp->SkeletalMesh     : nullptr);
-    p_meleeUI->StaticMeshComp->SetStaticMesh(        (pMelee)     ? pMelee->StaticMeshComp->GetStaticMesh()     : nullptr);
-    p_throwableUI->StaticMeshComp->SetStaticMesh(    (pThrowable) ? pThrowable->StaticMeshComp->GetStaticMesh() : nullptr);
 }
 
 bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot)
