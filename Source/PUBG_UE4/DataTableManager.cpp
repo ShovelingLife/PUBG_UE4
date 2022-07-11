@@ -42,7 +42,7 @@ void ADataTableManager::InitVehicleData()
 
         FsVehicleData data = *p_row;
         data.MeshPath = mkVehicleMeshPath + data.MeshPath;
-        data.AnimInstancePath = mkAnimInstancePath + data.Type + "/BP_AnimInst_" + data.Type;
+        data.AnimInstancePath = mkAnimInstancePath + data.Type + "/BP_AnimInst_" + data.Type;        
 
         // 좌석 정보 배치
         data.ArrPlayerSeatPos[0] = { data.SeatLocation1, data.SeatCameraLocation1 };

@@ -16,6 +16,7 @@
 ADummyCharacter::ADummyCharacter()
 {
     PrimaryActorTick.bCanEverTick = true;
+    this->SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("RootComp")));
     InitMeshComp();
     InitAnimInstance();
     InitRenderTarget();
@@ -24,6 +25,7 @@ ADummyCharacter::ADummyCharacter()
 void ADummyCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    this->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
     mArrActorToShow.Add(this);
     InitWeaponUI();
     DummySkeletalMeshComp->SetOwnerNoSee(true);
@@ -33,7 +35,7 @@ void ADummyCharacter::BeginPlay()
 void ADummyCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    SetActorRelativeLocation(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());    
+    SetActorRelativeLocation(GetOwner()->GetActorLocation());    
     UpdateWeapon();
 }
 
@@ -41,8 +43,7 @@ void ADummyCharacter::InitMeshComp()
 {
     // 메쉬 초기화
     DummySkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
-    this->SetRootComponent(DummySkeletalMeshComp);
-
+    DummySkeletalMeshComp->SetupAttachment(RootComponent);
     static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/Characters/UE4_Mannequin/Mesh/SK_Mannequin"));
     
     if (SK_MANNEQUIN.Succeeded())
@@ -88,8 +89,9 @@ void ADummyCharacter::InitWeaponUI()
     {
         if (auto p_weapon = item.Key)
         {
-            p_weapon->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale, *item.Value);
-            Cast<ABaseInteraction>(p_weapon)->SetForDummyCharacter();
+            p_weapon->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+            p_weapon->SetForDummyCharacter();
+            p_weapon->AttachToComponent(DummySkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *item.Value);
             mArrActorToShow.Add(p_weapon);
         }
     }
@@ -102,23 +104,6 @@ void ADummyCharacter::UpdateWeapon()
     if (p_player)
     {
         if (auto p_weaponManager = p_player->GetWeaponManager())
-        {
-            TArray<ABaseInteraction*> arr_tmpWeapon
-            {
-                p_weaponManager->pFirstGun,
-                p_weaponManager->pSecondGun,
-                p_weaponManager->pPistol,
-                p_weaponManager->pMelee,
-                p_weaponManager->pThrowable
-            };
-#define WEAPON_COUNT 5
-
-            // 렌더 타깃으로부터 렌더링이 될 액터 개수는 6개, 더미 캐릭터 제외 1번부터
-            for (int i = 0; i < WEAPON_COUNT; i++)
-            {
-                if (auto p_weapon = arr_tmpWeapon[i])
-                    Cast<ABaseInteraction>(mArrActorToShow[i + 1])->UpdateMesh(p_weapon->GetRootComponent());                
-            }
-        }
+            p_weaponManager->SetMeshToPlayerUI(mArrActorToShow);
     }
 }

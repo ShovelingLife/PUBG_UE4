@@ -4,9 +4,7 @@
 
 void ACoreAttachment::Init(EWeaponAttachmentType Type)
 {
-    if (ColliderComp)
-        ColliderComp->DestroyComponent();
-
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     this->WeaponAttachmentType = Type;
     WeaponAttachmentData = ADataTableManager::ArrWeaponAttachmentData[(int)Type];
     ABaseInteraction::InitStaticMesh(WeaponAttachmentData.MeshPath);

@@ -96,5 +96,12 @@ public:
 
     void ChangeCollisionSettings(bool bTurned);
 
-    void UpdateMesh(USceneComponent* RootComp);
+    // 게터 세터
+    UStaticMesh* GetStaticMesh() const;
+
+    USkeletalMesh* GetSkeletalMesh() const;
+
+    void SetStaticMesh(UStaticMesh* Mesh);
+
+    void SetSkeletalMesh(USkeletalMesh* Mesh);
 };

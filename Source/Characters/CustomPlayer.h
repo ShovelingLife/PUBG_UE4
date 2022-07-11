@@ -123,10 +123,10 @@ private:
     void CheckIfMoving();
 
     /** \brief 충돌한 오브젝트 확인 (아이템) (레이캐스트 : 플레이어 발 밑) */
-    void CheckForObject();
+    void CheckNearObj();
 
     /** \brief 근처에 차량이 있는지 감지 (레이캐스트 : 플레이어 상체) */
-    void CheckIfVehicleNear();
+    void CheckNearVehicle();
 
     /** \brief 상호 작용 중일 시 (무기 줍기/차량 탑승) */
     void TryToInteract();

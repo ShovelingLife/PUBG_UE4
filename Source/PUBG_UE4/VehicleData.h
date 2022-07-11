@@ -25,10 +25,6 @@ struct FsVehicleData : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString Type                    = "";
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString MeshPath                = "";
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString AudioPath               = "";
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector ColliderSize            = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector ColliderPos             = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector InteractionColliderSize = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector InteractionColliderPos  = FVector::ZeroVector;
 
     /** \brief 카메라 데이터 */
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector CameraLocation = FVector::ZeroVector;
@@ -51,7 +47,6 @@ struct FsVehicleData : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatCameraLocation4 = FVector::ZeroVector;
 
     /** \brief 기타 테이터 */
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) float SpringArmLength = 0.f;
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   MaxSeater       = 0;
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   Durability      = 0;
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   Speed           = 0;

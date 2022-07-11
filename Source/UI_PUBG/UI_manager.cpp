@@ -199,6 +199,9 @@ void AUI_manager::SetPlayerUI()
 
 void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type)
 {
+    if (!WidgetComp)
+        return;
+
     // 위젯 설정
     WidgetComp->SetWidgetSpace(EWidgetSpace::Screen);
     WidgetComp->SetRelativeLocation(FVector::ZeroVector);

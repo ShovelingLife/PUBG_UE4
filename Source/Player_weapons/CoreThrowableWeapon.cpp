@@ -16,6 +16,7 @@
 
 ACoreThrowableWeapon::ACoreThrowableWeapon()
 {
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     this->InitProjectileMovementComp();    
 }
 
@@ -235,8 +236,9 @@ bool ACoreThrowableWeapon::IsPlayerInRadius()
         auto       character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
         FHitResult lineHitResult;
         
+        
         if (GetWorld()->LineTraceSingleByChannel(lineHitResult, startPos, character->GetActorLocation(), ECollisionChannel::ECC_Camera))
-            return (lineHitResult.Actor == character);
+            return (lineHitResult.GetActor() == character);
     }
     return false;
 }

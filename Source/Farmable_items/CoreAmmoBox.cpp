@@ -3,6 +3,7 @@
 
 void ACoreAmmoBox::Init(EAmmoBoxType Type)
 {
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     WeaponBulletData = ADataTableManager::ArrWeaponBulletData[(int)Type];
     FString bulletType = "cal" + WeaponBulletData.Type;
     FString meshPath = "/Game/AmmoSet/Models/" + bulletType + "/" + bulletType + "_" + WeaponBulletData.MeshType;

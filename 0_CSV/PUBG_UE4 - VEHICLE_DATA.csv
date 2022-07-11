@@ -1,7 +1,7 @@
-,Type,MeshPath,AudioPath,CameraLocation,CameraRotation,SeatLocation1,SeatCameraLocation1,SeatLocation2,SeatCameraLocation2,SeatLocation3,SeatCameraLocation3,SeatLocation4,SeatCameraLocation4,Max_seater,,,,,Durability,Speed
-0,Hatchback,SK_Hatchback,,"(x=-240, y=0, z=290)","(x=0, y=-20, z=0)","(x=20, y=-33, z=54)","(x=-6, y=-33, z=107)","(x=20, y=35, z=54)","(x=-6, y=35, z=107)","(x=-69, y=-33, z=67)","(x=-92, y=-33, z=104)","(x=-69, y=35, z=67)","(x=-92, y=35, z=104)",,,,,4,60,80
-1,Pickup,SK_Pickup,,"(x=-100, y=0, z=290)","(x=0, y=-20, z=0)","(x=18, y=-29, z=61)","(x=18, y=-29, z=118)","(x=18, y=37, z=61)","(x=18, y=37, z=118)",,,,,,,,,2,70,80
-2,SportsCar,SK_SportsCar,,"(x=-210, y=0, z=290)","(x=0, y=20, z=0)","(x=11, y=-36 z=40)","(x=11, y=-36, z=98)","(x=11, y=37, z=40)","(x=11, y=37, z=98)",,,,,,,,,2,50,100
-3,SUV,SK_SUV,,"(x=-200, y=0, z=330)","(x=0, y=30, z=0)","(x=8, y=-38, z=77)","(x=-1, y=-38, z=138)","(x=11, y=37, z=79)","(x=11, y=37, z=138)","(x=-58, y=-47, z=81)","(x=-68, y=-47, z=144)","(x=-58, y=46, z=81)","(x=-68, y=46, z=144)",,,,,4,80,70
-4,Truck,SK_Truck_Box,,"(x=0, y=0, z=0)","(x=0, y=0, z=0)",,,,,,,,,,,,,2,100,60
-5,TruckChassis,SK_Truck_Chassis,,"(x=0, y=0, z=0)","(x=0, y=0, z=0)",,,,,,,,,,,,,2,100,60
+,Type,MeshPath,AudioPath,CameraLocation,CameraRotation,SeatLocation1,SeatCameraLocation1,SeatLocation2,SeatCameraLocation2,SeatLocation3,SeatCameraLocation3,SeatLocation4,SeatCameraLocation4,MaxSeater,Durability,Speed
+0,Hatchback,SK_Hatchback,,"(x=-240, y=0, z=290)","(x=0, y=-20, z=0)","(x=20, y=-33, z=54)","(x=-6, y=-33, z=107)","(x=20, y=35, z=54)","(x=-6, y=35, z=107)","(x=-69, y=-33, z=67)","(x=-92, y=-33, z=104)","(x=-69, y=35, z=67)","(x=-92, y=35, z=104)",4,60,80
+1,Pickup,SK_Pickup,,"(x=-100, y=0, z=290)","(x=0, y=-20, z=0)","(x=18, y=-29, z=61)","(x=18, y=-29, z=118)","(x=18, y=37, z=61)","(x=18, y=37, z=118)",,,,,4,70,80
+2,SportsCar,SK_SportsCar,,"(x=-210, y=0, z=290)","(x=0, y=20, z=0)","(x=11, y=-36 z=40)","(x=11, y=-36, z=98)","(x=11, y=37, z=40)","(x=11, y=37, z=98)",,,,,2,50,100
+3,SUV,SK_SUV,,"(x=-200, y=0, z=330)","(x=0, y=30, z=0)","(x=8, y=-38, z=77)","(x=-1, y=-38, z=138)","(x=11, y=37, z=79)","(x=11, y=37, z=138)","(x=-58, y=-47, z=81)","(x=-68, y=-47, z=144)","(x=-58, y=46, z=81)","(x=-68, y=46, z=144)",4,80,70
+4,Truck,SK_Truck_Box,,"(x=0, y=0, z=0)","(x=0, y=0, z=0)",,,,,,,,,2,100,60
+5,TruckChassis,SK_Truck_Chassis,,"(x=0, y=0, z=0)","(x=0, y=0, z=0)",,,,,,,,,2,100,60

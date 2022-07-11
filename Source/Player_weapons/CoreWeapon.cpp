@@ -14,6 +14,7 @@
 ACoreWeapon::ACoreWeapon()
 {
     PrimaryActorTick.bCanEverTick = true;
+    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
 }
 
 void ACoreWeapon::BeginPlay()

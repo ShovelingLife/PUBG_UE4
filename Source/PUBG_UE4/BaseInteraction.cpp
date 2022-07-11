@@ -39,10 +39,11 @@ void ABaseInteraction::Tick(float DeltaTime)
         WidgetComp->SetVisibility((mCurrentTime > 0.25f));
     }
 }
-
 void ABaseInteraction::InitStaticMesh(FString Path)
 {
-    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+    if (RootComponent)
+        RootComponent->DestroyComponent();
+
     this->SetRootComponent(StaticMeshComp);
 
     // 경로로부터 메시 생성
@@ -51,13 +52,14 @@ void ABaseInteraction::InitStaticMesh(FString Path)
     if (MESH.Succeeded())
         StaticMeshComp->SetStaticMesh(MESH.Object);
 
-    StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
-    StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
+    StaticMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
 }
 
 void ABaseInteraction::InitSkeletalMesh(FString Path)
 {
-    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
+    if (RootComponent)
+        RootComponent->DestroyComponent();
+
     this->SetRootComponent(SkeletalMeshComp);
 
     // 경로로부터 메시 생성
@@ -100,19 +102,24 @@ void ABaseInteraction::DestroyComponentsForUI()
 void ABaseInteraction::SetForDummyCharacter()
 {
     DestroyComponentsForUI();
-
     if (SkeletalMeshComp)
     {
-        SkeletalMeshComp->SetOnlyOwnerSee(true);
-        SkeletalMeshComp->RegisterComponent();
+        this->SetRootComponent(SkeletalMeshComp);
+        SkeletalMeshComp->SetOwnerNoSee(true);
         SkeletalMeshComp->SetVisibility(true);
+
+        if (StaticMeshComp)
+            StaticMeshComp->DestroyComponent();
+
     }
     if (StaticMeshComp)
     {
         this->SetRootComponent(StaticMeshComp);
-        StaticMeshComp->SetOnlyOwnerSee(true);
-        StaticMeshComp->RegisterComponent();
-        StaticMeshComp->SetVisibility(true);
+        StaticMeshComp->SetOwnerNoSee(true);
+        StaticMeshComp->SetVisibility(true);       
+
+        if (SkeletalMeshComp)
+            SkeletalMeshComp->DestroyComponent();
     }
 }
 
@@ -137,16 +144,24 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
     }
 }
 
-void ABaseInteraction::UpdateMesh(USceneComponent* RootComp)
+UStaticMesh* ABaseInteraction::GetStaticMesh() const
 {
-    if (!RootComp)
-        return;
+    return StaticMeshComp->GetStaticMesh();
+}
 
-    if (SkeletalMeshComp)
-        SkeletalMeshComp->SetSkeletalMesh(Cast<USkeletalMeshComponent>(RootComp)->SkeletalMesh);
+USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const
+{
+    return SkeletalMeshComp->SkeletalMesh;
+}
 
-    if (StaticMeshComp)
-        StaticMeshComp->SetStaticMesh(Cast<UStaticMeshComponent>(RootComp)->GetStaticMesh());
+void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh)
+{
+    StaticMeshComp->SetStaticMesh(Mesh);
+}
+
+void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh)
+{
+    SkeletalMeshComp->SetSkeletalMesh(Mesh);
 }
 
 void ABaseInteraction::InitParticleSystem(FString Path)

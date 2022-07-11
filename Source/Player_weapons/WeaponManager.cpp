@@ -872,3 +872,18 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, ECurrentWeaponType W
     }
     return true;
 }
+
+void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)
+{
+    auto p_firstGunUI  = Cast<ACoreWeapon>(pArrActor[(int)ECurrentWeaponType::FIRST]);
+    auto p_secondGunUI = Cast<ACoreWeapon>(pArrActor[(int)ECurrentWeaponType::SECOND]);
+    auto p_pistolUI    = Cast<ACoreWeapon>(pArrActor[(int)ECurrentWeaponType::PISTOL]);
+    auto p_meleeUI     = Cast<ACoreMeleeWeapon>(pArrActor[(int)ECurrentWeaponType::MELEE]);
+    auto p_throwableUI = Cast<ACoreThrowableWeapon>(pArrActor[(int)ECurrentWeaponType::THROWABLE]);
+
+    p_firstGunUI->SetSkeletalMesh((pFirstGun) ? pFirstGun->GetSkeletalMesh() : nullptr);
+    p_secondGunUI->SetSkeletalMesh((pSecondGun) ? pSecondGun->GetSkeletalMesh() : nullptr);
+    p_pistolUI->SetSkeletalMesh((pPistol) ? pPistol->GetSkeletalMesh() : nullptr);
+    p_meleeUI->SetStaticMesh((pMelee) ? pMelee->GetStaticMesh() : nullptr);
+    p_throwableUI->SetStaticMesh((pThrowable) ? pThrowable->GetStaticMesh() : nullptr);
+}

@@ -1,5 +1,6 @@
 ﻿#include "CoreVehicle.h"
 #include "CustomPlayer.h"
+#include "InstaDeformComponent.h"
 #include "Animation/AnimInstance.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
@@ -23,7 +24,6 @@ ACoreVehicle::ACoreVehicle()
     AutoPossessAI = EAutoPossessAI::Disabled;
 }
 
-// Called when the game starts or when spawned
 void ACoreVehicle::BeginPlay()
 {
     Super::BeginPlay();
@@ -33,15 +33,16 @@ void ACoreVehicle::BeginPlay()
         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(InteractionWidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));
 }
 
-// Called every frame
 void ACoreVehicle::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    InteractionWidgetComp->SetVisibility(bCollided);
     UpdateCarPosData();
 
     if (mpPlayer)
         mbPlayerInFirstSeat = (mpPlayer->CurrentSeatType == ESeatType::FIRST);
+
+    if (InteractionWidgetComp)
+        InteractionWidgetComp->SetVisibility(bCollided);
 }
 
 void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComp)
@@ -64,7 +65,8 @@ void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComp)
 
 void ACoreVehicle::Init(EVehicleType VehicleTypeIndex)
 {
-    ADataTableManager::ArrVehicleData[(int)VehicleTypeIndex];
+    mVehicleData = ADataTableManager::ArrVehicleData[(int)VehicleTypeIndex];
+    InstaDeformComp = CreateDefaultSubobject<UInstaDeformComponent>(TEXT("InstaDeformComp"));
     InitSkeletalMesh();
     InitCamera();
     InitWheeledComp();
@@ -75,9 +77,9 @@ void ACoreVehicle::Init(EVehicleType VehicleTypeIndex)
 void ACoreVehicle::InitCarPosComp()
 {
     // 문짝 오브젝트 초기화
-    FirstDoorPosComp  = CreateDefaultSubobject<USceneComponent>(TEXT("FirstDoorPos"));
+    FirstDoorPosComp = CreateDefaultSubobject<USceneComponent>(TEXT("FirstDoorPos"));
     SecondDoorPosComp = CreateDefaultSubobject<USceneComponent>(TEXT("SecondDoorPos"));
-    ThirdDoorPosComp  = CreateDefaultSubobject<USceneComponent>(TEXT("ThirdDoorPos"));
+    ThirdDoorPosComp = CreateDefaultSubobject<USceneComponent>(TEXT("ThirdDoorPos"));
     FourthDoorPosComp = CreateDefaultSubobject<USceneComponent>(TEXT("FourthDoorPos"));
 
     FirstDoorPosComp->SetupAttachment(RootComponent);
@@ -100,16 +102,16 @@ void ACoreVehicle::InitCarPosComp()
 void ACoreVehicle::InitCarPosData()
 {
     MapDoorPos.Add(ESeatType::FIRST,  FirstDoorPosComp->GetComponentLocation());
-    MapDoorPos.Add(ESeatType::SECOND, SecondDoorPosComp->GetComponentLocation());
     MapSeatPos.Add(ESeatType::FIRST,  FirstSeatPosComp->GetComponentLocation());
+    MapDoorPos.Add(ESeatType::SECOND, SecondDoorPosComp->GetComponentLocation());
     MapSeatPos.Add(ESeatType::SECOND, SecondSeatPosComp->GetComponentLocation());
 
     // 문 4개있는 차량일 시
     if(mVehicleData.MaxSeater == 4)
     {
         MapDoorPos.Add(ESeatType::THIRD,  ThirdDoorPosComp->GetComponentLocation());
-        MapDoorPos.Add(ESeatType::FOURTH, FourthDoorPosComp->GetComponentLocation());
         MapSeatPos.Add(ESeatType::THIRD,  ThirdSeatPosComp->GetComponentLocation());
+        MapDoorPos.Add(ESeatType::FOURTH, FourthDoorPosComp->GetComponentLocation());
         MapSeatPos.Add(ESeatType::FOURTH, FourthSeatPosComp->GetComponentLocation());
     }
 }
@@ -118,15 +120,15 @@ void ACoreVehicle::UpdateCarPosData()
 {
     // 좌석 및 문짝 위치 업데이트
     MapDoorPos[ESeatType::FIRST]  = FirstDoorPosComp->GetComponentLocation();
-    MapDoorPos[ESeatType::SECOND] = SecondDoorPosComp->GetComponentLocation();
     MapSeatPos[ESeatType::FIRST]  = FirstSeatPosComp->GetComponentLocation();
+    MapDoorPos[ESeatType::SECOND] = SecondDoorPosComp->GetComponentLocation();
     MapSeatPos[ESeatType::SECOND] = SecondSeatPosComp->GetComponentLocation();
 
     if (mVehicleData.MaxSeater == 4)
     {
         MapDoorPos[ESeatType::THIRD]  = ThirdDoorPosComp->GetComponentLocation();
-        MapDoorPos[ESeatType::FOURTH] = FourthDoorPosComp->GetComponentLocation();
         MapSeatPos[ESeatType::THIRD]  = ThirdSeatPosComp->GetComponentLocation();
+        MapDoorPos[ESeatType::FOURTH] = FourthDoorPosComp->GetComponentLocation();
         MapSeatPos[ESeatType::FOURTH] = FourthSeatPosComp->GetComponentLocation();
     }
 }
@@ -136,7 +138,6 @@ void ACoreVehicle::InitCamera()
     // 스프링 암 초기화 및 설정
     SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
     SpringArmComp->SetupAttachment(GetMesh());
-    SpringArmComp->TargetArmLength = mVehicleData.SpringArmLength;
     SpringArmComp->bUsePawnControlRotation = true;
 
     // 카메라 초기화 및 설정
@@ -164,7 +165,7 @@ void ACoreVehicle::InitSkeletalMesh()
         GetMesh()->SetAnimInstanceClass(animInst.Class);
 
     // 위젯 컴포넌트 초기화
-    InteractionWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interaction_widget"));
+    InteractionWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidget"));
     InteractionWidgetComp->SetupAttachment(RootComponent);
 }
 

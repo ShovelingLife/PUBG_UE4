@@ -1,21 +1,19 @@
 #include "PlayerAnimNotifyState.h"
 #include "Characters/CustomPlayer.h"
 
-void UPlayerAnimNotifyState::NotifyBegin(USkeletalMeshComponent* _MeshComp, UAnimSequenceBase* _Animation, float _TotalDuration)
+void UPlayerAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
-    Super::NotifyBegin(_MeshComp, _Animation, _TotalDuration);
-
-    ACustomPlayer* p_player = Cast<ACustomPlayer>(_MeshComp->GetOwner());
+    ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner());
 
     if (p_player)
         p_player->bAnimationPlaying = true;
 }
 
-void UPlayerAnimNotifyState::NotifyEnd(USkeletalMeshComponent* _MeshComp, UAnimSequenceBase* _Animation)
+void UPlayerAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-    Super::NotifyEnd(_MeshComp, _Animation);
+    Super::NotifyEnd(MeshComp, Animation, EventReference);
 
-    ACustomPlayer* p_player = Cast<ACustomPlayer>(_MeshComp->GetOwner());
+    ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner());
 
     if (p_player)
         p_player->bAnimationPlaying = false;

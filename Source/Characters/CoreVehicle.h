@@ -21,31 +21,37 @@ class USpringArmComponent;
 class UCameraComponent;
 class UWidgetComponent;
 
+class UInstaDeformComponent;
+
 UCLASS()
 class CHARACTERS_API ACoreVehicle : public AWheeledVehiclePawn
 {
     GENERATED_BODY()
 
+private:
+    const int mDoorCount = 4;
+
 protected:
     /** \brief 차량 관련 컴포넌트들 */
+    UPROPERTY(VisibleAnywhere, Category = Property) UInstaDeformComponent* InstaDeformComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Camera) USpringArmComponent* SpringArmComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent*    CameraComp    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent* CameraComp = nullptr;
 
     /** \brief 문짝 위치 컴포넌트들 */
-    UPROPERTY(EditAnywhere, Category = Door_Pos) USceneComponent* FirstDoorPosComp;
-    UPROPERTY(EditAnywhere, Category = Door_Pos) USceneComponent* SecondDoorPosComp;
-    UPROPERTY(EditAnywhere, Category = Door_Pos) USceneComponent* ThirdDoorPosComp;
-    UPROPERTY(EditAnywhere, Category = Door_Pos) USceneComponent* FourthDoorPosComp;
+    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* FirstDoorPosComp;
+    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* SecondDoorPosComp;
+    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* ThirdDoorPosComp;
+    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* FourthDoorPosComp;
 
     /** \brief 좌석 위치 컴포넌트들 */
-    UPROPERTY(EditAnywhere, Category = Seat_Pos) USceneComponent* FirstSeatPosComp;
-    UPROPERTY(EditAnywhere, Category = Seat_Pos) USceneComponent* SecondSeatPosComp;
-    UPROPERTY(EditAnywhere, Category = Seat_Pos) USceneComponent* ThirdSeatPosComp;
-    UPROPERTY(EditAnywhere, Category = Seat_Pos) USceneComponent* FourthSeatPosComp;
+    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* FirstSeatPosComp;
+    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* SecondSeatPosComp;
+    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* ThirdSeatPosComp;
+    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* FourthSeatPosComp;
 
     /** \brief 기타 변수들 */
-    UPROPERTY(VisibleAnywhere,Category = Seat_pos)  TMap<ESeatType, FVector> MapSeatPos;
-    UPROPERTY(VisibleAnywhere, Category = Door_pos) TMap<ESeatType, FVector> MapDoorPos;
+    UPROPERTY(VisibleAnywhere,Category = SeatPos)  TMap<ESeatType, FVector> MapSeatPos;
+    UPROPERTY(VisibleAnywhere, Category = DoorPos) TMap<ESeatType, FVector> MapDoorPos;
 
     /** \brief 차량 좌석 위치 변수 */
     TMap<ESeatType, bool> mMapEmptySeat

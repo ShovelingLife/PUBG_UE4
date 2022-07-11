@@ -9,6 +9,7 @@
 ACrateBox::ACrateBox()
 {
     PrimaryActorTick.bCanEverTick = true;
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     ObjectType = "CrateBox";
     UpdateCollider();
     InitVfx();

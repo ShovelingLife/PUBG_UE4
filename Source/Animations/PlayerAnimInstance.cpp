@@ -1,6 +1,7 @@
 #include "PlayerAnimInstance.h"
 #include "Characters/CustomPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "KismetAnimationLibrary.h"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {
@@ -24,7 +25,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float _DeltaSeconds)
         PlayerState = (p_player->bInVehicle) ? EPlayerAnimationState::IDLE : (EPlayerAnimationState)p_player->CurrentState;
         auto velocity = p_player->GetVelocity();        
         auto rotation = p_player->GetActorRotation();
-        Direction = CalculateDirection(velocity, rotation);
+        Direction = UKismetAnimationLibrary::CalculateDirection(velocity, rotation);
         Speed     = velocity.Size();
         bEquipped = p_player->bWeaponEquipped;
     }

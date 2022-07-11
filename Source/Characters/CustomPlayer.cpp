@@ -60,20 +60,16 @@ void ACustomPlayer::BeginPlay()
         mpCustomGameInst->DeleDealPlayerDmg.BindUFunction(this, "DealDmg");
     }
     // UI용 캐릭터 생성
-    if (auto p_dummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter))
-    {
-        p_dummyCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        pDummyCharacter = p_dummyCharacter;
-    }
+    pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
 }
 
 void ACustomPlayer::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     CheckIfMoving();
-    CheckIfVehicleNear();
+    CheckNearVehicle();
     //Play_walk_sound();
-    CheckForObject();
+    CheckNearObj();
     TryToInteract();
     UpdateHealth();
 }
@@ -245,7 +241,7 @@ void ACustomPlayer::CheckIfMoving()
     }
 }
 
-void ACustomPlayer::CheckForObject()
+void ACustomPlayer::CheckNearObj()
 {
     FVector    direction = GetActorForwardVector() * 50;
     FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
@@ -292,7 +288,7 @@ void ACustomPlayer::CheckForObject()
     }
 }
 
-void ACustomPlayer::CheckIfVehicleNear()
+void ACustomPlayer::CheckNearVehicle()
 {
     if (bInVehicle)
         return;

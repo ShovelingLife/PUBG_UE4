@@ -12,6 +12,7 @@
 ACoreMeleeWeapon::ACoreMeleeWeapon()
 {
     PrimaryActorTick.bCanEverTick = true;
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
 }
 
 void ACoreMeleeWeapon::BeginPlay()

@@ -84,7 +84,7 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
             if (rotationValInZ < -5.f)
                 rotationValInZ = -5.f;
 
-            p_dummyCharacter->DummySkeletalMeshComp->AddRelativeRotation(FRotator::MakeFromEuler(FVector(0.f, 0.f, rotationValInZ)));
+            p_dummyCharacter->DummySkeletalMeshComp->AddWorldRotation(FRotator::MakeFromEuler(FVector(0.f, 0.f, rotationValInZ)));
         }      
     }
     return true;
