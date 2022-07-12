@@ -9,7 +9,6 @@
 ACrateBox::ACrateBox()
 {
     PrimaryActorTick.bCanEverTick = true;
-    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     ObjectType = "CrateBox";
     UpdateCollider();
     InitVfx();
@@ -42,7 +41,7 @@ void ACrateBox::Tick(float _DeltaTime)
 
 void ACrateBox::InitVfx()
 {
-    ABaseInteraction::InitParticleSystem("ParticleSystem'/Game/VFX/Items/Crate_box/Crate_Effect.Crate_Effect'");
+    Super::InitParticleSystem("ParticleSystem'/Game/VFX/Items/Crate_box/Crate_Effect.Crate_Effect'");
     ParticleComp->SetRelativeTransform(FTransform(FRotator::ZeroRotator, FVector(0.f, 0.f, 70.f), FVector(1.35f)));
     ParticleComp->bAutoActivate = false;
     ParticleComp->Deactivate();
@@ -51,7 +50,7 @@ void ACrateBox::InitVfx()
 void ACrateBox::InitMeshes()
 {
     // 보급 상자 메쉬 설정
-    ABaseInteraction::InitStaticMesh("StaticMesh'/Game/Meshes/PUBG_CRATE/Box_crate_mesh.Box_crate_mesh'");
+    Super::InitStaticMesh("StaticMesh'/Game/Meshes/PUBG_CRATE/Box_crate_mesh.Box_crate_mesh'");
     StaticMeshComp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(-90.f, 0.f, 0.f)), FVector(0.f, 0.f, -70.f), FVector(0.1f)));
 
     // 낙하산 메쉬 설정

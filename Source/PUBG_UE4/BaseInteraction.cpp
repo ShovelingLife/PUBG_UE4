@@ -53,6 +53,7 @@ void ABaseInteraction::InitStaticMesh(FString Path)
         StaticMeshComp->SetStaticMesh(MESH.Object);
 
     StaticMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
+    AttachComponents();
 }
 
 void ABaseInteraction::InitSkeletalMesh(FString Path)
@@ -69,21 +70,20 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
         SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
 
     SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
+    AttachComponents();
 }
 
 void ABaseInteraction::InitComponents()
 {
-    //ColliderComp     = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComp"));
-    //RootComponent    = ColliderComp;
-    WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidgetComp"));    
-    AudioComp  = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
+    StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+    WidgetComp       = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
+    AudioComp        = CreateDefaultSubobject<UAudioComponent>("AudioComp");
 }
 
 void ABaseInteraction::InitInteractionUI()
 {
-    auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
-
-    if (p_customGameInst)
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
 }
 
@@ -156,12 +156,14 @@ USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const
 
 void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh)
 {
-    StaticMeshComp->SetStaticMesh(Mesh);
+    if (StaticMeshComp)
+        StaticMeshComp->SetStaticMesh(Mesh);
 }
 
 void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh)
 {
-    SkeletalMeshComp->SetSkeletalMesh(Mesh);
+    if (SkeletalMeshComp)
+        SkeletalMeshComp->SetSkeletalMesh(Mesh);
 }
 
 void ABaseInteraction::InitParticleSystem(FString Path)

@@ -36,7 +36,4 @@ protected:
       * \param _weapon_type 무기 종류
      */
     void Init(EMeleeWeaponType WeaponType);
-
-    /** \brief 메쉬 초기화 */
-    void InitMesh();
 };

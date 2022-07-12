@@ -14,7 +14,6 @@
 ACoreWeapon::ACoreWeapon()
 {
     PrimaryActorTick.bCanEverTick = true;
-    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
 }
 
 void ACoreWeapon::BeginPlay()
@@ -61,7 +60,6 @@ void ACoreWeapon::Init(EWeaponType Type)
     Super::InitSkeletalMesh(WeaponData.MeshPath);
     SkeletalMeshComp->SetCollisionProfileName("Object");
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
-    Super::AttachComponents();
     InitBullet();
     UpdateParticleSystem();
 }

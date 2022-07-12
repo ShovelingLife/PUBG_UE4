@@ -30,6 +30,7 @@ class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 	GENERATED_BODY()
 
 private:
+    UPROPERTY(VisibleAnywhere) UCustomGameInstance* mpCustomGameInstance = nullptr;
     FTimerHandle mWaitHandle;
     bool mbPlayed = false;
 
@@ -55,8 +56,8 @@ public:
     FORCEINLINE	ACoreThrowableWeapon& operator=(ACoreThrowableWeapon& Src)
     {
         // swap 함수 사용함으로서 복사 오버헤드 방지
-        std::swap<UStaticMeshComponent*>(this->StaticMeshComp, Src.StaticMeshComp);
-        std::swap<FsOtherWeaponData>(this->WeaponData, Src.WeaponData);
+        std::swap(this->StaticMeshComp, Src.StaticMeshComp);
+        std::swap(this->WeaponData, Src.WeaponData);
         return *this;
     }
 

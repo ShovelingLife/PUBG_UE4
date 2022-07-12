@@ -16,20 +16,18 @@
 
 ACoreThrowableWeapon::ACoreThrowableWeapon()
 {
-    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
-    this->InitProjectileMovementComp();    
+    this->InitProjectileMovementComp();
 }
 
 ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThrowableWeapon()
 {
-    this->WeaponType = Type;
-    WeaponData = ADataTableManager::ArrOtherWeaponData[(int)Type];
-    ObjectType = WeaponData.Type;
+    WeaponType      = Type;
+    WeaponData      = ADataTableManager::ArrOtherWeaponData[(int)Type];
+    ObjectType      = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
     this->InitMesh();
     this->InitParticleSystem();
-    Super::AttachComponents();
 }
 
 void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -42,27 +40,21 @@ void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other,
 
 UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if (auto p_world = GetWorld())
+    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
     {
-        if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
-        {
-            if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
-                p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
-        }
+        if (mpCustomGameInstance)
+            mpCustomGameInstance->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
     }
 }
 
 UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    if (auto p_world = GetWorld())
+    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
     {
-        if (OtherActor == UGameplayStatics::GetPlayerCharacter(p_world, 0))
+        if (mpCustomGameInstance)
         {
-            if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
-            {
-                p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
-                p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
-            }
+            mpCustomGameInstance->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
+            mpCustomGameInstance->DeleKillUI_Anim.ExecuteIfBound();
         }
     }
 }
@@ -72,33 +64,21 @@ void ACoreThrowableWeapon::BeginDestroy()
     Super::BeginDestroy();
     GrenadeEndPos = FVector::ZeroVector;
 
-    if(auto p_world = GetWorld())
-    {
-        if (auto p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
-            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
-    }
+    if (mpCustomGameInstance)
+        mpCustomGameInstance->DeleKillUI_Anim.ExecuteIfBound();
 }
 
 void ACoreThrowableWeapon::BeginPlay()
 {
     Super::BeginPlay();
+
+    if (auto p_world = GetWorld())
+        mpCustomGameInstance = Cast<UCustomGameInstance>(p_world->GetGameInstance());
 }
     
 void ACoreThrowableWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    /*if (GrenadeParticleComp)
-    {
-        static float currentTime = 0.f;
-
-        currentTime += DeltaTime;
-
-        if (currentTime >= 3.5f)
-        {
-            GetWorld()->GetTimerManager().ClearTimer(mWaitHandle);
-            this->Destroy();
-        }
-    }*/
 }
 
 void ACoreThrowableWeapon::BindExplosionFunc()
@@ -107,14 +87,14 @@ void ACoreThrowableWeapon::BindExplosionFunc()
     {
     case EThrowableWeaponType::ILLUMINATION:
 
-        mCallBack.BindLambda([&]()
+        mCallBack.BindLambda([this]()
             {
-                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-                float startTime = (distance >= 300) ? 2.5f : 0.f;
-                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
+                float distance  = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+                float startTime = (distance >= 300.f) ? 2.5f : 0.f;
+                float waitTime  = (startTime == 0.f)   ? 5.f : 2.5f;
 
-                if (UCustomGameInstance * p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
-                    p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
+                if (mpCustomGameInstance)
+                    mpCustomGameInstance->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
             });
         break;
 
@@ -123,10 +103,10 @@ void ACoreThrowableWeapon::BindExplosionFunc()
     case EThrowableWeaponType::FRAGMENTATION2:
     case EThrowableWeaponType::CLAYMORE:
 
-        mCallBack.BindLambda([&]()
+        mCallBack.BindLambda([this]()
             {
-                if (UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
-                    p_customGameInst->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);                
+                if (mpCustomGameInstance)
+                    mpCustomGameInstance->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);                
             });
         break;
     }
@@ -179,13 +159,10 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
 
 void ACoreThrowableWeapon::InitMesh()
 {
-    ABaseInteraction::InitStaticMesh(WeaponData.MeshPath);
+    Super::InitStaticMesh(WeaponData.MeshPath);
 
     if (StaticMeshComp)
     {
-        RootComponent->DestroyComponent();
-        RootComponent = StaticMeshComp;
-
         // 위치 관련
         StaticMeshComp->SetRelativeLocation(WeaponData.MeshPos);
         StaticMeshComp->SetRelativeRotation(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)));
@@ -236,7 +213,6 @@ bool ACoreThrowableWeapon::IsPlayerInRadius()
         auto       character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
         FHitResult lineHitResult;
         
-        
         if (GetWorld()->LineTraceSingleByChannel(lineHitResult, startPos, character->GetActorLocation(), ECollisionChannel::ECC_Camera))
             return (lineHitResult.GetActor() == character);
     }
@@ -245,15 +221,12 @@ bool ACoreThrowableWeapon::IsPlayerInRadius()
 
 void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
 {
+    if (!OtherWeapon)
+        return;
+
     DestroyComponentsForUI();
-
-    // 메시 설정
-    if (SkeletalMeshComp)
-        SkeletalMeshComp->DestroyComponent();
-
-    SetRootComponent(StaticMeshComp);
-    StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    StaticMeshComp->SetStaticMesh(OtherWeapon->StaticMeshComp->GetStaticMesh());
+    /*StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    SetStaticMesh(OtherWeapon->StaticMeshComp->GetStaticMesh());*/
     
     // 데이터 설정
     WeaponData = OtherWeapon->WeaponData;
@@ -285,23 +258,20 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
 
     GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {
-            auto location = StaticMeshComp->GetComponentLocation();
+            auto meshLocation = StaticMeshComp->GetComponentLocation();
 
             // 사운드 재생
-            if (auto p_world = GetWorld())
+            if (mpCustomGameInstance)
             {
-                if(UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(p_world->GetGameInstance()))
+                auto p_soundManager = mpCustomGameInstance->pSoundManager;
+
+                if (p_soundManager &&
+                    !mbPlayed)
                 {
-                    if (auto p_soundManager = p_customGameInst->pSoundManager)
-                    {
-                        if (!mbPlayed)
-                        {
-                            UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)WeaponType), location);
-                            mbPlayed = true;
-                        }
-                    }
-                } 
-            }       
+                    UGameplayStatics::PlaySoundAtLocation(GetWorld(), p_soundManager->GetExplosiveSoundBase((int)WeaponType), meshLocation);
+                    mbPlayed = true;
+                }
+            }
             // 효과 재생
             if (IsPlayerInRadius())
                 mCallBack.ExecuteIfBound();
@@ -315,19 +285,20 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
 
                 if (!GrenadeParticleComp)
                 {
-                    GrenadeParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location, FRotator::ZeroRotator, false);
+                    GrenadeParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, meshLocation, FRotator::ZeroRotator, false);
                     GrenadeParticleComp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
                 }
-                if (SphereComp &&
-                    GrenadeParticleComp)
+                else
                 {
-                    SphereComp->SetGenerateOverlapEvents(true);
-                    //SphereComp->SetWorldLocationAndRotation(FVector(300.f, GrenadeEndPos.Y, GrenadeEndPos.Z), FRotator::ZeroRotator);
+                    if (SphereComp)
+                    {
+                        SphereComp->SetGenerateOverlapEvents(true);
+                    }
                 }
             }
             else
             {
-                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, location);
+                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, meshLocation);
                 Destroy();
             }
         }), (WeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f, false);

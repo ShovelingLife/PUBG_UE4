@@ -12,7 +12,6 @@
 ACoreMeleeWeapon::ACoreMeleeWeapon()
 {
     PrimaryActorTick.bCanEverTick = true;
-    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
 }
 
 void ACoreMeleeWeapon::BeginPlay()
@@ -25,14 +24,6 @@ void ACoreMeleeWeapon::Init(EMeleeWeaponType Type)
 {
     WeaponData = ADataTableManager::ArrOtherWeaponData[(int)Type];    
     this->WeaponType = Type;
-    ObjectType = WeaponData.Type;    
-
-    InitMesh();
-}
-
-void ACoreMeleeWeapon::InitMesh()
-{
-    ABaseInteraction::InitStaticMesh(WeaponData.MeshPath);
-    StaticMeshComp->SetRelativeRotation(FRotator::ZeroRotator);
-    StaticMeshComp->SetRelativeLocation(FVector::ZeroVector);
+    ObjectType = WeaponData.Type;
+    Super::InitStaticMesh(WeaponData.MeshPath);
 }

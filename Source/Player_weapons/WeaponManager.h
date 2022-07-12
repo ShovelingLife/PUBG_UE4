@@ -59,10 +59,10 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 	FDeleSetExplosiveUI DeleSetExplosiveUI;
 
-    ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
-    float			   GrenadeDirection;
-	bool			   bArrWeaponEquipped[5]{ false };
-	bool			   bShooting = false;
+	ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
+    float GrenadeDirection;
+	bool  bArrWeaponEquipped[5]{ false };
+	bool  bShooting = false;
 
 	// 투척류 관련
 	UPROPERTY(EditAnywhere, Category = GrenadeVariable) UStaticMesh* PathMesh;

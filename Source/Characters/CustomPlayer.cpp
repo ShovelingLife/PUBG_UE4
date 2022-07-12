@@ -293,11 +293,10 @@ void ACustomPlayer::CheckNearVehicle()
     if (bInVehicle)
         return;
 
-    APlayerCameraManager* p_cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-    FVector               beginPos      = GetActorLocation();
-    FVector               forwardVec    = GetActorForwardVector() * 50;
-    FHitResult            hitResult;
-    FVector               endPos        = beginPos + forwardVec;
+    FVector    beginPos   = GetActorLocation();
+    FVector    forwardVec = GetActorForwardVector() * 50;
+    FVector    endPos     = beginPos + forwardVec;
+    FHitResult hitResult;
     GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
 
     // 차량을 감지
@@ -308,16 +307,18 @@ void ACustomPlayer::CheckNearVehicle()
         if (mpCollidedVehicle)
         {
             mpCollidedVehicle->bCollided = false;
-            mpCollidedVehicle            = nullptr;
+            mpCollidedVehicle = nullptr;
         }
-        return;
     }
-    if (pHittedActor->IsA(ACoreVehicle::StaticClass()))
+    else
     {
-        mpCollidedVehicle = Cast<ACoreVehicle>(pHittedActor);
-        
-        if (mpCollidedVehicle)
-            mpCollidedVehicle->bCollided = true;
+        if (pHittedActor->IsA(ACoreVehicle::StaticClass()))
+        {
+            mpCollidedVehicle = Cast<ACoreVehicle>(pHittedActor);
+
+            if (mpCollidedVehicle)
+                mpCollidedVehicle->bCollided = true;
+        }
     }
 }
 
@@ -386,7 +387,7 @@ void ACustomPlayer::LookUp(float Value)
         AddControllerPitchInput(Value);
 
     // 경로 거리 설정
-    if(mpWeaponManager)
+    if (mpWeaponManager)
     {
         auto grenadeDirection = mpWeaponManager->GrenadeDirection;
         auto target = (Value / 10.f) + grenadeDirection;
@@ -443,12 +444,9 @@ void ACustomPlayer::CustomCrouch()
 
 void ACustomPlayer::Proning()
 {
-    FVector locationVal = FVector::ZeroVector;
-
+    // 숙이고 있는지 체크
     switch (CurrentState)
     {
-    case EPlayerState::AIM:  CurrentState = EPlayerState::PRONING_AIM; break;
-
     case EPlayerState::IDLE: 
     case EPlayerState::CROUCH:
     case EPlayerState::CROUCH_WALK:
@@ -462,6 +460,8 @@ void ACustomPlayer::Proning()
     case EPlayerState::PRONING: 
     case EPlayerState::PRONING_WALK:
         CurrentState = EPlayerState::IDLE; break;
+
+    case EPlayerState::AIM:  CurrentState = EPlayerState::PRONING_AIM; break;
 
     default: return;
     }
@@ -485,10 +485,6 @@ void ACustomPlayer::EndSprint()
 
 void ACustomPlayer::OpenInventory()
 {
-    if (mpWeaponManager &&
-        mpWeaponManager->bShooting)
-        return;
-
     if (!mbInventoryOpened)
     {
         DeleOpenInventory.ExecuteIfBound();
@@ -522,12 +518,7 @@ void ACustomPlayer::BeginShooting()
     if (auto p_gun = mpWeaponManager->GetCurrentWeapon())
     {
         if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
-        {
-            mpWeaponManager->bShooting = true;
             mpWeaponManager->ClickEvent();
-        }
-        else
-            mpWeaponManager->bShooting = true;
     }
     // 투척류일 시 경로 예측
     if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
@@ -540,12 +531,6 @@ void ACustomPlayer::EndShooting()
         !mpWeaponManager)
         return;
 
-    // 연사일 때만 마우스 뗏을 시 멈춤
-    if(auto p_gun= mpWeaponManager->GetCurrentWeapon())
-    {
-        if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
-            mpWeaponManager->bShooting = false;
-    }
     // 투척류 무기일 시 뗐을 때만 발동    
     if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
         mpWeaponManager->ThrowGrenade();
