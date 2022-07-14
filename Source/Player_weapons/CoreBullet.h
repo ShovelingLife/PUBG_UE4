@@ -18,9 +18,10 @@
 class UCapsuleComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UProjectileMovementComponent;
+class URadialForceComponent;
 class USceneComponent;
 class UStaticMeshComponent;
-class UProjectileMovementComponent;
 
 UCLASS()
 class PLAYER_WEAPONS_API ACoreBullet : public AActor
@@ -36,8 +37,9 @@ protected:
     bool mCollided = false;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Mesh)       UStaticMeshComponent*         MeshComp;
-    UPROPERTY(VisibleAnywhere, Category = Bullet)     UProjectileMovementComponent* ProjectileMovementComp;
+    UPROPERTY(VisibleAnywhere, Category = Mesh)   UStaticMeshComponent*         MeshComp;
+    UPROPERTY(VisibleAnywhere, Category = Bullet) UProjectileMovementComponent* ProjectileMovementComp;
+    UPROPERTY(VisibleAnywhere) URadialForceComponent* RadialForceComp;
 
     // 이펙트 관련
     UPROPERTY(VisibleAnywhere, Category = Effect) UNiagaraComponent* NiagaraComp;

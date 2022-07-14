@@ -18,11 +18,13 @@
 
 DECLARE_DELEGATE(FDeleExplosionEvent)
 
-class USphereComponent;
+class UCustomGameInstance;
+
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class URadialForceComponent;
+class USphereComponent;
 class UStaticMeshComponent;
-class UCustomGameInstance;
 
 UCLASS()
 class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
@@ -44,6 +46,7 @@ public:
     UPROPERTY(EditAnywhere, category = Collider) class USphereComponent* SphereComp;
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
+    UPROPERTY(VisibleAnywhere) URadialForceComponent* RadialForceComp;
     FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
 
@@ -71,16 +74,15 @@ public:
     virtual void BeginDestroy() override;
 
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
-	virtual void Tick(float DeltaTime) override;
-
-protected:
-    /** \brief 함수 포인터에 이벤트 바인딩 */
-    void BindExplosionFunc();
+    virtual void Tick(float DeltaTime) override;
 
     /** \brief 파티클 시스템 생성 */
     virtual void InitParticleSystem(FString Path = "") override;
+
+    /** \brief 함수 포인터에 이벤트 바인딩 */
+    void BindExplosionFunc();
 
     /** \brief 이동 컴포넌트 초기화 */
     void InitProjectileMovementComp();
@@ -89,6 +91,8 @@ protected:
     void InitMesh();
 
     void InitSphereComp();
+
+    void InitRadialForce();
 
     /** \brief 플레이어와 투척류 간 거리 계산= */
     bool IsPlayerInRadius();

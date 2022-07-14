@@ -19,7 +19,7 @@ struct FsOtherWeaponData : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** \brief 기타 컴포넌트 경로 관련 */
+    /** \brief 기타 컴포넌트 경로 관련 */
 	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString Type		 = "";
 	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString GroupType	 = "";
 	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString AudioPath	 = "";

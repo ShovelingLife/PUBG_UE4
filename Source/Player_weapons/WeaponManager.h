@@ -34,18 +34,11 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 	GENERATED_BODY()
 
 private:
-	// 투척류 관련
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
-	UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
-    FVector mGrenadeVelocity;
-	int		mBurstCount = 0;
-    bool	mbThrowingGrenade = false;
-
 	// 총기 관련
     const float	mkReloadTime	   = 2.f;
     float		mCurrentReloadTime = 0.f;
-    float		mCurrentShootTime  = 0.f;
+    float		mCurrentShootTime = 0.f;
+    int		mBurstCount = 0;
     bool		mbReloading		   = false;
 	bool		mbChangedShootType = true;
 	bool mbAiming = false;
@@ -59,16 +52,21 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 	FDeleSetExplosiveUI DeleSetExplosiveUI;
 
-	ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;
-    float GrenadeDirection;
+	ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;    
 	bool  bArrWeaponEquipped[5]{ false };
 	bool  bShooting = false;
 
-	// 투척류 관련
-	UPROPERTY(EditAnywhere, Category = GrenadeVariable) UStaticMesh* PathMesh;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) UMaterial*	 PathMat;
+    // 투척류 관련
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TArray<USplineMeshComponent*> arrSplineMeshComp;
-	UPROPERTY(EditAnywhere, Category = GrenadeVariable) float GrenadeSpeed = 0.f;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) UStaticMesh* PathMesh;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) UMaterial* PathMat;
+    FVector mGrenadeVelocity;
+    float GrenadeDirection;
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) float GrenadeSpeed = 0.f;
+    bool	mbThrowingGrenade = false;
 
 public:	
 	AWeaponManager();

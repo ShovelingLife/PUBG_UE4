@@ -11,12 +11,14 @@
 #include "Kismet/GameplayStatics.h"
 #include "Materials/Material.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 #include "Sound/SoundBase.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 
 ACoreThrowableWeapon::ACoreThrowableWeapon()
 {
     this->InitProjectileMovementComp();
+    InitRadialForce();
 }
 
 ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThrowableWeapon()
@@ -28,6 +30,7 @@ ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThr
 
     this->InitMesh();
     this->InitParticleSystem();
+    RadialForceComp->SetupAttachment(RootComponent);
 }
 
 void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -81,37 +84,6 @@ void ACoreThrowableWeapon::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void ACoreThrowableWeapon::BindExplosionFunc()
-{
-    switch (WeaponType)
-    {
-    case EThrowableWeaponType::ILLUMINATION:
-
-        mCallBack.BindLambda([this]()
-            {
-                float distance  = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-                float startTime = (distance >= 300.f) ? 2.5f : 0.f;
-                float waitTime  = (startTime == 0.f)   ? 5.f : 2.5f;
-
-                if (mpCustomGameInstance)
-                    mpCustomGameInstance->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
-            });
-        break;
-
-    case EThrowableWeaponType::STICK:
-    case EThrowableWeaponType::FRAGMENTATION1:
-    case EThrowableWeaponType::FRAGMENTATION2:
-    case EThrowableWeaponType::CLAYMORE:
-
-        mCallBack.BindLambda([this]()
-            {
-                if (mpCustomGameInstance)
-                    mpCustomGameInstance->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);                
-            });
-        break;
-    }
-}
-
 void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 {
     const FString explosionPath = "ParticleSystem'/Game/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/";
@@ -137,6 +109,37 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 
     if (PARTICLE.Succeeded())
         Particle = PARTICLE.Object;
+}
+
+void ACoreThrowableWeapon::BindExplosionFunc()
+{
+    switch (WeaponType)
+    {
+    case EThrowableWeaponType::ILLUMINATION:
+
+        mCallBack.BindLambda([this]()
+            {
+                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+                float startTime = (distance >= 300.f) ? 2.5f : 0.f;
+                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
+
+                if (mpCustomGameInstance)
+                    mpCustomGameInstance->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
+            });
+        break;
+
+    case EThrowableWeaponType::STICK:
+    case EThrowableWeaponType::FRAGMENTATION1:
+    case EThrowableWeaponType::FRAGMENTATION2:
+    case EThrowableWeaponType::CLAYMORE:
+
+        mCallBack.BindLambda([this]()
+            {
+                if (mpCustomGameInstance)
+                    mpCustomGameInstance->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);
+            });
+        break;
+    }
 }
 
 void ACoreThrowableWeapon::InitProjectileMovementComp()
@@ -195,6 +198,18 @@ void ACoreThrowableWeapon::InitSphereComp()
     SphereComp->Deactivate();
 }
 
+void ACoreThrowableWeapon::InitRadialForce()
+{
+    RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
+    RadialForceComp->bImpulseVelChange = true;
+    RadialForceComp->ImpulseStrength = 1500.f;
+    RadialForceComp->Radius = 200.f;
+    TArray<TEnumAsByte<EObjectTypeQuery>> arrObjectTypeQuery;
+    arrObjectTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Vehicle));
+    arrObjectTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+    RadialForceComp->Deactivate();
+}
+
 bool ACoreThrowableWeapon::IsPlayerInRadius()
 {
     using TypeQueryByte = TEnumAsByte<EObjectTypeQuery>;
@@ -224,13 +239,20 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
     if (!OtherWeapon)
         return;
 
-    DestroyComponentsForUI();
-    /*StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    SetStaticMesh(OtherWeapon->StaticMeshComp->GetStaticMesh());*/
-    
     // 데이터 설정
     WeaponData = OtherWeapon->WeaponData;
     WeaponType = OtherWeapon->WeaponType;
+
+    DestroyComponentsForUI();
+
+    if (SkeletalMeshComp)
+        SkeletalMeshComp->DestroyComponent();
+
+    SetRootComponent(StaticMeshComp);
+    AttachComponents();
+    SetStaticMesh(OtherWeapon->GetStaticMesh());
+    StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    StaticMeshComp->SetWorldScale3D(FVector(WeaponData.MeshSize));
     
     // 이펙트 정보 설정
     Particle = OtherWeapon->Particle;
@@ -299,6 +321,8 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
             else
             {
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, meshLocation);
+                RadialForceComp->Activate();
+                RadialForceComp->FireImpulse();
                 Destroy();
             }
         }), (WeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f, false);

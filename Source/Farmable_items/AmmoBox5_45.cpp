@@ -2,5 +2,5 @@
 
 AAmmoBox5_45::AAmmoBox5_45()
 {
-    ACoreAmmoBox::Init(EAmmoBoxType::AMMO_5_45);
+    Super::Init(EAmmoBoxType::AMMO_5_45);
 }

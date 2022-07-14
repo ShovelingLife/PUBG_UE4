@@ -6,10 +6,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 
 ACoreBullet::ACoreBullet()
 {
     PrimaryActorTick.bCanEverTick = true;
+    RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
 }
 
 void ACoreBullet::BeginPlay()

@@ -756,6 +756,9 @@ void AWeaponManager::CheckShooting(float TranscurredTime)
 
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
 {
+    if (!pGrenade)
+        return;
+
     // 오브젝트 생성 후 투척류로 지정
     pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
     pThrowable->Setup(pGrenade);

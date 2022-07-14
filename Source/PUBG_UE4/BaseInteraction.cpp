@@ -41,10 +41,11 @@ void ABaseInteraction::Tick(float DeltaTime)
 }
 void ABaseInteraction::InitStaticMesh(FString Path)
 {
-    if (RootComponent)
-        RootComponent->DestroyComponent();
+    if (SkeletalMeshComp)
+        SkeletalMeshComp->DestroyComponent();
 
     this->SetRootComponent(StaticMeshComp);
+    StaticMeshComp->RegisterComponent();
 
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*Path);
@@ -58,10 +59,11 @@ void ABaseInteraction::InitStaticMesh(FString Path)
 
 void ABaseInteraction::InitSkeletalMesh(FString Path)
 {
-    if (RootComponent)
-        RootComponent->DestroyComponent();
+    if (StaticMeshComp)
+        StaticMeshComp->DestroyComponent();
 
     this->SetRootComponent(SkeletalMeshComp);
+    SkeletalMeshComp->RegisterComponent();
 
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*Path);

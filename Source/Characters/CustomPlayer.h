@@ -86,7 +86,7 @@ public:
     
     /** \brief 차량 관련 변수 */
     ESeatType CurrentSeatType = ESeatType::NONE;
-    bool      bInVehicle      = false;
+    UPROPERTY(BlueprintReadOnly) bool bInVehicle = false;
 
 public:
     ACustomPlayer();
