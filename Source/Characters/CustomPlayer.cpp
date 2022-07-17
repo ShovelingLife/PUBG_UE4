@@ -515,11 +515,9 @@ void ACustomPlayer::BeginShooting()
         return;
 
     // 연사일 때만 한번 발 사
-    if (auto p_gun = mpWeaponManager->GetCurrentWeapon())
-    {
-        if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
-            mpWeaponManager->ClickEvent();
-    }
+    if (auto p_gun = mpWeaponManager->GetCurrentGun())
+        mpWeaponManager->ClickEvent();
+
     // 투척류일 시 경로 예측
     if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
         mpWeaponManager->ClickEvent();
@@ -530,6 +528,12 @@ void ACustomPlayer::EndShooting()
     if (mbInventoryOpened ||
         !mpWeaponManager)
         return;
+
+    if (auto p_gun = mpWeaponManager->GetCurrentGun())
+    {
+        if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
+            mpWeaponManager->bShooting = false;
+    }
 
     // 투척류 무기일 시 뗐을 때만 발동    
     if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
@@ -626,5 +630,5 @@ void ACustomPlayer::DealDmg(float DmgVal)
 
 ACoreWeapon* ACustomPlayer::GetCurrentWeapon()
 {
-    return (mpWeaponManager) ? mpWeaponManager->GetCurrentWeapon() : nullptr;
+    return (mpWeaponManager) ? mpWeaponManager->GetCurrentGun() : nullptr;
 }

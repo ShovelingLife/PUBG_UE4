@@ -46,7 +46,7 @@ public:
     UPROPERTY(EditAnywhere, category = Collider) class USphereComponent* SphereComp;
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
-    UPROPERTY(VisibleAnywhere) URadialForceComponent* RadialForceComp;
+    UPROPERTY(EditAnywhere) URadialForceComponent* RadialForceComp;
     FsOtherWeaponData    WeaponData;
 	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
 

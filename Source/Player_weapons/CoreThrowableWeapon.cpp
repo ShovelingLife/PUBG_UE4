@@ -18,7 +18,7 @@
 ACoreThrowableWeapon::ACoreThrowableWeapon()
 {
     this->InitProjectileMovementComp();
-    InitRadialForce();
+    InitRadialForce();   
 }
 
 ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThrowableWeapon()
@@ -30,7 +30,6 @@ ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThr
 
     this->InitMesh();
     this->InitParticleSystem();
-    RadialForceComp->SetupAttachment(RootComponent);
 }
 
 void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -201,12 +200,13 @@ void ACoreThrowableWeapon::InitSphereComp()
 void ACoreThrowableWeapon::InitRadialForce()
 {
     RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
+    this->SetRootComponent(StaticMeshComp);
+    RadialForceComp->SetupAttachment(RootComponent);
     RadialForceComp->bImpulseVelChange = true;
-    RadialForceComp->ImpulseStrength = 1500.f;
-    RadialForceComp->Radius = 200.f;
-    TArray<TEnumAsByte<EObjectTypeQuery>> arrObjectTypeQuery;
-    arrObjectTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Vehicle));
-    arrObjectTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+    RadialForceComp->ImpulseStrength = 350.f;
+    //RadialForceComp->ForceStrength = 1500.f;
+    RadialForceComp->Radius = 150.f;
+    RadialForceComp->RemoveObjectTypeToAffect(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
     RadialForceComp->Deactivate();
 }
 

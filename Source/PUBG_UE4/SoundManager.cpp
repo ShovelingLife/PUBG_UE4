@@ -127,7 +127,7 @@ void ASoundManager::PlayPlayerEffectSound(int Index)
     UGameplayStatics::PlaySound2D(GetWorld(), arrPlayerStateSound[Index]);
 }
 
-void ASoundManager::PlayGunSound(UAudioComponent* AudioComp, EWeaponSoundType SoundType, int WeaponIndex)
+void ASoundManager::PlayGunSound(FVector Location, EWeaponSoundType SoundType, int WeaponIndex)
 {
     USoundBase* tmpSound = nullptr;
 
@@ -144,15 +144,10 @@ void ASoundManager::PlayGunSound(UAudioComponent* AudioComp, EWeaponSoundType So
 
         break;
     }
-    if (AudioComp &&
-        tmpSound)
-    {
-        AudioComp->SetSound(tmpSound);
-        AudioComp->Play();
-    }
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(), tmpSound, Location);
 }
 
-USoundBase* ASoundManager::GetExplosiveSoundBase(int Type)
+USoundBase* ASoundManager::GetExplosiveSoundBase(int Type) const
 {
     switch (Type)
     {

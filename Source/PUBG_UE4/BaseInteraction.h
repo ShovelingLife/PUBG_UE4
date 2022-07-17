@@ -13,7 +13,6 @@
 #include "GameFramework/Actor.h"
 #include "BaseInteraction.generated.h"
 
-class UAudioComponent;
 class UBoxComponent;
 class USceneComponent;
 class USkeletalMeshComponent;
@@ -35,7 +34,6 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*            ColliderComp     = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)     UStaticMeshComponent*     StaticMeshComp   = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Mesh)     USkeletalMeshComponent*   SkeletalMeshComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Sound)    UAudioComponent*          AudioComp        = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp     = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystem*          Particle         = nullptr;
     FString ObjectGroupType = "";

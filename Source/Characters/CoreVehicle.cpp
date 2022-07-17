@@ -155,8 +155,8 @@ void ACoreVehicle::InitSkeletalMesh()
     if (MESH.Succeeded())
         GetMesh()->SetSkeletalMesh(MESH.Object);
 
+    this->SetRootComponent(GetMesh());
     GetMesh()->SetSimulatePhysics(true);
-    RootComponent = GetMesh();
 
     // 애님 인스턴스 초기화
     auto animInst = ConstructorHelpers::FClassFinder<UAnimInstance>(*mVehicleData.AnimInstancePath);

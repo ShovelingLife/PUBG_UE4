@@ -71,15 +71,15 @@ public:
       */
     void PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType);
 
-    void PlayPlayerEffectSound(int Index);
+    void PlayPlayerEffectSound(int);
 
     /**
       * \brief 무기 오디오 재생
-      * \param AudioComp  오디오 컴포넌트
-      * \param SoundType   사운드 종류
-      * \param WeaponIndex 사운드 인덱스
+      * \param 
+      * \param 
+      * \param 
       */
-    void PlayGunSound(UAudioComponent* AudioComp, EWeaponSoundType SoundType, int WeaponIndex = 0);
+    void PlayGunSound(FVector Location, EWeaponSoundType SoundType, int WeaponIndex = 0);
 
-    USoundBase* GetExplosiveSoundBase(int Type);
+    USoundBase* GetExplosiveSoundBase(int) const;
 };

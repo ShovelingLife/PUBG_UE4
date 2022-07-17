@@ -57,8 +57,8 @@ void ACoreWeapon::Init(EWeaponType Type)
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
+    Super::SetCollisionSettingsForObjects();
     Super::InitSkeletalMesh(WeaponData.MeshPath);
-    SkeletalMeshComp->SetCollisionProfileName("Object");
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     InitBullet();
     UpdateParticleSystem();
@@ -77,10 +77,7 @@ void ACoreWeapon::UpdateParticleSystem()
     if (!ParticleComp)
         return;
 
-    FVector startPos = SkeletalMeshComp->GetSocketLocation(TEXT("MuzzleSock"));
-    FVector scaleValue{ 0.05f };
-
-    ParticleComp->SetWorldScale3D(scaleValue);
-    ParticleComp->SetWorldLocation(startPos);
+    ParticleComp->SetWorldScale3D(FVector(0.05f));
+    ParticleComp->SetWorldLocation(SkeletalMeshComp->GetSocketLocation(TEXT("MuzzleSock")));
     ParticleComp->AddWorldRotation(FQuat::MakeFromEuler(FVector(0.f, 90.f, 0.f)));
 }

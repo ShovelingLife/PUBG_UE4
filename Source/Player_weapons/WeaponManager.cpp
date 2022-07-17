@@ -43,6 +43,7 @@ void AWeaponManager::BeginPlay()
         if (GrenadeEndPoint)
             GrenadeEndPoint->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
     }
+    mpGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance());
 }
 
 void AWeaponManager::Tick(float DeltaTime)
@@ -107,18 +108,18 @@ void AWeaponManager::PlaySound(EWeaponSoundType SoundType)
     {
         int index = ((int)CurrentWeaponType) - 1;
         
-        if (auto p_customGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance()))
+        if (mpGameInst)
         {
-            if (auto p_soundManager = p_customGameInst->pSoundManager)
+            if (auto p_soundManager = mpGameInst->pSoundManager)
             {
                 if (auto p_weapon = p_arrCurrentWeapon[index])
-                    p_soundManager->PlayGunSound(p_weapon->AudioComp, SoundType, GetWeaponType(p_weapon));
+                    p_soundManager->PlayGunSound(p_weapon->GetActorLocation(), SoundType, GetWeaponType(p_weapon));
             }   
         }
     }
 }
 
-ECurrentWeaponType AWeaponManager::GetWeaponIndex(FString Direction, int StartIndex)
+ECurrentWeaponType AWeaponManager::GetWeaponIndex(FString Direction, int StartIndex) const
 {
     // 위에서 아래
     if (Direction == "Down")
@@ -217,7 +218,7 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
     pWeapon->SetActorTransform(NewPos);
     pWeapon->ChangeCollisionSettings(true);
 
-    if(auto p_gun=Cast<ACoreWeapon>(pWeapon))
+    if (auto p_gun=Cast<ACoreWeapon>(pWeapon))
     {
         p_gun->WeaponData.CurrentMaxBulletCount = 0;
         p_gun->bInInventory = false;
@@ -345,8 +346,8 @@ void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
     else if (pWeapon->IsA<ACoreThrowableWeapon>())
     {
         // 수류탄을 장착중이지 않을 때만
-        if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
-            p_customGameInst->DeleSetItemOntoInventory.ExecuteIfBound(p_collidedWeapon, false);
+        if (mpGameInst)
+            mpGameInst->DeleSetItemOntoInventory.ExecuteIfBound(p_collidedWeapon, false);
 
         pWeapon->Destroy();
     }
@@ -379,9 +380,11 @@ void AWeaponManager::ClickEvent()
                 return;
             }
         }   
+        bShooting = true;
+
         // 사운드 적용 및 총알 1개 차감
-        if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
-            p_customGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);
+        if (mpGameInst)
+            mpGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);
 
         PlaySound(EWeaponSoundType::SHOT);
         
@@ -663,8 +666,8 @@ void AWeaponManager::ChangeShootMode()
         case EGunShootType::BURST:		 shootTypeStr = "Burst";	   break;
         case EGunShootType::CONSECUTIVE: shootTypeStr = "Consecutive"; break;
         }
-        if (auto p_gameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
-            p_gameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound("Current type : " + shootTypeStr);
+        if (mpGameInst)
+            mpGameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound("Current type : " + shootTypeStr);
     }
 }
 
@@ -710,17 +713,12 @@ void AWeaponManager::CheckShooting(float TranscurredTime)
     {
         if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
         {
-            static bool bShooted = false;
             float timeToWait = 0.25f;
             mCurrentShootTime += TranscurredTime;
 
             switch (p_gun->ShootType)
             {
-            case EGunShootType::SINGLE:
-
-                ClickEvent();
-                bShooting = false;
-                break;
+            case EGunShootType::SINGLE: bShooting = false; break;
 
             case EGunShootType::BURST:
 
@@ -730,7 +728,7 @@ void AWeaponManager::CheckShooting(float TranscurredTime)
                     mCurrentShootTime = 0.f;
                     mBurstCount++;
                 }
-                if (mBurstCount == 3)
+                if (mBurstCount == 2)
                     bShooting = false;
 
                 break;
@@ -766,7 +764,7 @@ void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr
     DeleSetExplosiveUI.ExecuteIfBound(pThrowable);
 }
 
-ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType WeaponType)
+ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType WeaponType) const
 {
     if (WeaponType == ECurrentWeaponType::NONE)
         return nullptr;
@@ -788,32 +786,29 @@ ABaseInteraction* AWeaponManager::GetWeaponByIndex(ECurrentWeaponType WeaponType
     return arrWeapon[index - 1];
 }
 
-ACoreWeapon* AWeaponManager::GetCurrentWeapon()
+ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)); }
+
+ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
 {
-    return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType));
+    if      (pWeapon == pFirstGun)
+             return ECurrentWeaponType::FIRST;
+
+    else if (pWeapon == pSecondGun)
+             return ECurrentWeaponType::SECOND;
+
+    else if (pWeapon == pPistol)
+             return ECurrentWeaponType::PISTOL;
+
+    else if (pWeapon == pMelee)
+             return ECurrentWeaponType::MELEE;
+
+    else if (pWeapon == pThrowable)
+             return ECurrentWeaponType::THROWABLE;
+
+    else return ECurrentWeaponType::NONE;
 }
 
-ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon)
-{
-    // 원소랑 일치한 데이터를 찾음
-    TArray<TPair<ABaseInteraction*, ECurrentWeaponType>> arrCurrentWeaponType
-    {
-        TPair<ABaseInteraction*, ECurrentWeaponType>(nullptr,    ECurrentWeaponType::NONE),
-        TPair<ABaseInteraction*, ECurrentWeaponType>(pFirstGun,  ECurrentWeaponType::FIRST),
-        TPair<ABaseInteraction*, ECurrentWeaponType>(pSecondGun, ECurrentWeaponType::SECOND),
-        TPair<ABaseInteraction*, ECurrentWeaponType>(pPistol,    ECurrentWeaponType::PISTOL),
-        TPair<ABaseInteraction*, ECurrentWeaponType>(pMelee,     ECurrentWeaponType::MELEE),
-        TPair<ABaseInteraction*, ECurrentWeaponType>(pThrowable, ECurrentWeaponType::THROWABLE)
-    };
-    for (auto item : arrCurrentWeaponType )
-    {
-        if (item.Key == pWeapon)
-            return item.Value;
-    }
-    return ECurrentWeaponType::NONE;
-}
-
-int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon)
+int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const
 {
     int weaponType = 0;
 

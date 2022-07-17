@@ -44,6 +44,9 @@ void ABaseInteraction::InitStaticMesh(FString Path)
     if (SkeletalMeshComp)
         SkeletalMeshComp->DestroyComponent();
 
+    if (ColliderComp)
+        ColliderComp->DestroyComponent();
+
     this->SetRootComponent(StaticMeshComp);
     StaticMeshComp->RegisterComponent();
 
@@ -62,7 +65,12 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     if (StaticMeshComp)
         StaticMeshComp->DestroyComponent();
 
-    this->SetRootComponent(SkeletalMeshComp);
+    if (!RootComponent)
+        this->SetRootComponent(SkeletalMeshComp);
+
+    else
+        SkeletalMeshComp->SetupAttachment(RootComponent);
+
     SkeletalMeshComp->RegisterComponent();
 
     // 경로로부터 메시 생성
@@ -71,16 +79,18 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     if (MESH.Succeeded())
         SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
 
+    SkeletalMeshComp->SetSimulatePhysics(false);
     SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
     AttachComponents();
 }
 
 void ABaseInteraction::InitComponents()
 {
+    ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
     SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
     StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     WidgetComp       = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
-    AudioComp        = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+    ParticleComp     = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));    
 }
 
 void ABaseInteraction::InitInteractionUI()
@@ -96,14 +106,12 @@ void ABaseInteraction::DestroyComponentsForUI()
     
     if (WidgetComp)
         WidgetComp->DestroyComponent();
-
-    if (AudioComp)
-        AudioComp->DestroyComponent();
 }
 
 void ABaseInteraction::SetForDummyCharacter()
 {
     DestroyComponentsForUI();
+
     if (SkeletalMeshComp)
     {
         this->SetRootComponent(SkeletalMeshComp);
@@ -171,7 +179,6 @@ void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh)
 void ABaseInteraction::InitParticleSystem(FString Path)
 {
     // 파티클 컴포넌트 초기화
-    ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
     ParticleComp->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
     ParticleComp->bAutoActivate = false;
     ParticleComp->SecondsBeforeInactive = 0.f;
@@ -191,9 +198,6 @@ void ABaseInteraction::AttachComponents()
     if (WidgetComp)
         WidgetComp->SetupAttachment(RootComponent);
     
-    if (AudioComp)
-        AudioComp->SetupAttachment(RootComponent);
-    
     if (ParticleComp)
         ParticleComp->SetupAttachment(RootComponent);
 }
@@ -202,6 +206,7 @@ void ABaseInteraction::SetCollisionSettingsForObjects()
 {
     if (ColliderComp)
     {
+        this->SetRootComponent(ColliderComp);
         ColliderComp->BodyInstance.SetCollisionProfileName("Object");
         ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
     }

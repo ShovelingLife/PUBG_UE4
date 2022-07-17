@@ -20,6 +20,8 @@ class ACoreWeapon;
 class ACoreMeleeWeapon;
 class ACoreThrowableWeapon;
 class AWeaponManager;
+class UCustomGameInstance;
+
 class USceneComponent;
 class USplineComponent;
 class USplineMeshComponent;
@@ -34,6 +36,8 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 	GENERATED_BODY()
 
 private:
+	UPROPERTY() UCustomGameInstance* mpGameInst = nullptr;
+
 	// 총기 관련
     const float	mkReloadTime	   = 2.f;
     float		mCurrentReloadTime = 0.f;
@@ -102,7 +106,7 @@ private:
 	 * \param StartIndex 시작 위치
 	 * \return e_current_weapon_type 현재 무기 타입
      */
-    ECurrentWeaponType GetWeaponIndex(FString Direction, int StartIndex);
+    ECurrentWeaponType GetWeaponIndex(FString Direction, int StartIndex) const;
 
     /**
      * \brief 무기를 플레이어 메시에 부착
@@ -189,15 +193,15 @@ public:
      * \param WeaponType 무기 종류
      * \return 현재 착용 중인 무기
      */
-	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType WeaponType);
+	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType WeaponType) const;
 
-	ACoreWeapon* GetCurrentWeapon();
+	ACoreWeapon* GetCurrentGun() const;
 
 	// 무기의 인덱스를 구함
-	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* pWeapon);
+	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
 
 	// 무기의 종류를 구함
-	int GetWeaponType(ABaseInteraction* pWeapon);
+	int GetWeaponType(ABaseInteraction* pWeapon) const;
 
 	// ------- UI 관련 함수 -------
 
