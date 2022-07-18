@@ -51,9 +51,8 @@ void UPlayerStateUI::UpdateShootMode(ABaseInteraction* pWeapon)
     {
         if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
         {
-            int index = (int)p_gun->ShootType;
             BoltActionImg->SetVisibility(ESlateVisibility::Visible);
-            BoltActionImg->SetBrushFromTexture(Cast<UTexture2D>(pUI_manager->MapPlayerIcon[index]));
+            BoltActionImg->SetBrushFromTexture(Cast<UTexture2D>(pUI_manager->MapPlayerIcon[static_cast<int>(p_gun->ShootType)]));
         }
     }
 }

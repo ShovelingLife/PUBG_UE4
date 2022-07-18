@@ -141,7 +141,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
 
     // 슬롯 설정
     if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, Hidden);
+        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);
 
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData = mItemData;
@@ -368,13 +368,13 @@ void UInventoryWeaponSlotUI::SetWeaponSlotVisibility()
     // 총기류 설정
     for (int i = 0; i < 6; i++)
     {
-        arrFirstGunWidget[i]->SetVisibility((mpWeaponManager->pFirstGun) ? Visible : Hidden);
-        arrSecondGunWidget[i]->SetVisibility((mpWeaponManager->pSecondGun) ? Visible : Hidden);
-        arrPistolWidget[i]->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
+        arrFirstGunWidget[i]->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
+        arrSecondGunWidget[i]->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
+        arrPistolWidget[i]->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
     }
     // 기타 무기 설정
     for (int i = 0; i < 3; i++)
-         arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? Visible : Hidden);
+         arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? VISIBLE : HIDDEN);
 }
 
 void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
@@ -408,7 +408,7 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
 
             // 뒷배경
             if (auto p_firstGunAttachmentBorder = mArrFirstGunAttachmentBorder[i])
-                p_firstGunAttachmentBorder->SetVisibility((mpWeaponManager->pFirstGun) ? Visible : Hidden);
+                p_firstGunAttachmentBorder->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
 
             // 아이템 UI
             if (auto p_firstGunAttachmentUI = mArrFirstGunAttachmentUI[i])
@@ -440,7 +440,7 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
 
             // 뒷배경
             if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
-                p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? Visible : Hidden);
+                p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
 
             // 아이템 UI
             if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
@@ -468,7 +468,7 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
 
                 // 뒷배경
                 if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
-                    p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? Visible : Hidden);
+                    p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
 
                 // 아이템 UI
                 if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
@@ -591,7 +591,7 @@ void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
     if (p_canvasPanelSlot)
     {
         p_canvasPanelSlot->SetSize(FVector2D(sizeX, 191.f));
-        HighlightImg->SetVisibility(Visible);
+        HighlightImg->SetVisibility(VISIBLE);
         HighlightImg->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.1f });
     }
 }
@@ -608,7 +608,7 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     case ECurrentWeaponType::THROWABLE: GrenadeCanvasPanel->RemoveChild(HighlightImg);   break;
     }
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
-    HighlightImg->SetVisibility(Hidden);
+    HighlightImg->SetVisibility(HIDDEN);
     mSelectedWeaponIndex = ECurrentWeaponType::NONE;
     mbClicked = false;
 }
@@ -665,7 +665,7 @@ UFUNCTION() void UInventoryWeaponSlotUI::UpdateThrowable(ACoreThrowableWeapon* p
         GrenadeNameTxt->SetText(FText::FromString(pThrowable->WeaponData.Type));
     }
     for (int i = 0; i < arrThrowableWidget.Num(); i++)
-        arrThrowableWidget[i]->SetVisibility(pThrowable ? Visible : Hidden);
+        arrThrowableWidget[i]->SetVisibility(pThrowable ? VISIBLE : HIDDEN);
 }
 
 void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)

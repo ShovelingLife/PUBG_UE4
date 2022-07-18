@@ -2,8 +2,8 @@
 
 #include "CoreMinimal.h"
 
-#define Visible ESlateVisibility::Visible
-#define Hidden ESlateVisibility::Hidden
+#define VISIBLE ESlateVisibility::Visible
+#define HIDDEN ESlateVisibility::Hidden
 
 class PUBG_UE4_API Global
 {

@@ -534,7 +534,6 @@ void ACustomPlayer::EndShooting()
         if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
             mpWeaponManager->bShooting = false;
     }
-
     // 투척류 무기일 시 뗐을 때만 발동    
     if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
         mpWeaponManager->ThrowGrenade();

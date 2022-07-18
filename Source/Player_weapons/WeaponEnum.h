@@ -2,6 +2,8 @@
 #include "CoreMinimal.h"
 #include "WeaponEnum.generated.h"
 
+class ACoreWeapon;
+
 /**
  * \brief 현재 착용 중인 무기 \n
  *
@@ -123,7 +125,6 @@ enum class EMeleeWeaponType
 };
 
 /** \brief 총 격발 종류 \n
- *
  * SINGLE      단발 \n
  * BURST       점사 \n
  * CONSECUTIVE 연사 \n
@@ -136,3 +137,9 @@ enum class EGunShootType
     CONSECUTIVE,
     MAX
 };
+
+EGunShootType GetNextShootType(ACoreWeapon* pWeapon);
+
+EGunShootType GetMaxShootType(FString WeaponGroup);
+
+FString GetShootTypeStr(EGunShootType Type);

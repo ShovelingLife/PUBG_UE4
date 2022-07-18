@@ -30,7 +30,7 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
         DeleCheckForSlot.ExecuteIfBound(this);
 
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, Visible);
+            subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, VISIBLE);
     }
 }
 
@@ -69,9 +69,9 @@ void UItemSlotUI::SetAsCursor(FVector2D Pos)
         return;
 
     p_canvasPanelSlot->SetPosition(Pos);
-    this->SetVisibility(Visible);
+    this->SetVisibility(VISIBLE);
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
-    NameTxt->SetVisibility(Hidden);
-    CountTxt->SetVisibility(Hidden);
-    BackgroundSizeBox->SetVisibility(Hidden);
+    NameTxt->SetVisibility(HIDDEN);
+    CountTxt->SetVisibility(HIDDEN);
+    BackgroundSizeBox->SetVisibility(HIDDEN);
 }
