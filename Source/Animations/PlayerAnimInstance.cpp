@@ -1,6 +1,7 @@
 #include "PlayerAnimInstance.h"
 #include "Characters/CustomPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "KismetAnimationLibrary.h"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
@@ -8,26 +9,31 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 
 }
 
-void UPlayerAnimInstance::NativeUpdateAnimation(float _DeltaSeconds)
+void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-    Super::NativeUpdateAnimation(_DeltaSeconds);
-
-    ACustomPlayer* p_player = Cast<ACustomPlayer>(TryGetPawnOwner());
+    Super::NativeUpdateAnimation(DeltaSeconds);
     //AAI_character* ai = Cast<AAI_character>(owning_pawn);
 
     // 캐릭터가 널이 아닐 시
-    if (p_player)
+    if (ACustomPlayer* p_player = Cast<ACustomPlayer>(TryGetPawnOwner()))
     {
-        // 에임 오프셋 적용
-        auto tmpAimRotationPitch = p_player->GetBaseAimRotation().Pitch;
-        AimRotationPitch = (tmpAimRotationPitch >= 180.f) ? tmpAimRotationPitch : tmpAimRotationPitch - 360.f;
+        FRotator controlRot = p_player->GetControlRotation();
+        FRotator actorRot   = p_player->GetActorRotation();
+        FRotator normDeltaRot = UKismetMathLibrary::NormalizedDeltaRotator(controlRot, actorRot);
+        FRotator currentRot = UKismetMathLibrary::MakeRotator(0.f, AimRotPitch, AimRotYaw);
+        FRotator interptRot = UKismetMathLibrary::RInterpTo(currentRot, normDeltaRot, DeltaSeconds, 15.f);
+        FVector  velocity   = p_player->GetVelocity();
+        const float minAngleDeg = -90.f, maxAngleDeg = 90.f;
+
         // 값 적용
-        PlayerState = (p_player->bInVehicle) ? EPlayerAnimationState::IDLE : (EPlayerAnimationState)p_player->CurrentState;
-        auto velocity = p_player->GetVelocity();        
-        auto rotation = p_player->GetActorRotation();
-        Direction = UKismetAnimationLibrary::CalculateDirection(velocity, rotation);
-        Speed     = velocity.Size();
+        PlayerState = (p_player->bInVehicle) ? EPlayerState::IDLE : p_player->CurrentState;
+        Direction = UKismetAnimationLibrary::CalculateDirection(velocity, actorRot);
+        Speed = velocity.Size();
         bEquipped = p_player->bWeaponEquipped;
+
+        // 에임 오프셋 적용        
+        AimRotPitch = UKismetMathLibrary::ClampAngle(interptRot.Pitch, minAngleDeg, maxAngleDeg);
+        AimRotYaw = UKismetMathLibrary::ClampAngle(interptRot.Yaw, minAngleDeg, maxAngleDeg);
     }
     //// AI가 널이 아닐 시
     //else if (ai)

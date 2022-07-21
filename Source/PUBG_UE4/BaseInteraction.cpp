@@ -176,6 +176,15 @@ void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh)
         SkeletalMeshComp->SetSkeletalMesh(Mesh);
 }
 
+void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
+{
+    if (SkeletalMeshComp)
+        SkeletalMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *SocketName);
+
+    if (StaticMeshComp)
+        StaticMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+}
+
 void ABaseInteraction::InitParticleSystem(FString Path)
 {
     // 파티클 컴포넌트 초기화

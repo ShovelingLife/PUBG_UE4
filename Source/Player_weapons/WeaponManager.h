@@ -40,12 +40,12 @@ private:
 
 	// 총기 관련
     const float	mkReloadTime	   = 2.f;
-    float		mCurrentReloadTime = 0.f;
-    float		mCurrentShootTime = 0.f;
-    int		mBurstCount = 0;
-    bool		mbReloading		   = false;
-	bool		mbChangedShootType = true;
-	bool mbAiming = false;
+    float mCurrentReloadTime = 0.f;
+    float mCurrentShootTime = 0.f;
+    int	  mBurstCount = 0;
+    bool  mbReloading		 = false;
+	bool  mbChangedShootType = true;
+	bool  mbAiming = false;
 
 public:
 	/** \brief 현재 착용 중인 무기 */

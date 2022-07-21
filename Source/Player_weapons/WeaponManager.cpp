@@ -188,9 +188,9 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
         }
             
     }
-    auto p_rootComp = pWeapon->GetRootComponent();
+    auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
     pWeapon->ChangeCollisionSettings(false);
-    pWeapon->AttachToActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0), (p_rootComp->IsA< USkeletalMeshComponent>()) ? FAttachmentTransformRules::SnapToTargetNotIncludingScale : FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+    pWeapon->AttachToMesh(playerMesh, *SocketName);
 }
 
 void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform NewPos)
@@ -381,13 +381,12 @@ void AWeaponManager::ClickEvent()
             }
         }   
         bShooting = true;
+        PlaySound(EWeaponSoundType::SHOT);
 
         // 사운드 적용 및 총알 1개 차감
         if (mpGameInst)
             mpGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);
-
-        PlaySound(EWeaponSoundType::SHOT);
-        
+                
         // 레이캐스트 적용
         auto        cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
         FVector     beginPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
@@ -527,18 +526,17 @@ void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWea
 
 void AWeaponManager::Swap(ECurrentWeaponType WeaponType, bool bScrolling /* = false */)
 {
-    auto playerMesh      = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-    auto attachmentRules = FAttachmentTransformRules::SnapToTargetIncludingScale;
-    auto attachType      = (bScrolling) ? CurrentWeaponType : WeaponType;
-    auto detachType      = (bScrolling) ? WeaponType : CurrentWeaponType;
-    CurrentWeaponType    = attachType;
+    auto playerMesh   = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
+    auto attachType   = (bScrolling) ? CurrentWeaponType : WeaponType;
+    auto detachType   = (bScrolling) ? WeaponType : CurrentWeaponType;
+    CurrentWeaponType = attachType;
 
     // 장착 되있던 무기를 탈착
     switch (detachType)
     {
-    case ECurrentWeaponType::FIRST:     if (pFirstGun)  pFirstGun->AttachToComponent(playerMesh, attachmentRules, "FirstGunSock");   break;
-    case ECurrentWeaponType::SECOND:    if (pSecondGun) pSecondGun->AttachToComponent(playerMesh, attachmentRules, "SecondGunSock"); break;
-    case ECurrentWeaponType::PISTOL:    if (pPistol)    pPistol->AttachToComponent(playerMesh, attachmentRules, "HandGunSock");      break;
+    case ECurrentWeaponType::FIRST:     if (pFirstGun)  pFirstGun->AttachToMesh(playerMesh, "FirstGunSock"); break;
+    case ECurrentWeaponType::SECOND:    if (pSecondGun) pSecondGun->AttachToMesh(playerMesh, "SecondGunSock"); break;
+    case ECurrentWeaponType::PISTOL:    if (pPistol)    pPistol->AttachToMesh(playerMesh, "HandGunSock");      break;
     case ECurrentWeaponType::MELEE:     AttachWeapon(pMelee, ""); break;
     case ECurrentWeaponType::THROWABLE: if (pThrowable) pThrowable->Destroy(); break;
     }
@@ -654,12 +652,9 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     case ECurrentWeaponType::SECOND: p_gun = pSecondGun; socketName = "SecondGunSock"; break;
     case ECurrentWeaponType::PISTOL: p_gun = pPistol;    socketName = "HandGunSock";   break;
     }
-    if (!p_gun)
-        return;
-
     // 캐릭터 메쉬에다 부착
-    if (auto p_character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-        p_gun->AttachToComponent(p_character->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, *((mbAiming) ? "EquippedWeaponPosSock" : socketName));
+    if (p_gun)
+        p_gun->AttachToMesh(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh(), mbAiming ? "EquippedWeaponPosSock" : socketName);
 }
 
 void AWeaponManager::CheckReloading(float TranscurredTime)
@@ -760,22 +755,20 @@ ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(Ge
 
 ECurrentWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
 {
-    if      (pWeapon == pFirstGun)
-             return ECurrentWeaponType::FIRST;
-
-    else if (pWeapon == pSecondGun)
-             return ECurrentWeaponType::SECOND;
-
-    else if (pWeapon == pPistol)
-             return ECurrentWeaponType::PISTOL;
-
-    else if (pWeapon == pMelee)
-             return ECurrentWeaponType::MELEE;
-
-    else if (pWeapon == pThrowable)
-             return ECurrentWeaponType::THROWABLE;
-
-    else return ECurrentWeaponType::NONE;
+    TMap<ABaseInteraction*, ECurrentWeaponType> arrWeaponKeyType
+    { 
+        { pFirstGun,  ECurrentWeaponType::FIRST},
+        { pSecondGun, ECurrentWeaponType::SECOND},
+        { pPistol,    ECurrentWeaponType::PISTOL},
+        { pMelee,     ECurrentWeaponType::MELEE},
+        { pThrowable, ECurrentWeaponType::THROWABLE}
+    };
+    for (auto item : arrWeaponKeyType)
+    {
+        if (pWeapon == item.Key)
+            return item.Value;
+    }
+    return ECurrentWeaponType::NONE;
 }
 
 int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const

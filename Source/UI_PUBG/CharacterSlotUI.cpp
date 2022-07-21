@@ -76,7 +76,7 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
         {
             FVector2D trackPos       = mCharacterUIClickPos - currentMousePos;
             float     rotationValInZ = (trackPos.X - (trackPos.Y + 140.f)) * 0.1;
-
+            
             // 회전 제한 속도 설정
             if (rotationValInZ > 5.f)
                 rotationValInZ = 5.f;

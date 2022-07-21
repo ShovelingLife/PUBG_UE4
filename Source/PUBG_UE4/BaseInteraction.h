@@ -102,4 +102,6 @@ public:
     void SetStaticMesh(UStaticMesh* Mesh);
 
     void SetSkeletalMesh(USkeletalMesh* Mesh);
+
+    void AttachToMesh(USceneComponent* RootComp, FString SocketName);
 };

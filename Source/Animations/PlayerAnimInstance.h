@@ -11,50 +11,9 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "PUBG_UE4/MyEnum.h"
 #include "PlayerAnimInstance.generated.h"
 
-/**
- * \brief ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ÞÀÌ¼Ç Å¸ÀÔ
- * IDLE °¡¸¸È÷ ¼­ÀÖ±â
- * WALK °È±â
- * SPRINT ¶Ù±â
- * JUMP Á¡ÇÁÇÏ±â
- * CROUCH ¼÷ÀÌ±â
- * PRONING ¾þµå¸®±â
- * AIM Á¶ÁØÇÏ±â (¼­¼­½÷)
- * THROW ´øÁö±â
- * SWIM ¼ö¿µÇÏ±â
- * INJURED ºÎ»ó
- * DEAD »ç¸Á
- * CROUCH_WALK ¼÷ÀÎÃ¤ °È±â
- * PRONING_WALK ¾þµå¸°Ã¤ °È±â
- * AIM_WALK Á¶ÁØÇÑÃ¤ °È±â
- * SPRINT_JUMP ¶Ú ÈÄ Á¡ÇÁ
- * CROUCH_AIM ¾É¾Æ½÷
- * PRONING_AIM ¾þµå·Á½÷
- * TEST
- */
-UENUM(BlueprintType)
-enum class EPlayerAnimationState : uint8
-{
-    IDLE         UMETA(DisplayName = "IDLE"),
-    WALK         UMETA(DisplayName = "WALK"),
-    SPRINT       UMETA(DisplayName = "SPRINT"),
-    JUMP         UMETA(DisplayName = "JUMP"),
-    CROUCH       UMETA(DisplayName = "CROUCH"),
-    PRONING      UMETA(DisplayName = "PRONING"),
-    AIM          UMETA(DisplayName = "AIM"),
-    THROW        UMETA(DisplayName = "THROW"),
-    SWIM         UMETA(DisplayName = "SWIM"),
-    INJURED      UMETA(DisplayName = "INJURED"),
-    DEAD         UMETA(DisplayName = "DEAD"),
-    CROUCH_WALK  UMETA(DisplayName = "CROUCH_WALKING"),
-    PRONING_WALK UMETA(DisplayName = "PRONING_WALKING"),
-    AIM_WALK     UMETA(DisplayName = "AIM_WALKING"),
-    SPRINT_JUMP  UMETA(DisplayName = "JUMP_ON_SPRINT"),
-    CROUCH_AIM   UMETA(DisplayName = "CROUCH_ON_AIM"),
-    PRONING_AIM  UMETA(DisplayName = "CROUCH_ON_PRONING")
-};
 
 UCLASS()
 class ANIMATIONS_API UPlayerAnimInstance : public UAnimInstance
@@ -62,12 +21,11 @@ class ANIMATIONS_API UPlayerAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerProperty") EPlayerAnimationState PlayerState;
-
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerProperty") EPlayerState PlayerState;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Direction = 0.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Speed     = 0.f;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float AimRotationPitch = 0.f;
-
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float AimRotPitch = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float AimRotYaw = 0.f;
 
     /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch")
     float crouch_walk_speed = 0.f;*/
