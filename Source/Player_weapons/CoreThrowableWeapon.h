@@ -10,7 +10,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/OtherWeaponData.h"
@@ -48,7 +48,7 @@ public:
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
     UPROPERTY(EditAnywhere) URadialForceComponent* RadialForceComp;
     FsOtherWeaponData    WeaponData;
-	EThrowableWeaponType WeaponType = EThrowableWeaponType::MAX;
+	EThrowableWeaponType WeaponType = THROWABLE_MAX;
 
 public:
     ACoreThrowableWeapon();

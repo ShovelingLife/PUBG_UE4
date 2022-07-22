@@ -13,7 +13,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Input/Events.h"
 #include "ItemSlotUI.h"
-#include "Player_weapons/WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "InventoryWeaponSlotUI.generated.h"
 
 class AUI_manager;
@@ -31,6 +31,8 @@ UCLASS()
 class UI_PUBG_API UInventoryWeaponSlotUI : public UUserWidget
 {
     GENERATED_BODY()
+        
+using enum ECurrentWeaponType;
 
 private:
     // 뒷배경 색상 관련

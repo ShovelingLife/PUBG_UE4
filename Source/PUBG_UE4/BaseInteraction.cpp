@@ -99,6 +99,14 @@ void ABaseInteraction::InitInteractionUI()
         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
 }
 
+UStaticMesh* ABaseInteraction::GetStaticMesh() const { return StaticMeshComp->GetStaticMesh(); }
+
+USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const { return SkeletalMeshComp->SkeletalMesh; }
+
+void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (StaticMeshComp) StaticMeshComp->SetStaticMesh(Mesh); }
+
+void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (SkeletalMeshComp) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
+
 void ABaseInteraction::DestroyComponentsForUI()
 {
     if (ColliderComp)
@@ -154,28 +162,6 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
     }
 }
 
-UStaticMesh* ABaseInteraction::GetStaticMesh() const
-{
-    return StaticMeshComp->GetStaticMesh();
-}
-
-USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const
-{
-    return SkeletalMeshComp->SkeletalMesh;
-}
-
-void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh)
-{
-    if (StaticMeshComp)
-        StaticMeshComp->SetStaticMesh(Mesh);
-}
-
-void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh)
-{
-    if (SkeletalMeshComp)
-        SkeletalMeshComp->SetSkeletalMesh(Mesh);
-}
-
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
 {
     if (SkeletalMeshComp)
@@ -183,6 +169,30 @@ void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketNam
 
     if (StaticMeshComp)
         StaticMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+}
+
+void ABaseInteraction::Detach(FTransform NewPos)
+{
+    UMeshComponent* meshComp = nullptr;
+
+    if (SkeletalMeshComp)
+        meshComp = SkeletalMeshComp;
+
+    if (StaticMeshComp)
+        meshComp = StaticMeshComp;
+
+    if (!meshComp)
+        return;
+
+    // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
+    meshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+    //meshComp->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+    meshComp->ResetRelativeTransform();
+
+    // 현재 무기를 탈착 후 월드에 소환
+    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    this->SetActorTransform(NewPos);
+    this->ChangeCollisionSettings(true);
 }
 
 void ABaseInteraction::InitParticleSystem(FString Path)

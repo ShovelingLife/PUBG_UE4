@@ -11,7 +11,7 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/MyEnum.h"
-#include "Player_weapons/WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "GameFramework/Character.h"
 #include "CustomPlayer.generated.h"
 
@@ -35,6 +35,8 @@ UCLASS()
 class CHARACTERS_API ACustomPlayer : public ACharacter
 {
     GENERATED_BODY()
+        
+using enum ECurrentWeaponType;
 
 private:
     UPROPERTY() UCustomGameInstance* mpCustomGameInst = nullptr;
@@ -201,21 +203,21 @@ private:
     void SwapScrollingDown() { CheckForWeapon("Down"); }
 
     /** \brief 첫번째 무기 장착 */
-    void EquipFirstWeapon() { CheckForWeapon("", ECurrentWeaponType::FIRST); }
+    void EquipFirstWeapon() { CheckForWeapon("", FIRST); }
 
     /** \brief 두번째 무기 장착 */
-    void EquipSecondWeapon() { CheckForWeapon("", ECurrentWeaponType::SECOND); }
+    void EquipSecondWeapon() { CheckForWeapon("", SECOND); }
 
     /** \brief 세번째 무기 장착 */
-    void EquipThirdWeapon() { CheckForWeapon("", ECurrentWeaponType::PISTOL); }
+    void EquipThirdWeapon() { CheckForWeapon("", PISTOL); }
 
     /** \brief 네번째 무기 장착 */
-    void EquipFourthWeapon() { CheckForWeapon("", ECurrentWeaponType::MELEE); }
+    void EquipFourthWeapon() { CheckForWeapon("", MELEE); }
 
     /** \brief 다섯번째 무기 장착 */
-    void EquipFifthWeapon() { CheckForWeapon("", ECurrentWeaponType::THROWABLE); }
+    void EquipFifthWeapon() { CheckForWeapon("", THROWABLE); }
 
-    void CheckForWeapon(FString Direction = "", ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE);
+    void CheckForWeapon(FString Direction = "", ECurrentWeaponType CurrentWeaponType = NONE);
 
 public:
     /**

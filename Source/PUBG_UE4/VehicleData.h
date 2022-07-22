@@ -22,9 +22,9 @@ struct FsVehicleData : public FTableRowBase
     GENERATED_BODY()
 
     /** \brief 공통 차량 데이터 */
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString Type                    = "";
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString MeshPath                = "";
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString AudioPath               = "";
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString Type      = "";
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString MeshPath  = "";
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) FString AudioPath = "";
 
     /** \brief 카메라 데이터 */
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector CameraLocation = FVector::ZeroVector;

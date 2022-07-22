@@ -517,11 +517,11 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
     // 선택된 무기 인덱스 구함
     TArray<TPair<UImage*, ECurrentWeaponType>> arrWeaponImg
     {
-        TPair<UImage*, ECurrentWeaponType>{ FirstGunSlotImg,  ECurrentWeaponType::FIRST },
-        TPair<UImage*, ECurrentWeaponType>{ SecondGunSlotImg, ECurrentWeaponType::SECOND },
-        TPair<UImage*, ECurrentWeaponType>{ PistolSlotImg,    ECurrentWeaponType::PISTOL },
-        TPair<UImage*, ECurrentWeaponType>{ MeleeSlotImg,     ECurrentWeaponType::MELEE },
-        TPair<UImage*, ECurrentWeaponType>{ GrenadeSlotImg,   ECurrentWeaponType::THROWABLE }
+        TPair<UImage*, ECurrentWeaponType>{ FirstGunSlotImg,  FIRST },
+        TPair<UImage*, ECurrentWeaponType>{ SecondGunSlotImg, SECOND },
+        TPair<UImage*, ECurrentWeaponType>{ PistolSlotImg,    PISTOL },
+        TPair<UImage*, ECurrentWeaponType>{ MeleeSlotImg,     MELEE },
+        TPair<UImage*, ECurrentWeaponType>{ GrenadeSlotImg,   THROWABLE }
     };
     // 총 무기 다섯칸 중 어느거 선택했는지 확인
     for (auto item : arrWeaponImg)
@@ -545,7 +545,7 @@ void UInventoryWeaponSlotUI::CheckForHoveredAttachmentSlot()
     	if (firstAttachmentBorder->IsHovered())
         {
             firstAttachmentBorder->SetBrushColor(mkHighlightColor);
-            mSelectedWeaponIndex = ECurrentWeaponType::FIRST;
+            mSelectedWeaponIndex = FIRST;
             
         }
         else
@@ -554,7 +554,7 @@ void UInventoryWeaponSlotUI::CheckForHoveredAttachmentSlot()
         if (secondAttachmentBorder->IsHovered())
         {
             secondAttachmentBorder->SetBrushColor(mkHighlightColor);
-            mSelectedWeaponIndex = ECurrentWeaponType::SECOND;
+            mSelectedWeaponIndex = SECOND;
         }
         else
             secondAttachmentBorder->SetBrushColor(mkNormalColor);
@@ -567,7 +567,7 @@ void UInventoryWeaponSlotUI::CheckForHoveredAttachmentSlot()
         if (pistolAttachmentBorder->IsHovered())
         {
             pistolAttachmentBorder->SetBrushColor(mkHighlightColor);
-            mSelectedWeaponIndex = ECurrentWeaponType::PISTOL;
+            mSelectedWeaponIndex = PISTOL;
         }
         else
             pistolAttachmentBorder->SetBrushColor(mkNormalColor);
@@ -582,11 +582,11 @@ void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
     // 무기가 선택됐을 시 이미지 설정
     switch (mSelectedWeaponIndex)
     {
-    case ECurrentWeaponType::FIRST:     p_canvasPanelSlot = FirstGunCanvasPanel->AddChildToCanvas(HighlightImg);  sizeX = 545.f; break;
-    case ECurrentWeaponType::SECOND:    p_canvasPanelSlot = SecondGunCanvasPanel->AddChildToCanvas(HighlightImg); sizeX = 545.f; break;
-    case ECurrentWeaponType::PISTOL:    p_canvasPanelSlot = PistolCanvasPanel->AddChildToCanvas(HighlightImg);    sizeX = 545.f; break;
-    case ECurrentWeaponType::MELEE:     p_canvasPanelSlot = MeleeCanvasPanel->AddChildToCanvas(HighlightImg);     sizeX = 225.f; break;
-    case ECurrentWeaponType::THROWABLE: p_canvasPanelSlot = GrenadeCanvasPanel->AddChildToCanvas(HighlightImg);   sizeX = 225.f; break;
+    case FIRST:     p_canvasPanelSlot = FirstGunCanvasPanel->AddChildToCanvas(HighlightImg);  sizeX = 545.f; break;
+    case SECOND:    p_canvasPanelSlot = SecondGunCanvasPanel->AddChildToCanvas(HighlightImg); sizeX = 545.f; break;
+    case PISTOL:    p_canvasPanelSlot = PistolCanvasPanel->AddChildToCanvas(HighlightImg);    sizeX = 545.f; break;
+    case MELEE:     p_canvasPanelSlot = MeleeCanvasPanel->AddChildToCanvas(HighlightImg);     sizeX = 225.f; break;
+    case THROWABLE: p_canvasPanelSlot = GrenadeCanvasPanel->AddChildToCanvas(HighlightImg);   sizeX = 225.f; break;
     }
     if (p_canvasPanelSlot)
     {
@@ -601,11 +601,11 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     // 선택 이미지 부모 새로 지정 및 무기 슬롯 이미지 설정
     switch (mSelectedWeaponIndex)
     {
-    case ECurrentWeaponType::FIRST:     FirstGunCanvasPanel->RemoveChild(HighlightImg);  break;
-    case ECurrentWeaponType::SECOND:    SecondGunCanvasPanel->RemoveChild(HighlightImg); break;
-    case ECurrentWeaponType::PISTOL:    PistolCanvasPanel->RemoveChild(HighlightImg);    break;
-    case ECurrentWeaponType::MELEE:     MeleeCanvasPanel->RemoveChild(HighlightImg);     break;
-    case ECurrentWeaponType::THROWABLE: GrenadeCanvasPanel->RemoveChild(HighlightImg);   break;
+    case FIRST:     FirstGunCanvasPanel->RemoveChild(HighlightImg);  break;
+    case SECOND:    SecondGunCanvasPanel->RemoveChild(HighlightImg); break;
+    case PISTOL:    PistolCanvasPanel->RemoveChild(HighlightImg);    break;
+    case MELEE:     MeleeCanvasPanel->RemoveChild(HighlightImg);     break;
+    case THROWABLE: GrenadeCanvasPanel->RemoveChild(HighlightImg);   break;
     }
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
     HighlightImg->SetVisibility(HIDDEN);
@@ -645,7 +645,7 @@ void UInventoryWeaponSlotUI::SetSlotNull()
     {
         mpWeaponManager->SetNull((ECurrentWeaponType)mDraggedWeaponIndex);
         ResetHighlightImg();
-        mDraggedWeaponIndex = ECurrentWeaponType::NONE;
+        mDraggedWeaponIndex = NONE;
         mItemData.Reset();
     }
 }

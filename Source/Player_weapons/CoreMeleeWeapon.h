@@ -10,7 +10,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/OtherWeaponData.h"
 #include "CoreMeleeWeapon.generated.h"

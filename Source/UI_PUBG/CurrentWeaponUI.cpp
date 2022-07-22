@@ -5,8 +5,8 @@
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
-#include "Player_weapons/WeaponEnum.h"
 #include "Player_weapons/WeaponManager.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 

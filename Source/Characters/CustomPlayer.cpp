@@ -6,7 +6,6 @@
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
-#include "Player_weapons/CoreBullet.h"
 #include "Player_weapons/WeaponManager.h"
 #include "Farmable_items/CoreAmmoBox.h"
 #include "Farmable_items/CoreAttachment.h"
@@ -519,7 +518,7 @@ void ACustomPlayer::BeginShooting()
         mpWeaponManager->ClickEvent();
 
     // 투척류일 시 경로 예측
-    if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
+    if (mpWeaponManager->CurrentWeaponType == THROWABLE)
         mpWeaponManager->ClickEvent();
 }
 
@@ -535,7 +534,7 @@ void ACustomPlayer::EndShooting()
             mpWeaponManager->bShooting = false;
     }
     // 투척류 무기일 시 뗐을 때만 발동    
-    if (mpWeaponManager->CurrentWeaponType == ECurrentWeaponType::THROWABLE)
+    if (mpWeaponManager->CurrentWeaponType == THROWABLE)
         mpWeaponManager->ThrowGrenade();
 }
 
@@ -586,7 +585,7 @@ void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponT
             p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
     }
     // 키보드 숫자 키로 무기 선택
-    else if (WeaponType != ECurrentWeaponType::NONE &&
+    else if (WeaponType != NONE &&
              WeaponType != mpWeaponManager->CurrentWeaponType)
     {
         if (mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)

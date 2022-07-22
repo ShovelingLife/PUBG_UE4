@@ -5,8 +5,9 @@ public class Player_weapons : ModuleRules
     public Player_weapons(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
- 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "PUBG_UE4" });
-        PrivateDependencyModuleNames.AddRange(new string[] { "Niagara", "Farmable_items" });
+        CppStandard = CppStandardVersion.Cpp20;
+
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "PUBG_UE4", "Farmable_items" });
+        PrivateDependencyModuleNames.AddRange(new string[] {  });
     }
 }

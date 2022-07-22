@@ -12,7 +12,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PUBG_UE4/MyEnum.h"
-#include "WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "WeaponManager.generated.h"
 
 class ABaseInteraction;
@@ -35,6 +35,8 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 {
 	GENERATED_BODY()
 
+using enum ECurrentWeaponType;
+
 private:
 	UPROPERTY() UCustomGameInstance* mpGameInst = nullptr;
 
@@ -56,7 +58,7 @@ public:
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 	FDeleSetExplosiveUI DeleSetExplosiveUI;
 
-	ECurrentWeaponType CurrentWeaponType = ECurrentWeaponType::NONE;    
+	ECurrentWeaponType CurrentWeaponType = NONE;    
 	bool  bArrWeaponEquipped[5]{ false };
 	bool  bShooting = false;
 
@@ -125,6 +127,12 @@ private:
 
 	void PredictGrenadePath();
 
+    EGunShootType GetNextShootType(EGunShootType CurrentType, FString GroupType);
+
+    EGunShootType GetMaxShootType(FString WeaponGroup);
+
+    FString GetShootTypeStr(EGunShootType Type);
+
 public:
 	/**
 	 * \brief 무기 착용
@@ -163,7 +171,7 @@ public:
 	void Swap(ECurrentWeaponType WeaponType, bool bScrolling = false);
 
 	// 반환값 = -1 에러 / 0 성공 / 1 근접 또는 투척 무기
-	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, ECurrentWeaponType WeaponType = ECurrentWeaponType::NONE);
+	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, ECurrentWeaponType WeaponType = NONE);
 
 	/** \brief 착용 중인 무기를 체크함 */
 	void ChangeShootMode();

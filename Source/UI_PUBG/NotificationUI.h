@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Player_weapons/WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "NotificationUI.generated.h"
 
 class UListView;

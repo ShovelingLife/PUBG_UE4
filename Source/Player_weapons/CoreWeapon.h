@@ -11,13 +11,13 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/BaseInteraction.h"
-#include "WeaponEnum.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "CoreWeapon.generated.h"
 
 class UAudioComponent;
 class USoundBase;
-class ACoreBullet;
+//class ACoreBullet;
 class UParticleSystemComponent;
 
 // 부속품들
@@ -34,11 +34,11 @@ class PLAYER_WEAPONS_API ACoreWeapon : public ABaseInteraction
 	
 public:
     // 총알 관련
-    UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
+    //UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
 
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;
-    EWeaponType   WeaponType = EWeaponType::MAX;
+    EWeaponType   WeaponType = EWeaponType::GUN_MAX;
     EGunShootType ShootType  = EGunShootType::SINGLE;
 
     // 부속품 관련 변수들

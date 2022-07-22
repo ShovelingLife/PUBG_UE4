@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "PUBG_UE4.h"
 #include "Modules/ModuleManager.h"
 

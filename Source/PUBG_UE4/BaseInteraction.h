@@ -11,6 +11,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WeaponEnum.h"
 #include "BaseInteraction.generated.h"
 
 class UBoxComponent;
@@ -25,6 +26,10 @@ class PUBG_UE4_API ABaseInteraction : public AActor
 {
 	GENERATED_BODY()
 	
+using enum EWeaponType;
+using enum EThrowableWeaponType;
+using enum EMeleeWeaponType;
+
 protected: 
     UPROPERTY(VisibleAnywhere, Category = Widget) UWidgetComponent* WidgetComp;
 
@@ -88,13 +93,7 @@ protected:
     void SetCollisionSettingsForObjects();
 
 public:
-    void DestroyComponentsForUI();
-
-    void SetForDummyCharacter();
-
-    void ChangeCollisionSettings(bool bTurned);
-
-    // 게터 세터
+    // ------- 게터 세터 -------
     UStaticMesh* GetStaticMesh() const;
 
     USkeletalMesh* GetSkeletalMesh() const;
@@ -103,5 +102,13 @@ public:
 
     void SetSkeletalMesh(USkeletalMesh* Mesh);
 
+    void DestroyComponentsForUI();
+
+    void SetForDummyCharacter();
+
+    void ChangeCollisionSettings(bool bTurned);
+
     void AttachToMesh(USceneComponent* RootComp, FString SocketName);
+
+    void Detach(FTransform NewPos);
 };

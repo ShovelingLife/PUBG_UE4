@@ -90,18 +90,18 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 
     switch (WeaponType)
     {
-    case EThrowableWeaponType::FRAGMENTATION1:
-    case EThrowableWeaponType::FRAGMENTATION2:
-    case EThrowableWeaponType::CLAYMORE:
+    case FRAGMENTATION1:
+    case FRAGMENTATION2:
+    case CLAYMORE:
         particlePath = explosionPath + "P_Explosion_Big_A.P_Explosion_Big_A'"; break;
 
-    case EThrowableWeaponType::ILLUMINATION:
-    case EThrowableWeaponType::STICK:
+    case ILLUMINATION:
+    case STICK:
         particlePath = "ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'"; break;
 
-    case EThrowableWeaponType::GRAY_SMOKE: particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
-    case EThrowableWeaponType::RED_SMOKE:  particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
-    case EThrowableWeaponType::MOLOTOV:    particlePath = explosionPath + "P_Molotov.P_Molotov'"; break;
+    case GRAY_SMOKE: particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
+    case RED_SMOKE:  particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
+    case MOLOTOV:    particlePath = explosionPath + "P_Molotov.P_Molotov'"; break;
     }
     // 파티클 설정
     ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(*particlePath);
@@ -114,7 +114,7 @@ void ACoreThrowableWeapon::BindExplosionFunc()
 {
     switch (WeaponType)
     {
-    case EThrowableWeaponType::ILLUMINATION:
+    case ILLUMINATION:
 
         mCallBack.BindLambda([this]()
             {
@@ -127,10 +127,10 @@ void ACoreThrowableWeapon::BindExplosionFunc()
             });
         break;
 
-    case EThrowableWeaponType::STICK:
-    case EThrowableWeaponType::FRAGMENTATION1:
-    case EThrowableWeaponType::FRAGMENTATION2:
-    case EThrowableWeaponType::CLAYMORE:
+    case STICK:
+    case FRAGMENTATION1:
+    case FRAGMENTATION2:
+    case CLAYMORE:
 
         mCallBack.BindLambda([this]()
             {
@@ -143,7 +143,7 @@ void ACoreThrowableWeapon::BindExplosionFunc()
 
 void ACoreThrowableWeapon::InitProjectileMovementComp()
 {
-    if (WeaponType == EThrowableWeaponType::CLAYMORE)
+    if (WeaponType == CLAYMORE)
         return;
 
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
@@ -299,9 +299,9 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 mCallBack.ExecuteIfBound();
 
             // 이펙트 재생 
-            if (WeaponType == EThrowableWeaponType::GRAY_SMOKE ||
-                WeaponType == EThrowableWeaponType::RED_SMOKE  ||
-                WeaponType == EThrowableWeaponType::MOLOTOV)
+            if (WeaponType == GRAY_SMOKE ||
+                WeaponType == RED_SMOKE  ||
+                WeaponType == MOLOTOV)
             {
                 StaticMeshComp->SetVisibility(false);
 
@@ -325,5 +325,5 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 RadialForceComp->FireImpulse();
                 Destroy();
             }
-        }), (WeaponType == EThrowableWeaponType::MOLOTOV) ? 0.5f : 3.5f, false);
+        }), (WeaponType == MOLOTOV) ? 0.5f : 3.5f, false);
 }
