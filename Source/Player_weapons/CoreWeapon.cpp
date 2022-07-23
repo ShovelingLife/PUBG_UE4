@@ -66,10 +66,10 @@ void ACoreWeapon::Init(EWeaponType Type)
 
 void ACoreWeapon::InitBullet()
 {
-    /*ConstructorHelpers::FClassFinder<AActor> BP_BULLET(*(WeaponData.BulletBP_path));
+    ConstructorHelpers::FClassFinder<AActor> BP_BULLET(*(WeaponData.BulletBP_path));
 
     if (BP_BULLET.Succeeded())
-        BP_Bullet = BP_BULLET.Class;*/
+        BP_Bullet = BP_BULLET.Class;
 }
 
 void ACoreWeapon::UpdateParticleSystem()

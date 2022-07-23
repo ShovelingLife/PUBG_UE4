@@ -7,7 +7,7 @@ public class Player_weapons : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         CppStandard = CppStandardVersion.Cpp20;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "PUBG_UE4", "Farmable_items" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "PUBG_UE4", "Farmable_items", "Objects" });
         PrivateDependencyModuleNames.AddRange(new string[] {  });
     }
 }

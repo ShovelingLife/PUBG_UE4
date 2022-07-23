@@ -2,7 +2,6 @@
 #include "CoreMeleeWeapon.h"
 #include "CoreThrowableWeapon.h"
 #include "CoreWeapon.h"
-//#include "CoreBullet.h"
 #include "DrawDebugHelpers.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
@@ -19,6 +18,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Objects/CoreBullet.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundBase.h"
 
@@ -419,8 +419,8 @@ void AWeaponManager::ClickEvent()
         FHitResult  hitResult;
         FVector     endPos = beginPos + forwardVec;
         GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Pawn));
-        //FRotator bulletRotation = UKismetMathLibrary::FindLookAtRotation(beginPos, endPos);
-        //GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, beginPos, bulletRotation);
+        FRotator bulletRotation = UKismetMathLibrary::FindLookAtRotation(beginPos, endPos);
+        GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, beginPos, bulletRotation);
         p_gun->ParticleComp->Activate(true);
     }
     // 근접 무기

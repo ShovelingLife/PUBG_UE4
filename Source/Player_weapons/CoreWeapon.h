@@ -17,7 +17,7 @@
 
 class UAudioComponent;
 class USoundBase;
-//class ACoreBullet;
+class ACoreBullet;
 class UParticleSystemComponent;
 
 // 부속품들
@@ -34,7 +34,7 @@ class PLAYER_WEAPONS_API ACoreWeapon : public ABaseInteraction
 	
 public:
     // 총알 관련
-    //UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
+    UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
 
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;

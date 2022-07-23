@@ -78,11 +78,22 @@ void ADataTableManager::InitWeaponData()
             break;
 
         FsWeaponData data   = *p_row;
+        auto weaponType = data.Type;
         data.MeshPath       = mkWeaponMeshPath + data.GroupType + "/SK_" + data.MeshPath;
-        data.MagMeshPath    = mkWeaponMeshPath + data.Type + data.MagMeshPath;
+        data.MagMeshPath    = mkWeaponMeshPath + weaponType + data.MagMeshPath;
         data.BulletMeshPath = "/Game/AmmoPack/Models/" + data.BulletMeshPath;
-        data.BulletBP_path  = mkBulletBP_path + data.Type + "_Bullet";
-        //data. = mkRendertargetMeshPath + data.type;
+        FString bulletPath = "";
+
+        if (weaponType == "Ayakashi" ||
+            weaponType == "Crossbow" ||
+            weaponType == "DoubleBarrel" ||
+            weaponType == "Karos")
+            bulletPath = "Bullet";
+
+        else
+            bulletPath = "_Bullet";
+
+        data.BulletBP_path  = mkBulletBP_path + data.Type + bulletPath;        
         ArrWeaponData.Add(data);
     }
 }
