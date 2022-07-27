@@ -42,9 +42,9 @@ void ACoreBullet::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, cl
     mCollided = true;
 }
 
-void ACoreBullet::Init(EWeaponType Index)
+void ACoreBullet::Init(EWeaponType Type)
 {
-    mWeaponData = ADataTableManager::ArrWeaponData[(int)Index];
+    mWeaponData = ADataTableManager::GetWeaponData((int)Type);
     InitMesh();
     InitProjectileMovementComp();
     InitVFX();

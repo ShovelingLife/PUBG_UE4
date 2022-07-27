@@ -65,7 +65,7 @@ void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComp)
 
 void ACoreVehicle::Init(EVehicleType VehicleTypeIndex)
 {
-    mVehicleData = ADataTableManager::ArrVehicleData[(int)VehicleTypeIndex];
+    mVehicleData = ADataTableManager::GetVehicleData((int)VehicleTypeIndex);
     InstaDeformComp = CreateDefaultSubobject<UInstaDeformComponent>(TEXT("InstaDeformComp"));
     InitSkeletalMesh();
     InitCamera();

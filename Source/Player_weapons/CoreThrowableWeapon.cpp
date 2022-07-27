@@ -23,8 +23,8 @@ ACoreThrowableWeapon::ACoreThrowableWeapon()
 
 ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThrowableWeapon()
 {
-    WeaponType      = Type;
-    WeaponData      = ADataTableManager::ArrOtherWeaponData[(int)Type];
+    WeaponType = Type;
+    WeaponData = ADataTableManager::GetOtherWeaponData((int)Type);
     ObjectType      = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 
@@ -118,9 +118,9 @@ void ACoreThrowableWeapon::BindExplosionFunc()
 
         mCallBack.BindLambda([this]()
             {
-                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+                float distance  = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
                 float startTime = (distance >= 300.f) ? 2.5f : 0.f;
-                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
+                float waitTime  = (startTime == 0.f) ? 5.f : 2.5f;
 
                 if (mpCustomGameInstance)
                     mpCustomGameInstance->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
@@ -165,10 +165,7 @@ void ACoreThrowableWeapon::InitMesh()
 
     if (StaticMeshComp)
     {
-        // 위치 관련
-        StaticMeshComp->SetRelativeLocation(WeaponData.MeshPos);
-        StaticMeshComp->SetRelativeRotation(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)));
-        StaticMeshComp->SetRelativeScale3D(FVector(WeaponData.MeshSize));
+        StaticMeshComp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)), WeaponData.MeshPos, FVector(WeaponData.MeshSize)));
 
         // 강체 관련
         StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
@@ -212,26 +209,15 @@ void ACoreThrowableWeapon::InitRadialForce()
 
 bool ACoreThrowableWeapon::IsPlayerInRadius()
 {
-    using TypeQueryByte = TEnumAsByte<EObjectTypeQuery>;
-
-    // 범위 안에 들어가는지 확인 (원형 충돌감지)
-    FVector startPos = GetActorLocation(),
-            endPos = startPos + FVector(0.f, 0.f, 0.1f);
-    TArray<TypeQueryByte> arrObjectTypeQuery;
-    TypeQueryByte         objectTypeQuery = UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn);
-    arrObjectTypeQuery.Add(objectTypeQuery);
+    // 충돌 감지할 오브젝트 설정
+    TArray<TEnumAsByte<EObjectTypeQuery>> arrObjectTypeQuery;
+    arrObjectTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
     TArray<AActor*> arrActorsToIgnore;
     FHitResult radiusHitResult;
-    
-    if (UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), startPos, endPos, WeaponData.ExplosionRadius, arrObjectTypeQuery, false, arrActorsToIgnore, EDrawDebugTrace::None, radiusHitResult, true))
-    {
-        auto       character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-        FHitResult lineHitResult;
-        
-        if (GetWorld()->LineTraceSingleByChannel(lineHitResult, startPos, character->GetActorLocation(), ECollisionChannel::ECC_Camera))
-            return (lineHitResult.GetActor() == character);
-    }
-    return false;
+    FVector startPos = GetActorLocation();
+
+    // 범위 안에 들어가는지 확인 (원형 충돌감지)
+    return UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), startPos, startPos + 0.1f, WeaponData.ExplosionRadius, arrObjectTypeQuery, false, arrActorsToIgnore, EDrawDebugTrace::None, radiusHitResult, true);
 }
 
 void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
@@ -273,10 +259,10 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
 
     // 발사체 컴포넌트 설정
     Velocity.Z = 0.1f;
-    ProjectileMovementComp->bSimulationEnabled = true;
     ProjectileMovementComp->Activate();
-    ProjectileMovementComp->Velocity = Velocity;
+    ProjectileMovementComp->bSimulationEnabled = true;
     ProjectileMovementComp->bShouldBounce = true;
+    ProjectileMovementComp->Velocity = Velocity;
 
     GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {

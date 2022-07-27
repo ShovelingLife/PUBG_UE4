@@ -55,6 +55,17 @@ private:
     const FString mkAmmoBoxMeshPath = "/Game/UI/AmmoBoxIcon/AmmoBox/";
 
 public:
+    static FsVehicleData GetVehicleData(int Index);
+
+    static FsWeaponData GetWeaponData(int Index);
+
+    static FsOtherWeaponData GetOtherWeaponData(int Index);
+
+    static FsWeaponAttachmentData GetWeaponAttachmentData(int Index);
+
+    static FsWeaponBulletData GetWeaponBulletData(int Index);
+
+public:
     ADataTableManager();
 
 private:

@@ -11,13 +11,14 @@
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/BaseInteraction.h"
+#include "Objects/CoreBullet.h"
 #include "PUBG_UE4/WeaponEnum.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "CoreWeapon.generated.h"
 
 class UAudioComponent;
 class USoundBase;
-class ACoreBullet;
+//class ACoreBullet;
 class UParticleSystemComponent;
 
 // 부속품들

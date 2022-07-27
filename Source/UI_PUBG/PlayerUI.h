@@ -66,4 +66,5 @@ private:
     void UpdateAimUI();
 
     void UpdateCrossHair();
+
 };

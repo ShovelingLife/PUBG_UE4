@@ -4,7 +4,32 @@ TArray<FsVehicleData>          ADataTableManager::ArrVehicleData;
 TArray<FsWeaponData>           ADataTableManager::ArrWeaponData;
 TArray<FsOtherWeaponData>      ADataTableManager::ArrOtherWeaponData;
 TArray<FsWeaponAttachmentData> ADataTableManager::ArrWeaponAttachmentData;
-TArray<FsWeaponBulletData> ADataTableManager::ArrWeaponBulletData;
+TArray<FsWeaponBulletData>     ADataTableManager::ArrWeaponBulletData;
+
+FsVehicleData ADataTableManager::GetVehicleData(int Index)
+{
+    return (ArrVehicleData.IsEmpty() ? FsVehicleData() : ArrVehicleData[Index]);
+}
+
+FsWeaponData ADataTableManager::GetWeaponData(int Index)
+{
+    return (ArrWeaponData.IsEmpty() ? FsWeaponData() : ArrWeaponData[Index]);
+}
+
+FsOtherWeaponData ADataTableManager::GetOtherWeaponData(int Index)
+{
+    return (ArrOtherWeaponData.IsEmpty() ? FsOtherWeaponData() : ArrOtherWeaponData[Index]);
+}
+
+FsWeaponAttachmentData ADataTableManager::GetWeaponAttachmentData(int Index)
+{
+    return (ArrWeaponAttachmentData.IsEmpty() ? FsWeaponAttachmentData() : ArrWeaponAttachmentData[Index]);
+}
+
+FsWeaponBulletData ADataTableManager::GetWeaponBulletData(int Index)
+{
+    return (ArrWeaponBulletData.IsEmpty() ? FsWeaponBulletData() : ArrWeaponBulletData[Index]);
+}
 
 // Sets default values
 ADataTableManager::ADataTableManager()
@@ -82,18 +107,7 @@ void ADataTableManager::InitWeaponData()
         data.MeshPath       = mkWeaponMeshPath + data.GroupType + "/SK_" + data.MeshPath;
         data.MagMeshPath    = mkWeaponMeshPath + weaponType + data.MagMeshPath;
         data.BulletMeshPath = "/Game/AmmoPack/Models/" + data.BulletMeshPath;
-        FString bulletPath = "";
-
-        if (weaponType == "Ayakashi" ||
-            weaponType == "Crossbow" ||
-            weaponType == "DoubleBarrel" ||
-            weaponType == "Karos")
-            bulletPath = "Bullet";
-
-        else
-            bulletPath = "_Bullet";
-
-        data.BulletBP_path  = mkBulletBP_path + data.Type + bulletPath;        
+        data.BulletBP_path  = mkBulletBP_path + data.Type + ((data.bUnderlined) ? "_Bullet" : "Bullet");
         ArrWeaponData.Add(data);
     }
 }

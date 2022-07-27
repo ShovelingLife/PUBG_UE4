@@ -1,5 +1,4 @@
 ﻿#include "CoreWeapon.h"
-//#include "CoreBullet.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "PUBG_UE4/SoundManager.h"
@@ -51,7 +50,7 @@ void ACoreWeapon::Tick(float DeltaTime)
 
 void ACoreWeapon::Init(EWeaponType Type)
 {
-    WeaponData = ADataTableManager::ArrWeaponData[(int)Type];
+    WeaponData = ADataTableManager::GetWeaponData((int)Type);
     WeaponData.CurrentBulletCount = WeaponData.MaxBulletCount;
     WeaponType = Type;
     ObjectType = WeaponData.Type;
@@ -66,7 +65,7 @@ void ACoreWeapon::Init(EWeaponType Type)
 
 void ACoreWeapon::InitBullet()
 {
-    ConstructorHelpers::FClassFinder<AActor> BP_BULLET(*(WeaponData.BulletBP_path));
+    ConstructorHelpers::FClassFinder<ACoreBullet> BP_BULLET(*(WeaponData.BulletBP_path));
 
     if (BP_BULLET.Succeeded())
         BP_Bullet = BP_BULLET.Class;
