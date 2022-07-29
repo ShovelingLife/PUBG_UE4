@@ -36,6 +36,7 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 	GENERATED_BODY()
 
 using enum ECurrentWeaponType;
+using enum EGunShootType;
 
 private:
 	UPROPERTY() UCustomGameInstance* mpGameInst = nullptr;

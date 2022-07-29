@@ -29,7 +29,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
         PlayerState = (p_player->bInVehicle) ? EPlayerState::IDLE : p_player->CurrentState;
         Direction = UKismetAnimationLibrary::CalculateDirection(velocity, actorRot);
         Speed = velocity.Size();
-        bEquipped = p_player->bWeaponEquipped;
+        //bEquipped = p_player->bWeaponEquipped;
 
         // 에임 오프셋 적용        
         AimRotPitch = UKismetMathLibrary::ClampAngle(interptRot.Pitch, minAngleDeg, maxAngleDeg);

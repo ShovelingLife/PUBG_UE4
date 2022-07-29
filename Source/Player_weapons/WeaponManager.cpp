@@ -278,11 +278,11 @@ EGunShootType AWeaponManager::GetNextShootType(EGunShootType CurrentType, FStrin
     {
         switch (CurrentType)
         {
-        case EGunShootType::SINGLE: return EGunShootType::BURST;
-        case EGunShootType::BURST:  return EGunShootType::CONSECUTIVE;
+        case SINGLE: return BURST;
+        case BURST:  return CONSECUTIVE;
         }
     }
-    return EGunShootType::SINGLE;
+    return SINGLE;
 }
 
 EGunShootType AWeaponManager::GetMaxShootType(FString WeaponGroup)
@@ -290,30 +290,30 @@ EGunShootType AWeaponManager::GetMaxShootType(FString WeaponGroup)
     TMap<FString, EGunShootType> mapGunShootType
     {
         // ------- 오직 단발 -------
-        {"HandGun"  , EGunShootType::SINGLE},
-        {"SniperGun", EGunShootType::SINGLE},
-        {"Special"  , EGunShootType::SINGLE},
+        {"HandGun"  , SINGLE},
+        {"SniperGun", SINGLE},
+        {"Special"  , SINGLE},
 
         // ------- 단발 / 점사 -------
-        {"ShotGun", EGunShootType::BURST},
+        {"ShotGun", BURST},
 
         // ------- 단발 / 점사 / 연사 -------
-        {"AssaultGun", EGunShootType::CONSECUTIVE},
-        {"SMG"       , EGunShootType::CONSECUTIVE}
+        {"AssaultGun", CONSECUTIVE},
+        {"SMG"       , CONSECUTIVE}
     };
     return mapGunShootType[WeaponGroup];
 }
 
 FString AWeaponManager::GetShootTypeStr(EGunShootType Type)
 {
-    if (Type == EGunShootType::MAX)
+    if (Type == MAX)
         return "Fail";
 
     TMap<EGunShootType, FString> mapGunShootType
     {
-        { EGunShootType::SINGLE,      "Single" },
-        { EGunShootType::BURST,       "Burst" },
-        { EGunShootType::CONSECUTIVE, "Consecutive" }
+        { SINGLE,      "Single" },
+        { BURST,       "Burst" },
+        { CONSECUTIVE, "Consecutive" }
     };
     return "Current type : " + mapGunShootType[Type];
 }
@@ -413,12 +413,13 @@ void AWeaponManager::ClickEvent()
             mpGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);
                 
         // 레이캐스트 적용
-        auto        cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-        FVector     beginPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
-        FVector     forwardVec = cameraManager->GetActorForwardVector() * 500;
-        FHitResult  hitResult;
-        FVector     endPos = beginPos + forwardVec;
-        GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Pawn));
+        auto       cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
+        FVector    beginPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
+        FVector    forwardVec = cameraManager->GetActorForwardVector() * 500;
+        FHitResult hitResult;        
+        auto bTraced = GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, beginPos + forwardVec, FCollisionObjectQueryParams(ECC_Pawn));
+        DrawDebugLine(GetWorld(), beginPos, beginPos + forwardVec, FColor::Red, true);
+        FVector    endPos = UKismetMathLibrary::SelectVector(hitResult.ImpactPoint, hitResult.TraceEnd, bTraced);
         FRotator bulletRotation = UKismetMathLibrary::FindLookAtRotation(beginPos, endPos);
         GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, beginPos, bulletRotation);
         p_gun->ParticleComp->Activate(true);
@@ -709,9 +710,9 @@ void AWeaponManager::CheckShooting(float TranscurredTime)
 
             switch (p_gun->ShootType)
             {
-            case EGunShootType::SINGLE: bShooting = false; break;
+            case SINGLE: bShooting = false; break;
 
-            case EGunShootType::BURST:
+            case BURST:
 
                 if (mCurrentShootTime > timeToWait)
                 {
@@ -725,7 +726,7 @@ void AWeaponManager::CheckShooting(float TranscurredTime)
                 break;
 
             // 쿨타임 적용
-            case EGunShootType::CONSECUTIVE:
+            case CONSECUTIVE:
 
                 if (mCurrentShootTime > timeToWait)
                 {

@@ -84,7 +84,6 @@ public:
     float        CurrentOxygen        = 1.f;
     bool         bAnimationPlaying    = false;
     bool         bAiming              = false;
-    bool         bWeaponEquipped      = false;
     
     /** \brief 차량 관련 변수 */
     ESeatType CurrentSeatType = ESeatType::NONE;

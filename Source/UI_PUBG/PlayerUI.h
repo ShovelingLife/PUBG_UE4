@@ -13,13 +13,15 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerUI.generated.h"
 
-class UImage;
-class UMemberStateUI;
-class UPlayerStateUI;
-class UKillLogBoxUI;
-class UMiniMapUI;
 class UCurrentWeaponUI;
+
+class UImage;
+class UKillLogBoxUI;
+class UMemberStateUI;
+class UMiniMapUI;
 class UNotificationUI;
+class UPlayerStateUI;
+class USizeBox;
 
 UCLASS()
 class UI_PUBG_API UPlayerUI : public UUserWidget
@@ -29,6 +31,8 @@ class UI_PUBG_API UPlayerUI : public UUserWidget
 private:
     // 현재 쓰여지는 이미지 배열
     UPROPERTY(VisibleAnywhere) TArray<UImage*> mArrImage;
+
+    class ACustomPlayer* pPlayer = nullptr;
 
 public:
     /** \brief 파티원 정보 UI */
@@ -49,22 +53,31 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UNotificationUI* NotificationUI;
 
     /** \brief 조준선 이미지 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairUpImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairDownImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairLeftImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairRightImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairTop;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairBottom;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairLeft;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairRight;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairCenterImg;
 
-    UPROPERTY(EditAnywhere) float TmpPosVal = 0.f;
+    FTimerHandle TCrosshairHandle;
+    UPROPERTY(EditAnywhere, category = "CrosshairVar") float TestVel   = 0.f;
+    UPROPERTY(EditAnywhere, category = "CrosshairVar") float MaxVel    = 350.f;
+    UPROPERTY(EditAnywhere, category = "CrosshairVar") float MaxOffset = 100.f;
+    UPROPERTY(EditAnywhere, category = "CrosshairVar") float UpdateSec = 60.f;
+    
+private:
+    void UpdateCrosshairVisibility();
+
+public:
+    virtual void SynchronizeProperties() override;
 
 protected:
-    void NativeConstruct() override;
+    virtual void NativeConstruct() override;
 
-    void NativeTick(const FGeometry&, float) override;
+    virtual void NativeTick(const FGeometry&, float) override;
 
-private:
-    /** \brief 발사 방법 UI 갱신 */
-    void UpdateAimUI();
+public:
+    void HandleCrosshairScale();
 
-    void UpdateCrossHair();
-
+    void HandleCrosshairScale(float Vel);
 };

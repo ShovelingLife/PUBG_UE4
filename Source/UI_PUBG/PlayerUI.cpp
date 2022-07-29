@@ -4,67 +4,86 @@
 #include "KillLogBoxUI.h"
 #include "MiniMapUI.h"
 #include "CurrentWeaponUI.h"
-#include "Components/CanvasPanelSlot.h"
 #include "Characters/CustomPlayer.h"
+#include "Player_weapons/WeaponManager.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Components/SizeBox.h"
 #include "Components/Image.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
+void UPlayerUI::UpdateCrosshairVisibility()
+{
+    using enum ECurrentWeaponType;
+
+    TArray<USizeBox*> arrSB_Crosshair
+    {
+        SB_CrosshairTop,
+        SB_CrosshairBottom,
+        SB_CrosshairLeft,
+        SB_CrosshairRight
+    };
+    if (pPlayer)
+    {
+        if (auto pWeaponManager = pPlayer->GetWeaponManager())
+        {
+            auto currentWeaponType = pWeaponManager->CurrentWeaponType;
+            auto visibility = (currentWeaponType == FIRST ||
+                               currentWeaponType == SECOND ||
+                               currentWeaponType == PISTOL) ? ESlateVisibility::Visible : ESlateVisibility::Hidden;
+
+            for (int i = 0; i < arrSB_Crosshair.Num(); i++)
+                 arrSB_Crosshair[i]->SetVisibility(visibility);
+
+            CrosshairCenterImg->SetVisibility(visibility);
+        }
+    }
+}
+
+void UPlayerUI::SynchronizeProperties()
+{
+    Super::SynchronizeProperties();
+    HandleCrosshairScale(TestVel);
+}
+
 void UPlayerUI::NativeConstruct()
 {
-    Super::NativeConstruct();
-    mArrImage.Add(CrosshairUpImg);
-    mArrImage.Add(CrosshairLeftImg);
-    mArrImage.Add(CrosshairRightImg);
-    mArrImage.Add(CrosshairDownImg);
+    Super::NativeConstruct();     
+    pPlayer = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    GetWorld()->GetTimerManager().SetTimer(TCrosshairHandle, this, &UPlayerUI::HandleCrosshairScale, 1.f / UpdateSec, true);
 }
 
 void UPlayerUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
+    UpdateCrosshairVisibility();
+}
 
-    if (auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+void UPlayerUI::HandleCrosshairScale()
+{
+    
+    if (pPlayer)
     {
-        auto p_weapon = p_player->GetCurrentWeapon();
-
-        if (p_weapon)
-            UpdateCrossHair(); 
-        
-        for (auto p_image : mArrImage)
-             p_image->SetVisibility((p_weapon != nullptr) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+        TestVel = pPlayer->GetVelocity().Size();
+        HandleCrosshairScale(TestVel);
     }
 }
 
-
-void UPlayerUI::UpdateCrossHair()
+void UPlayerUI::HandleCrosshairScale(float Vel)
 {
-    if (auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
-    {
-        // 플레이어 위치 기반으로 > 공식 통해 78부터 96까지, 범위는 0.05부터 1까지
-        auto  playerSpeed = UKismetMathLibrary::Round(p_player->GetCharacterMovement()->Velocity.Size());
-        float increaseVal = UKismetMathLibrary::MapRangeClamped(((playerSpeed / 35) * -1.f) + 96.f, 78.f, 96.f, 0.05f, 1.f) - 0.15f;
-        FLinearColor color(1.f, 0.f, 0.f, increaseVal);
+    float normalizedVal = UKismetMathLibrary::NormalizeToRange(Vel, 0.1f, MaxVel);
+    float fixedVel = FMath::Clamp(normalizedVal, 0.1f, 1.f) * MaxOffset;
 
-        // 캐릭터가 이동할 때마다 점 위치를 바꿈
-        for (int i = 0; i < mArrImage.Num(); i++)
-        {
-            mArrImage[i]->SetColorAndOpacity(color);
+    if (auto pTopSlot = Cast<UCanvasPanelSlot>(SB_CrosshairTop->Slot))
+        pTopSlot->SetPosition(FVector2D(0.f, -fixedVel));
 
-            if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(mArrImage[i]->Slot))
-            {
-                float posX = 0.f, posY = 0.f;
+    if (auto pBottomSlot = Cast<UCanvasPanelSlot>(SB_CrosshairBottom->Slot))
+        pBottomSlot->SetPosition(FVector2D(0.f, fixedVel));
 
-                switch (i)
-                {
-                // 15
-                case 0: posY = (increaseVal *  15.f) - 35.f; break; // 위쪽
-                case 1: posX = (increaseVal *  15.f) - 35.f; break; // 왼쪽
-                case 2: posX = (increaseVal * -15.f) + 35.f; break; // 오른쪽
-                case 3: posY = (increaseVal * -15.f) + 35.f; break; // 아래쪽
-                }
-                p_canvasPanelSlot->SetPosition(FVector2D(posX, posY));
-            }
-        }
-    }
+    if (auto pLeftSlot = Cast<UCanvasPanelSlot>(SB_CrosshairLeft->Slot))
+        pLeftSlot->SetPosition(FVector2D(-fixedVel, 0.f));
+
+    if (auto pRightSlot = Cast<UCanvasPanelSlot>(SB_CrosshairRight->Slot))
+        pRightSlot->SetPosition(FVector2D(fixedVel, 0.f));
 }
