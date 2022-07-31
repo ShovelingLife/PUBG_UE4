@@ -14,6 +14,7 @@
 #include "Components/SplineMeshComponent.h" 
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/PlayerController.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -410,24 +411,43 @@ void AWeaponManager::ClickEvent()
 
         // 사운드 적용 및 총알 1개 차감
         if (mpGameInst)
-            mpGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);
+            mpGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);                
+
+        // ------- 레이캐스트 범위 구하기 -------
+
+        FVector spawnPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
+
+        // 카메라 기반으로 구하기
+        auto cameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+        auto traceStartPos = UKismetMathLibrary::ProjectPointOnToPlane(cameraManager->GetCameraLocation(), spawnPos, cameraManager->GetActorForwardVector());
+        auto traceEndPos = traceStartPos + (cameraManager->GetActorForwardVector() * 2500.f);
+
+        // 게임 뷰포트 가운데 지점 구하기    
+        FVector2D vPortCenterPos = GEngine->GameViewport->Viewport->GetSizeXY() / 2.f;
+        FVector deprojPos, deprojDir;
+        UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), vPortCenterPos, deprojPos, deprojDir);
+        FVector endPos = deprojPos + (deprojDir * 2500.f);
+
+        // 레이캐스트 적용(시작지점 : 카메라) 충돌 시 = true > 충돌 지점, false > 레이 끝 지점 
+        FHitResult hitResult;
+        FCollisionQueryParams collisionQueryParams;
+        collisionQueryParams.AddIgnoredActor(p_gun);
+        collisionQueryParams.AddIgnoredActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
                 
-        // 레이캐스트 적용
-        auto       cameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-        FVector    beginPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
-        FVector    forwardVec = cameraManager->GetActorForwardVector() * 500;
-        FHitResult hitResult;        
-        auto bTraced = GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, beginPos + forwardVec, FCollisionObjectQueryParams(ECC_Pawn));
-        DrawDebugLine(GetWorld(), beginPos, beginPos + forwardVec, FColor::Red, true);
-        FVector    endPos = UKismetMathLibrary::SelectVector(hitResult.ImpactPoint, hitResult.TraceEnd, bTraced);
-        FRotator bulletRotation = UKismetMathLibrary::FindLookAtRotation(beginPos, endPos);
-        GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, beginPos, bulletRotation);
+        auto bTraced   = GetWorld()->LineTraceSingleByChannel(hitResult, traceStartPos, traceEndPos, ECollisionChannel::ECC_Visibility, collisionQueryParams);
+        FVector hitPos = UKismetMathLibrary::SelectVector(hitResult.ImpactPoint, hitResult.TraceEnd, bTraced);
+
+        // 총알 복제 후 위치 및 회전값 지정
+        FRotator rot = UKismetMathLibrary::FindLookAtRotation(traceStartPos, traceEndPos);
+        auto p_bullet = GetWorld()->SpawnActor<ACoreBullet>(p_gun->BP_Bullet, spawnPos, rot);
         p_gun->ParticleComp->Activate(true);
+
+        DrawDebugLine(GetWorld(), traceStartPos, traceEndPos, FColor::Red, true);
     }
     // 근접 무기
     else if(p_weapon->IsA<ACoreMeleeWeapon>())
     {
-
+            
     }
     // 투척류 무기
     else

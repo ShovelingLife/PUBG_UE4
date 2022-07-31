@@ -57,7 +57,8 @@ public:
     UPROPERTY() ACoreWeapon*		  pPistol	 = nullptr;
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
-	FDeleSetExplosiveUI DeleSetExplosiveUI;
+    FDeleSetExplosiveUI DeleSetExplosiveUI;
+    FVector2D    ScreenCenterPos;
 
 	ECurrentWeaponType CurrentWeaponType = NONE;    
 	bool  bArrWeaponEquipped[5]{ false };

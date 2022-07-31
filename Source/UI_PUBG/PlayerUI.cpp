@@ -29,7 +29,7 @@ void UPlayerUI::UpdateCrosshairVisibility()
         if (auto pWeaponManager = pPlayer->GetWeaponManager())
         {
             auto currentWeaponType = pWeaponManager->CurrentWeaponType;
-            auto visibility = (currentWeaponType == FIRST ||
+            auto visibility = (currentWeaponType == FIRST  ||
                                currentWeaponType == SECOND ||
                                currentWeaponType == PISTOL) ? ESlateVisibility::Visible : ESlateVisibility::Hidden;
 
@@ -37,6 +37,9 @@ void UPlayerUI::UpdateCrosshairVisibility()
                  arrSB_Crosshair[i]->SetVisibility(visibility);
 
             CrosshairCenterImg->SetVisibility(visibility);
+            auto cachedPos = CrosshairCenterImg->GetCachedGeometry().GetAbsolutePosition();
+            pWeaponManager->ScreenCenterPos = cachedPos / 2;
+            //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, (cachedPos / 2).ToString());
         }
     }
 }
@@ -61,8 +64,7 @@ void UPlayerUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 }
 
 void UPlayerUI::HandleCrosshairScale()
-{
-    
+{    
     if (pPlayer)
     {
         TestVel = pPlayer->GetVelocity().Size();
