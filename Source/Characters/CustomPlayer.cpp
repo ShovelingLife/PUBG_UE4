@@ -110,32 +110,30 @@ void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void ACustomPlayer::UpdatePlayerSettings()
 {
     // 플레이어 설정
-    GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
-    GetCharacterMovement()->MaxWalkSpeed = 350.f;
+    auto characterMovement = GetCharacterMovement();
+    characterMovement->GetNavAgentPropertiesRef().bCanCrouch = true;
+    characterMovement->MaxWalkSpeed = 350.f;
 }
 
 void ACustomPlayer::InitCameraComp()
 {
+    // 카메라 컴포넌트 초기화 > 카메라를 부모 컴포넌트에 부착 > 카메라 설정
+
     // ------- FPS (1인칭) -------
 
     FPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("FPS_SpringArm"));
-    FPS_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_Camera"));
+    FPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_Camera"));
     FPS_SpringArmComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "FPS_CameraSocket");
     FPS_CameraComp->SetupAttachment(FPS_SpringArmComp);
     FPS_SpringArmComp->TargetArmLength = 0.f;
     FPS_SpringArmComp->bUsePawnControlRotation = true;
 
     // ------- TPS (3인칭) -------
-    
-    // 카메라 컴포넌트 초기화
+        
     TPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("TPS_SpringArm"));
     TPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("TPS_Camera"));
-
-    // 카메라를 부모 컴포넌트에 부착
     TPS_SpringArmComp->SetupAttachment(GetCapsuleComponent());
     TPS_CameraComp->SetupAttachment(TPS_SpringArmComp);
-
-    // 카메라 설정
     TPS_SpringArmComp->TargetArmLength = 150.f;
     TPS_SpringArmComp->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 80.f), FRotator(-20.f, 0.f, 0.f));
     TPS_SpringArmComp->bUsePawnControlRotation = true;
@@ -182,11 +180,11 @@ void ACustomPlayer::CheckIfMoving()
         {
             switch (CurrentState)
             {
-            case EPlayerState::CROUCH_WALK:  CurrentState = EPlayerState::CROUCH;  break;
-            case EPlayerState::PRONING_WALK: CurrentState = EPlayerState::PRONING; break;
-            case EPlayerState::AIM_WALK:     CurrentState = EPlayerState::AIM;     break;
+            case CROUCH_WALK:  CurrentState = CROUCH;  break;
+            case PRONING_WALK: CurrentState = PRONING; break;
+            case AIM_WALK:     CurrentState = AIM;     break;
 
-            default: CurrentState = EPlayerState::IDLE; break;
+            default: CurrentState = IDLE; break;
             }
         }
         mbMoving  = false;
@@ -196,30 +194,30 @@ void ACustomPlayer::CheckIfMoving()
         switch (CurrentState)
         {
         // 숙이고 있음
-        case EPlayerState::CROUCH:
-        case EPlayerState::CROUCH_AIM:
-            CurrentState = EPlayerState::CROUCH_WALK;
+        case CROUCH:
+        case CROUCH_AIM:
+            CurrentState = CROUCH_WALK;
             break;
 
-        case EPlayerState::PRONING: CurrentState = EPlayerState::PRONING_WALK; break;
-        case EPlayerState::AIM:     CurrentState = EPlayerState::AIM_WALK;     break;
+        case PRONING: CurrentState = PRONING_WALK; break;
+        case AIM:     CurrentState = AIM_WALK;     break;
 
         default:
             // 뛰면서 점프후 착지
             if (GetCharacterMovement()->IsFalling())
-                CurrentState = (mSprintMultiplier > 1.f) ? EPlayerState::SPRINT_JUMP : EPlayerState::JUMP;
+                CurrentState = (mSprintMultiplier > 1.f) ? SPRINT_JUMP : JUMP;
 
             else // 지면에 닿고있음
             {
-                if (CurrentState == EPlayerState::SPRINT_JUMP)
-                    CurrentState = EPlayerState::SPRINT;
+                if (CurrentState == SPRINT_JUMP)
+                    CurrentState = SPRINT;
 
                 // 뛰고있음
-                else if (CurrentState == EPlayerState::SPRINT)
+                else if (CurrentState == SPRINT)
                 {
                     if (CurrentOxygen < 0)
                     {
-                        CurrentState = EPlayerState::IDLE;
+                        CurrentState = IDLE;
                         mSprintMultiplier = 1;
                         GetCharacterMovement()->MaxWalkSpeed = 350.f;
                     }
@@ -230,9 +228,9 @@ void ACustomPlayer::CheckIfMoving()
                     }
                 }
                 // 
-                else if (CurrentState == EPlayerState::IDLE ||
-                         CurrentState == EPlayerState::JUMP)
-                         CurrentState = EPlayerState::WALK;
+                else if (CurrentState == IDLE ||
+                         CurrentState == JUMP)
+                         CurrentState = WALK;
             }
             break;
         }
@@ -299,9 +297,9 @@ void ACustomPlayer::CheckNearVehicle()
     GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
 
     // 차량을 감지
-    AActor* pHittedActor = hitResult.GetActor();
+    AActor* p_hittedActor = hitResult.GetActor();
 
-    if (!pHittedActor)
+    if (!p_hittedActor)
     {
         if (mpCollidedVehicle)
         {
@@ -311,9 +309,9 @@ void ACustomPlayer::CheckNearVehicle()
     }
     else
     {
-        if (pHittedActor->IsA(ACoreVehicle::StaticClass()))
+        if (p_hittedActor->IsA(ACoreVehicle::StaticClass()))
         {
-            mpCollidedVehicle = Cast<ACoreVehicle>(pHittedActor);
+            mpCollidedVehicle = Cast<ACoreVehicle>(p_hittedActor);
 
             if (mpCollidedVehicle)
                 mpCollidedVehicle->bCollided = true;
@@ -367,7 +365,7 @@ void ACustomPlayer::TryToInteract()
 void ACustomPlayer::MoveForwardBack(float Value)
 {
     if (!bAnimationPlaying)
-        AddMovementInput(GetActorForwardVector() * ((CurrentState == EPlayerState::INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
+        AddMovementInput(GetActorForwardVector() * ((CurrentState == INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
 
     mpWeaponManager->UpdateGrenadePath();
 }
@@ -375,7 +373,7 @@ void ACustomPlayer::MoveForwardBack(float Value)
 void ACustomPlayer::MoveLeftRight(float Value)
 {
     if (!bAnimationPlaying)
-        AddMovementInput(GetActorRightVector() * ((CurrentState == EPlayerState::INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
+        AddMovementInput(GetActorRightVector() * ((CurrentState == INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
 
     mpWeaponManager->UpdateGrenadePath();
 }
@@ -388,9 +386,9 @@ void ACustomPlayer::LookUp(float Value)
     // 경로 거리 설정
     if (mpWeaponManager)
     {
-        auto grenadeDirection = mpWeaponManager->GrenadeDirection;
-        auto target = (Value / 10.f) + grenadeDirection;
-        auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDirection, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
+        auto grenadeDir = mpWeaponManager->GrenadeDirection;
+        auto target     = (Value / 10.f) + grenadeDir;
+        auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDir, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
         mpWeaponManager->GrenadeDirection = interptVal;
         mpWeaponManager->UpdateGrenadePath();
     }
@@ -407,9 +405,9 @@ void ACustomPlayer::Turn(float _Value)
 
 void ACustomPlayer::CustomJump()
 {
-    if (CurrentState == EPlayerState::CROUCH  ||
-        CurrentState == EPlayerState::PRONING ||
-        CurrentState == EPlayerState::INJURED)
+    if (CurrentState == CROUCH  ||
+        CurrentState == PRONING ||
+        CurrentState == INJURED)
         return;
 
     Jump();
@@ -431,12 +429,12 @@ void ACustomPlayer::CustomCrouch()
     // 숙이고 있음
     if (characterMovement->IsCrouching())
     {
-        CurrentState = (CurrentState == EPlayerState::CROUCH_AIM) ? EPlayerState::AIM : EPlayerState::IDLE;
+        CurrentState = (CurrentState == CROUCH_AIM) ? AIM : IDLE;
         UnCrouch();
     }
     else
     {
-        CurrentState = (CurrentState == EPlayerState::AIM) ? EPlayerState::CROUCH_AIM : EPlayerState::CROUCH;
+        CurrentState = (CurrentState == AIM) ? CROUCH_AIM : CROUCH;
         Crouch();
     }
 }
@@ -446,38 +444,34 @@ void ACustomPlayer::Proning()
     // 숙이고 있는지 체크
     switch (CurrentState)
     {
-    case EPlayerState::IDLE: 
-    case EPlayerState::CROUCH:
-    case EPlayerState::CROUCH_WALK:
+    case IDLE: case CROUCH: case CROUCH_WALK:
 
-        if (CurrentState != EPlayerState::IDLE)
+        if (CurrentState != IDLE)
             UnCrouch();
 
-        CurrentState = EPlayerState::PRONING; 
+        CurrentState = PRONING; 
         break;
 
-    case EPlayerState::PRONING: 
-    case EPlayerState::PRONING_WALK:
-        CurrentState = EPlayerState::IDLE; break;
+    case PRONING: case PRONING_WALK: CurrentState = IDLE; break;
 
-    case EPlayerState::AIM:  CurrentState = EPlayerState::PRONING_AIM; break;
+    case AIM:  CurrentState = PRONING_AIM; break;
 
     default: return;
     }
-    TPS_SpringArmComp->SetRelativeLocation((CurrentState == EPlayerState::PRONING || 
-                                            CurrentState == EPlayerState::PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
+    TPS_SpringArmComp->SetRelativeLocation((CurrentState == PRONING || 
+                                            CurrentState == PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
 }
 
 void ACustomPlayer::BeginSprint()
 {
     if (!GetVelocity().IsZero() &&
-        CurrentState != EPlayerState::INJURED)
-        CurrentState = EPlayerState::SPRINT;
+        CurrentState != INJURED)
+        CurrentState = SPRINT;
 }
 
 void ACustomPlayer::EndSprint()
 {
-    CurrentState = EPlayerState::IDLE;
+    CurrentState = IDLE;
     mSprintMultiplier = 1;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
 }
@@ -500,11 +494,11 @@ void ACustomPlayer::OpenInventory()
 void ACustomPlayer::UpdateHealth()
 {
     if (CurrentHealth == 0.f && 
-        CurrentState != EPlayerState::DEAD)
-        CurrentState = EPlayerState::INJURED;
+        CurrentState != DEAD)
+        CurrentState = INJURED;
 
     if (CurrentInjuredHealth == 0.f)
-        CurrentState = EPlayerState::DEAD;
+        CurrentState = DEAD;
 }
 
 void ACustomPlayer::BeginShooting()
@@ -550,14 +544,14 @@ void ACustomPlayer::Aim()
     switch (CurrentState)
     {
     // 기본자세 > 에임
-    case EPlayerState::IDLE:        CurrentState = EPlayerState::AIM;         bAiming = true;  break;
-    case EPlayerState::CROUCH:      CurrentState = EPlayerState::CROUCH_AIM;  bAiming = true;  break;
-    case EPlayerState::PRONING:     CurrentState = EPlayerState::PRONING_AIM; bAiming = true;  break;
+    case IDLE:        CurrentState = AIM;         bAiming = true;  break;
+    case CROUCH:      CurrentState = CROUCH_AIM;  bAiming = true;  break;
+    case PRONING:     CurrentState = PRONING_AIM; bAiming = true;  break;
 
     // 에임 > 기본 자세
-    case EPlayerState::AIM:         CurrentState = EPlayerState::IDLE;        bAiming = false; break;
-    case EPlayerState::CROUCH_AIM:  CurrentState = EPlayerState::CROUCH;      bAiming = false; break;
-    case EPlayerState::PRONING_AIM: CurrentState = EPlayerState::PRONING;     bAiming = false; break;
+    case AIM:         CurrentState = IDLE;    bAiming = false; break;
+    case CROUCH_AIM:  CurrentState = CROUCH;  bAiming = false; break;
+    case PRONING_AIM: CurrentState = PRONING; bAiming = false; break;
     }
     mpWeaponManager->ChangeAimPose(bAiming);
 }
@@ -567,7 +561,7 @@ void ACustomPlayer::ChangeShootMode()
     mpWeaponManager->ChangeShootMode();
 }
 
-void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */)
+void ACustomPlayer::CheckForWeapon(ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */, FString Direction /* = "" */)
 {
     ASoundManager* p_soundManager = nullptr;
     
@@ -579,20 +573,17 @@ void ACustomPlayer::CheckForWeapon(FString Direction /* = "" */, ECurrentWeaponT
         return;
 
     // 마우스 휠로 무기 선택
-    if (Direction != "")
-    {
-        if (mpWeaponManager->ScrollSelect(Direction))
-            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-    }
+    if (Direction != "" &&
+        mpWeaponManager->ScrollSelect(Direction))
+        p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+
     // 키보드 숫자 키로 무기 선택
-    else if (WeaponType != NONE &&
-             WeaponType != mpWeaponManager->CurrentWeaponType)
+    if (WeaponType != NONE &&
+        WeaponType != mpWeaponManager->CurrentWeaponType &&
+        mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)
     {
-        if (mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)
-        {
-            mpWeaponManager->Swap(WeaponType);
-            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-        }
+        mpWeaponManager->Swap(WeaponType);
+        p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
     }
 }
 

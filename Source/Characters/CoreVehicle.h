@@ -26,6 +26,8 @@ class UInstaDeformComponent;
 UCLASS()
 class CHARACTERS_API ACoreVehicle : public AWheeledVehiclePawn
 {
+using enum ESeatType;
+
     GENERATED_BODY()
 
 private:
@@ -56,11 +58,11 @@ protected:
     /** \brief 차량 좌석 위치 변수 */
     TMap<ESeatType, bool> mMapEmptySeat
     {
-        { ESeatType::FIRST, false },
-        { ESeatType::SECOND,false },
-        { ESeatType::THIRD, false },
-        { ESeatType::FOURTH,false },
-        { ESeatType::NONE,  false }
+        { FIRST, false },
+        { SECOND,false },
+        { THIRD, false },
+        { FOURTH,false },
+        { NONE,  false }
     };
     ACustomPlayer* mpPlayer;
     FsVehicleData  mVehicleData;                       
@@ -156,16 +158,16 @@ protected:
     void UpdatePlayerSeatLocation(ESeatType SeatType);
 
     /** \brief 첫번째 좌석으로 이동 */
-    void ChangeToFirstSeat() { if (!mpPlayer) return;  UpdatePlayerSeatLocation(ESeatType::FIRST); }
+    void ChangeToFirstSeat() { if (!mpPlayer) return;  UpdatePlayerSeatLocation(FIRST); }
 
     /** \brief 두번째 좌석으로 이동 */
-    void ChangeToSecondSeat() { if (!mpPlayer) return; UpdatePlayerSeatLocation(ESeatType::SECOND); }
+    void ChangeToSecondSeat() { if (!mpPlayer) return; UpdatePlayerSeatLocation(SECOND); }
 
     /** \brief 세번째 좌석으로 이동 */
-    void ChangeToThirdSeat() { if (mVehicleData.MaxSeater == 2 || !mpPlayer) return; UpdatePlayerSeatLocation(ESeatType::THIRD); }
+    void ChangeToThirdSeat() { if (mVehicleData.MaxSeater == 2 || !mpPlayer) return; UpdatePlayerSeatLocation(THIRD); }
 
     /** \brief 네번째 좌석으로 이동 */
-    void ChangeToFourthSeat() { if (mVehicleData.MaxSeater == 2 || !mpPlayer) return; UpdatePlayerSeatLocation(ESeatType::FOURTH); }
+    void ChangeToFourthSeat() { if (mVehicleData.MaxSeater == 2 || !mpPlayer) return; UpdatePlayerSeatLocation(FOURTH); }
     
 public:
     /**

@@ -37,6 +37,7 @@ class CHARACTERS_API ACustomPlayer : public ACharacter
     GENERATED_BODY()
         
 using enum ECurrentWeaponType;
+using enum EPlayerState;
 
 private:
     UPROPERTY() UCustomGameInstance* mpCustomGameInst = nullptr;
@@ -196,27 +197,27 @@ private:
     void ChangeShootMode();
 
     /** \brief 마우스 위로 스크롤 */
-    void SwapScrollingUp() { CheckForWeapon("Up"); }
+    void SwapScrollingUp() { CheckForWeapon(NONE, "Up"); }
 
     /** \brief 마우스 아래로 스크롤 */
-    void SwapScrollingDown() { CheckForWeapon("Down"); }
+    void SwapScrollingDown() { CheckForWeapon(NONE, "Down"); }
 
     /** \brief 첫번째 무기 장착 */
-    void EquipFirstWeapon() { CheckForWeapon("", FIRST); }
+    void EquipFirstWeapon() { CheckForWeapon(FIRST); }
 
     /** \brief 두번째 무기 장착 */
-    void EquipSecondWeapon() { CheckForWeapon("", SECOND); }
+    void EquipSecondWeapon() { CheckForWeapon(SECOND); }
 
     /** \brief 세번째 무기 장착 */
-    void EquipThirdWeapon() { CheckForWeapon("", PISTOL); }
+    void EquipThirdWeapon() { CheckForWeapon(PISTOL); }
 
     /** \brief 네번째 무기 장착 */
-    void EquipFourthWeapon() { CheckForWeapon("", MELEE); }
+    void EquipFourthWeapon() { CheckForWeapon(MELEE); }
 
     /** \brief 다섯번째 무기 장착 */
-    void EquipFifthWeapon() { CheckForWeapon("", THROWABLE); }
+    void EquipFifthWeapon() { CheckForWeapon(THROWABLE); }
 
-    void CheckForWeapon(FString Direction = "", ECurrentWeaponType CurrentWeaponType = NONE);
+    void CheckForWeapon(ECurrentWeaponType CurrentWeaponType = NONE, FString Direction = "");
 
 public:
     /**

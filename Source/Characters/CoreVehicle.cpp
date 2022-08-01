@@ -39,7 +39,7 @@ void ACoreVehicle::Tick(float DeltaTime)
     UpdateCarPosData();
 
     if (mpPlayer)
-        mbPlayerInFirstSeat = (mpPlayer->CurrentSeatType == ESeatType::FIRST);
+        mbPlayerInFirstSeat = (mpPlayer->CurrentSeatType == FIRST);
 
     if (InteractionWidgetComp)
         InteractionWidgetComp->SetVisibility(bCollided);
@@ -101,35 +101,35 @@ void ACoreVehicle::InitCarPosComp()
 
 void ACoreVehicle::InitCarPosData()
 {
-    MapDoorPos.Add(ESeatType::FIRST,  FirstDoorPosComp->GetComponentLocation());
-    MapSeatPos.Add(ESeatType::FIRST,  FirstSeatPosComp->GetComponentLocation());
-    MapDoorPos.Add(ESeatType::SECOND, SecondDoorPosComp->GetComponentLocation());
-    MapSeatPos.Add(ESeatType::SECOND, SecondSeatPosComp->GetComponentLocation());
+    MapDoorPos.Add(FIRST,  FirstDoorPosComp->GetComponentLocation());
+    MapSeatPos.Add(FIRST,  FirstSeatPosComp->GetComponentLocation());
+    MapDoorPos.Add(SECOND, SecondDoorPosComp->GetComponentLocation());
+    MapSeatPos.Add(SECOND, SecondSeatPosComp->GetComponentLocation());
 
     // 문 4개있는 차량일 시
     if(mVehicleData.MaxSeater == 4)
     {
-        MapDoorPos.Add(ESeatType::THIRD,  ThirdDoorPosComp->GetComponentLocation());
-        MapSeatPos.Add(ESeatType::THIRD,  ThirdSeatPosComp->GetComponentLocation());
-        MapDoorPos.Add(ESeatType::FOURTH, FourthDoorPosComp->GetComponentLocation());
-        MapSeatPos.Add(ESeatType::FOURTH, FourthSeatPosComp->GetComponentLocation());
+        MapDoorPos.Add(THIRD,  ThirdDoorPosComp->GetComponentLocation());
+        MapSeatPos.Add(THIRD,  ThirdSeatPosComp->GetComponentLocation());
+        MapDoorPos.Add(FOURTH, FourthDoorPosComp->GetComponentLocation());
+        MapSeatPos.Add(FOURTH, FourthSeatPosComp->GetComponentLocation());
     }
 }
 
 void ACoreVehicle::UpdateCarPosData()
 {
     // 좌석 및 문짝 위치 업데이트
-    MapDoorPos[ESeatType::FIRST]  = FirstDoorPosComp->GetComponentLocation();
-    MapSeatPos[ESeatType::FIRST]  = FirstSeatPosComp->GetComponentLocation();
-    MapDoorPos[ESeatType::SECOND] = SecondDoorPosComp->GetComponentLocation();
-    MapSeatPos[ESeatType::SECOND] = SecondSeatPosComp->GetComponentLocation();
+    MapDoorPos[FIRST]  = FirstDoorPosComp->GetComponentLocation();
+    MapSeatPos[FIRST]  = FirstSeatPosComp->GetComponentLocation();
+    MapDoorPos[SECOND] = SecondDoorPosComp->GetComponentLocation();
+    MapSeatPos[SECOND] = SecondSeatPosComp->GetComponentLocation();
 
     if (mVehicleData.MaxSeater == 4)
     {
-        MapDoorPos[ESeatType::THIRD]  = ThirdDoorPosComp->GetComponentLocation();
-        MapSeatPos[ESeatType::THIRD]  = ThirdSeatPosComp->GetComponentLocation();
-        MapDoorPos[ESeatType::FOURTH] = FourthDoorPosComp->GetComponentLocation();
-        MapSeatPos[ESeatType::FOURTH] = FourthSeatPosComp->GetComponentLocation();
+        MapDoorPos[THIRD]  = ThirdDoorPosComp->GetComponentLocation();
+        MapSeatPos[THIRD]  = ThirdSeatPosComp->GetComponentLocation();
+        MapDoorPos[FOURTH] = FourthDoorPosComp->GetComponentLocation();
+        MapSeatPos[FOURTH] = FourthSeatPosComp->GetComponentLocation();
     }
 }
 
@@ -185,19 +185,20 @@ void ACoreVehicle::InitWheeledComp()
         return;
 
     FChaosWheelSetup arrCarWheels[4]{ FChaosWheelSetup() };
-    arrCarWheels[0].WheelClass = bpFrontWheel.Class;
-    arrCarWheels[1].WheelClass = bpFrontWheel.Class;
-    arrCarWheels[2].WheelClass = bpRearWheel.Class;
-    arrCarWheels[3].WheelClass = bpRearWheel.Class;
-
-    arrCarWheels[0].BoneName = "Wheel_Front_Left";
-    arrCarWheels[1].BoneName = "Wheel_Front_Right";
-    arrCarWheels[2].BoneName = "Wheel_Rear_Left";
-    arrCarWheels[3].BoneName = "Wheel_Rear_Right";
-
-    for (int i = 0; i < 4; i++)
-        vehicleMoveComp->WheelSetups.Add(arrCarWheels[i]);
-    
+    TMap< TSubclassOf<UChaosVehicleWheel>, FName> mapWheels
+    {
+        { bpFrontWheel.Class, "Wheel_Front_Left" },
+        { bpFrontWheel.Class, "Wheel_Front_Right"},
+        { bpRearWheel.Class,  "Wheel_Rear_Left"},
+        { bpRearWheel.Class,  "Wheel_Rear_Right"}
+    };
+    int idx = 0;
+    for (auto it = mapWheels.CreateConstIterator(); it; ++it)
+    {
+        arrCarWheels[idx].WheelClass = it->Key;
+        arrCarWheels[idx].BoneName = it->Value;
+        vehicleMoveComp->WheelSetups.Add(arrCarWheels[idx++]);
+    }
     vehicleMoveComp->EngineSetup.TorqueCurve.ExternalCurve = floatCurve.Object;
 }
 
@@ -241,7 +242,7 @@ void ACoreVehicle::Turn(float Value)
 
 void ACoreVehicle::CheckForDoorPos()
 {
-    ESeatType seatType = ESeatType::NONE;
+    ESeatType seatType = NONE;
     float     arrVecDistance[4]{ 0.f };
 
     // 벡터 확인
@@ -256,11 +257,11 @@ void ACoreVehicle::CheckForDoorPos()
     {
         // 왼쪽 첫번째 좌석
         if      (arrVecDistance[0] < arrVecDistance[1])
-                 seatType = ESeatType::FIRST;
+                 seatType = FIRST;
 
         // 왼쪽 두번째 좌석
         else if (arrVecDistance[1] < arrVecDistance[0])
-                 seatType = ESeatType::SECOND;
+                 seatType = SECOND;
     }
     // 문짝이 4개일 시
     else
@@ -269,27 +270,27 @@ void ACoreVehicle::CheckForDoorPos()
         if      (arrVecDistance[0] < arrVecDistance[1] &&
                  arrVecDistance[0] < arrVecDistance[2] &&
                  arrVecDistance[0] < arrVecDistance[3])
-                 seatType = ESeatType::FIRST;
+                 seatType = FIRST;
 
         // 왼쪽 두번째 좌석
         else if (arrVecDistance[1] < arrVecDistance[0] &&
                  arrVecDistance[1] < arrVecDistance[2] &&
                  arrVecDistance[1] < arrVecDistance[3])
-                 seatType = ESeatType::SECOND;
+                 seatType = SECOND;
 
         // 오른쪽 첫번째 좌석
         else if (arrVecDistance[2] < arrVecDistance[3] &&
                  arrVecDistance[2] < arrVecDistance[0] &&
                  arrVecDistance[2] < arrVecDistance[1])
-                 seatType = ESeatType::THIRD;
+                 seatType = THIRD;
 
         // 오른쪽 첫번째 좌석
         else if (arrVecDistance[3] < arrVecDistance[0] &&
                  arrVecDistance[3] < arrVecDistance[1] &&
                  arrVecDistance[3] < arrVecDistance[2])
-                 seatType = ESeatType::FOURTH;
+                 seatType = FOURTH;
     }
-    if (seatType != ESeatType::NONE)
+    if (seatType != NONE)
     {
         mMapEmptySeat[seatType]   = true;
         mpPlayer->CurrentSeatType = seatType;
