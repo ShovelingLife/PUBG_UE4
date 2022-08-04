@@ -72,5 +72,5 @@ protected:
       * \brief 총알 오브젝트 초기화
       * \param _Index 무기 종류
      */
-    void Init(EWeaponType Type);
+    void Init(EGunType Type);
 };

@@ -251,6 +251,8 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
         !ProjectileMovementComp)
         return;
 
+    bThrowed = true;
+
     // 메쉬 설정
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     this->SetActorScale3D(FVector(WeaponData.MeshSize));

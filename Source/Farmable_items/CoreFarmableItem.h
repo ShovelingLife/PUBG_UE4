@@ -13,7 +13,6 @@ class FARMABLE_ITEMS_API ACoreFarmableItem : public ABaseInteraction
 	
 public:
 
-
 public:	
 	ACoreFarmableItem();
 
@@ -22,5 +21,4 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-
 };

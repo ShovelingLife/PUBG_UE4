@@ -38,6 +38,7 @@ private:
 
 public:
     FVector GrenadeEndPos;
+    bool bThrowed = false;
 
 protected:
     FDeleExplosionEvent mCallBack;

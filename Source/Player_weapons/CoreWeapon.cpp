@@ -48,7 +48,7 @@ void ACoreWeapon::Tick(float DeltaTime)
     }
 }
 
-void ACoreWeapon::Init(EWeaponType Type)
+void ACoreWeapon::Init(EGunType Type)
 {
     WeaponData = ADataTableManager::GetWeaponData((int)Type);
     WeaponData.CurrentBulletCount = WeaponData.MaxBulletCount;

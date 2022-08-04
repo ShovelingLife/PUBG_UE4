@@ -2,5 +2,5 @@
 
 ASK12::ASK12()
 {
-    Init(EWeaponType::SK12);
+    Init(EGunType::SK12);
 }

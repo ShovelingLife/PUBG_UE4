@@ -2,5 +2,5 @@
 
 ARPG_17_Bullet::ARPG_17_Bullet()
 {
-    Init(EWeaponType::RPG_17);
+    Init(EGunType::RPG_17);
 }

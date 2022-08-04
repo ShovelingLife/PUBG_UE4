@@ -2,5 +2,5 @@
 
 ARogerLR220_Bullet::ARogerLR220_Bullet()
 {
-    Init(EWeaponType::ROGER_LR220);
+    Init(EGunType::ROGER_LR220);
 }

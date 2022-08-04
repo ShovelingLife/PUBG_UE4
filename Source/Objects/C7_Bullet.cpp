@@ -2,5 +2,5 @@
 
 AC7_Bullet::AC7_Bullet()
 {
-    Init(EWeaponType::C7);
+    Init(EGunType::C7);
 }

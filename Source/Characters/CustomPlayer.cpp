@@ -255,7 +255,14 @@ void ACustomPlayer::CheckNearObj()
         if      (p_hittedActor->IsA<ACoreWeapon>()          ||
                  p_hittedActor->IsA<ACoreThrowableWeapon>() ||
                  p_hittedActor->IsA<ACoreMeleeWeapon>())
-                 mpCollidedWeapon = p_hittedActor;
+        {
+            if (auto p_grenade = Cast<ACoreThrowableWeapon>(p_hittedActor))
+            {
+                if (p_grenade->bThrowed)
+                    return;
+            }
+            mpCollidedWeapon = p_hittedActor;
+        }
 
         // 무기 부속품일 시
         else if (p_hittedActor->IsA<ACoreAttachment>())
@@ -512,7 +519,7 @@ void ACustomPlayer::BeginShooting()
         mpWeaponManager->ClickEvent();
 
     // 투척류일 시 경로 예측
-    if (mpWeaponManager->CurrentWeaponType == THROWABLE)
+    if (mpWeaponManager->CurrentType == THROWABLE)
         mpWeaponManager->ClickEvent();
 }
 
@@ -528,7 +535,7 @@ void ACustomPlayer::EndShooting()
             mpWeaponManager->bShooting = false;
     }
     // 투척류 무기일 시 뗐을 때만 발동    
-    if (mpWeaponManager->CurrentWeaponType == THROWABLE)
+    if (mpWeaponManager->CurrentType == THROWABLE)
         mpWeaponManager->ThrowGrenade();
 }
 
@@ -561,7 +568,7 @@ void ACustomPlayer::ChangeShootMode()
     mpWeaponManager->ChangeShootMode();
 }
 
-void ACustomPlayer::CheckForWeapon(ECurrentWeaponType WeaponType /* = ECurrentWeaponType::NONE */, FString Direction /* = "" */)
+void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponType::NONE */, FString Direction /* = "" */)
 {
     ASoundManager* p_soundManager = nullptr;
     
@@ -579,7 +586,7 @@ void ACustomPlayer::CheckForWeapon(ECurrentWeaponType WeaponType /* = ECurrentWe
 
     // 키보드 숫자 키로 무기 선택
     if (WeaponType != NONE &&
-        WeaponType != mpWeaponManager->CurrentWeaponType &&
+        WeaponType != mpWeaponManager->CurrentType &&
         mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)
     {
         mpWeaponManager->Swap(WeaponType);

@@ -42,7 +42,7 @@ void ACoreBullet::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, cl
     mCollided = true;
 }
 
-void ACoreBullet::Init(EWeaponType Type)
+void ACoreBullet::Init(EGunType Type)
 {
     mWeaponData = ADataTableManager::GetWeaponData((int)Type);
     InitMesh();

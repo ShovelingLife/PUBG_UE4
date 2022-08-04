@@ -35,7 +35,7 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 {
 	GENERATED_BODY()
 
-using enum ECurrentWeaponType;
+using enum EWeaponType;
 using enum EGunShootType;
 
 private:
@@ -60,7 +60,7 @@ public:
     FDeleSetExplosiveUI DeleSetExplosiveUI;
     FVector2D    ScreenCenterPos;
 
-	ECurrentWeaponType CurrentWeaponType = NONE;    
+	EWeaponType CurrentType = NONE;    
 	bool  bArrWeaponEquipped[5]{ false };
 	bool  bShooting = false;
 
@@ -110,7 +110,7 @@ private:
 	 * \param StartIndex 시작 위치
 	 * \return e_current_weapon_type 현재 무기 타입
      */
-    ECurrentWeaponType GetWeaponIndex(FString Direction, int StartIndex) const;
+    EWeaponType GetWeaponIndex(FString Direction, int StartIndex) const;
 
     /**
      * \brief 무기를 플레이어 메시에 부착
@@ -129,11 +129,11 @@ private:
 
 	void PredictGrenadePath();
 
-    EGunShootType GetNextShootType(EGunShootType CurrentType, FString GroupType);
+    EGunShootType GetNextShootType(EGunShootType ShootType, FString GroupType);
 
     EGunShootType GetMaxShootType(FString WeaponGroup);
 
-    FString GetShootTypeStr(EGunShootType Type);
+    FString GetShootTypeStr(EGunShootType ShootType);
 
 public:
 	/**
@@ -170,10 +170,10 @@ public:
 	void SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName);
 
 	// 현재 착용 중인 무기랑 교체
-	void Swap(ECurrentWeaponType WeaponType, bool bScrolling = false);
+	void Swap(EWeaponType WeaponType, bool bScrolling = false);
 
 	// 반환값 = -1 에러 / 0 성공 / 1 근접 또는 투척 무기
-	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, ECurrentWeaponType WeaponType = NONE);
+	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, EWeaponType WeaponType = NONE);
 
 	/** \brief 착용 중인 무기를 체크함 */
 	void ChangeShootMode();
@@ -203,12 +203,12 @@ public:
      * \param WeaponType 무기 종류
      * \return 현재 착용 중인 무기
      */
-	ABaseInteraction* GetWeaponByIndex(ECurrentWeaponType WeaponType) const;
+	ABaseInteraction* GetWeaponByIndex(EWeaponType WeaponType) const;
 
 	ACoreWeapon* GetCurrentGun() const;
 
 	// 무기의 인덱스를 구함
-	ECurrentWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
+	EWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
 
 	// 무기의 종류를 구함
 	int GetWeaponType(ABaseInteraction* pWeapon) const;
@@ -219,11 +219,11 @@ public:
 	 * \brief 무기를 맵에다가 버림
 	 * \param WeaponType 버릴 무기 종류
 	 */
-	void Drop(ECurrentWeaponType WeaponType);
+	void Drop(EWeaponType WeaponType);
 
-	void SetNull(ECurrentWeaponType WeaponType);
+	void SetNull(EWeaponType WeaponType);
 
-	bool IsWrongType(ABaseInteraction* pWeapon, ECurrentWeaponType WeaponType, bool bFromWeaponSlot);
+	bool IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot);
 
 	void SetMeshToPlayerUI(TArray<AActor*> pArrActor);
 };

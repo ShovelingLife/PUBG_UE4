@@ -26,7 +26,7 @@ class PUBG_UE4_API ABaseInteraction : public AActor
 {
 	GENERATED_BODY()
 	
-using enum EWeaponType;
+using enum EGunType;
 using enum EThrowableWeaponType;
 using enum EMeleeWeaponType;
 

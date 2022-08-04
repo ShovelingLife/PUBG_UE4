@@ -2,5 +2,5 @@
 
 ACrossbow::ACrossbow()
 {
-    Init(EWeaponType::CROSSBOW);
+    Init(EGunType::CROSSBOW);
 }

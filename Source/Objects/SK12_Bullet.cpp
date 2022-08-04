@@ -2,5 +2,5 @@
 
 ASK12_Bullet::ASK12_Bullet()
 {
-    Init(EWeaponType::SK12);
+    Init(EGunType::SK12);
 }

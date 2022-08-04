@@ -32,7 +32,7 @@ class UI_PUBG_API UInventoryWeaponSlotUI : public UUserWidget
 {
     GENERATED_BODY()
         
-using enum ECurrentWeaponType;
+using enum EWeaponType;
 
 private:
     // 뒷배경 색상 관련
@@ -60,8 +60,8 @@ private:
     const int mkTotalPistolAttachmentUI = 3;
 
     // 플레이어 상호작용 하고있는 변수 관련
-    ECurrentWeaponType mSelectedWeaponIndex;
-    ECurrentWeaponType mDraggedWeaponIndex;
+    EWeaponType mSelectedWeaponIndex;
+    EWeaponType mDraggedWeaponIndex;
     bool               mbClicked = false;
 
 public:

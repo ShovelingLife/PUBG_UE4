@@ -14,7 +14,7 @@ class ACoreWeapon;
  * THROWABLE ÅõÃ´·ù \n
  */
 UENUM()
-enum class ECurrentWeaponType : uint8
+enum class EWeaponType : uint8
 {
     FIRST = 1,
     SECOND,
@@ -59,7 +59,7 @@ enum class ECurrentWeaponType : uint8
  * CROSSBOW / ÃÑ¾Ë °³¼ö : 10 \n
  */
 UENUM()
-enum class EWeaponType : uint8
+enum class EGunType : uint8
 {
     C7,
     LS80,

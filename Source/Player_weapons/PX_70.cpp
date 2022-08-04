@@ -2,5 +2,5 @@
 
 APX_70::APX_70()
 {
-    Init(EWeaponType::PX_70);
+    Init(EGunType::PX_70);
 }

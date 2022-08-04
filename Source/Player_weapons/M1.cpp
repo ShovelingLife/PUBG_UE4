@@ -2,5 +2,5 @@
 
 AM1::AM1()
 {
-    Init(EWeaponType::M1);
+    Init(EGunType::M1);
 }

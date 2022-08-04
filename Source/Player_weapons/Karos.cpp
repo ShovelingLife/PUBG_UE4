@@ -2,5 +2,5 @@
 
 AKaros::AKaros()
 {
-    Init(EWeaponType::KAROS);
+    Init(EGunType::KAROS);
 }

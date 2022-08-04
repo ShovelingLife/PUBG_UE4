@@ -2,5 +2,5 @@
 
 AEON_Bullet::AEON_Bullet()
 {
-    Init(EWeaponType::EON);
+    Init(EGunType::EON);
 }

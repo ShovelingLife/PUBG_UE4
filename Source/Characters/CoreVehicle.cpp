@@ -184,21 +184,30 @@ void ACoreVehicle::InitWheeledComp()
         !floatCurve.Succeeded())
         return;
 
-    FChaosWheelSetup arrCarWheels[4]{ FChaosWheelSetup() };
-    TMap< TSubclassOf<UChaosVehicleWheel>, FName> mapWheels
-    {
-        { bpFrontWheel.Class, "Wheel_Front_Left" },
-        { bpFrontWheel.Class, "Wheel_Front_Right"},
-        { bpRearWheel.Class,  "Wheel_Rear_Left"},
-        { bpRearWheel.Class,  "Wheel_Rear_Right"}
-    };
-    int idx = 0;
-    for (auto it = mapWheels.CreateConstIterator(); it; ++it)
-    {
-        arrCarWheels[idx].WheelClass = it->Key;
-        arrCarWheels[idx].BoneName = it->Value;
-        vehicleMoveComp->WheelSetups.Add(arrCarWheels[idx++]);
-    }
+    // 앞 좌측 바퀴
+    FChaosWheelSetup frontLeftWheelSetup;
+    frontLeftWheelSetup.WheelClass = bpFrontWheel.Class;
+    frontLeftWheelSetup.BoneName = "Wheel_Front_Left";
+    vehicleMoveComp->WheelSetups.Add(frontLeftWheelSetup);
+
+    // 앞 우측 바퀴
+    FChaosWheelSetup frontRightWheelSetup;
+    frontRightWheelSetup.WheelClass = bpFrontWheel.Class;
+    frontRightWheelSetup.BoneName = "Wheel_Front_Right";
+    vehicleMoveComp->WheelSetups.Add(frontRightWheelSetup);
+
+    // 뒤 좌측 바퀴
+    FChaosWheelSetup rearLeftWheelSetup;
+    rearLeftWheelSetup.WheelClass = bpRearWheel.Class;
+    rearLeftWheelSetup.BoneName = "Wheel_Rear_Left";
+    vehicleMoveComp->WheelSetups.Add(rearLeftWheelSetup);
+
+    // 뒤 우측 바퀴
+    FChaosWheelSetup rearRightWheelSetup;
+    rearRightWheelSetup.WheelClass = bpRearWheel.Class;
+    rearRightWheelSetup.BoneName = "Wheel_Rear_Right";
+    vehicleMoveComp->WheelSetups.Add(rearRightWheelSetup);
+
     vehicleMoveComp->EngineSetup.TorqueCurve.ExternalCurve = floatCurve.Object;
 }
 

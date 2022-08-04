@@ -36,7 +36,7 @@ class CHARACTERS_API ACustomPlayer : public ACharacter
 {
     GENERATED_BODY()
         
-using enum ECurrentWeaponType;
+using enum EWeaponType;
 using enum EPlayerState;
 
 private:
@@ -217,7 +217,7 @@ private:
     /** \brief 다섯번째 무기 장착 */
     void EquipFifthWeapon() { CheckForWeapon(THROWABLE); }
 
-    void CheckForWeapon(ECurrentWeaponType CurrentWeaponType = NONE, FString Direction = "");
+    void CheckForWeapon(EWeaponType CurrentWeaponType = NONE, FString Direction = "");
 
 public:
     /**

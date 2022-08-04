@@ -2,5 +2,5 @@
 
 AC7::AC7()
 {
-    Init(EWeaponType::C7);
+    Init(EGunType::C7);
 }

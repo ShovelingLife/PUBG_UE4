@@ -1,4 +1,5 @@
 #include "CoreFarmableItem.h"
+#include "TimerManager.h"
 
 ACoreFarmableItem::ACoreFarmableItem()
 {
@@ -9,11 +10,9 @@ ACoreFarmableItem::ACoreFarmableItem()
 void ACoreFarmableItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ACoreFarmableItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }

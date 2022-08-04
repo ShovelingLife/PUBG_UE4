@@ -15,7 +15,7 @@
 
 void UPlayerUI::UpdateCrosshairVisibility()
 {
-    using enum ECurrentWeaponType;
+    using enum EWeaponType;
 
     TArray<USizeBox*> arrSB_Crosshair
     {
@@ -28,7 +28,7 @@ void UPlayerUI::UpdateCrosshairVisibility()
     {
         if (auto pWeaponManager = pPlayer->GetWeaponManager())
         {
-            auto currentWeaponType = pWeaponManager->CurrentWeaponType;
+            auto currentWeaponType = pWeaponManager->CurrentType;
             auto visibility = (currentWeaponType == FIRST  ||
                                currentWeaponType == SECOND ||
                                currentWeaponType == PISTOL) ? ESlateVisibility::Visible : ESlateVisibility::Hidden;

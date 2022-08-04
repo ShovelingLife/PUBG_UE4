@@ -186,7 +186,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
         return false;
 
     // 무기 선택
-    ABaseInteraction* p_selectedWeapon = mpWeaponManager->GetWeaponByIndex((ECurrentWeaponType)mSelectedWeaponIndex);
+    ABaseInteraction* p_selectedWeapon = mpWeaponManager->GetWeaponByIndex((EWeaponType)mSelectedWeaponIndex);
     
     if (mpWeaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex) == -1)
         return false;
@@ -258,13 +258,13 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
         if (i < 3) // 총기류
         {
             if (mousePos.Y >= widgetPos.Y)
-                mSelectedWeaponIndex = (ECurrentWeaponType)(i + 1);
+                mSelectedWeaponIndex = (EWeaponType)(i + 1);
         }
         else // 투척류 또는 근접일 시 두 축으로 비교
         {
             if (mousePos.Y >= widgetPos.Y &&
                 mousePos.X >= widgetPos.X)
-                mSelectedWeaponIndex = (ECurrentWeaponType)(i + 1);
+                mSelectedWeaponIndex = (EWeaponType)(i + 1);
         }
     }
     return true;
@@ -515,13 +515,13 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
 void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 {
     // 선택된 무기 인덱스 구함
-    TArray<TPair<UImage*, ECurrentWeaponType>> arrWeaponImg
+    TArray<TPair<UImage*, EWeaponType>> arrWeaponImg
     {
-        TPair<UImage*, ECurrentWeaponType>{ FirstGunSlotImg,  FIRST },
-        TPair<UImage*, ECurrentWeaponType>{ SecondGunSlotImg, SECOND },
-        TPair<UImage*, ECurrentWeaponType>{ PistolSlotImg,    PISTOL },
-        TPair<UImage*, ECurrentWeaponType>{ MeleeSlotImg,     MELEE },
-        TPair<UImage*, ECurrentWeaponType>{ GrenadeSlotImg,   THROWABLE }
+        TPair<UImage*, EWeaponType>{ FirstGunSlotImg,  FIRST },
+        TPair<UImage*, EWeaponType>{ SecondGunSlotImg, SECOND },
+        TPair<UImage*, EWeaponType>{ PistolSlotImg,    PISTOL },
+        TPair<UImage*, EWeaponType>{ MeleeSlotImg,     MELEE },
+        TPair<UImage*, EWeaponType>{ GrenadeSlotImg,   THROWABLE }
     };
     // 총 무기 다섯칸 중 어느거 선택했는지 확인
     for (auto item : arrWeaponImg)
@@ -609,7 +609,7 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     }
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
     HighlightImg->SetVisibility(HIDDEN);
-    mSelectedWeaponIndex = ECurrentWeaponType::NONE;
+    mSelectedWeaponIndex = EWeaponType::NONE;
     mbClicked = false;
 }
 
@@ -643,7 +643,7 @@ void UInventoryWeaponSlotUI::SetSlotNull()
 {
     if (mpWeaponManager)
     {
-        mpWeaponManager->SetNull((ECurrentWeaponType)mDraggedWeaponIndex);
+        mpWeaponManager->SetNull((EWeaponType)mDraggedWeaponIndex);
         ResetHighlightImg();
         mDraggedWeaponIndex = NONE;
         mItemData.Reset();

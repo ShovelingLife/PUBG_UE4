@@ -54,15 +54,15 @@ void UCurrentWeaponUI::UpdateIconVisibility()
 void UCurrentWeaponUI::UpdateIconColor()
 {
     // 현재 선택된 무기
-    ECurrentWeaponType currentSelectedWeapon = pWeaponManager->CurrentWeaponType;
+    EWeaponType currentSelectedWeapon = pWeaponManager->CurrentType;
 
-    if (currentSelectedWeapon == ECurrentWeaponType::NONE)
+    if (currentSelectedWeapon == EWeaponType::NONE)
         return;
 
     // 선택 해제 및 탄알이 비어있을 시
     for (int i = 0; i < 3; i++)
     {
-        if (auto p_weapon = Cast<ACoreWeapon>(pWeaponManager->GetWeaponByIndex((ECurrentWeaponType)(i + 1))))
+        if (auto p_weapon = Cast<ACoreWeapon>(pWeaponManager->GetWeaponByIndex((EWeaponType)(i + 1))))
             pArrImg[i]->SetColorAndOpacity((p_weapon->WeaponData.CurrentBulletCount == 0) ? mkUnselectedNoAmmoColor : mkUnselectedColor);
     }
     pArrImg[3]->SetColorAndOpacity(mkUnselectedColor);

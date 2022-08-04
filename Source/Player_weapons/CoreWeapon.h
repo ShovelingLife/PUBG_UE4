@@ -39,7 +39,7 @@ public:
 
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;
-    EWeaponType   WeaponType = EWeaponType::GUN_MAX;
+    EGunType   WeaponType = EGunType::GUN_MAX;
     EGunShootType ShootType  = EGunShootType::SINGLE;
 
     // 부속품 관련 변수들
@@ -68,7 +68,7 @@ protected:
       * \brief 무기 초기화
       * \param 무기 종류
      */
-    void Init(EWeaponType WeaponType);
+    void Init(EGunType WeaponType);
 
     /** \brief 탄알 초기화 */
     void InitBullet();

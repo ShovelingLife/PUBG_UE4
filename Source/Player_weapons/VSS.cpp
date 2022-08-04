@@ -2,5 +2,5 @@
 
 AVSS::AVSS()
 {
-    Init(EWeaponType::VSS);
+    Init(EGunType::VSS);
 }

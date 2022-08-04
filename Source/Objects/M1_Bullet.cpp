@@ -2,5 +2,5 @@
 
 AM1_Bullet::AM1_Bullet()
 {
-    Init(EWeaponType::M1);
+    Init(EGunType::M1);
 }

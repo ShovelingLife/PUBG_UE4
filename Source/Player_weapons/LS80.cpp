@@ -2,5 +2,5 @@
 
 ALS80::ALS80()
 {
-    Init(EWeaponType::LS80);
+    Init(EGunType::LS80);
 }
