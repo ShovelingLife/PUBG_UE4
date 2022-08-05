@@ -45,19 +45,15 @@ public:
 
     TArray<USoundBase*> arrPlayerStateSound;
 
+public:
+    ASoundManager();
+
 private:
-    /**
-      * \brief 무기 오디오 초기화
-     */
+    /** \brief 무기 오디오 초기화 */
     void InitWeaponAudio();
 
-    /**
-      * \brief 플레이어 오디오 초기화
-     */
+    /** \brief 플레이어 오디오 초기화 */
     void InitPlayerAudio();
-
-public:	
-	ASoundManager();
 
 protected:
     virtual void BeginPlay() override;
@@ -71,7 +67,7 @@ public:
       */
     void PlayPlayerSound(UAudioComponent* AudioComp, EPlayerSoundType SoundType);
 
-    void PlayPlayerEffectSound(int);
+    void PlayPlayerEffectSound(int Index);
 
     /**
       * \brief 무기 오디오 재생
@@ -81,5 +77,5 @@ public:
       */
     void PlayGunSound(FVector Location, EWeaponSoundType SoundType, int WeaponIndex = 0);
 
-    USoundBase* GetExplosiveSoundBase(int) const;
+    USoundBase* GetExplosiveSoundBase(int Type) const;
 };

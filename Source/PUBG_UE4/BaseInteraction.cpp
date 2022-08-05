@@ -39,6 +39,41 @@ void ABaseInteraction::Tick(float DeltaTime)
         WidgetComp->SetVisibility((mCurrentTime > 0.25f));
     }
 }
+
+void ABaseInteraction::InitComponents()
+{
+    ColliderComp = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
+    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
+    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+    WidgetComp = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
+    ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
+}
+
+void ABaseInteraction::InitInteractionUI()
+{
+    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+        p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
+}
+
+void ABaseInteraction::AttachComponents()
+{
+    if (WidgetComp)
+        WidgetComp->SetupAttachment(RootComponent);
+
+    if (ParticleComp)
+        ParticleComp->SetupAttachment(RootComponent);
+}
+
+void ABaseInteraction::SetCollisionSettingsForObjects()
+{
+    if (ColliderComp)
+    {
+        this->SetRootComponent(ColliderComp);
+        ColliderComp->BodyInstance.SetCollisionProfileName("Object");
+        ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
+    }
+}
+
 void ABaseInteraction::InitStaticMesh(FString Path)
 {
     if (SkeletalMeshComp)
@@ -82,21 +117,6 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     SkeletalMeshComp->SetSimulatePhysics(false);
     SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
     AttachComponents();
-}
-
-void ABaseInteraction::InitComponents()
-{
-    ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
-    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
-    StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
-    WidgetComp       = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
-    ParticleComp     = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));    
-}
-
-void ABaseInteraction::InitInteractionUI()
-{
-    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
-        p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
 }
 
 UStaticMesh* ABaseInteraction::GetStaticMesh() const { return StaticMeshComp->GetStaticMesh(); }
@@ -209,24 +229,5 @@ void ABaseInteraction::InitParticleSystem(FString Path)
     {
         ParticleComp->SetTemplate(PARTICLE.Object);
         Particle = PARTICLE.Object;
-    }
-}
-
-void ABaseInteraction::AttachComponents()
-{
-    if (WidgetComp)
-        WidgetComp->SetupAttachment(RootComponent);
-    
-    if (ParticleComp)
-        ParticleComp->SetupAttachment(RootComponent);
-}
-
-void ABaseInteraction::SetCollisionSettingsForObjects()
-{
-    if (ColliderComp)
-    {
-        this->SetRootComponent(ColliderComp);
-        ColliderComp->BodyInstance.SetCollisionProfileName("Object");
-        ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
     }
 }

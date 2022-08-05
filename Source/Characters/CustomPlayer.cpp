@@ -32,7 +32,7 @@ ACustomPlayer::ACustomPlayer()
 {
     PrimaryActorTick.bCanEverTick = true;
     RootComponent = GetCapsuleComponent();
-    UpdatePlayerSettings();
+    InitPlayerSettings();
     InitCameraComp();
     InitMeshComp();
     InitAudioComp();
@@ -60,6 +60,7 @@ void ACustomPlayer::BeginPlay()
     }
     // UI용 캐릭터 생성
     pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
+    pDummyCharacter->SetOwner(this);
 }
 
 void ACustomPlayer::Tick(float DeltaTime)
@@ -107,7 +108,7 @@ void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
     InputComponent->BindAction(FName(TEXT("Inventory")),         IE_Pressed,  this, &ACustomPlayer::OpenInventory);
 }
 
-void ACustomPlayer::UpdatePlayerSettings()
+void ACustomPlayer::InitPlayerSettings()
 {
     // 플레이어 설정
     auto characterMovement = GetCharacterMovement();
@@ -369,47 +370,6 @@ void ACustomPlayer::TryToInteract()
     }
 }
 
-void ACustomPlayer::MoveForwardBack(float Value)
-{
-    if (!bAnimationPlaying)
-        AddMovementInput(GetActorForwardVector() * ((CurrentState == INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
-
-    mpWeaponManager->UpdateGrenadePath();
-}
-
-void ACustomPlayer::MoveLeftRight(float Value)
-{
-    if (!bAnimationPlaying)
-        AddMovementInput(GetActorRightVector() * ((CurrentState == INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
-
-    mpWeaponManager->UpdateGrenadePath();
-}
-
-void ACustomPlayer::LookUp(float Value)
-{
-    if (!mbInventoryOpened)
-        AddControllerPitchInput(Value);
-
-    // 경로 거리 설정
-    if (mpWeaponManager)
-    {
-        auto grenadeDir = mpWeaponManager->GrenadeDirection;
-        auto target     = (Value / 10.f) + grenadeDir;
-        auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDir, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
-        mpWeaponManager->GrenadeDirection = interptVal;
-        mpWeaponManager->UpdateGrenadePath();
-    }
-}
-
-void ACustomPlayer::Turn(float _Value)
-{
-    if (!mbInventoryOpened)
-        AddControllerYawInput(_Value);
-
-    if (mpWeaponManager)
-        mpWeaponManager->UpdateGrenadePath();
-}
-
 void ACustomPlayer::CustomJump()
 {
     if (CurrentState == CROUCH  ||
@@ -481,6 +441,47 @@ void ACustomPlayer::EndSprint()
     CurrentState = IDLE;
     mSprintMultiplier = 1;
     GetCharacterMovement()->MaxWalkSpeed = 350.f;
+}
+
+void ACustomPlayer::MoveForwardBack(float Value)
+{
+    if (!bAnimationPlaying)
+        AddMovementInput(GetActorForwardVector() * ((CurrentState == INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
+
+    mpWeaponManager->UpdateGrenadePath();
+}
+
+void ACustomPlayer::MoveLeftRight(float Value)
+{
+    if (!bAnimationPlaying)
+        AddMovementInput(GetActorRightVector() * ((CurrentState == INJURED) ? (Value / 4) : (Value * mSprintMultiplier)));
+
+    mpWeaponManager->UpdateGrenadePath();
+}
+
+void ACustomPlayer::LookUp(float Value)
+{
+    if (!mbInventoryOpened)
+        AddControllerPitchInput(Value);
+
+    // 경로 거리 설정
+    if (mpWeaponManager)
+    {
+        auto grenadeDir = mpWeaponManager->GrenadeDirection;
+        auto target = (Value / 10.f) + grenadeDir;
+        auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDir, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
+        mpWeaponManager->GrenadeDirection = interptVal;
+        mpWeaponManager->UpdateGrenadePath();
+    }
+}
+
+void ACustomPlayer::Turn(float _Value)
+{
+    if (!mbInventoryOpened)
+        AddControllerYawInput(_Value);
+
+    if (mpWeaponManager)
+        mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::OpenInventory()
@@ -594,28 +595,13 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
     }
 }
 
-void ACustomPlayer::ExitFromVehicle(FVector ExitPos)
-{
-    // 플레이어 충돌체 관련
-    auto capsuleComp = GetCapsuleComponent();
-    capsuleComp->SetMobility(EComponentMobility::Movable);
-    capsuleComp->SetCollisionProfileName("Pawn");
-    capsuleComp->SetEnableGravity(true);
-
-    // 플레이어 위치 및 카메라 위치
-    CurrentSeatType = ESeatType::NONE;
-    bInVehicle      = false;
-    SetActorLocation(ExitPos);
-    TPS_SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
-    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-}
-
+// UFUNCTION()
 void ACustomPlayer::DealDmg(float DmgVal)
 {
     // 예시) 현재 HP 50 / 받은 데미지 75 = 추가 HP 25만큼 차감
     auto extraDmgVal = CurrentHealth - DmgVal;
 
-    if(extraDmgVal < 0)
+    if (extraDmgVal < 0)
     {
         CurrentHealth = 0.f;
         CurrentInjuredHealth -= extraDmgVal;
@@ -627,4 +613,20 @@ void ACustomPlayer::DealDmg(float DmgVal)
 ACoreWeapon* ACustomPlayer::GetCurrentWeapon()
 {
     return (mpWeaponManager) ? mpWeaponManager->GetCurrentGun() : nullptr;
+}
+
+void ACustomPlayer::ExitFromVehicle(FVector ExitPos)
+{
+    // 플레이어 충돌체 관련
+    auto capsuleComp = GetCapsuleComponent();
+    capsuleComp->SetMobility(EComponentMobility::Movable);
+    capsuleComp->SetCollisionProfileName("Pawn");
+    capsuleComp->SetEnableGravity(true);
+
+    // 플레이어 위치 및 카메라 위치
+    CurrentSeatType = ESeatType::NONE;
+    bInVehicle = false;
+    SetActorLocation(ExitPos);
+    TPS_SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }

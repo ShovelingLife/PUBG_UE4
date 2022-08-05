@@ -43,7 +43,7 @@ void ACoreWeapon::Tick(float DeltaTime)
             auto deleGetBulletCount = p_customGameInst->DeleGetBulletCount;
 
             if (deleGetBulletCount.IsBound())
-                WeaponData.CurrentBulletCount = p_customGameInst->DeleGetBulletCount.Execute(WeaponData.BulletType);
+                WeaponData.BulletCount = p_customGameInst->DeleGetBulletCount.Execute(WeaponData.BulletType);
         }
     }
 }
@@ -51,7 +51,7 @@ void ACoreWeapon::Tick(float DeltaTime)
 void ACoreWeapon::Init(EGunType Type)
 {
     WeaponData = ADataTableManager::GetWeaponData((int)Type);
-    WeaponData.CurrentBulletCount = WeaponData.MaxBulletCount;
+    WeaponData.BulletCount = WeaponData.BulletLimitCount;
     WeaponType = Type;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;

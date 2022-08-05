@@ -200,7 +200,7 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
 
     if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
     {   
-        p_gun->WeaponData.CurrentMaxBulletCount = 0;
+        p_gun->WeaponData.MaxBulletCount = 0;
         p_gun->bInInventory = false;
     }
 }
@@ -393,10 +393,10 @@ void AWeaponManager::ClickEvent()
         auto weaponData = p_gun->WeaponData;
 
         // 총알 부족한지 확인
-        if (weaponData.CurrentBulletCount == 0)
+        if (weaponData.BulletCount == 0)
         {
             // 총알이 하나라도 존재할 시
-            if (weaponData.CurrentMaxBulletCount > 0)
+            if (weaponData.MaxBulletCount > 0)
                 Reload();
 
             else
@@ -457,9 +457,9 @@ void AWeaponManager::Reload()
     {
         PlaySound(EWeaponSoundType::RELOAD);
         auto& weaponData = p_gun->WeaponData;
-        int result = (weaponData.CurrentBulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.CurrentBulletCount) : p_gun->WeaponData.MaxBulletCount;
-        weaponData.MaxBulletCount     -= result;
-        weaponData.CurrentBulletCount += result;
+        int result = (weaponData.BulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.BulletCount) : p_gun->WeaponData.MaxBulletCount;
+        weaponData.MaxBulletCount -= result;
+        weaponData.BulletCount += result;
         mbReloading = true;
     }
 }

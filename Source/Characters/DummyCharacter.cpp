@@ -27,9 +27,9 @@ void ADummyCharacter::BeginPlay()
     Super::BeginPlay();
     this->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
     mArrActorToShow.Add(this);
-    InitWeaponUI();
     DummySkeletalMeshComp->SetOwnerNoSee(true);
     SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
+    InitWeaponUI();
 }
 
 void ADummyCharacter::Tick(float DeltaTime)

@@ -110,37 +110,6 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
         Particle = PARTICLE.Object;
 }
 
-void ACoreThrowableWeapon::BindExplosionFunc()
-{
-    switch (WeaponType)
-    {
-    case ILLUMINATION:
-
-        mCallBack.BindLambda([this]()
-            {
-                float distance  = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-                float startTime = (distance >= 300.f) ? 2.5f : 0.f;
-                float waitTime  = (startTime == 0.f) ? 5.f : 2.5f;
-
-                if (mpCustomGameInstance)
-                    mpCustomGameInstance->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
-            });
-        break;
-
-    case STICK:
-    case FRAGMENTATION1:
-    case FRAGMENTATION2:
-    case CLAYMORE:
-
-        mCallBack.BindLambda([this]()
-            {
-                if (mpCustomGameInstance)
-                    mpCustomGameInstance->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);
-            });
-        break;
-    }
-}
-
 void ACoreThrowableWeapon::InitProjectileMovementComp()
 {
     if (WeaponType == CLAYMORE)
@@ -207,6 +176,37 @@ void ACoreThrowableWeapon::InitRadialForce()
     RadialForceComp->Deactivate();
 }
 
+void ACoreThrowableWeapon::BindExplosionFunc()
+{
+    if (!mpCustomGameInstance)
+        return;
+
+    switch (WeaponType)
+    {
+    case ILLUMINATION:
+
+        mExplosionEvent.BindLambda([this]()
+            {
+                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+                float startTime = (distance >= 300.f) ? 2.5f : 0.f;
+                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
+                mpCustomGameInstance->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
+            });
+        break;
+
+    case STICK:
+    case FRAGMENTATION1:
+    case FRAGMENTATION2:
+    case CLAYMORE:
+
+        mExplosionEvent.BindLambda([this]()
+            {
+                mpCustomGameInstance->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);
+            });
+        break;
+    }
+}
+
 bool ACoreThrowableWeapon::IsPlayerInRadius()
 {
     // 충돌 감지할 오브젝트 설정
@@ -231,6 +231,7 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
 
     DestroyComponentsForUI();
 
+    // 메쉬 설정
     if (SkeletalMeshComp)
         SkeletalMeshComp->DestroyComponent();
 
@@ -284,7 +285,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
             }
             // 효과 재생
             if (IsPlayerInRadius())
-                mCallBack.ExecuteIfBound();
+                mExplosionEvent.ExecuteIfBound();
 
             // 이펙트 재생 
             if (WeaponType == GRAY_SMOKE ||

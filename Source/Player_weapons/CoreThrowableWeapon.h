@@ -36,20 +36,19 @@ private:
     FTimerHandle mWaitHandle;
     bool mbPlayed = false;
 
-public:
-    FVector GrenadeEndPos;
-    bool bThrowed = false;
-
 protected:
-    FDeleExplosionEvent mCallBack;
+    FDeleExplosionEvent mExplosionEvent;
 
 public:
-    UPROPERTY(EditAnywhere, category = Collider) class USphereComponent* SphereComp;
+    UPROPERTY(EditAnywhere, category = Collider) USphereComponent* SphereComp;
     UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
     UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
     UPROPERTY(EditAnywhere) URadialForceComponent* RadialForceComp;
     FsOtherWeaponData    WeaponData;
-	EThrowableWeaponType WeaponType = THROWABLE_MAX;
+    EThrowableWeaponType WeaponType = THROWABLE_MAX;
+
+    FVector GrenadeEndPos;
+    bool bThrowed = false;
 
 public:
     ACoreThrowableWeapon();
@@ -82,8 +81,8 @@ protected:
     /** \brief 파티클 시스템 생성 */
     virtual void InitParticleSystem(FString Path = "") override;
 
-    /** \brief 함수 포인터에 이벤트 바인딩 */
-    void BindExplosionFunc();
+protected:
+    // ------- 초기화 함수 모음 -------
 
     /** \brief 이동 컴포넌트 초기화 */
     void InitProjectileMovementComp();
@@ -94,6 +93,11 @@ protected:
     void InitSphereComp();
 
     void InitRadialForce();
+
+    /** \brief 함수 포인터에 이벤트 바인딩 */
+    void BindExplosionFunc();
+
+    // 그 외 함수
 
     /** \brief 플레이어와 투척류 간 거리 계산= */
     bool IsPlayerInRadius();

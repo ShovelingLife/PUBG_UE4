@@ -2,8 +2,6 @@
 #include "CoreMinimal.h"
 #include "WeaponEnum.generated.h"
 
-class ACoreWeapon;
-
 /**
  * \brief 현재 착용 중인 무기 \n
  *

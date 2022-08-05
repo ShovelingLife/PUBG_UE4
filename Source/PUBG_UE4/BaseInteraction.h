@@ -15,11 +15,12 @@
 #include "BaseInteraction.generated.h"
 
 class UBoxComponent;
+class UParticleSystemComponent;
 class USceneComponent;
 class USkeletalMeshComponent;
 class UStaticMeshComponent;
+class UTexture;
 class UWidgetComponent;
-class UParticleSystemComponent;
 
 UCLASS()
 class PUBG_UE4_API ABaseInteraction : public AActor
@@ -46,7 +47,7 @@ public:
     int     UI_index        = 0;
     bool    bPlayerNear     = false;
 
-    UPROPERTY() class UTexture* CurrentItemTex;
+    UPROPERTY() UTexture* CurrentItemTex;
 
 public:
     ABaseInteraction();
@@ -64,6 +65,16 @@ protected:
     virtual void Tick(float DeltaTime) override;
 
 protected:
+    /** \brief 오디오 컴포넌트 초기화 */
+    void InitComponents();
+
+    /** \brief 상호작용 UI 초기화 */
+    void InitInteractionUI();
+
+    void AttachComponents();
+
+    void SetCollisionSettingsForObjects();
+
     /**
       * \brief 스태틱 메시 컴포넌트 초기화 (무기,아이템)
       * \param Path 메시 경로
@@ -76,21 +87,11 @@ protected:
      */
     void InitSkeletalMesh(FString Path);
 
-    /** \brief 오디오 컴포넌트 초기화 */
-    void InitComponents();
-
-    /** \brief 상호작용 UI 초기화 */
-    void InitInteractionUI();
-
     /**
       * \brief 파티클 시스템 초기화
       * \param Path 파티클 경로
      */
     virtual void InitParticleSystem(FString Path = "");
-
-    void AttachComponents();
-
-    void SetCollisionSettingsForObjects();
 
 public:
     // ------- 게터 세터 -------
@@ -102,6 +103,7 @@ public:
 
     void SetSkeletalMesh(USkeletalMesh* Mesh);
 
+    // ------- 그 외 함수들 -------
     void DestroyComponentsForUI();
 
     void SetForDummyCharacter();

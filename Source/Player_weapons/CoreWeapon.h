@@ -39,7 +39,7 @@ public:
 
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;
-    EGunType   WeaponType = EGunType::GUN_MAX;
+    EGunType      WeaponType = EGunType::GUN_MAX;
     EGunShootType ShootType  = EGunShootType::SINGLE;
 
     // 부속품 관련 변수들

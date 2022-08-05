@@ -103,7 +103,7 @@ private:
 // 초기화 함수들
 private:
     /** \brief 플레이어에 대한 정보 갱신 */
-    void UpdatePlayerSettings();
+    void InitPlayerSettings();
 
     /** \brief 카메라 컴포넌트 초기화 */
     void InitCameraComp();
@@ -138,24 +138,6 @@ private:
 
     /** \brief F키를 뗐을 시 */
     void EndInteract()   { mbInteracting = false; }
-  
-    /** \brief 앞 뒤로 움직임 */
-    void MoveForwardBack(float);
-
-    /** \brief 좌 우로 움직임 */
-    void MoveLeftRight(float);
-
-    /**
-     * \brief 위 아래 카메라 전환
-     * \param _value 카메라 회전 값
-     */
-    void LookUp(float Value);
-
-    /**
-     * \brief 좌우 카메라 전환
-     * \param _value 카메라 회전 값
-     */
-    void Turn(float Value);
 
     /** \brief 점프 */
     void CustomJump();
@@ -171,6 +153,24 @@ private:
 
     /** \brief 뛰다 멈춤 */
     void EndSprint();
+
+    /** \brief 앞 뒤로 움직임 */
+    void MoveForwardBack(float Value);
+
+    /** \brief 좌 우로 움직임 */
+    void MoveLeftRight(float Value);
+
+    /**
+     * \brief 위 아래 카메라 전환
+     * \param _value 카메라 회전 값
+     */
+    void LookUp(float Value);
+
+    /**
+     * \brief 좌우 카메라 전환
+     * \param _value 카메라 회전 값
+     */
+    void Turn(float Value);
 
     // ------- UI 관련 -------
 
@@ -220,17 +220,17 @@ private:
     void CheckForWeapon(EWeaponType CurrentWeaponType = NONE, FString Direction = "");
 
 public:
+    UFUNCTION() void DealDmg(float DmgVal);
+
+    UFUNCTION() void SetOtherState(EPlayerOtherState OtherState) { this->CurrentOtherState = OtherState; }
+
+    AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
+
+    ACoreWeapon* GetCurrentWeapon();
+
     /**
      * \brief 플레이어가 차량에서 나감
      * \param _exit_location 나가는 위치
      */
     void ExitFromVehicle(FVector ExitLocation);
-
-    AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
-
-    UFUNCTION() void DealDmg(float DmgVal);
-
-    UFUNCTION() void SetOtherState(EPlayerOtherState OtherState) { this->CurrentOtherState = OtherState; }
-
-    ACoreWeapon* GetCurrentWeapon();
 };

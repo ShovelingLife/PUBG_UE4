@@ -1,4 +1,4 @@
-,Type,GroupType,BulletType,MeshPath,IconPath,SlotIconPath,BulletMeshPath,MagMeshPath,ColliderSize,ColliderPos,MaxBulletCount,Damage,bUnderlined
+,Type,GroupType,BulletType,MeshPath,IconPath,SlotIconPath,BulletMeshPath,MagMeshPath,ColliderSize,ColliderPos,BulletLimitCount,Damage,bUnderlined
 1,C7,AssaultGun,5_45,C7_Assault_Xaxis,C7_Icon,Gun_03_c_Mat,5_56x45mm_01,C7_Mag,"(x=0,y=0,z=0)","(x=0,y=0,z=0)",30,,1
 2,LS80,AssaultGun,5_46,LS80_Assault_Xaxis,LS80_Icon,Gun_02_c_Mat,5_56x45mm_01,LS80_Mag,,,30,,1
 3,M1,AssaultGun,7_62,M1_Assault_Xaxis,M1_Icon,Gun_02_b_Mat,7_62x51mm_01,M1_Mag,,,30,,1

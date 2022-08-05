@@ -45,13 +45,11 @@ void ADataTableManager::InitVehicleData()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> VEHICLE_DATA_TABLE(TEXT("/Game/Data/VEHICLE_DATA_TABLE"));
-    UDataTable* pWeaponDataTable = nullptr;
 
-    if (VEHICLE_DATA_TABLE.Succeeded())
-        pWeaponDataTable = VEHICLE_DATA_TABLE.Object;
-
-    if (!pWeaponDataTable)
+    if (!VEHICLE_DATA_TABLE.Succeeded())
         return;
+
+    UDataTable* pWeaponDataTable = VEHICLE_DATA_TABLE.Object;
 
     // 모든 이름 가져오기
     TArray<FName> arrRowName = pWeaponDataTable->GetRowNames();
@@ -82,13 +80,11 @@ void ADataTableManager::InitWeaponData()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_DATA_TABLE(TEXT("/Game/Data/WEAPON_DATA_TABLE"));
-    UDataTable* pWeaponDataTable = nullptr;
 
-    if (WEAPON_DATA_TABLE.Succeeded())
-        pWeaponDataTable = WEAPON_DATA_TABLE.Object;
-
-    if (!pWeaponDataTable)
+    if (!WEAPON_DATA_TABLE.Succeeded())
         return;
+
+    UDataTable* pWeaponDataTable = WEAPON_DATA_TABLE.Object;
 
     // 모든 이름 가져오기
     TArray<FName> arrRowName = pWeaponDataTable->GetRowNames();
@@ -115,14 +111,12 @@ void ADataTableManager::InitWeaponData()
 void ADataTableManager::InitOtherWeaponData()
 {
     // CSV 로드
-    ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));
-    UDataTable* pWeaponDataTable = nullptr;
+    ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));    
 
-    if (OTHER_WEAPON_DATA_TABLE.Succeeded())
-        pWeaponDataTable = OTHER_WEAPON_DATA_TABLE.Object;
-
-    if (!pWeaponDataTable)
+    if (!OTHER_WEAPON_DATA_TABLE.Succeeded())
         return;
+
+    UDataTable* pWeaponDataTable = OTHER_WEAPON_DATA_TABLE.Object;
 
     // 모든 이름 가져오기
     TArray<FName> arrRowName = pWeaponDataTable->GetRowNames();
@@ -146,13 +140,11 @@ void ADataTableManager::InitWeaponAttachmentData()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_ATTACHMENT_DATA_TABLE(TEXT("/Game/Data/WEAPON_ATTACHMENT_DATA_TABLE"));
-    UDataTable* pWeaponDataTable = nullptr;
 
-    if (WEAPON_ATTACHMENT_DATA_TABLE.Succeeded())
-        pWeaponDataTable = WEAPON_ATTACHMENT_DATA_TABLE.Object;
-
-    if (!pWeaponDataTable)
+    if (!WEAPON_ATTACHMENT_DATA_TABLE.Succeeded())
         return;
+
+    UDataTable* pWeaponDataTable = WEAPON_ATTACHMENT_DATA_TABLE.Object;
 
     // 모든 이름 가져오기
     TArray<FName> arrRowName = pWeaponDataTable->GetRowNames();
@@ -186,14 +178,12 @@ void ADataTableManager::InitWeaponAttachmentData()
 void ADataTableManager::InitWeaponBulletData()
 {
     // CSV 로드
-    ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_ATTACHMENT_DATA_TABLE(TEXT("/Game/Data/WEAPON_BULLET_DATA_TABLE"));
-    UDataTable* pWeaponDataTable = nullptr;
+    ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_ATTACHMENT_DATA_TABLE(TEXT("/Game/Data/WEAPON_BULLET_DATA_TABLE"));    
 
-    if (WEAPON_ATTACHMENT_DATA_TABLE.Succeeded())
-        pWeaponDataTable = WEAPON_ATTACHMENT_DATA_TABLE.Object;
-
-    if (!pWeaponDataTable)
+    if (!WEAPON_ATTACHMENT_DATA_TABLE.Succeeded())
         return;
+
+    UDataTable* pWeaponDataTable = WEAPON_ATTACHMENT_DATA_TABLE.Object;
 
     // 모든 이름 가져오기
     TArray<FName> arrRowName = pWeaponDataTable->GetRowNames();

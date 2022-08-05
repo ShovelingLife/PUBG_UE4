@@ -4,7 +4,7 @@
 #include "Engine/DataTable.h"
 #include "WeaponBulletData.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FsWeaponBulletData : public FTableRowBase
 {
     GENERATED_BODY()

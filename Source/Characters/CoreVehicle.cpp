@@ -324,6 +324,15 @@ void ACoreVehicle::SetPlayerIntoSeat()
 
 void ACoreVehicle::UpdatePlayerSeatLocation(ESeatType SeatType)
 {
+    if (!mpPlayer)
+        return;
+
+    if (SeatType == THIRD ||
+        SeatType == FOURTH)
+    {
+        if (mVehicleData.MaxSeater == 2)
+            return;
+    }
     // 플레이어가 지면을 뚫고 내려갈 수 있으므로 이동 가능 설정 후 즉시 불가능으로 설정
     auto p_playerCollider = mpPlayer->GetCapsuleComponent();
     p_playerCollider->SetMobility(EComponentMobility::Movable);

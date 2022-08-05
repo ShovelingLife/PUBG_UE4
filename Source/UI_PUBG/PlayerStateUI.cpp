@@ -39,8 +39,8 @@ void UPlayerStateUI::UpdateBulletCountUI(ABaseInteraction* pWeapon)
     if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
     {
         auto weaponData = p_gun->WeaponData;
-        MagazineCurrentTxt->SetText(FText::FromString(FString::FromInt(weaponData.CurrentBulletCount)));
-        MagazineTotalTxt->SetText(FText::FromString(FString::FromInt(weaponData.MaxBulletCount)));
+        MagazineCurrentTxt->SetText(FText::FromString(FString::FromInt(weaponData.BulletCount)));
+        MagazineTotalTxt->SetText(FText::FromString(FString::FromInt(weaponData.BulletLimitCount)));
     }
 }
 

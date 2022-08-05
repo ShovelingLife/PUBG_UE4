@@ -47,9 +47,9 @@ struct FsVehicleData : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = VehicleData) FVector SeatCameraLocation4 = FVector::ZeroVector;
 
     /** \brief 기타 테이터 */
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   MaxSeater       = 0;
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   Durability      = 0;
-    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int   Speed           = 0;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int MaxSeater  = 0;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int Durability = 0;
+    UPROPERTY(BlueprintReadWrite, Category = VehicleData) int Speed      = 0;
 
     FString AnimInstancePath = "";
     std::pair<FVector, FVector> ArrPlayerSeatPos[4];

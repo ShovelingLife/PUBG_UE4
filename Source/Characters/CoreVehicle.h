@@ -17,11 +17,11 @@
 
 class ACustomPlayer;
 class APawn;
+
 class USpringArmComponent;
 class UCameraComponent;
-class UWidgetComponent;
-
 class UInstaDeformComponent;
+class UWidgetComponent;
 
 UCLASS()
 class CHARACTERS_API ACoreVehicle : public AWheeledVehiclePawn
@@ -29,9 +29,6 @@ class CHARACTERS_API ACoreVehicle : public AWheeledVehiclePawn
 using enum ESeatType;
 
     GENERATED_BODY()
-
-private:
-    const int mDoorCount = 4;
 
 protected:
     /** \brief 차량 관련 컴포넌트들 */
@@ -158,16 +155,16 @@ protected:
     void UpdatePlayerSeatLocation(ESeatType SeatType);
 
     /** \brief 첫번째 좌석으로 이동 */
-    void ChangeToFirstSeat() { if (!mpPlayer) return;  UpdatePlayerSeatLocation(FIRST); }
+    void ChangeToFirstSeat() { UpdatePlayerSeatLocation(FIRST); }
 
     /** \brief 두번째 좌석으로 이동 */
-    void ChangeToSecondSeat() { if (!mpPlayer) return; UpdatePlayerSeatLocation(SECOND); }
+    void ChangeToSecondSeat() { UpdatePlayerSeatLocation(SECOND); }
 
     /** \brief 세번째 좌석으로 이동 */
-    void ChangeToThirdSeat() { if (mVehicleData.MaxSeater == 2 || !mpPlayer) return; UpdatePlayerSeatLocation(THIRD); }
+    void ChangeToThirdSeat() { UpdatePlayerSeatLocation(THIRD); }
 
     /** \brief 네번째 좌석으로 이동 */
-    void ChangeToFourthSeat() { if (mVehicleData.MaxSeater == 2 || !mpPlayer) return; UpdatePlayerSeatLocation(FOURTH); }
+    void ChangeToFourthSeat() { UpdatePlayerSeatLocation(FOURTH); }
     
 public:
     /**

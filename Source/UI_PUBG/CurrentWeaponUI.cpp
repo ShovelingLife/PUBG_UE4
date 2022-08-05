@@ -63,7 +63,7 @@ void UCurrentWeaponUI::UpdateIconColor()
     for (int i = 0; i < 3; i++)
     {
         if (auto p_weapon = Cast<ACoreWeapon>(pWeaponManager->GetWeaponByIndex((EWeaponType)(i + 1))))
-            pArrImg[i]->SetColorAndOpacity((p_weapon->WeaponData.CurrentBulletCount == 0) ? mkUnselectedNoAmmoColor : mkUnselectedColor);
+            pArrImg[i]->SetColorAndOpacity((p_weapon->WeaponData.BulletCount == 0) ? mkUnselectedNoAmmoColor : mkUnselectedColor);
     }
     pArrImg[3]->SetColorAndOpacity(mkUnselectedColor);
     pArrImg[4]->SetColorAndOpacity(mkUnselectedColor);
@@ -77,7 +77,7 @@ void UCurrentWeaponUI::UpdateIconColor()
         if (p_weapon->IsA<ACoreWeapon>())
         {
             auto p_gun = Cast<ACoreWeapon>(p_weapon);
-            currentBulletCount = p_gun->WeaponData.CurrentBulletCount;
+            currentBulletCount = p_gun->WeaponData.BulletCount;
         }
         else if (p_weapon->IsA<ACoreMeleeWeapon>() ||
                  p_weapon->IsA<ACoreThrowableWeapon>())

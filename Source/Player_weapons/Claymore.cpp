@@ -3,9 +3,5 @@
 
 AClaymore::AClaymore() : Super(EThrowableWeaponType::CLAYMORE)
 {
-    mCallBack.BindLambda([&]()
-        {
-            if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
-                p_customGameInst->DeleDealPlayerDmg.ExecuteIfBound(WeaponData.Damage);
-        });
+
 }

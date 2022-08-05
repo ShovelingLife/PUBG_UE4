@@ -18,7 +18,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = RenderedActors) TArray<AActor*> mArrActorToShow;
 
 public:
-	UPROPERTY(EditAnywhere, Category = Mesh)		 USkeletalMeshComponent*	 DummySkeletalMeshComp;
+	UPROPERTY(EditAnywhere, Category = Mesh)		 USkeletalMeshComponent*   DummySkeletalMeshComp;
     UPROPERTY(EditAnywhere, Category = SceneCapture) USceneCaptureComponent2D* SceneCaptureComp;
 
 public:
@@ -34,7 +34,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-
+	// ------- 생성 관련 함수 -------
 	void InitMeshComp();
 
 	void InitAnimInstance();
