@@ -36,7 +36,7 @@ using enum EWeaponType;
 
 private:
     // 뒷배경 색상 관련
-    const FLinearColor mkHighlightColor = FLinearColor(1.f, 1.f, 1.f, 1.f),
+    const FLinearColor mkHighlightColor = FLinearColor(FColor::White),
                        mkNormalColor    = FLinearColor(0.f, 0.f, 0.f, 0.25f);
 
     /** \brief 현재 쓰여지는 변수 */
@@ -62,7 +62,7 @@ private:
     // 플레이어 상호작용 하고있는 변수 관련
     EWeaponType mSelectedWeaponIndex;
     EWeaponType mDraggedWeaponIndex;
-    bool               mbClicked = false;
+    bool        mbClicked = false;
 
 public:
     /** \brief 선택 UI 관련 */
@@ -193,6 +193,8 @@ private:
 
     void UpdateAttachmentSlot();
 
+    TArray<UTexture*> GetAttachmentTexArr(ACoreWeapon* pWeapon) const;
+
     void UpdateInventoryWeaponUI();
 
     void CheckForHoveredWeaponSlot();
@@ -207,7 +209,7 @@ private:
     void ResetHighlightImg();
 
     // 문자열에 따라 해당되는 부속품 슬롯 인덱스를 반환
-    int GetAttachmentSlotIndex(FString AttachmentType);
+    int GetAttachmentSlotIndex(FString AttachmentType) const;
 
 public:
     // 슬롯 초기화

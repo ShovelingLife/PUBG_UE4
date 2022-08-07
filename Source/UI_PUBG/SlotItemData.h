@@ -9,14 +9,14 @@ struct FsSlotItemData
     GENERATED_BODY()
 
 public:
+    static const FsSlotItemData EmptyData;
+
     FString Name        = "";
     FString Category    = "";
     FString Description = "";
     int     ImageIndex  = 0;
     int     Capacity    = 0;
     int     Count       = 0;
-
-    static const FsSlotItemData EmptyData;
 
 public:
     FsSlotItemData() = default;
@@ -29,7 +29,7 @@ public:
      */
     FsSlotItemData(FString Name, FString Category, FString Description, int ImageIndex, int Capacity = 0,  int Count = 1) : Name(Name), Category(Category), Description(Description), ImageIndex(ImageIndex), Capacity(Capacity),  Count(Count) { }
 
-    bool operator==(FsSlotItemData& _Other)
+    bool operator==(const FsSlotItemData& _Other)
     {
         return this->Name        == _Other.Name        &&
                this->Category    == _Other.Category    &&
@@ -39,21 +39,12 @@ public:
                this->Count       == _Other.Count;
     }
 
-    bool operator!=(FsSlotItemData& Other) { return !(*this == Other); }
-
-
+    bool operator!=(const FsSlotItemData& Other) { return !(*this == Other); }
 
 public:
-    void Reset()
-    {
-        *this = FsSlotItemData::EmptyData;
-    }
+    void Reset() { *this = FsSlotItemData::EmptyData; }
 
-    bool IsEmpty()
-    {
-        FsSlotItemData emptyData = FsSlotItemData::EmptyData;
-        return *this == emptyData;
-    }
+    bool IsEmpty() { return *this == FsSlotItemData::EmptyData; }
 
     static FsSlotItemData GetDataFrom(class ABaseInteraction* pObj);
 };

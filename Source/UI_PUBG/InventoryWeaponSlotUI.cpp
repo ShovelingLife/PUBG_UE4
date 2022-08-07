@@ -380,102 +380,86 @@ void UInventoryWeaponSlotUI::SetWeaponSlotVisibility()
 void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
 {
     // 총기 부착물 UI 갱신
+    auto firstGunAttachmentTexArr  = GetAttachmentTexArr(mpWeaponManager->pFirstGun);
+    auto secondGunAttachmentTexArr = GetAttachmentTexArr(mpWeaponManager->pSecondGun);
+    auto pistolAttachmentTexArr    = GetAttachmentTexArr(mpWeaponManager->pPistol);
+
     for (int i = 0; i < mkTotalGunAttachmentUI; i++)
     {
         // 첫번째 무기
+        if (!firstGunAttachmentTexArr.IsEmpty())
         {
-            TArray<UTexture*> arrAttachmentTex;
-            ACoreBarrel*      p_barrel = nullptr;
-            ACoreGrip*        p_grip   = nullptr;
-            ACoreForend*      p_forend = nullptr;
-            ACoreStock*       p_stock  = nullptr;
-            ACoreSight*       p_scope  = nullptr;
-
-            // 텍스처 설정
-            if (auto p_firstGun = mpWeaponManager->pFirstGun)
-            {
-                p_barrel = p_firstGun->CurrentBarrel;
-                p_grip   = p_firstGun->CurrentGrip;
-                p_forend = p_firstGun->CurrentForend;
-                p_stock  = p_firstGun->CurrentStock;
-                p_scope  = p_firstGun->CurrentSight;
-            }
-            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
-            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex   : nullptr);
-            arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex  : nullptr);
-            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
-
             // 뒷배경
             if (auto p_firstGunAttachmentBorder = mArrFirstGunAttachmentBorder[i])
                 p_firstGunAttachmentBorder->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
 
             // 아이템 UI
             if (auto p_firstGunAttachmentUI = mArrFirstGunAttachmentUI[i])
-                p_firstGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
+                p_firstGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(firstGunAttachmentTexArr[i]));
         }
         // 두번째 무기
         {
-            TArray<UTexture*> arrAttachmentTex;
-            ACoreBarrel*      p_barrel = nullptr;
-            ACoreGrip*        p_grip   = nullptr;
-            ACoreForend*      p_forend = nullptr;
-            ACoreStock*       p_stock  = nullptr;
-            ACoreSight*       p_scope  = nullptr;
-
-            // 텍스처 설정
-            if (auto p_secondGun = mpWeaponManager->pSecondGun)
+            if (!secondGunAttachmentTexArr.IsEmpty())
             {
-                p_barrel = p_secondGun->CurrentBarrel;
-                p_grip   = p_secondGun->CurrentGrip;
-                p_forend = p_secondGun->CurrentForend;
-                p_stock  = p_secondGun->CurrentStock;
-                p_scope  = p_secondGun->CurrentSight;
+                // 뒷배경
+                if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
+                    p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
+
+                // 아이템 UI
+                if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
+                    p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(secondGunAttachmentTexArr[i]));
             }
-            arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
-            arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex   : nullptr);
-            arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-            arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex  : nullptr);
-            arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
-
-            // 뒷배경
-            if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
-                p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
-
-            // 아이템 UI
-            if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
-                p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
         }
         // 세번쨰 무기
         {
-            if(i<mkTotalPistolAttachmentUI)
+            if (i < mkTotalPistolAttachmentUI)
             {
-                TArray<UTexture*> arrAttachmentTex;
-                ACoreBarrel* p_barrel = nullptr;
-                ACoreForend* p_forend = nullptr;
-                ACoreSight* p_scope = nullptr;
-
-                // 텍스처 설정
-                if (auto p_pistol = mpWeaponManager->pFirstGun)
+                if (!pistolAttachmentTexArr.IsEmpty())
                 {
-                    p_barrel = p_pistol->CurrentBarrel;
-                    p_forend = p_pistol->CurrentForend;
-                    p_scope = p_pistol->CurrentSight;
+                    // 뒷배경
+                    if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
+                        p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
+
+                    // 아이템 UI
+                    if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
+                        p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(pistolAttachmentTexArr[i]));
                 }
-                arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
-                arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-                arrAttachmentTex.Add((p_scope) ? p_scope->CurrentItemTex : nullptr);
-
-                // 뒷배경
-                if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
-                    p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
-
-                // 아이템 UI
-                if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
-                    p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(arrAttachmentTex[i]));
             }
         }
     }
+}
+
+TArray<UTexture*> UInventoryWeaponSlotUI::GetAttachmentTexArr(ACoreWeapon* pWeapon) const
+{
+    TArray<UTexture*> arrAttachmentTex;
+    ACoreBarrel*      p_barrel = nullptr;
+    ACoreGrip*        p_grip = nullptr;
+    ACoreForend*      p_forend = nullptr;
+    ACoreSight*       p_scope = nullptr;
+    ACoreStock*       p_stock = nullptr;
+
+    // 텍스처 설정
+    if (pWeapon == mpWeaponManager->pFirstGun ||
+        pWeapon == mpWeaponManager->pSecondGun)
+    {
+        p_barrel = pWeapon->CurrentBarrel;
+        p_grip   = pWeapon->CurrentGrip;
+        p_forend = pWeapon->CurrentForend;
+        p_stock  = pWeapon->CurrentStock;
+        p_scope  = pWeapon->CurrentSight;
+    }
+    else if (pWeapon == mpWeaponManager->pPistol)
+    {
+        p_barrel = pWeapon->CurrentBarrel;
+        p_forend = pWeapon->CurrentForend;
+        p_scope  = pWeapon->CurrentSight;
+    }
+    arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
+    arrAttachmentTex.Add((p_grip) ? p_grip->CurrentItemTex : nullptr);
+    arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
+    arrAttachmentTex.Add((p_stock) ? p_stock->CurrentItemTex : nullptr);
+    arrAttachmentTex.Add((p_scope) ? p_scope->CurrentItemTex : nullptr);
+    return arrAttachmentTex;
 }
 
 void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
@@ -613,7 +597,7 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     mbClicked = false;
 }
 
-int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType)
+int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType) const
 {
     int index = -1;
 

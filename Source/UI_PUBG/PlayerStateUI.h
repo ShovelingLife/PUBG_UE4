@@ -28,7 +28,6 @@ class UI_PUBG_API UPlayerStateUI : public UUserWidget
 	GENERATED_BODY()
 	
 private:
-    UTexture2D* mCrossHairTex = nullptr;
     float mCurrentTime = 0.f;
 
 public:
@@ -74,4 +73,6 @@ public:
 
     /** \brief 산소 바 UI 갱신 */
     void UpdateOxygenBarUI(float DeltaTime);
+
+    void DealDmg(FString Type);
 };

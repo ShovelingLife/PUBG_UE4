@@ -57,7 +57,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairBottom;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairLeft;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_CrosshairRight;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* CrosshairCenterImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*   CrosshairCenterImg;
 
     FTimerHandle TCrosshairHandle;
     UPROPERTY(EditAnywhere, category = "CrosshairVar") float TestVel   = 0.f;

@@ -17,7 +17,7 @@ void UNotificationTextUI::NativeOnListItemObjectSet(UObject* ListItemObject)
     // ListView에서 아이템 추가할 때마다 설정
     if (auto p_obj = Cast<UNotificationTextUI>(ListItemObject))
     {
-        mbForcefullyEnd = false;
+        mbErase = false;
         TxtStr = p_obj->TxtStr;
         DeleDeleteNotificationTextUI = p_obj->DeleDeleteNotificationTextUI;
         NotificationTxt->SetColorAndOpacity(FSlateColor(FLinearColor(1.f, 1.f, 1.f, 1.f)));
@@ -31,14 +31,14 @@ void UNotificationTextUI::NativeOnEntryReleased()
     // ListView에서 삭제 후 애니메이션이 진행 중일 시 멈춤
     if (this->IsAnimationPlaying(FadeAnim))
     {
-        mbForcefullyEnd = true;
+        mbErase = true;
         this->StopAnimation(FadeAnim);
     }
 }
 
 UFUNCTION() void UNotificationTextUI::DeleteNotificationText()
 {
-    if (mbForcefullyEnd)
+    if (mbErase)
         return;
 
     DeleDeleteNotificationTextUI.ExecuteIfBound(this);    

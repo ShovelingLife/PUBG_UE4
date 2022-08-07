@@ -54,7 +54,7 @@ private:
     UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
 
     /** * \brief 메인 플레이어 UI 리소스 경로명 */
-    const TArray<FString> mkArrPlayerUI_TexPath 
+    const TArray<FString> mkArrShootType 
     {
         "SingleShot",
         "BurstShot",
@@ -68,11 +68,19 @@ public:
 public:
     AUI_manager();
 
+public:
+    static UTexture2D* GetTexture2D(FsSlotItemData ItemData);
+
+    static UTexture2D* GetTexture2D(int Index, FString Type = "");
+
+    static UMaterial* GetMaterial(int Index);
+
 protected:
     virtual void BeginPlay() override;
 
-// 생성자 내 초기화 함수
 private:
+    // ------- 초기화 관련 -------
+
     void BindDelegate();
 
     /** \brief 상호작용 UI 초기화 */
@@ -107,7 +115,7 @@ public:
     void SetPlayerUI();
 
     /** \brief 미구현 상태 */
-    void Set_weapon_UI();
+    void SetWeaponUI();
 
 public:
     /** \brief 상호작용 UI 업데이트 (델리게이트) */
@@ -116,10 +124,4 @@ public:
     UFUNCTION() void RunEffectAnim(float StartTime, float WaitTime, EPlayerStateAnimType Type);
 
     UFUNCTION() void KillAnim();
-
-    static UTexture2D* GetTexture2D(FsSlotItemData ItemData);
-
-    static UTexture2D* GetTexture2D(int Index, FString Type = "");
-
-    static UMaterial* GetMaterial(int Index);
 };

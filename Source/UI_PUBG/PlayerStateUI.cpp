@@ -73,7 +73,7 @@ void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
         return;
     }
     float currentHealth = pPlayer->CurrentHealth;
-    float maxHealth = pPlayer->kMaxHealth;
+    float maxHealth     = pPlayer->kMaxHealth;
 
     // 현재 HP 설정
     if (currentHealth > 0.f)
@@ -81,13 +81,7 @@ void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
         // 화상 타이머 설정
         if (pPlayer->CurrentOtherState == EPlayerOtherState::BURNED)
         {
-            mCurrentTime += DeltaTime;
-
-            if (mCurrentTime >= 0.5f)
-            {
-                pPlayer->CurrentHealth -= 2.5f;
-                mCurrentTime = 0.f;
-            }
+            DealDmg("HP");
             p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(0.f, 3.f, EPlayerStateAnimType::BURNED);
         }
         HP_bar->SetPercent(currentHealth / maxHealth);
@@ -98,13 +92,7 @@ void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
         HP_bar->SetVisibility(ESlateVisibility::Hidden);
 
         // 부상 타이머 설정
-        mCurrentTime += DeltaTime;
-
-        if (mCurrentTime >= 0.5f)
-        {
-            pPlayer->CurrentInjuredHealth -= 2.5f;
-            mCurrentTime = 0.f;
-        }
+        DealDmg("ExtraHP");
         p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(0.f, 3.f, EPlayerStateAnimType::INJURED);
         Injured_HP_bar->SetPercent(pPlayer->CurrentInjuredHealth / maxHealth);
     }
@@ -125,4 +113,20 @@ void UPlayerStateUI::UpdateOxygenBarUI(float DeltaTime)
             pPlayer->CurrentOxygen += (DeltaTime * 0.03);
     }
     OxygenBar->SetPercent(pPlayer->CurrentOxygen);
+}
+
+void UPlayerStateUI::DealDmg(FString Type)
+{
+    mCurrentTime += UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
+
+    if (mCurrentTime >= 0.5f)
+    {
+        if      (Type == "HP")
+                 pPlayer->CurrentHealth -= 2.5f;
+
+        else if (Type == "ExtraHP")
+                 pPlayer->CurrentInjuredHealth -= 2.5f;
+
+        mCurrentTime = 0.f;
+    }
 }

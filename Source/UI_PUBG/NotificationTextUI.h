@@ -16,7 +16,7 @@ class UI_PUBG_API UNotificationTextUI : public UUserWidget, public IUserObjectLi
 	GENERATED_BODY()
 
 private:
-	bool mbForcefullyEnd = false;
+	bool mbErase = false;
 	
 public:
 	FDeleDeleteNotificationTextUI DeleDeleteNotificationTextUI;
