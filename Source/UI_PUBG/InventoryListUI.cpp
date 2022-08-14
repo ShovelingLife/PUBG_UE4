@@ -28,7 +28,7 @@ void UInventoryListUI::NativeConstruct()
     GetItemListWidth();
 
     // 인벤토리에 아이템 추가되는 함수 바인딩
-    if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
         p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
 
     pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
@@ -112,7 +112,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_dragOperation->pSlotUI           = p_slot;
     p_dragOperation->DefaultDragVisual = p_slot;
     p_dragOperation->Pivot             = EDragPivot::MouseDown;
-    p_dragOperation->bFromInventoryList = true;
+    p_dragOperation->bInventoryList = true;
     OutOperation  = p_dragOperation;
 }
 

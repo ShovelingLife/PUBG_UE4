@@ -12,6 +12,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "WeaponEnum.h"
+#include "WeaponInterface.h"
 #include "BaseInteraction.generated.h"
 
 class UBoxComponent;
@@ -23,7 +24,7 @@ class UTexture;
 class UWidgetComponent;
 
 UCLASS()
-class PUBG_UE4_API ABaseInteraction : public AActor
+class PUBG_UE4_API ABaseInteraction : public AActor, public IWeaponInterface
 {
 	GENERATED_BODY()
 	
@@ -54,6 +55,9 @@ public:
 
 public:
     virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
+    // 클릭 이벤트
+    virtual void ClickEvent() override { };
 
 protected:
     virtual void BeginPlay() override;

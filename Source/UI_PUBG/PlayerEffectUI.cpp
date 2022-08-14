@@ -58,7 +58,7 @@ void UPlayerEffectUI::PlayAnim(float StartTime, float WaitTime, EPlayerStateAnim
             ScheduleDestroyAnim(WaitTime - 0.05f);
         }
     }
-    if(auto p_customGameInst=Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
     {
         if (auto p_soundManager = p_customGameInst->pSoundManager)
             p_soundManager->PlayPlayerEffectSound(index);

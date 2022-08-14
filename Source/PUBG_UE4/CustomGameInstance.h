@@ -31,11 +31,17 @@ DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
+// 무기 관련 델리게이트
+DECLARE_DELEGATE(FDelePredictGrenadePath)
+
 /** \brief 게임 인스턴스 클래스 */
 UCLASS()
 class PUBG_UE4_API UCustomGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+
+private:
+    static UCustomGameInstance* inst;
 
 public:
     /** \brief 전역 변수 */
@@ -49,6 +55,12 @@ public:
     FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
     FDeleRunEffectAnim               DeleRunEffectAnim;
     FDeleKillUI_Anim DeleKillUI_Anim;
+
+    FDelePredictGrenadePath DelePredictGrenadePath;
+
+// 싱글톤 생성
+public:
+    static UCustomGameInstance* GetInst() { return inst; }
 
 public:
     UCustomGameInstance();

@@ -13,6 +13,7 @@
 #include "PUBG_UE4/BaseInteraction.h"
 #include "Objects/CoreBullet.h"
 #include "PUBG_UE4/WeaponEnum.h"
+#include "PUBG_UE4/MyEnum.h"
 #include "PUBG_UE4/DataTableManager.h"
 #include "CoreWeapon.generated.h"
 
@@ -27,12 +28,26 @@ class ACoreForend;
 class ACoreGrip;
 class ACoreSight;
 class ACoreStock;
+class UCustomGameInstance;
 
 UCLASS()
 class PLAYER_WEAPONS_API ACoreWeapon : public ABaseInteraction
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
+using enum EGunShootType;
+using enum EWeaponSoundType;
+
+private:
+    FTimerHandle mTimerHandle;
+
+    const float	mkReloadTime = 2.f;
+    float mCurrentReloadTime = 0.f;
+    float mCurrentShootTime  = 0.f;
+    int	  mBurstCount		 = 0;
+    bool  mbReloading		 = false;
+	bool  mbChangedShootType = true;
+
 public:
     // 총알 관련
     UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
@@ -50,9 +65,13 @@ public:
     UPROPERTY(VisibleAnywhere) ACoreStock*  CurrentStock  = nullptr;
 
     bool bInInventory = false;
+    bool  bShooting = false;
 
 public:
     ACoreWeapon();
+
+public:
+    virtual void ClickEvent() final;
 
 protected:
     virtual void BeginPlay() override;
@@ -75,4 +94,27 @@ protected:
 
     /** \brief 파티클 시스템 갱신 */
     void UpdateParticleSystem();
+
+    void PlaySound(EWeaponSoundType SoundType);
+
+    /**
+     * \brief 재장전 중인지 확인
+     * \param TranscurredTime 현재 재장전으로부터 초과한 시간
+     */
+    void CheckReloading(float DeltaTime);
+
+    void FireBullet();
+
+    void ResetBurstCount();
+
+public:
+    void Reload();
+
+    void ChangeShootMode();
+
+    EGunShootType GetNextShootType() const;
+
+    EGunShootType GetMaxShootType() const;
+
+    FString GetShootTypeStr() const;
 };

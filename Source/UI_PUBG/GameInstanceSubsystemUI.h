@@ -20,7 +20,7 @@ class UI_PUBG_API UGameInstanceSubsystemUI : public UGameInstanceSubsystem
 	GENERATED_BODY()
 	
 private:
-	UPROPERTY() TSubclassOf< AUI_manager> UImanagerClass;
+	UPROPERTY() TSubclassOf<AUI_manager> mUImanagerClass;
 
 public:
     UPROPERTY() AUI_manager* pUImanager;

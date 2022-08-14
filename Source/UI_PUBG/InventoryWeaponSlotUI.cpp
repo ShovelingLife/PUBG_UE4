@@ -158,7 +158,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         p_customOperation->pSlotUI = p_slot;
         p_customOperation->DefaultDragVisual = p_slot;
         p_customOperation->Pivot = EDragPivot::MouseDown;
-        p_customOperation->bFromWeaponSlot = true;
+        p_customOperation->bWeaponSlot = true;
         OutOperation = p_customOperation;
     }
 }
@@ -182,7 +182,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     auto p_draggedWeapon = p_slot->pDraggedItem;
 
     // 맞지 않는 슬롯에 위치시킬 시
-    if (mpWeaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bFromWeaponSlot))
+    if (mpWeaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bWeaponSlot))
         return false;
 
     // 무기 선택
@@ -204,15 +204,15 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     }
     else
     {
-        if (!p_customOperation->bFromInventoryList)
+        if (!p_customOperation->bInventoryList)
             p_slot->DeleSwapWeaponSlot.ExecuteIfBound(p_slot);
 
         else
             p_slot->DeleSwapInventoryExplosive.ExecuteIfBound(Cast<ACoreThrowableWeapon>(p_selectedWeapon), Cast<ACoreThrowableWeapon>(p_draggedWeapon));
     }
-    p_customOperation->bFromInventoryList = false;
-    p_customOperation->bFromWeaponSlot    = false;
-    p_customOperation->pSlotUI            = p_slot;
+    p_customOperation->bInventoryList = false;
+    p_customOperation->bWeaponSlot    = false;
+    p_customOperation->pSlotUI        = p_slot;
     return true;
 }
 
@@ -398,32 +398,28 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
                 p_firstGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(firstGunAttachmentTexArr[i]));
         }
         // 두번째 무기
+        if (!secondGunAttachmentTexArr.IsEmpty())
         {
-            if (!secondGunAttachmentTexArr.IsEmpty())
-            {
-                // 뒷배경
-                if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
-                    p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
+            // 뒷배경
+            if (auto p_secondGunAttachmentBorder = mArrSecondGunAttachmentBorder[i])
+                p_secondGunAttachmentBorder->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
 
-                // 아이템 UI
-                if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
-                    p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(secondGunAttachmentTexArr[i]));
-            }
+            // 아이템 UI
+            if (auto p_secondGunAttachmentUI = mArrSecondGunAttachmentUI[i])
+                p_secondGunAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(secondGunAttachmentTexArr[i]));
         }
         // 세번쨰 무기
+        if (i < mkTotalPistolAttachmentUI)
         {
-            if (i < mkTotalPistolAttachmentUI)
+            if (!pistolAttachmentTexArr.IsEmpty())
             {
-                if (!pistolAttachmentTexArr.IsEmpty())
-                {
-                    // 뒷배경
-                    if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
-                        p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
+                // 뒷배경
+                if (auto p_pistolAttachmentBorder = mArrPistolAttachmentBorder[i])
+                    p_pistolAttachmentBorder->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
 
-                    // 아이템 UI
-                    if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
-                        p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(pistolAttachmentTexArr[i]));
-                }
+                // 아이템 UI
+                if (auto p_pistolAttachmentUI = mArrFirstGunAttachmentUI[i])
+                    p_pistolAttachmentUI->ItemImg->SetBrushFromTexture(Cast<UTexture2D>(pistolAttachmentTexArr[i]));
             }
         }
     }
@@ -431,34 +427,24 @@ void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
 
 TArray<UTexture*> UInventoryWeaponSlotUI::GetAttachmentTexArr(ACoreWeapon* pWeapon) const
 {
+
     TArray<UTexture*> arrAttachmentTex;
-    ACoreBarrel*      p_barrel = nullptr;
-    ACoreGrip*        p_grip = nullptr;
-    ACoreForend*      p_forend = nullptr;
-    ACoreSight*       p_scope = nullptr;
-    ACoreStock*       p_stock = nullptr;
+
+    if (!pWeapon)
+        return arrAttachmentTex;
+
+    ACoreBarrel* p_barrel = pWeapon->CurrentBarrel;
+    ACoreGrip*   p_grip   = pWeapon->CurrentGrip;
+    ACoreForend* p_forend = pWeapon->CurrentForend;
+    ACoreSight*  p_scope  = pWeapon->CurrentSight;
+    ACoreStock*  p_stock  = pWeapon->CurrentStock;
 
     // 텍스처 설정
-    if (pWeapon == mpWeaponManager->pFirstGun ||
-        pWeapon == mpWeaponManager->pSecondGun)
-    {
-        p_barrel = pWeapon->CurrentBarrel;
-        p_grip   = pWeapon->CurrentGrip;
-        p_forend = pWeapon->CurrentForend;
-        p_stock  = pWeapon->CurrentStock;
-        p_scope  = pWeapon->CurrentSight;
-    }
-    else if (pWeapon == mpWeaponManager->pPistol)
-    {
-        p_barrel = pWeapon->CurrentBarrel;
-        p_forend = pWeapon->CurrentForend;
-        p_scope  = pWeapon->CurrentSight;
-    }
     arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
-    arrAttachmentTex.Add((p_grip) ? p_grip->CurrentItemTex : nullptr);
+    arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex   : nullptr);
     arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-    arrAttachmentTex.Add((p_stock) ? p_stock->CurrentItemTex : nullptr);
-    arrAttachmentTex.Add((p_scope) ? p_scope->CurrentItemTex : nullptr);
+    arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex  : nullptr);
+    arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
     return arrAttachmentTex;
 }
 
@@ -542,19 +528,21 @@ void UInventoryWeaponSlotUI::CheckForHoveredAttachmentSlot()
         }
         else
             secondAttachmentBorder->SetBrushColor(mkNormalColor);
-    }
-    // 세번째 무기 부속품 UI 슬롯 확인
-    for (int i = 0; i < mkTotalPistolAttachmentUI; i++)
-    {
-        auto pistolAttachmentBorder = mArrPistolAttachmentBorder[i];
 
-        if (pistolAttachmentBorder->IsHovered())
+        // 세번째 무기 부속품 UI 슬롯 확인
+        if (i < mkTotalPistolAttachmentUI)
         {
-            pistolAttachmentBorder->SetBrushColor(mkHighlightColor);
-            mSelectedWeaponIndex = PISTOL;
+            auto pistolAttachmentBorder = mArrPistolAttachmentBorder[i];
+
+            if (pistolAttachmentBorder->IsHovered())
+            {
+                pistolAttachmentBorder->SetBrushColor(mkHighlightColor);
+                mSelectedWeaponIndex = PISTOL;
+            }
+            else
+                pistolAttachmentBorder->SetBrushColor(mkNormalColor);
         }
-        else
-            pistolAttachmentBorder->SetBrushColor(mkNormalColor);
+
     }
 }
 
@@ -662,7 +650,7 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
         auto matchType      = attachmentData.WeaponMatchType;
         int index = GetAttachmentSlotIndex(groupType);
 
-        // 전체 무기 착용 가능함
+        // 여러 무기들이 착용 가능할 경우
         if (matchType == "All")
         {
             mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
@@ -671,11 +659,13 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
             if (index < mkTotalPistolAttachmentUI)
                 mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);
         }
+        // 특정 여러 무기들이 착용 가능할 경우
         else
         {
             // , 기준으로 문자열을 잘라냄 
             auto arrString = UKismetStringLibrary::ParseIntoArray(matchType, ",");
             
+            // 각 무기 타입 순회
             for (auto matchStr : arrString)
             {
                 for (int i = 0; i < mArrWeapon.Num(); i++)
@@ -684,9 +674,11 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
                     {
                         auto data = p_gun->WeaponData;
 
+                        // 타입 또는 무기 종료 일치할 시
                         if (data.Type      == matchStr ||
                             data.GroupType == matchStr)
                         {
+                            // 선택 색상을 입힘
                             switch (i)
                             {
                             case 0: mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);  break;

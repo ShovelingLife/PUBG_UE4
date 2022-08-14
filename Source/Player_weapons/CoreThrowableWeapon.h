@@ -18,8 +18,6 @@
 
 DECLARE_DELEGATE(FDeleExplosionEvent)
 
-class UCustomGameInstance;
-
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
 class URadialForceComponent;
@@ -32,7 +30,6 @@ class PLAYER_WEAPONS_API ACoreThrowableWeapon : public ABaseInteraction
 	GENERATED_BODY()
 
 private:
-    UPROPERTY(VisibleAnywhere) UCustomGameInstance* mpCustomGameInstance = nullptr;
     FTimerHandle mWaitHandle;
     bool mbPlayed = false;
 
@@ -72,6 +69,8 @@ public:
     UFUNCTION() void EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
     virtual void BeginDestroy() override;
+
+    virtual void ClickEvent() final;
 
 protected:
     virtual void BeginPlay() override;

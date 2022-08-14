@@ -1,6 +1,9 @@
 ﻿#include "CustomGameInstance.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 #include "SoundManager.h"
+
+UCustomGameInstance* UCustomGameInstance::inst;
 
 UCustomGameInstance::UCustomGameInstance()
 {
@@ -9,6 +12,9 @@ UCustomGameInstance::UCustomGameInstance()
 
 void UCustomGameInstance::OnStart()
 { 
-    if (auto p_World = GetWorld())
-        pSoundManager = p_World->SpawnActor<ASoundManager>(ASoundManager::StaticClass());
+    if (auto p_world = GetWorld())
+    {
+        pSoundManager = p_world->SpawnActor<ASoundManager>(ASoundManager::StaticClass());
+        UCustomGameInstance::inst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(p_world));
+    }
 }

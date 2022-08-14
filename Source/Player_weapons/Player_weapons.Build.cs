@@ -8,6 +8,6 @@ public class Player_weapons : ModuleRules
         CppStandard = CppStandardVersion.Cpp20;
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "PUBG_UE4", "Farmable_items", "Objects" });
-        PrivateDependencyModuleNames.AddRange(new string[] {  });
+        PrivateDependencyModuleNames.AddRange(new string[] { "InputCore" });
     }
 }

@@ -5,7 +5,6 @@
 #include "DrawDebugHelpers.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
-#include "PUBG_UE4/SoundManager.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -14,7 +13,6 @@
 #include "Components/SplineMeshComponent.h" 
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/PlayerController.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -43,15 +41,14 @@ void AWeaponManager::BeginPlay()
         if (GrenadeEndPoint)
             GrenadeEndPoint->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
     }
-    mpGameInst = Cast< UCustomGameInstance>(GetWorld()->GetGameInstance());
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
+        p_customGameInst->DelePredictGrenadePath.BindUFunction(this, "PredictGrenadePath");
 }
 
 void AWeaponManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
     UpdateCurrentWeaponArr();
-    CheckReloading(DeltaTime);
-    CheckShooting(DeltaTime);
 }
 
 void AWeaponManager::CheckForEquippedWeapon()
@@ -94,29 +91,90 @@ void AWeaponManager::UpdateCurrentWeaponArr()
          bArrWeaponEquipped[i] = (p_arrCurrentWeapon[i] != nullptr);
 }
 
-void AWeaponManager::PlaySound(EWeaponSoundType SoundType)
+void AWeaponManager::PredictGrenadePath()
 {
-    TArray< ABaseInteraction*> p_arrCurrentWeapon
+    auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+    if (!SplineComp ||
+        !p_player)
+        return;
+
+    mbThrowingGrenade = true;
+    // 투척류 예측 경로 데이터 설정
+    FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSock");
+    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * GrenadeDirection * 1500.f;
+    FPredictProjectilePathParams predictParams(50.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
+    predictParams.bTraceWithCollision = true;
+    predictParams.SimFrequency = 15.f;
+    predictParams.OverrideGravityZ = 0.f;
+    FPredictProjectilePathResult result;
+    UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, result);
+    mGrenadeVelocity = predictParams.LaunchVelocity;
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("Num : %d, Launch Velocity : %s"), result.PathData.Num(), *predictParams.LaunchVelocity.ToString()));
+
+    // 경로 지정
+    for (int i = 0; i < result.PathData.Num(); i++)
+        SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
+
+    for (int i = 0; i < SplineComp->GetNumberOfSplinePoints(); i++)
     {
-        pFirstGun,
-        pSecondGun,
-        pPistol,
-        pMelee,
-        pThrowable
-    };
-    if (CurrentType != NONE)
-    {
-        int index = ((int)CurrentType) - 1;
-        
-        if (mpGameInst)
+        // 라인 메쉬 생성
+        // 특이사항) 컴포넌트들은 NewObject으로 생성 가능하나 UI와 달리 하나의 엑터라고 볼 수가 있음
+        // 따라서 StaticClass()으로 해줌으로서 엑터 오브젝트라는걸 명시해야됨.
+        if (auto splineMeshComp = NewObject<USplineMeshComponent>(GetWorld(), USplineMeshComponent::StaticClass()))
         {
-            if (auto p_soundManager = mpGameInst->pSoundManager)
-            {
-                if (auto p_weapon = p_arrCurrentWeapon[index])
-                    p_soundManager->PlayGunSound(p_weapon->GetActorLocation(), SoundType, GetWeaponType(p_weapon));
-            }   
+            splineMeshComp->SetMobility(EComponentMobility::Movable);
+            splineMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            splineMeshComp->AttachToComponent(SplineComp, FAttachmentTransformRules::KeepRelativeTransform);
+            splineMeshComp->RegisterComponentWithWorld(GetWorld());
+
+            // 위치 설정
+            //splineMeshComp->SetRelativeTransform(FTransform::Identity);
+            FVector startPos, startTangent, endPos, endTangent;
+            SplineComp->GetLocationAndTangentAtSplinePoint(i, startPos, startTangent, ESplineCoordinateSpace::World);
+            SplineComp->GetLocationAndTangentAtSplinePoint(i + 1, endPos, endTangent, ESplineCoordinateSpace::World);
+            splineMeshComp->SetStartAndEnd(startPos, startTangent, endPos, endTangent);
+
+            // 비쥬얼 설정
+            splineMeshComp->SetForwardAxis(ESplineMeshAxis::Z);
+            splineMeshComp->SetStartScale(FVector2D(0.02f));
+            splineMeshComp->SetEndScale(FVector2D(0.02f));
+            splineMeshComp->SetStartOffset(FVector2D::ZeroVector);
+            splineMeshComp->SetEndOffset(FVector2D::ZeroVector);
+            splineMeshComp->SetStaticMesh(PathMesh);
+            splineMeshComp->SetMaterial(0, PathMat);
+            splineMeshComp->SetVisibility(true);
+            arrSplineMeshComp.Add(splineMeshComp);
         }
     }
+    // 도착 지점에 생성 및 설정
+    if (GrenadeEndPoint)
+    {
+        auto endPos = result.LastTraceDestination.Location;
+        GrenadeEndPoint->SetHidden(false);
+        GrenadeEndPoint->SetActorRelativeLocation(endPos);
+
+        if (pThrowable)
+            pThrowable->GrenadeEndPos = endPos;
+    }
+}
+
+EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
+{
+    TMap<ABaseInteraction*, EWeaponType> arrWeaponKeyType
+    {
+        { pFirstGun,  FIRST},
+        { pSecondGun, SECOND},
+        { pPistol,    PISTOL},
+        { pMelee,     MELEE},
+        { pThrowable, THROWABLE}
+    };
+    for (auto item : arrWeaponKeyType)
+    {
+        if (pWeapon == item.Key)
+            return item.Value;
+    }
+    return NONE;
 }
 
 EWeaponType AWeaponManager::GetWeaponIndex(FString Direction, int StartIndex) const
@@ -205,263 +263,10 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
     }
 }
 
-void AWeaponManager::PredictGrenadePath()
-{
-    auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-
-    if (!SplineComp ||
-        !p_player)
-        return;
-
-    mbThrowingGrenade = true;
-    // 투척류 예측 경로 데이터 설정
-    FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSock");
-    FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * GrenadeDirection * 1500.f;
-    FPredictProjectilePathParams predictParams(50.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
-    predictParams.bTraceWithCollision = true;
-    predictParams.SimFrequency = 15.f;
-    predictParams.OverrideGravityZ = 0.f;
-    FPredictProjectilePathResult result;
-    UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, result);
-    mGrenadeVelocity = predictParams.LaunchVelocity;
-    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("Num : %d, Launch Velocity : %s"), result.PathData.Num(), *predictParams.LaunchVelocity.ToString()));
-    
-    // 경로 지정
-    for (int i = 0; i < result.PathData.Num(); i++)
-        SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
-
-    for (int i = 0; i < SplineComp->GetNumberOfSplinePoints(); i++)
-    {
-        // 라인 메쉬 생성
-        // 특이사항) 컴포넌트들은 NewObject으로 생성 가능하나 UI와 달리 하나의 엑터라고 볼 수가 있음
-        // 따라서 StaticClass()으로 해줌으로서 엑터 오브젝트라는걸 명시해야됨.
-        if (auto splineMeshComp = NewObject<USplineMeshComponent>(GetWorld(), USplineMeshComponent::StaticClass()))
-        {
-            splineMeshComp->SetMobility(EComponentMobility::Movable);
-            splineMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-            splineMeshComp->AttachToComponent(SplineComp, FAttachmentTransformRules::KeepRelativeTransform);
-            splineMeshComp->RegisterComponentWithWorld(GetWorld());
-
-            // 위치 설정
-            //splineMeshComp->SetRelativeTransform(FTransform::Identity);
-            FVector startPos, startTangent, endPos, endTangent;
-            SplineComp->GetLocationAndTangentAtSplinePoint(i, startPos, startTangent, ESplineCoordinateSpace::World);
-            SplineComp->GetLocationAndTangentAtSplinePoint(i + 1, endPos, endTangent, ESplineCoordinateSpace::World);
-            splineMeshComp->SetStartAndEnd(startPos, startTangent, endPos, endTangent);
-
-            // 비쥬얼 설정
-            splineMeshComp->SetForwardAxis(ESplineMeshAxis::Z);
-            splineMeshComp->SetStartScale(FVector2D(0.02f));
-            splineMeshComp->SetEndScale(FVector2D(0.02f));
-            splineMeshComp->SetStartOffset(FVector2D::ZeroVector);
-            splineMeshComp->SetEndOffset(FVector2D::ZeroVector);
-            splineMeshComp->SetStaticMesh(PathMesh);
-            splineMeshComp->SetMaterial(0, PathMat);
-            splineMeshComp->SetVisibility(true);
-            arrSplineMeshComp.Add(splineMeshComp);
-        }
-    }
-    // 도착 지점에 생성 및 설정
-    if (GrenadeEndPoint)
-    {
-        auto endPos = result.LastTraceDestination.Location;
-        GrenadeEndPoint->SetHidden(false);
-        GrenadeEndPoint->SetActorRelativeLocation(endPos);
-
-        if (pThrowable)
-            pThrowable->GrenadeEndPos = endPos;
-    }
-}
-
-EGunShootType AWeaponManager::GetNextShootType(EGunShootType ShootType, FString GroupType)
-{
-    if (ShootType != GetMaxShootType(GroupType))
-    {
-        switch (ShootType)
-        {
-        case SINGLE: return BURST;
-        case BURST:  return CONSECUTIVE;
-        }
-    }
-    return SINGLE;
-}
-
-EGunShootType AWeaponManager::GetMaxShootType(FString WeaponGroup)
-{
-    TMap<FString, EGunShootType> mapGunShootType
-    {
-        // ------- 오직 단발 -------
-        {"HandGun"  , SINGLE},
-        {"SniperGun", SINGLE},
-        {"Special"  , SINGLE},
-
-        // ------- 단발 / 점사 -------
-        {"ShotGun", BURST},
-
-        // ------- 단발 / 점사 / 연사 -------
-        {"AssaultGun", CONSECUTIVE},
-        {"SMG"       , CONSECUTIVE}
-    };
-    return mapGunShootType[WeaponGroup];
-}
-
-FString AWeaponManager::GetShootTypeStr(EGunShootType ShootType)
-{
-    if (ShootType == MAX)
-        return "Fail";
-
-    TMap<EGunShootType, FString> mapGunShootType
-    {
-        { SINGLE,      "Single" },
-        { BURST,       "Burst" },
-        { CONSECUTIVE, "Consecutive" }
-    };
-    return "Current type : " + mapGunShootType[ShootType];
-}
-
-void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
-{
-    ABaseInteraction* pCollidedWeapon = Cast<ABaseInteraction>(pWeapon);
-
-    if (!pCollidedWeapon)
-        return;
-    
-    pCollidedWeapon->bPlayerNear = false;
-
-    // 총기 종류
-    if (pWeapon->IsA<ACoreWeapon>())
-    {
-        // 권총일 시 무조건 3번 슬롯
-        if (Cast<ACoreWeapon>(pWeapon)->WeaponData.GroupType == "HandGun")
-        {
-            if (!pPistol)
-                AttachWeapon(pCollidedWeapon, "HandGunSock", bCheck);
-
-            else
-                SwapWorld(pPistol, pWeapon, "HandGunSock");
-        }
-        // 기타 총기 1,2번 슬롯
-        else
-        {
-            if (!pFirstGun) // 첫번째 무기가 없을 시
-                AttachWeapon(pCollidedWeapon, "FirstGunSock", bCheck);
-
-            else
-            {
-                if (!pSecondGun) // 두번째 무기가 없을 시
-                    AttachWeapon(pCollidedWeapon, "SecondGunSock", bCheck);
-
-                else
-                {
-                    // 첫번째 무기 장착중
-                    if      (CurrentType == FIRST)
-                             SwapWorld(pFirstGun, pWeapon, "FirstGunSock");
-
-                    // 두째 무기 장착중
-                    else if (CurrentType == SECOND)
-                             SwapWorld(pSecondGun, pWeapon, "SecondGunSock");
-                }
-            }
-        }
-    }
-    // 근접 종류
-    else if (pWeapon->IsA<ACoreMeleeWeapon>())
-             AttachWeapon(pCollidedWeapon, "EquippedWeaponPosSock", bCheck);
-
-    // 투척류
-    else if (pWeapon->IsA<ACoreThrowableWeapon>())
-    {
-        // 수류탄을 장착중이지 않을 때만
-        if (mpGameInst)
-            mpGameInst->DeleSetItemOntoInventory.ExecuteIfBound(pCollidedWeapon, false);
-
-        pWeapon->Destroy();
-    }
-}
-
 void AWeaponManager::ClickEvent()
 {
-    ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentType);
-
-    if (!p_weapon ||
-        mbReloading)
-        return;
-
-    if (p_weapon->IsA<ACoreWeapon>())
-    {
-        auto p_gun = Cast<ACoreWeapon>(p_weapon);
-        auto weaponData = p_gun->WeaponData;
-
-        // 총알 부족한지 확인
-        if (weaponData.BulletCount == 0)
-        {
-            // 총알이 하나라도 존재할 시
-            if (weaponData.MaxBulletCount > 0)
-                Reload();
-
-            else
-            {
-                PlaySound(EWeaponSoundType::EMPTY_AMMO);
-                bShooting = false;
-                return;
-            }
-        }   
-        bShooting = true;
-        PlaySound(EWeaponSoundType::SHOT);
-
-        // 사운드 적용 및 총알 1개 차감
-        if (mpGameInst)
-            mpGameInst->DeleDeleteInventoryItem.ExecuteIfBound(p_gun->WeaponData.BulletType);                
-
-        // ------- 레이캐스트 범위 구하기 -------
-
-        FVector startPos = p_gun->SkeletalMeshComp->GetSocketLocation("Barrel");
-        auto cameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-
-        // 게임 뷰포트 가운데 지점 구하기    
-        FVector2D vPortCenterPos = GEngine->GameViewport->Viewport->GetSizeXY() / 2.f;
-        FVector deprojPos, deprojDir;
-        UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), vPortCenterPos, deprojPos, deprojDir);
-        FVector rayStartPos = cameraManager->GetCameraLocation();
-        FVector rayEndPos   = deprojPos + (deprojDir * 5000.f);
-
-        // 레이캐스트 적용(시작지점 : 카메라) 충돌 시 = true > 충돌 지점, false > 레이 끝 지점 
-        FHitResult hitResult;
-        FCollisionQueryParams collisionQueryParams;
-        collisionQueryParams.AddIgnoredActor(p_gun);
-        collisionQueryParams.AddIgnoredActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));               
-        auto bTraced   = GetWorld()->LineTraceSingleByChannel(hitResult, rayStartPos, rayEndPos, ECollisionChannel::ECC_Visibility, collisionQueryParams);
-        FVector endPos = UKismetMathLibrary::SelectVector(hitResult.ImpactPoint, hitResult.TraceEnd, bTraced);
-
-        DrawDebugLine(GetWorld(), startPos, endPos, FColor::Red, true);
-
-    }
-    // 근접 무기
-    else if(p_weapon->IsA<ACoreMeleeWeapon>())
-    {
-            
-    }
-    // 투척류 무기
-    else
-    {
-        // 크레모아가 아닌 무기일 때만 투척 경로 지정
-        if (pThrowable &&
-            pThrowable->WeaponType != EThrowableWeaponType::CLAYMORE)
-            PredictGrenadePath();
-    }
-}
-
-void AWeaponManager::Reload()
-{
-    if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
-    {
-        PlaySound(EWeaponSoundType::RELOAD);
-        auto& weaponData = p_gun->WeaponData;
-        int result = (weaponData.BulletCount > 0) ? (weaponData.MaxBulletCount - weaponData.BulletCount) : p_gun->WeaponData.MaxBulletCount;
-        weaponData.MaxBulletCount -= result;
-        weaponData.BulletCount += result;
-        mbReloading = true;
-    }
+    if (ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentType))
+        p_weapon->ClickEvent();
 }
 
 void AWeaponManager::ThrowGrenade()
@@ -556,6 +361,66 @@ bool AWeaponManager::ScrollSelect(FString Pos)
     return true;
 }
 
+void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
+{
+    ABaseInteraction* pCollidedWeapon = Cast<ABaseInteraction>(pWeapon);
+
+    if (!pCollidedWeapon)
+        return;
+
+    pCollidedWeapon->bPlayerNear = false;
+
+    // 총기 종류
+    if (pWeapon->IsA<ACoreWeapon>())
+    {
+        // 권총일 시 무조건 3번 슬롯
+        if (Cast<ACoreWeapon>(pWeapon)->WeaponData.GroupType == "HandGun")
+        {
+            if (!pPistol)
+                AttachWeapon(pCollidedWeapon, "HandGunSock", bCheck);
+
+            else
+                SwapWorld(pPistol, pWeapon, "HandGunSock");
+        }
+        // 기타 총기 1,2번 슬롯
+        else
+        {
+            if (!pFirstGun) // 첫번째 무기가 없을 시
+                AttachWeapon(pCollidedWeapon, "FirstGunSock", bCheck);
+
+            else
+            {
+                if (!pSecondGun) // 두번째 무기가 없을 시
+                    AttachWeapon(pCollidedWeapon, "SecondGunSock", bCheck);
+
+                else
+                {
+                    // 첫번째 무기 장착중
+                    if (CurrentType == FIRST)
+                        SwapWorld(pFirstGun, pWeapon, "FirstGunSock");
+
+                    // 두째 무기 장착중
+                    else if (CurrentType == SECOND)
+                        SwapWorld(pSecondGun, pWeapon, "SecondGunSock");
+                }
+            }
+        }
+    }
+    // 근접 종류
+    else if (pWeapon->IsA<ACoreMeleeWeapon>())
+        AttachWeapon(pCollidedWeapon, "EquippedWeaponPosSock", bCheck);
+
+    // 투척류
+    else if (pWeapon->IsA<ACoreThrowableWeapon>())
+    {
+        // 수류탄을 장착중이지 않을 때만
+        if (auto p_customGameInst = UCustomGameInstance::GetInst())
+            p_customGameInst->DeleSetItemOntoInventory.ExecuteIfBound(pCollidedWeapon, false);
+
+        pWeapon->Destroy();
+    }
+}
+
 void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName)
 {
     ResetAfterDetaching(pNewWeapon, pCurrentWeapon->GetActorTransform());
@@ -564,6 +429,10 @@ void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWea
 
 void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
 {
+    // 총기 발사 해제
+    if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
+        p_gun->bShooting = false;
+
     auto playerMesh   = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
     auto attachType   = (bScrolling) ? CurrentType : WeaponType;
     auto detachType   = (bScrolling) ? WeaponType : CurrentType;
@@ -579,11 +448,7 @@ void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
     case THROWABLE: if (pThrowable) pThrowable->Destroy(); break;
     }
     // 탈착 되있던 무기를 장착
-    if (CurrentType == THROWABLE)
-        CreateExplosive(pThrowable);
-    
-    else
-        ChangeAimPose(mbAiming);
+    (CurrentType == THROWABLE) ? CreateExplosive(pThrowable) : ChangeAimPose(mbAiming);
 }
 
 int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurrentWeapon /* = nullptr */, EWeaponType WeaponType /* = ECurrentWeaponType::NONE */)
@@ -662,15 +527,7 @@ void AWeaponManager::ChangeShootMode()
 {
     // 총기일 시
     if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
-    {
-        bShooting = false;
-        // 격발 방식 변경
-        p_gun->ShootType = GetNextShootType(p_gun->ShootType, p_gun->WeaponData.GroupType);
-
-        // 팝업 UI 설정
-        if (mpGameInst)
-            mpGameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound(GetShootTypeStr(p_gun->ShootType));
-    }
+        p_gun->ChangeShootMode();
 }
 
 void AWeaponManager::ChangeAimPose(bool bAiming)
@@ -689,66 +546,6 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     // 캐릭터 메쉬에다 부착
     if (p_gun)
         p_gun->AttachToMesh(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh(), mbAiming ? "EquippedWeaponPosSock" : socketName);
-}
-
-void AWeaponManager::CheckReloading(float TranscurredTime)
-{
-    // 재장전 중
-    if (mbReloading)
-    {
-        mCurrentReloadTime += TranscurredTime;
-
-        if (mCurrentReloadTime > mkReloadTime)
-        {
-            mCurrentReloadTime = 0.f;
-            mbReloading        = false;
-        }
-    }
-}
-
-void AWeaponManager::CheckShooting(float TranscurredTime)
-{
-    if (bShooting)
-    {
-        if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
-        {
-            float timeToWait = 0.25f;
-            mCurrentShootTime += TranscurredTime;
-
-            switch (p_gun->ShootType)
-            {
-            case SINGLE: bShooting = false; break;
-
-            case BURST:
-
-                if (mCurrentShootTime > timeToWait)
-                {
-                    ClickEvent();
-                    mCurrentShootTime = 0.f;
-                    mBurstCount++;
-                }
-                if (mBurstCount == 2)
-                    bShooting = false;
-
-                break;
-
-            // 쿨타임 적용
-            case CONSECUTIVE:
-
-                if (mCurrentShootTime > timeToWait)
-                {
-                    ClickEvent();
-                    mCurrentShootTime = 0.f;
-                }
-                break;
-            }
-        }
-    }
-    else
-    {
-        mCurrentShootTime = 0.f;
-        mBurstCount = 0;
-    }
 }
 
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
@@ -786,24 +583,6 @@ ABaseInteraction* AWeaponManager::GetWeaponByIndex(EWeaponType WeaponType) const
 }
 
 ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)); }
-
-EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
-{
-    TMap<ABaseInteraction*, EWeaponType> arrWeaponKeyType
-    { 
-        { pFirstGun,  FIRST},
-        { pSecondGun, SECOND},
-        { pPistol,    PISTOL},
-        { pMelee,     MELEE},
-        { pThrowable, THROWABLE}
-    };
-    for (auto item : arrWeaponKeyType)
-    {
-        if (pWeapon == item.Key)
-            return item.Value;
-    }
-    return NONE;
-}
 
 int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const
 {

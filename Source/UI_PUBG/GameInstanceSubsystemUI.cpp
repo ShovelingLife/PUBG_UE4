@@ -15,7 +15,7 @@ UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
     auto BP_UImanager = ConstructorHelpers::FClassFinder<AUI_manager>(TEXT("Blueprint'/Game/Blueprints/Managers/BP_UI_manager.BP_UI_manager_C'"));
 
     if (BP_UImanager.Succeeded())
-        UImanagerClass = BP_UImanager.Class;
+        mUImanagerClass = BP_UImanager.Class;
 }
 
 void UGameInstanceSubsystemUI::Initialize(FSubsystemCollectionBase& Collection)
@@ -31,8 +31,8 @@ void UGameInstanceSubsystemUI::Deinitialize()
 
 void UGameInstanceSubsystemUI::InitUImanager()
 {
-    if (UImanagerClass)
-        pUImanager = GetWorld()->SpawnActor<AUI_manager>(UImanagerClass);     
+    if (mUImanagerClass)
+        pUImanager = GetWorld()->SpawnActor<AUI_manager>(mUImanagerClass);     
 }
 
 FVector2D UGameInstanceSubsystemUI::GetDistanceBetweenSlotCursor(UUserWidget* pWigdet, bool& bFirst)

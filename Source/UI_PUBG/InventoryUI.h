@@ -33,7 +33,6 @@ protected:
     virtual void NativeTick(const FGeometry&, float) override;
 
 private:
-
     void CheckTooltipMouseDistance();
 
 public:

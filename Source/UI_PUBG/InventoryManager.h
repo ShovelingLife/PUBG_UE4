@@ -36,7 +36,7 @@ public:
     TMap<FString, UItemSlotUI*> MapCurrentItems;
 
     /** \brief 인벤토리 UI */
-    class UInventoryUI* pInventoryUI;
+    UInventoryUI* pInventoryUI;
 
 public:
     AInventoryManager();
@@ -68,5 +68,5 @@ public:
     UFUNCTION() void DeleteInventoryItem(FString ItemType);
 
 public:
-    UInventoryListUI* GetInventoryListUI();
+    UInventoryListUI* GetInventoryListUI() const;
 };

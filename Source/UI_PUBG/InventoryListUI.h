@@ -30,7 +30,7 @@ class UI_PUBG_API UInventoryListUI : public UUserWidget
 	GENERATED_BODY()
 
 private:
-    UPROPERTY() UItemSlotUI*    mpSlotObj = nullptr;
+    UPROPERTY() UItemSlotUI* mpSlotObj = nullptr;
 
     float mWorldSizeBoxWidth     = 0.f;
     float mInventorySizeBoxWidth = 0.f;
@@ -51,7 +51,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* SeparatorImg;
 
     UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
-    UPROPERTY() class UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
+    UPROPERTY() UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
 
 protected:
     virtual void NativeConstruct() override;

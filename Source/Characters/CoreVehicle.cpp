@@ -29,7 +29,7 @@ void ACoreVehicle::BeginPlay()
     Super::BeginPlay();
     
     // 상호작용 UI 업데이트
-    if (auto p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance()))
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
         p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(InteractionWidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));
 }
 

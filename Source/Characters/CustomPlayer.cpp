@@ -530,11 +530,6 @@ void ACustomPlayer::EndShooting()
         !mpWeaponManager)
         return;
 
-    if (auto p_gun = mpWeaponManager->GetCurrentGun())
-    {
-        if (p_gun->ShootType == EGunShootType::CONSECUTIVE)
-            mpWeaponManager->bShooting = false;
-    }
     // 투척류 무기일 시 뗐을 때만 발동    
     if (mpWeaponManager->CurrentType == THROWABLE)
         mpWeaponManager->ThrowGrenade();
@@ -564,10 +559,7 @@ void ACustomPlayer::Aim()
     mpWeaponManager->ChangeAimPose(bAiming);
 }
 
-void ACustomPlayer::ChangeShootMode()
-{
-    mpWeaponManager->ChangeShootMode();
-}
+void ACustomPlayer::ChangeShootMode() { mpWeaponManager->ChangeShootMode(); }
 
 void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponType::NONE */, FString Direction /* = "" */)
 {

@@ -68,9 +68,8 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
     // 캐릭터 UI 창 드래그 시 회전
     if (mCharacterUIClickPos != FVector2D::ZeroVector)
     {
-        auto currentMousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
-        
-        ADummyCharacter* p_dummyCharacter = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->pDummyCharacter;
+        auto currentMousePos  = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());        
+        auto p_dummyCharacter = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->pDummyCharacter;
         
         if (p_dummyCharacter)
         {
@@ -161,6 +160,7 @@ void UCharacterSlotUI::UpdateHighlightImg()
             break;
         }
     }
+    // 선택된게 있다면 하얀 칸으로 표시
     if (tmpBorder)
     {
         FVector2D dummyVector, movePos;

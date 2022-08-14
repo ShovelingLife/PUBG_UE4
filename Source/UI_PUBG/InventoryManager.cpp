@@ -37,7 +37,7 @@ void AInventoryManager::BeginPlay()
         AttachToActor(p_player, FAttachmentTransformRules::KeepRelativeTransform);
     }
     // 현재 총알 개수 확인하는 함수 바인딩
-    if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
     {
         p_customGameInst->DeleGetBulletCount.BindUFunction(this, "GetBulletCount");
         p_customGameInst->DeleDeleteInventoryItem.BindUFunction(this, "DeleteInventoryItem");
@@ -109,10 +109,4 @@ void AInventoryManager::DeleteInventoryItem(FString ItemType)
     }
 }
 
-UInventoryListUI* AInventoryManager::GetInventoryListUI()
-{
-    if (!pInventoryUI)
-        return nullptr;
-
-    return pInventoryUI->InventoryListUI;
-}
+UInventoryListUI* AInventoryManager::GetInventoryListUI() const { return (pInventoryUI) ? pInventoryUI->InventoryListUI : nullptr; }

@@ -27,6 +27,9 @@ public:
 public:
     ACoreMeleeWeapon();
 
+public:
+    virtual void ClickEvent() final;
+
 protected:
     virtual void BeginPlay() override;
 

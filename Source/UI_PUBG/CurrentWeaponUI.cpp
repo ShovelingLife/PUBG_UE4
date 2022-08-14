@@ -44,11 +44,13 @@ void UCurrentWeaponUI::InitArrImg()
 
 void UCurrentWeaponUI::UpdateIconVisibility()
 {
-     FirstWeaponImg->SetVisibility((pWeaponManager->pFirstGun)  ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    SecondWeaponImg->SetVisibility(pWeaponManager->pSecondGun   ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-     ThirdWeaponImg->SetVisibility((pWeaponManager->pPistol)    ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-    FourthWeaponImg->SetVisibility((pWeaponManager->pMelee)     ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-     FifthWeaponImg->SetVisibility((pWeaponManager->pThrowable) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    using enum ESlateVisibility;
+
+    FirstWeaponImg->SetVisibility((pWeaponManager->pFirstGun)  ? Visible : Hidden);
+    SecondWeaponImg->SetVisibility(pWeaponManager->pSecondGun  ? Visible : Hidden);
+    ThirdWeaponImg->SetVisibility((pWeaponManager->pPistol)    ? Visible : Hidden);
+    FourthWeaponImg->SetVisibility((pWeaponManager->pMelee)    ? Visible : Hidden);
+    FifthWeaponImg->SetVisibility((pWeaponManager->pThrowable) ? Visible : Hidden);
 }
 
 void UCurrentWeaponUI::UpdateIconColor()

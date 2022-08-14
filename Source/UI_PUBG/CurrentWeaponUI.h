@@ -22,18 +22,19 @@ class UI_PUBG_API UCurrentWeaponUI : public UUserWidget
 	GENERATED_BODY()
 	
 private:
-	/** \brief 슬롯 이미지 사이즈 관련 */
-	const FVector mkGunSlotSize	   { 200.f, 60.f, 0.f};
-	const FVector mkPistolSlotSize {  85.f, 60.f, 0.f};
-	const FVector mkGrenadeSlotSize{  25.f, 30.f, 0.f };
+	///** \brief 슬롯 이미지 사이즈 관련 */
+	//const FVector mkGunSlotSize	   { 200.f, 60.f, 0.f};
+	//const FVector mkPistolSlotSize {  85.f, 60.f, 0.f};
+	//const FVector mkGrenadeSlotSize{  25.f, 30.f, 0.f };
 
-	/** \brief 슬롯 이미지 위치 관련 */
-    const FVector mkGunSlotPos	  { 200.f, 60.f, 0.f };
-    const FVector mkPistolSlotPos {  85.f, 60.f, 0.f };
-    const FVector mkGrenadeSlotPos{  25.f, 30.f, 0.f };
+	///** \brief 슬롯 이미지 위치 관련 */
+ //   const FVector mkGunSlotPos	  { 200.f, 60.f, 0.f };
+ //   const FVector mkPistolSlotPos {  85.f, 60.f, 0.f };
+ //   const FVector mkGrenadeSlotPos{  25.f, 30.f, 0.f };
 
 	/** \brief 슬롯 이미지 색상 관련 */
-	const FLinearColor mkSelectedColor		  {   1.f,   1.f,   1.f, 1.f };
+	
+	const FLinearColor mkSelectedColor = FLinearColor::White;
 	const FLinearColor mkSelectedNoAmmoColor  {   1.f,   0.f,   0.f, 1.f };
 	const FLinearColor mkUnselectedColor	  { 0.25f, 0.25f, 0.25f, 1.f };
     const FLinearColor mkUnselectedNoAmmoColor{ 0.25f,   0.f,   0.f, 1.f };

@@ -20,7 +20,6 @@ class ACoreWeapon;
 class ACoreMeleeWeapon;
 class ACoreThrowableWeapon;
 class AWeaponManager;
-class UCustomGameInstance;
 
 class USceneComponent;
 class USplineComponent;
@@ -36,19 +35,11 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 	GENERATED_BODY()
 
 using enum EWeaponType;
-using enum EGunShootType;
 
 private:
-	UPROPERTY() UCustomGameInstance* mpGameInst = nullptr;
-
 	// 총기 관련
-    const float	mkReloadTime	   = 2.f;
-    float mCurrentReloadTime = 0.f;
-    float mCurrentShootTime = 0.f;
-    int	  mBurstCount = 0;
-    bool  mbReloading		 = false;
-	bool  mbChangedShootType = true;
-	bool  mbAiming = false;
+    bool  mbAiming = false;
+    bool  mbThrowingGrenade = false;
 
 public:
 	/** \brief 현재 착용 중인 무기 */
@@ -62,7 +53,6 @@ public:
 
 	EWeaponType CurrentType = NONE;    
 	bool  bArrWeaponEquipped[5]{ false };
-	bool  bShooting = false;
 
     // 투척류 관련
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TArray<USplineMeshComponent*> arrSplineMeshComp;
@@ -74,7 +64,6 @@ public:
     FVector mGrenadeVelocity;
     float GrenadeDirection;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) float GrenadeSpeed = 0.f;
-    bool	mbThrowingGrenade = false;
 
 public:	
 	AWeaponManager();
@@ -96,13 +85,9 @@ private:
      * \brief 현재 장착 중인 무기에 따라 착용 여부 \n
 	 * arr_is_weapon_equipped 배열 업데이트
 	 */
-	void UpdateCurrentWeaponArr();
-	
-	/**
-	 * \brief 소리 재생을 해주는 함수
-	 * \param SoundType 소리종류
-	 */
-    void PlaySound(EWeaponSoundType SoundType);
+    void UpdateCurrentWeaponArr();
+
+    UFUNCTION() void PredictGrenadePath();
 
     /**
      * \brief 배열 내에 원소 찾음
@@ -111,6 +96,8 @@ private:
 	 * \return e_current_weapon_type 현재 무기 타입
      */
     EWeaponType GetWeaponIndex(FString Direction, int StartIndex) const;
+
+    FString GetShootTypeStr(EGunShootType ShootType) const;
 
     /**
      * \brief 무기를 플레이어 메시에 부착
@@ -127,27 +114,9 @@ private:
 	 */
     void ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform NewPos);
 
-	void PredictGrenadePath();
-
-    EGunShootType GetNextShootType(EGunShootType ShootType, FString GroupType);
-
-    EGunShootType GetMaxShootType(FString WeaponGroup);
-
-    FString GetShootTypeStr(EGunShootType ShootType);
-
 public:
-	/**
-	 * \brief 무기 착용
-	 * \param pWeapon 착용할 무기 
-	 * \param bCheck 무기 중복 여부 체크
-	 */
-	void Equip(AActor* pWeapon, bool bCheck = true);
-
 	/** \brief 발사 */
 	void ClickEvent();
-
-	/** \brief 재장전 */
-	void Reload();
 
 	void ThrowGrenade();
 
@@ -160,6 +129,13 @@ public:
 	 * \param Pos 현재 착용 중인 무기의 위치
 	 */
 	bool ScrollSelect(FString Pos);
+
+	/**
+	 * \brief 무기 착용
+	 * \param pWeapon 착용할 무기
+	 * \param bCheck 무기 중복 여부 체크
+	 */
+	void Equip(AActor* pWeapon, bool bCheck = true);
 
 	/**
 	 * \brief 무기 교체
@@ -180,18 +156,6 @@ public:
 
 	// 미구현 상태
 	void ChangeAimPose(bool bAiming);
-
-	/**
-	 * \brief 재장전 중인지 확인
-	 * \param TranscurredTime 현재 재장전으로부터 초과한 시간
-	 */
-	void CheckReloading(float TranscurredTime);
-
-	/**
-	 * \brief 연사 하고있는 중인지 체크
-	 * \param TranscurredTime 발사 시간 간격
-	 */
-	void CheckShooting(float TranscurredTime);
 
 	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);
 

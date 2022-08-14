@@ -14,6 +14,10 @@ ACoreMeleeWeapon::ACoreMeleeWeapon()
     PrimaryActorTick.bCanEverTick = true;
 }
 
+void ACoreMeleeWeapon::ClickEvent()
+{
+}
+
 void ACoreMeleeWeapon::BeginPlay()
 {
     Super::BeginPlay();

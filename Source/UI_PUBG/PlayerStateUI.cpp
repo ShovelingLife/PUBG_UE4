@@ -59,7 +59,7 @@ void UPlayerStateUI::UpdateShootMode(ABaseInteraction* pWeapon)
 
 void UPlayerStateUI::UpdateHealthBarUI(float DeltaTime)
 {
-    UCustomGameInstance* p_customGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
+    UCustomGameInstance* p_customGameInst = UCustomGameInstance::GetInst();
 
     if (!p_customGameInst)
         return;
