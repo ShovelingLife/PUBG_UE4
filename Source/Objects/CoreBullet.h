@@ -73,4 +73,7 @@ protected:
       * \param _Index 무기 종류
      */
     void Init(EGunType Type);
+
+public:
+    void SetSpeed(const FVector& Dir);
 };

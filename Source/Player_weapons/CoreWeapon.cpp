@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Materials/Material.h"
 #include <Runtime/Engine/Public/DrawDebugHelpers.h>
 #include "Particles/ParticleSystemComponent.h"
@@ -159,7 +160,7 @@ void ACoreWeapon::FireBullet()
     if (!bShooting)
         return;
 
-    if(ShootType == BURST)
+    if (ShootType == BURST)
     {
         if (mBurstCount > 2)
         {
@@ -175,6 +176,8 @@ void ACoreWeapon::FireBullet()
         return;
     }
     // 사운드 적용 및 총알 1개 차감
+    PlaySound(EWeaponSoundType::SHOT);
+
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
         p_customGameInst->DeleDeleteInventoryItem.ExecuteIfBound(WeaponData.BulletType);
 
@@ -182,15 +185,27 @@ void ACoreWeapon::FireBullet()
 
     FVector startPos = SkeletalMeshComp->GetSocketLocation("Barrel");
     auto cameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+    auto cameraPos = cameraManager->GetCameraLocation();
+    auto cameraDirVec = cameraManager->GetActorForwardVector() * 12000.f;
+
 
     // 게임 뷰포트 가운데 지점 구하기    
     FVector2D vPortCenterPos = GEngine->GameViewport->Viewport->GetSizeXY() / 2.f;
     FVector deprojPos, deprojDir;
-    UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), vPortCenterPos, deprojPos, deprojDir);
-    FVector rayStartPos = cameraManager->GetCameraLocation();
-    FVector rayEndPos = deprojPos + (deprojDir * 5000.f);
+    UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), vPortCenterPos, deprojPos, deprojDir);    
+    
+    // 레이트레이스 충돌체 감지
+    FHitResult hitResult;
+    FCollisionQueryParams collisionQueryParams;
+    collisionQueryParams.AddIgnoredActor(this);
 
-    PlaySound(EWeaponSoundType::SHOT);
+    bool bHit = GetWorld()->LineTraceSingleByChannel(hitResult, startPos, startPos + cameraDirVec, ECollisionChannel::ECC_Visibility, collisionQueryParams);
+    auto selectedVec = UKismetMathLibrary::SelectVector(hitResult.ImpactPoint, hitResult.TraceEnd, bHit);
+    auto rot = UKismetMathLibrary::FindLookAtRotation(startPos, selectedVec);
+
+    // 총알 오브젝트 소환
+    auto p_bullet = GetWorld()->SpawnActor<ACoreBullet>(BP_Bullet, UKismetMathLibrary::MakeTransform(startPos,rot,FVector(1.f)));
+    //p_bullet->SetSpeed(selectedVec);
 }
 
 void ACoreWeapon::ResetBurstCount()

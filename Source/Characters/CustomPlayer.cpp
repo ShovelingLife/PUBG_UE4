@@ -174,8 +174,10 @@ void ACustomPlayer::InitParticleComp()
 
 void ACustomPlayer::CheckIfMoving()
 {
+    auto characterMovementComp = GetCharacterMovement();
+
     // 움직이고 있지 않음
-    if (GetVelocity().IsZero())
+    if (!characterMovementComp->IsWalking())
     {
         if (mbMoving)
         {
@@ -205,7 +207,7 @@ void ACustomPlayer::CheckIfMoving()
 
         default:
             // 뛰면서 점프후 착지
-            if (GetCharacterMovement()->IsFalling())
+            if (characterMovementComp->IsFalling())
                 CurrentState = (mSprintMultiplier > 1.f) ? SPRINT_JUMP : JUMP;
 
             else // 지면에 닿고있음
@@ -220,12 +222,12 @@ void ACustomPlayer::CheckIfMoving()
                     {
                         CurrentState = IDLE;
                         mSprintMultiplier = 1;
-                        GetCharacterMovement()->MaxWalkSpeed = 350.f;
+                        characterMovementComp->MaxWalkSpeed = 350.f;
                     }
                     if (mSprintMultiplier < 1.75f)
                     {
                         mSprintMultiplier += 0.25f;
-                        GetCharacterMovement()->MaxWalkSpeed *= mSprintMultiplier;
+                        characterMovementComp->MaxWalkSpeed *= mSprintMultiplier;
                     }
                 }
                 // 
@@ -585,6 +587,15 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
         mpWeaponManager->Swap(WeaponType);
         p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
     }
+}
+
+void ACustomPlayer::ChangePerspective()
+{
+    // 낙하 중일 시 리턴
+    if (GetCharacterMovement()->IsFalling())
+        return;
+
+
 }
 
 // UFUNCTION()

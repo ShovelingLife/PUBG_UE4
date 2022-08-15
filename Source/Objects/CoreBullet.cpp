@@ -23,6 +23,13 @@ void ACoreBullet::BeginPlay()
         NiagaraComp->Activate();
 }
 
+void ACoreBullet::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+    NiagaraComp->SetAsset(ImpactEffect);
+    mCollided = true;
+}
+
 void ACoreBullet::Tick(float _DeltaTime)
 {
     Super::Tick(_DeltaTime);
@@ -35,26 +42,12 @@ void ACoreBullet::Tick(float _DeltaTime)
         Destroy();
 }
 
-void ACoreBullet::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
-{
-    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-    NiagaraComp->SetAsset(ImpactEffect);
-    mCollided = true;
-}
-
-void ACoreBullet::Init(EGunType Type)
-{
-    mWeaponData = ADataTableManager::GetWeaponData((int)Type);
-    InitMesh();
-    InitProjectileMovementComp();
-    InitVFX();
-}
-
 void ACoreBullet::InitMesh()
 {
     // 메시 생성
     MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMeshComp"));
     this->SetRootComponent(MeshComp);
+    MeshComp->SetWorldScale3D(FVector(0.25f));
     MeshComp->SetCollisionProfileName("Destructible");
     MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     MeshComp->BodyInstance.SetInstanceSimulatePhysics(false);    
@@ -100,4 +93,18 @@ void ACoreBullet::InitVFX()
         ImpactEffect = IMPACT_SYS.Object;
 
     NiagaraComp->SetAsset(TrailEffect);
+}
+
+void ACoreBullet::Init(EGunType Type)
+{
+    mWeaponData = ADataTableManager::GetWeaponData((int)Type);
+    InitMesh();
+    InitProjectileMovementComp();
+    InitVFX();
+}
+
+void ACoreBullet::SetSpeed(const FVector& Dir)
+{
+    //ProjectileMovementComp->Velocity = Dir * ProjectileMovementComp->InitialSpeed;  
+    ProjectileMovementComp->Velocity = Dir;
 }
