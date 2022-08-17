@@ -219,6 +219,8 @@ private:
 
     void CheckForWeapon(EWeaponType CurrentWeaponType = NONE, FString Direction = "");
 
+    void ChangePerspective();
+
 public:
     UFUNCTION() void DealDmg(float DmgVal);
 
