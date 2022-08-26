@@ -43,11 +43,11 @@ void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Othe
 
 void ABaseInteraction::InitComponents()
 {
-    ColliderComp = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
+    ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
     SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
-    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
-    WidgetComp = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
-    ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
+    StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+    WidgetComp       = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
+    ParticleComp     = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
 }
 
 void ABaseInteraction::InitInteractionUI()
@@ -162,7 +162,7 @@ void ABaseInteraction::SetForDummyCharacter()
     }
 }
 
-void ABaseInteraction::ChangeCollisionSettings(bool bTurned)
+void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
     // 컴포넌트에 따라 콜라이더 업데이트
     TArray<UPrimitiveComponent*> arrComp
@@ -213,7 +213,7 @@ void ABaseInteraction::Detach(FTransform NewPos)
     // 현재 무기를 탈착 후 월드에 소환
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     this->SetActorTransform(NewPos);
-    this->ChangeCollisionSettings(true);
+    this->ChangeCollisionSettings();
 }
 
 void ABaseInteraction::InitParticleSystem(FString Path)

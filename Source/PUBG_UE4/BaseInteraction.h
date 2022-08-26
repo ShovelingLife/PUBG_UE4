@@ -112,7 +112,7 @@ public:
 
     void SetForDummyCharacter();
 
-    void ChangeCollisionSettings(bool bTurned);
+    void ChangeCollisionSettings(bool bTurned = true);
 
     void AttachToMesh(USceneComponent* RootComp, FString SocketName);
 

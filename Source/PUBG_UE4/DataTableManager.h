@@ -30,7 +30,7 @@ public:
     static TArray<FsWeaponData>           ArrWeaponData;
     static TArray<FsOtherWeaponData>      ArrOtherWeaponData;    
     static TArray<FsWeaponAttachmentData> ArrWeaponAttachmentData;
-    static TArray<FsWeaponBulletData> ArrWeaponBulletData;
+    static TArray<FsWeaponBulletData>     ArrWeaponBulletData;
 
 private:
     /** \brief 차량 데이터 관련 */

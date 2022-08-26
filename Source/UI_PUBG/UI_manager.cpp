@@ -100,7 +100,7 @@ void AUI_manager::BindDelegate()
 void AUI_manager::InitInteractionUI()
 {
     // 위젯 컴포넌트 블루프린트 초기화
-    auto widgetBP = ConstructorHelpers::FClassFinder<UInteractionUI>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_InteractionUI.BP_InteractionUI_C'"));
+    auto widgetBP = ConstructorHelpers::FClassFinder<UInteractionUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_InteractionUI.BP_InteractionUI_C'"));
 
     if (widgetBP.Succeeded())
         mInteractionWidgetBP = widgetBP.Class;
@@ -108,7 +108,7 @@ void AUI_manager::InitInteractionUI()
 
 void AUI_manager::InitPlayerUI()
 {
-    auto bp_playerUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_PlayerUI.BP_PlayerUI_C'"));
+    auto bp_playerUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerUI.BP_PlayerUI_C'"));
 
     if (bp_playerUI.Succeeded())
         mPlayerUI_BP = bp_playerUI.Class;
@@ -116,7 +116,7 @@ void AUI_manager::InitPlayerUI()
 
 void AUI_manager::InitPlayerEffectUI()
 {
-    auto bp_playerEffectUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_PlayerEffectUI.BP_PlayerEffectUI_C'"));
+    auto bp_playerEffectUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerEffectUI.BP_PlayerEffectUI_C'"));
 
     if (bp_playerEffectUI.Succeeded())
         mPlayerEffectUI_BP = bp_playerEffectUI.Class;
