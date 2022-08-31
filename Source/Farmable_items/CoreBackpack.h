@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PUBG_UE4/BaseInteraction.h"
+#include "CoreFarmableItem.h"
 #include "CoreBackpack.generated.h"
 
 class UStaticMesh;
@@ -15,7 +15,7 @@ enum class EBackpackType
 };
 
 UCLASS()
-class FARMABLE_ITEMS_API ACoreBackpack : public ABaseInteraction
+class FARMABLE_ITEMS_API ACoreBackpack : public ACoreFarmableItem
 {
 	GENERATED_BODY()
 	

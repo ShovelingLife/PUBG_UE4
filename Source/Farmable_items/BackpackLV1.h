@@ -15,6 +15,5 @@ class FARMABLE_ITEMS_API ABackpackLV1 : public ACoreBackpack
 public:
 	ABackpackLV1() : Super(EBackpackType::FIRST)
 	{
-
 	}
 };

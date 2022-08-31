@@ -30,7 +30,7 @@ void AInventoryManager::BeginPlay()
     InitInventoryWidget();
 
     // 캐릭터 관련 초기화
-    if(auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0)))
+    if(auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
     {
         p_player->DeleOpenInventory.BindUFunction(this, "OpenInventory");
         p_player->DeleCloseInventory.BindUFunction(this, "CloseInventory");
@@ -52,7 +52,7 @@ void AInventoryManager::Tick(float DeltaTime)
 void AInventoryManager::InitInventoryUI()
 {
     // 인벤토리 위젯 초기화
-    auto BP_inventoryUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UI/BP_InventoryUI.BP_InventoryUI_C'"));
+    auto BP_inventoryUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_InventoryUI.BP_InventoryUI_c'"));
 
     if (BP_inventoryUI.Succeeded())
         this->BP_InventoryUI = BP_inventoryUI.Class;

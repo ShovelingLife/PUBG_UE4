@@ -12,7 +12,7 @@
 
 UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
 {
-    auto BP_UImanager = ConstructorHelpers::FClassFinder<AUI_manager>(TEXT("Blueprint'/Game/Blueprints/Managers/BP_UI_manager.BP_UI_manager_C'"));
+    auto BP_UImanager = ConstructorHelpers::FClassFinder<AUI_manager>(TEXT("Blueprint'/Game/1_Blueprints/Managers/BP_UI_manager.BP_UI_manager_C'"));
 
     if (BP_UImanager.Succeeded())
         mUImanagerClass = BP_UImanager.Class;

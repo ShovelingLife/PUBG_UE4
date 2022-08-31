@@ -63,7 +63,7 @@ protected:
     };
     ACustomPlayer* mpPlayer;
     FsVehicleData  mVehicleData;                       
-    const FString  mkWheelPath         = "/Game/Blueprints/Vehicles/Wheel/";
+    const FString  mkWheelPath         = "/Game/1_Blueprints/Vehicles/Wheel/";
     FString        mMeshPath           = "";
     int            mCurrentPlayerCount = 0;
     bool           mbPlayerInFirstSeat = false;

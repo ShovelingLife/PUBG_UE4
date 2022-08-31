@@ -29,6 +29,7 @@ void ADummyCharacter::BeginPlay()
     mArrActorToShow.Add(this);
     DummySkeletalMeshComp->SetOwnerNoSee(true);
     SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
+    this->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
     InitWeaponUI();
 }
 
@@ -56,7 +57,7 @@ void ADummyCharacter::InitMeshComp()
 void ADummyCharacter::InitAnimInstance()
 {
     // 애니메이션 초기화
-    static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/Blueprints/Animations/BP_DummyPlayerAnimInstance"));
+    static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/1_Blueprints/Animations/BP_DummyPlayerAnimInstance"));
 
     if (BP_ANIM.Succeeded())
         DummySkeletalMeshComp->SetAnimInstanceClass(BP_ANIM.Class);

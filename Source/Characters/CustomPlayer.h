@@ -19,12 +19,14 @@
 DECLARE_DELEGATE(FDeleOpenInventory)
 DECLARE_DELEGATE(FDeleCloseInventory)
 
-class ACoreWeapon;
-class ACoreVehicle;
-class ACoreAttachment;
 class ACoreAmmoBox;
+class ACoreAttachment;
+class ACoreFarmableItem;
+class ACoreVehicle;
+class ACoreWeapon;
 class ADummyCharacter;
 class AWeaponManager;
+
 class UAudioComponent;
 class UCustomGameInstance;
 class UParticleSystemComponent;
@@ -47,6 +49,7 @@ private:
     UPROPERTY() ACoreVehicle*    mpCollidedVehicle          = nullptr;
     UPROPERTY() ACoreAttachment* mpCollidedWeaponAttachment = nullptr;
     UPROPERTY() ACoreAmmoBox*    mpCollidedAmmoBox          = nullptr;
+    UPROPERTY() ACoreFarmableItem* mpFarmableItem           = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp    = nullptr;
     UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp = nullptr;

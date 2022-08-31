@@ -253,50 +253,46 @@ void ACoreVehicle::CheckForDoorPos()
 {
     ESeatType seatType = NONE;
     float     arrVecDistance[4]{ 0.f };
+    auto maxSeater = mVehicleData.MaxSeater;
 
     // 벡터 확인
-    for (int i = 0; i < mVehicleData.MaxSeater; i++)
+    for (int i = 0; i < maxSeater; i++)
     {
         FVector playerPos  = mpPlayer->GetActorLocation();
         FVector carDoorPos = MapDoorPos[(ESeatType)i];
         arrVecDistance[i]  = FVector::Distance(playerPos.GetAbs(), carDoorPos.GetAbs());
     }
-    // 문짝이 2개일 시
-    if (mVehicleData.MaxSeater == 2)
-    {
-        // 왼쪽 첫번째 좌석
-        if      (arrVecDistance[0] < arrVecDistance[1])
-                 seatType = FIRST;
+    auto distance1 = arrVecDistance[0], distance2 = arrVecDistance[1], distance3 = arrVecDistance[2], distance4 = arrVecDistance[3];
 
-        // 왼쪽 두번째 좌석
-        else if (arrVecDistance[1] < arrVecDistance[0])
-                 seatType = SECOND;
-    }
+    // 문짝이 2개일 시
+    if (maxSeater == 2)
+        seatType = (distance1 < distance2) ? FIRST : SECOND;
+
     // 문짝이 4개일 시
     else
     {
         // 왼쪽 첫번째 좌석
-        if      (arrVecDistance[0] < arrVecDistance[1] &&
-                 arrVecDistance[0] < arrVecDistance[2] &&
-                 arrVecDistance[0] < arrVecDistance[3])
+        if      (distance1 < distance2 &&
+                 distance1 < distance3 &&
+                 distance1 < distance4)
                  seatType = FIRST;
 
         // 왼쪽 두번째 좌석
-        else if (arrVecDistance[1] < arrVecDistance[0] &&
-                 arrVecDistance[1] < arrVecDistance[2] &&
-                 arrVecDistance[1] < arrVecDistance[3])
+        else if (distance2 < distance1 &&
+                 distance2 < distance3 &&
+                 distance2 < distance4)
                  seatType = SECOND;
 
         // 오른쪽 첫번째 좌석
-        else if (arrVecDistance[2] < arrVecDistance[3] &&
-                 arrVecDistance[2] < arrVecDistance[0] &&
-                 arrVecDistance[2] < arrVecDistance[1])
+        else if (distance3 < distance1 &&
+                 distance3 < distance2 &&
+                 distance3 < distance4)
                  seatType = THIRD;
 
         // 오른쪽 첫번째 좌석
-        else if (arrVecDistance[3] < arrVecDistance[0] &&
-                 arrVecDistance[3] < arrVecDistance[1] &&
-                 arrVecDistance[3] < arrVecDistance[2])
+        else if (distance4 < distance1 &&
+                 distance4 < distance2 &&
+                 distance4 < distance3)
                  seatType = FOURTH;
     }
     if (seatType != NONE)

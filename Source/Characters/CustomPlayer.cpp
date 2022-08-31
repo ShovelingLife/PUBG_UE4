@@ -60,7 +60,6 @@ void ACustomPlayer::BeginPlay()
     }
     // UI용 캐릭터 생성
     pDummyCharacter = GetWorld()->SpawnActor<ADummyCharacter>(BP_DummyCharacter);
-    pDummyCharacter->SetOwner(this);
 }
 
 void ACustomPlayer::Tick(float DeltaTime)
@@ -161,7 +160,7 @@ void ACustomPlayer::InitAudioComp()
 void ACustomPlayer::InitAnimInstance()
 {
     // 애니메이션 초기화
-    static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/Blueprints/Animations/BP_PlayerAnimInstance"));
+    static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/1_Blueprints/Animations/BP_PlayerAnimInstance"));
 
     if (BP_ANIM.Succeeded())
         GetMesh()->SetAnimInstanceClass(BP_ANIM.Class);
@@ -267,13 +266,9 @@ void ACustomPlayer::CheckNearObj()
             mpCollidedWeapon = p_hittedActor;
         }
 
-        // 무기 부속품일 시
-        else if (p_hittedActor->IsA<ACoreAttachment>())
-                 mpCollidedWeaponAttachment = Cast<ACoreAttachment>(p_hittedActor);
-
-        // 총기 탄알 상자일 시
-        else if (p_hittedActor->IsA<ACoreAmmoBox>())
-                 mpCollidedAmmoBox = Cast<ACoreAmmoBox>(p_hittedActor);
+        // 획득 가능한 오브젝트일 시
+        else if (p_hittedActor->IsA<ACoreFarmableItem>())
+                 mpFarmableItem = Cast<ACoreFarmableItem>(p_hittedActor);
 
         // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시 
         if (auto p_obj = Cast<ABaseInteraction>(p_hittedActor))
@@ -287,10 +282,10 @@ void ACustomPlayer::CheckNearObj()
             Cast<ABaseInteraction>(mpCollidedWeapon)->bPlayerNear = false;
             mpCollidedWeapon = nullptr;
         }
-        if (mpCollidedWeaponAttachment)
+        if (mpFarmableItem)
         {
-            Cast<ABaseInteraction>(mpCollidedWeaponAttachment)->bPlayerNear = false;
-            mpCollidedWeaponAttachment = nullptr;
+            mpFarmableItem->bPlayerNear = false;
+            mpFarmableItem = nullptr;
         }
     }
 }
@@ -343,20 +338,13 @@ void ACustomPlayer::TryToInteract()
             // 무기랑 충돌 시
             mpWeaponManager->Equip(mpCollidedWeapon);
         }
-        // 무기 부속품이랑 충돌 시
-        if (mpCollidedWeaponAttachment)
+        // 획득 가능한 오브젝트일 시
+        if (mpFarmableItem)
         {
             // 인벤토리에 추가한 뒤 맵에서 제거
-            mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedWeaponAttachment, false);
-            mpCollidedWeaponAttachment->Destroy();
-            mpCollidedWeaponAttachment = nullptr;
-        }
-        if (mpCollidedAmmoBox)
-        {
-            // 인벤토리에 추가한 뒤 맵에서 제거
-            mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedAmmoBox, false);
-            mpCollidedAmmoBox->Destroy();
-            mpCollidedAmmoBox = nullptr;
+            mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpFarmableItem, false);
+            mpFarmableItem->Destroy();
+            mpFarmableItem = nullptr;
         }
         // 차량이랑 충돌 시
         if (mpCollidedVehicle)
