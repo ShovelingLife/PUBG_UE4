@@ -39,7 +39,7 @@ ACustomPlayer::ACustomPlayer()
     InitAnimInstance();
     InitParticleComp();
 
-    auto bp_DummyCharacter = ConstructorHelpers::FClassFinder<ADummyCharacter>(TEXT("Blueprint'/Game/Blueprints/BP_DummyCharacter.BP_DummyCharacter_C'"));
+    auto bp_DummyCharacter = ConstructorHelpers::FClassFinder<ADummyCharacter>(TEXT("Blueprint'/Game/1_Blueprints/BP_DummyCharacter.BP_DummyCharacter_C'"));
 
     if (bp_DummyCharacter.Succeeded())
         BP_DummyCharacter = bp_DummyCharacter.Class;

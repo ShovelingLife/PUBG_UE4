@@ -151,33 +151,31 @@ void UCharacterSlotUI::UpdateHighlightImg()
         TPair< UBorder*, UImage*>(PantsSlotBorder,     PantsSlotImg),
         TPair< UBorder*, UImage*>(ShoesSlotBorder,     ShoesSlotImg)
     };
+    // 11번 순회
     for (const auto item : p_ArrSlot)
     {
-        // 선택 되었을 시
-    	if (item.Value->IsHovered())
+        // 칸이 선택 되었을 시
+        auto border = item.Key;
+
+    	if (border->IsHovered())
         {
-            tmpBorder = item.Key;
+            GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
+            tmpBorder = border;
             break;
         }
     }
     // 선택된게 있다면 하얀 칸으로 표시
     if (tmpBorder)
     {
-        FVector2D dummyVector, movePos;
-        USlateBlueprintLibrary::LocalToViewport(GetWorld(), tmpBorder->GetCachedGeometry(), FVector2D::ZeroVector, dummyVector, movePos);
+        FVector2D dummyPos, movePos;
+        auto geometry = tmpBorder->GetCachedGeometry();
+        USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), geometry.GetAbsolutePosition(), dummyPos, movePos);
+        movePos.X = (movePos.X <= 818.f) ? 15.f : 375.f;
+        movePos.Y += 1.f;
+        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, geometry.GetAbsolutePosition().ToString() + " " + movePos.ToString());
 
-        if (movePos.X == 580)
-            movePos.X = 0;
-
-        if (movePos.X == 1231)
-            movePos.X /= 1.89f;
-        
         if (auto p_canvasSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
-        {
             p_canvasSlot->SetPosition(movePos);
-            HighlightImg->SetVisibility(ESlateVisibility::Visible);
-        }
     }
-    else
-        HighlightImg->SetVisibility(ESlateVisibility::Hidden);
+    HighlightImg->SetVisibility((tmpBorder) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }

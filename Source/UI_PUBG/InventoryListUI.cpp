@@ -346,7 +346,8 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDelete
     if (bDeleteFromList)
         DeleteFromList();
 
-    // 가방일 경우 바로 장착 / 장착 되어있을 시 교체
+    // 장착 가능할 경우 바로 장착 / 장착 되어있을 시 교체
+
 
     ChangeItemCount(pObj);
 }

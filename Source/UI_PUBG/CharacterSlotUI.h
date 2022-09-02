@@ -16,7 +16,6 @@ class UI_PUBG_API UCharacterSlotUI : public UUserWidget
     GENERATED_BODY()
 
 private:
-
     FVector2D mCharacterUIClickPos = FVector2D::ZeroVector;
 
 public:
