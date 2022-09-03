@@ -105,5 +105,5 @@ void UCurrentWeaponUI::SetIconUI()
 
     // 다섯번째 무기
     if (auto p_throwable = pWeaponManager->pThrowable)
-        FifthWeaponImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->WeaponType));
+        FifthWeaponImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_throwable->WeaponType, "Explosive"));
 }

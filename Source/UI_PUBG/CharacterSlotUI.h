@@ -39,9 +39,6 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     BeltSlotBorder;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      BeltSlotImg;
 
-    // 가방 여유 게이지바
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* BackpackFreeSpaceBar;
-
     // 방탄복 관련
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      ArmorIconImg;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*  ArmorDurabilityText;
@@ -77,9 +74,9 @@ public:
     bool bHoveringCharacterSlot;
 
 protected:
-    void NativeConstruct() override;
+    virtual void NativeConstruct() override;
 
-    void NativeTick(const FGeometry&, float) override;
+    virtual void NativeTick(const FGeometry&, float) override;
 
     virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
@@ -99,4 +96,6 @@ private:
     void InitSlotUI();
 
     void UpdateHighlightImg();
+
+
 };

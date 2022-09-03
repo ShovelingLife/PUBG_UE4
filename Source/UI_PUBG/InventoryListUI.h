@@ -16,6 +16,7 @@
 
 class UImage;
 class UListView;
+class UProgressBar;
 class USizeBox;
 class UTextBlock;
 
@@ -34,8 +35,13 @@ private:
 
     float mWorldSizeBoxWidth     = 0.f;
     float mInventorySizeBoxWidth = 0.f;
+    int mMaxCapacity = 0;
+    int mCurCapacity = 0;
 
 public:
+    // 가방 여유 게이지바
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* BackpackFreeSpaceBar;
+
     /** \brief 월드 리스트 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* WorldTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   WorldListSizeBox;
@@ -52,6 +58,7 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
     UPROPERTY() UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
+
 
 protected:
     virtual void NativeConstruct() override;
@@ -106,6 +113,8 @@ private:
     UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData);
 
     UItemSlotUI* GetMatchingItemFromList(FString ItemName) const;
+
+    void CheckInventroyCapacity();
 
 public:
     UFUNCTION() void DeleteFromList();

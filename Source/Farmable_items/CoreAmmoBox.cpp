@@ -3,6 +3,7 @@
 
 void ACoreAmmoBox::Init(EAmmoBoxType Type)
 {
+    ObjectGroupType = "AmmoBox";
     AmmoBoxType        = Type;
     WeaponBulletData   = ADataTableManager::GetWeaponBulletData((int)Type);
     FString bulletType = "cal" + WeaponBulletData.Type;

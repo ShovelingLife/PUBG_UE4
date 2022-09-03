@@ -67,6 +67,8 @@ public:
     // 인벤토리로에서 1개만큼 아이템 차감
     UFUNCTION() void DeleteInventoryItem(FString ItemType);
 
+    UFUNCTION() void SetInventoryCapacity(int Capacity);
+
 public:
     UInventoryListUI* GetInventoryListUI() const;
 };

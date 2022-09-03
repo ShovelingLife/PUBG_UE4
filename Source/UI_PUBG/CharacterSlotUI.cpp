@@ -137,30 +137,28 @@ void UCharacterSlotUI::InitSlotUI()
 void UCharacterSlotUI::UpdateHighlightImg()
 {
     UBorder* tmpBorder = nullptr;
-    TArray<TPair<UBorder*, UImage*>> p_ArrSlot
+    TArray<UBorder*> p_ArrSlot
     {
-        TPair< UBorder*, UImage*>(HeadSlotBorder,      HeadSlotImg),
-        TPair< UBorder*, UImage*>(BodyArmorSlotBorder, BodyArmorSlotImg),
-        TPair< UBorder*, UImage*>(BackpackSlotBorder,  BackpackSlotImg),
-        TPair< UBorder*, UImage*>(BeltSlotBorder,      BeltSlotImg),
-        TPair< UBorder*, UImage*>(HatSlotBorder,       HatSlotImg),
-        TPair< UBorder*, UImage*>(MaskSlotBorder,      MaskSlotImg),
-        TPair< UBorder*, UImage*>(CoatSlotBorder,      CoatSlotImg),
-        TPair< UBorder*, UImage*>(ShirtSlotBorder,     ShirtSlotImg),
-        TPair< UBorder*, UImage*>(GlovesSlotBorder,    GlovesSlotImg),
-        TPair< UBorder*, UImage*>(PantsSlotBorder,     PantsSlotImg),
-        TPair< UBorder*, UImage*>(ShoesSlotBorder,     ShoesSlotImg)
+        HeadSlotBorder,
+        BodyArmorSlotBorder,
+        BackpackSlotBorder,
+        BeltSlotBorder,
+        HatSlotBorder,
+        MaskSlotBorder,
+        CoatSlotBorder,
+        ShirtSlotBorder,
+        GlovesSlotBorder,
+        PantsSlotBorder,
+        ShoesSlotBorder 
     };
     // 11번 순회
     for (const auto item : p_ArrSlot)
     {
         // 칸이 선택 되었을 시
-        auto border = item.Key;
-
-    	if (border->IsHovered())
+    	if (item->IsHovered())
         {
             GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
-            tmpBorder = border;
+            tmpBorder = item;
             break;
         }
     }

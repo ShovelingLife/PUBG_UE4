@@ -1,11 +1,13 @@
 ﻿#include "InventoryListUI.h"
-#include "ItemSlotUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
 #include "InventoryManager.h"
+#include "ItemSlotUI.h"
+#include "SlotItemData.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "Farmable_items/CoreAttachment.h"
+#include "Farmable_items/CoreBackpack.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
@@ -17,6 +19,7 @@
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
 #include "Components/ListView.h"
+#include "Components/Progressbar.h"
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
@@ -37,6 +40,7 @@ void UInventoryListUI::NativeConstruct()
 void UInventoryListUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
+    CheckInventroyCapacity();
 }
 
 FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -218,6 +222,23 @@ UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName) const
     return nullptr;
 }
 
+void UInventoryListUI::CheckInventroyCapacity()
+{
+    mCurCapacity = 0;
+
+    if (auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager())
+    {
+        for (auto item : p_inventoryManager->MapCurrentItems)
+        {
+            auto data = item.Value->ItemData;
+            
+
+        }
+    }
+    // 갱신
+    BackpackFreeSpaceBar->SetPercent(mMaxCapacity / mCurCapacity);
+}
+
 void UInventoryListUI::DeleteFromList()
 {
     UItemSlotUI* p_itemSlotUI = nullptr;
@@ -304,7 +325,7 @@ void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* pWeaponSlot)
 void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = true*/)
 {
     auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager();
-    auto p_slotObj          = GetInitializedSlotUI(pObj, FsSlotItemData::GetDataFrom(pObj));
+    auto p_slotObj = GetInitializedSlotUI(pObj, FsSlotItemData::GetDataFrom(pObj));
 
     if (!p_slotObj           ||
         !p_inventoryManager)
@@ -315,14 +336,20 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
     auto itemData        = p_slotObj->ItemData;
     auto p_slot          = mapCurrentItems->FindRef(itemData.Name);
 
+    // 아이템 개수 확인
+    if (mCurCapacity >= mMaxCapacity)
+    {
+        // 팝업 UI 설정
+        if (auto p_customGameInst = UCustomGameInstance::GetInst())
+            p_customGameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound("아이템 허용치를 초과 하였습니다.");
+
+        return;
+    }
     // 아이템이 존재함
     if (p_slot)
     {
-        if (bAdd)
-            p_slot->ItemData.Count += itemData.Count;
-
-        else
-            p_slot->ItemData.Count--;
+        auto& itemCount = p_slot->ItemData.Count;
+        itemCount = (bAdd) ? itemCount + itemData.Count : --itemCount;
 
         // 삭제 후 재추가 (위젯을 재생성함)
         p_slotObj->ItemData.Count = p_slot->ItemData.Count;
@@ -340,6 +367,8 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
 
 void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
 {
+    auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
     if (!pObj)
         return;
 
@@ -347,9 +376,17 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDelete
         DeleteFromList();
 
     // 장착 가능할 경우 바로 장착 / 장착 되어있을 시 교체
+    if (pObj->IsA<ACoreBackpack>())
+    {
+        ACoreBackpack* backPack = Cast<ACoreBackpack>(pObj);
+        mCurCapacity = backPack->Capacity;
 
-
-    ChangeItemCount(pObj);
+        // 저장할 수 있는 한계치를 변경
+        if(p_customGameInst)
+            p_customGameInst->DeleSetInventoryCapacity.ExecuteIfBound(Capacity);
+    }
+    else
+        ChangeItemCount(pObj);
 }
 
 void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive)
@@ -363,11 +400,12 @@ void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive
     {
         if (auto p_slot = Cast<UItemSlotUI>(InventoryListView->GetItemAt(i)))
         {
+            auto itemData = p_slot->ItemData;
             // 발견 시 해당하는 아이템 삭제
-            if (p_slot->ItemData.Name == NewExplosive->WeaponData.Type)
+            if (itemData.Name == NewExplosive->WeaponData.Type)
             {
                 // 장착 중인 무기가 인벤토리에 1개 이상 있음
-                if (p_slot->ItemData.Count > 0)
+                if (itemData.Count > 0)
                 {
                     p_slot->ItemData.Count++;
                     return;

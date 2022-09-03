@@ -24,9 +24,10 @@ DECLARE_DELEGATE_OneParam(FDeleSetPlayerOtherState, EPlayerOtherState)
 // UI 관련 델리게이트
 DECLARE_DELEGATE(FDeleKillUI_Anim)
 DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
+DECLARE_DELEGATE_OneParam(FDeleSetInventoryCapacity, int)
 DECLARE_DELEGATE_OneParam(FDeleDeleteInventoryItem, FString)
-DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
 DECLARE_DELEGATE_OneParam(FDeleSetShootTypeNotificationTxt, FString)
+DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
@@ -41,25 +42,27 @@ class PUBG_UE4_API UCustomGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 private:
+    // 싱글톤
     static UCustomGameInstance* inst;
 
 public:
     /** \brief 전역 변수 */
-    UPROPERTY() ASoundManager*       pSoundManager;
+    UPROPERTY() ASoundManager* pSoundManager;
+    FDeleKillUI_Anim DeleKillUI_Anim;
     FDeleSetPlayerOtherState         DeleSetPlayerOtherState;
     FDeleDealPlayerDmg               DeleDealPlayerDmg;
+    FDeleSetInventoryCapacity DeleSetInventoryCapacity;
     FDeleDeleteInventoryItem         DeleDeleteInventoryItem;
-    FDeleGetBulletCount              DeleGetBulletCount;
     FDeleSetShootTypeNotificationTxt DeleSetShootTypeNotificationTxt;
+    FDeleGetBulletCount              DeleGetBulletCount;
     FDeleSetItemOntoInventory        DeleSetItemOntoInventory;
     FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
     FDeleRunEffectAnim               DeleRunEffectAnim;
-    FDeleKillUI_Anim DeleKillUI_Anim;
 
     FDelePredictGrenadePath DelePredictGrenadePath;
 
-// 싱글톤 생성
 public:
+    // 싱글톤 가져오기
     static UCustomGameInstance* GetInst() { return inst; }
 
 public:

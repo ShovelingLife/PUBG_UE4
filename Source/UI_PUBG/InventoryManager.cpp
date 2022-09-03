@@ -30,7 +30,7 @@ void AInventoryManager::BeginPlay()
     InitInventoryWidget();
 
     // 캐릭터 관련 초기화
-    if(auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+    if (auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
     {
         p_player->DeleOpenInventory.BindUFunction(this, "OpenInventory");
         p_player->DeleCloseInventory.BindUFunction(this, "CloseInventory");
@@ -41,6 +41,7 @@ void AInventoryManager::BeginPlay()
     {
         p_customGameInst->DeleGetBulletCount.BindUFunction(this, "GetBulletCount");
         p_customGameInst->DeleDeleteInventoryItem.BindUFunction(this, "DeleteInventoryItem");
+        p_customGameInst->DeleSetInventoryCapacity.BindUFunction(this, "SetInventoryCapacity");
     }
 }
 
@@ -75,7 +76,7 @@ void AInventoryManager::OpenInventory()
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     pInventoryUI->SetVisibility(ESlateVisibility::Visible);
     p_playerController->SetShowMouseCursor(true);    
-    UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(GetWorld()->GetFirstPlayerController(), pInventoryUI, EMouseLockMode::LockAlways);
+    UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(p_playerController, pInventoryUI, EMouseLockMode::LockAlways);
 }
 
 void AInventoryManager::CloseInventory()
@@ -86,7 +87,7 @@ void AInventoryManager::CloseInventory()
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     pInventoryUI->SetVisibility(ESlateVisibility::Hidden);
     p_playerController->SetShowMouseCursor(false);
-    UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
+    UWidgetBlueprintLibrary::SetInputMode_GameOnly(p_playerController);
 }
 
 int AInventoryManager::GetBulletCount(FString BulletType)
@@ -107,6 +108,12 @@ void AInventoryManager::DeleteInventoryItem(FString ItemType)
         if (auto p_item = MapCurrentItems[ItemType])
             p_item->ItemData.Count--;
     }
+}
+
+UFUNCTION() void AInventoryManager::SetInventoryCapacity(int Capacity)
+{
+    // UI 매니저에서 가방 이미지 가져오기
+    
 }
 
 UInventoryListUI* AInventoryManager::GetInventoryListUI() const { return (pInventoryUI) ? pInventoryUI->InventoryListUI : nullptr; }

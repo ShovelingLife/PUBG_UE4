@@ -37,14 +37,14 @@ void UInventoryUI::SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibili
 
 void UInventoryUI::CheckTooltipMouseDistance()
 {
-    auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+    auto p_subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 
-    if (!subGameInst)
+    if (!p_subGameInst)
         return;
 
     bool bFirstSlot = false;
-    auto distance   = subGameInst->GetDistanceBetweenSlotCursor(mpCurrentItemSlot, bFirstSlot);
+    auto distance   = p_subGameInst->GetDistanceBetweenSlotCursor(mpCurrentItemSlot, bFirstSlot);
 
-    if (subGameInst->IsMouseLeftFromUI(distance, bFirstSlot))
+    if (p_subGameInst->IsMouseLeftFromUI(distance, bFirstSlot))
         TooltipUI->SetVisibility(ESlateVisibility::Hidden);
 }

@@ -477,7 +477,7 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
     // 네번째 무기
     if (auto p_melee = mpWeaponManager->pMelee)
     {
-        MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType));
+        MeleeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)p_melee->WeaponType, "Explosive"));
         MeleeNameTxt->SetText(FText::FromString(p_melee->WeaponData.Type));
     }
 }
@@ -633,7 +633,7 @@ UFUNCTION() void UInventoryWeaponSlotUI::UpdateThrowable(ACoreThrowableWeapon* p
     // 수류탄 UI 설정
     if (pThrowable)
     {
-        GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)pThrowable->WeaponType));
+        GrenadeSlotImg->SetBrushFromTexture(AUI_manager::GetTexture2D((int)pThrowable->WeaponType, "Explosive"));
         GrenadeNameTxt->SetText(FText::FromString(pThrowable->WeaponData.Type));
     }
     for (int i = 0; i < arrThrowableWidget.Num(); i++)

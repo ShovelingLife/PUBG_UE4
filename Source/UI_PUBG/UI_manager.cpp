@@ -64,11 +64,15 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
 
 UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
 {
+    // 총기류
     if (Type == "Gun")
         return (Index < MapWeaponIcon.Num()) ? Cast<UTexture2D>(MapWeaponIcon[Index]) : nullptr;
-
-    else
+    
+    // 투척류
+    else if (Type == "Explosive")
         return (Index < MapOtherWeaponIcon.Num()) ? Cast<UTexture2D>(MapOtherWeaponIcon[Index]) : nullptr;
+
+    // 기타 물품
 }
 
 UMaterial* AUI_manager::GetMaterial(int Index)
