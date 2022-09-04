@@ -44,20 +44,20 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
         return nullptr;
 
     // 투척류 또는 근접무기일 시
-    if (category == "Throwable" ||
-        category == "Melee")
-        weaponTex = MapOtherWeaponIcon[imageIndex];
+    if      (category == "Throwable" ||
+             category == "Melee")
+             weaponTex = MapOtherWeaponIcon[imageIndex];
 
     // 총기 무기일 시
     else if (category == "Gun")
-        weaponTex = MapWeaponIcon[imageIndex];
+             weaponTex = MapWeaponIcon[imageIndex];
 
     // 무기 부속품일 시
     else if (category == "Attachment")
-        weaponTex = MapWeaponAttachmentIcon[imageIndex];
+             weaponTex = MapWeaponAttachmentIcon[imageIndex];
 
     else if (category == "AmmoBox")
-        weaponTex = MapAmmoBoxIcon[imageIndex];
+             weaponTex = MapAmmoBoxIcon[imageIndex];
 
     return Cast<UTexture2D>(weaponTex);
 }
@@ -67,12 +67,14 @@ UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
     // 총기류
     if (Type == "Gun")
         return (Index < MapWeaponIcon.Num()) ? Cast<UTexture2D>(MapWeaponIcon[Index]) : nullptr;
-    
+
     // 투척류
     else if (Type == "Explosive")
         return (Index < MapOtherWeaponIcon.Num()) ? Cast<UTexture2D>(MapOtherWeaponIcon[Index]) : nullptr;
 
     // 기타 물품
+    else
+        return nullptr;
 }
 
 UMaterial* AUI_manager::GetMaterial(int Index)

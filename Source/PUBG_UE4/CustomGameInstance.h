@@ -51,7 +51,7 @@ public:
     FDeleKillUI_Anim DeleKillUI_Anim;
     FDeleSetPlayerOtherState         DeleSetPlayerOtherState;
     FDeleDealPlayerDmg               DeleDealPlayerDmg;
-    FDeleSetInventoryCapacity DeleSetInventoryCapacity;
+    FDeleSetInventoryCapacity        DeleSetInventoryCapacity;
     FDeleDeleteInventoryItem         DeleDeleteInventoryItem;
     FDeleSetShootTypeNotificationTxt DeleSetShootTypeNotificationTxt;
     FDeleGetBulletCount              DeleGetBulletCount;

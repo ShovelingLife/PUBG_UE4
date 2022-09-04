@@ -379,11 +379,11 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDelete
     if (pObj->IsA<ACoreBackpack>())
     {
         ACoreBackpack* backPack = Cast<ACoreBackpack>(pObj);
-        mCurCapacity = backPack->Capacity;
+        mMaxCapacity = backPack->Capacity;
 
         // 저장할 수 있는 한계치를 변경
         if(p_customGameInst)
-            p_customGameInst->DeleSetInventoryCapacity.ExecuteIfBound(Capacity);
+            p_customGameInst->DeleSetInventoryCapacity.ExecuteIfBound(mMaxCapacity);
     }
     else
         ChangeItemCount(pObj);

@@ -52,19 +52,16 @@ FVector2D UGameInstanceSubsystemUI::GetDistanceBetweenSlotCursor(UUserWidget* pW
     float posX = mousePos.X - imgPos.X,
           posY = mousePos.Y - imgPos.Y;
 
-    if (FMath::CeilToFloat(imgPos.Y) == 87.f)
-        bFirst = true;
-
+    bFirst = (FMath::CeilToFloat(imgPos.Y) == 87.f);
     return FVector2D(posX, posY);
 }
 
 bool UGameInstanceSubsystemUI::IsMouseLeftFromUI(FVector2D Distance, bool bFirst)
 {
-    if (bFirst)
-        return ((Distance.X <= 0.1f) || (Distance.X >= 225.f) || (Distance.Y <= -2.f) || (Distance.Y >= 50.f));
-
-    else
-        return ((Distance.X <= 0.1f) || (Distance.X >= 225.f) || (Distance.Y <= 1.5f) || (Distance.Y >= 55.f));
+    float minDist = 0.f, maxDist = 0.f;
+    minDist = bFirst ? -2.f : -1.5f;
+    maxDist = bFirst ? 50.f : 55.f;    
+    return ((Distance.X <= 0.1f) || (Distance.X >= 225.f) || (Distance.Y <= minDist) || (Distance.Y >= maxDist));
 }
 
 AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager()

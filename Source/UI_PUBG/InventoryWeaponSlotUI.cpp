@@ -254,11 +254,12 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
     for (int i = 0; i < p_arrCanvasPanel.Num(); i++)
     {
         USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), p_arrCanvasPanel[i]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
+        auto newIdx= (EWeaponType)(i + 1);
 
         if (i < 3) // 총기류
         {
             if (mousePos.Y >= widgetPos.Y)
-                mSelectedWeaponIndex = (EWeaponType)(i + 1);
+                mSelectedWeaponIndex = newIdx;
         }
         else // 투척류 또는 근접일 시 두 축으로 비교
         {
@@ -371,10 +372,11 @@ void UInventoryWeaponSlotUI::SetWeaponSlotVisibility()
         arrFirstGunWidget[i]->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
         arrSecondGunWidget[i]->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
         arrPistolWidget[i]->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
-    }
-    // 기타 무기 설정
-    for (int i = 0; i < 3; i++)
-         arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? VISIBLE : HIDDEN);
+
+        // 기타 무기 설정
+        if (i < 3)
+            arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? VISIBLE : HIDDEN);
+    }         
 }
 
 void UInventoryWeaponSlotUI::UpdateAttachmentSlot()
@@ -505,44 +507,29 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 }
 
 void UInventoryWeaponSlotUI::CheckForHoveredAttachmentSlot()
-{
-    // 첫번째/두번째 무기 부속품 UI 슬롯 확인
+{    
     for (int i = 0; i < mkTotalGunAttachmentUI; i++)
     {
-        auto firstAttachmentBorder  = mArrFirstGunAttachmentBorder[i];
+        // 첫번째 무기 부속품 UI 슬롯 확인
+        auto firstAttachmentBorder = mArrFirstGunAttachmentBorder[i];
+        auto bFirstAttachmentHovered = firstAttachmentBorder->IsHovered();
+        firstAttachmentBorder->SetBrushColor(bFirstAttachmentHovered ? mkHighlightColor : mkNormalColor);
+        mSelectedWeaponIndex = bFirstAttachmentHovered ? FIRST : NONE;
+
+        // 두번째 무기 부속품 UI 슬롯 확인
         auto secondAttachmentBorder = mArrSecondGunAttachmentBorder[i];
-
-    	if (firstAttachmentBorder->IsHovered())
-        {
-            firstAttachmentBorder->SetBrushColor(mkHighlightColor);
-            mSelectedWeaponIndex = FIRST;
-            
-        }
-        else
-            firstAttachmentBorder->SetBrushColor(mkNormalColor);
-
-        if (secondAttachmentBorder->IsHovered())
-        {
-            secondAttachmentBorder->SetBrushColor(mkHighlightColor);
-            mSelectedWeaponIndex = SECOND;
-        }
-        else
-            secondAttachmentBorder->SetBrushColor(mkNormalColor);
+        auto bSecondAttachmentHovered = secondAttachmentBorder->IsHovered();
+        secondAttachmentBorder->SetBrushColor(bSecondAttachmentHovered ? mkHighlightColor : mkNormalColor);
+        mSelectedWeaponIndex = bSecondAttachmentHovered ? SECOND : NONE;
 
         // 세번째 무기 부속품 UI 슬롯 확인
         if (i < mkTotalPistolAttachmentUI)
         {
             auto pistolAttachmentBorder = mArrPistolAttachmentBorder[i];
-
-            if (pistolAttachmentBorder->IsHovered())
-            {
-                pistolAttachmentBorder->SetBrushColor(mkHighlightColor);
-                mSelectedWeaponIndex = PISTOL;
-            }
-            else
-                pistolAttachmentBorder->SetBrushColor(mkNormalColor);
+            auto bPistolAttachmentHovered = pistolAttachmentBorder->IsHovered();
+            pistolAttachmentBorder->SetBrushColor(bPistolAttachmentHovered ? mkHighlightColor : mkNormalColor);
+            mSelectedWeaponIndex = bSecondAttachmentHovered ? PISTOL : NONE;
         }
-
     }
 }
 
@@ -670,21 +657,23 @@ void UInventoryWeaponSlotUI::VerifyAttachmentSlot(ACoreAttachment* pAttachment)
             {
                 for (int i = 0; i < mArrWeapon.Num(); i++)
                 {
-                	if (auto p_gun = mArrWeapon[i])
-                    {
-                        auto data = p_gun->WeaponData;
+                    auto p_gun = mArrWeapon[i];
 
-                        // 타입 또는 무기 종료 일치할 시
-                        if (data.Type      == matchStr ||
-                            data.GroupType == matchStr)
+                    if (!p_gun)
+                        continue;
+
+                    auto data = p_gun->WeaponData;
+
+                    // 타입 또는 무기 종료 일치할 시
+                    if (data.Type      == matchStr ||
+                        data.GroupType == matchStr)
+                    {
+                        // 선택 색상을 입힘
+                        switch (i)
                         {
-                            // 선택 색상을 입힘
-                            switch (i)
-                            {
-                            case 0: mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);  break;
-                            case 1: mArrSecondGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor); break;
-                            case 2: mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);    break;
-                            }
+                        case 0: mArrFirstGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor);  break;
+                        case 1: mArrSecondGunAttachmentBorder[index]->SetBrushColor(mkHighlightColor); break;
+                        case 2: mArrPistolAttachmentBorder[index]->SetBrushColor(mkHighlightColor);    break;
                         }
                     }
                 }
