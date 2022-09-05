@@ -40,7 +40,10 @@ void UInventoryListUI::NativeConstruct()
 void UInventoryListUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
-    CheckInventroyCapacity();
+
+    // 갱신
+    //BackpackFreeSpaceBar->SetPercent(mMaxCapacity / mCurCapacity);
+    //CheckInventoryCapacity();
 }
 
 FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -222,7 +225,7 @@ UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName) const
     return nullptr;
 }
 
-void UInventoryListUI::CheckInventroyCapacity()
+void UInventoryListUI::CheckInventoryCapacity()
 {
     mCurCapacity = 0;
 
@@ -232,11 +235,8 @@ void UInventoryListUI::CheckInventroyCapacity()
         {
             auto data = item.Value->ItemData;
             
-
         }
     }
-    // 갱신
-    BackpackFreeSpaceBar->SetPercent(mMaxCapacity / mCurCapacity);
 }
 
 void UInventoryListUI::DeleteFromList()
@@ -341,7 +341,7 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
     {
         // 팝업 UI 설정
         if (auto p_customGameInst = UCustomGameInstance::GetInst())
-            p_customGameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound("아이템 허용치를 초과 하였습니다.");
+            p_customGameInst->DeleSetFadingTxt.ExecuteIfBound("아이템 허용치를 초과 하였습니다.");
 
         return;
     }
@@ -379,7 +379,7 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDelete
     if (pObj->IsA<ACoreBackpack>())
     {
         ACoreBackpack* backPack = Cast<ACoreBackpack>(pObj);
-        mMaxCapacity = backPack->Capacity;
+        mMaxCapacity = backPack->Data.StorageVal;
 
         // 저장할 수 있는 한계치를 변경
         if(p_customGameInst)

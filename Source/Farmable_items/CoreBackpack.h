@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CoreFarmableItem.h"
+#include "PUBG_UE4/UtilityData.h"
 #include "CoreBackpack.generated.h"
 
 class UStaticMesh;
@@ -17,13 +18,10 @@ enum class EBackpackType
 UCLASS()
 class FARMABLE_ITEMS_API ACoreBackpack : public ACoreFarmableItem
 {
-	GENERATED_BODY()
-	
-protected:
-	TArray<UStaticMesh*> mArrTex;
+	GENERATED_BODY()	
 
 public:
-	int Capacity = 0;
+	FsUtilityData Data;
 
 public:
 	ACoreBackpack() = default;

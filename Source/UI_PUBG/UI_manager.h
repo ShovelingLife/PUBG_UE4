@@ -35,10 +35,12 @@ public:
     static TMap<int, UMaterial*> MapMainWeaponIcon;       // 메인 무기 UI 벡터 이미지  
     static TMap<int, UTexture*>  MapWeaponIcon;           // 인벤토리 무기 UI (총기)   
     static TMap<int, UTexture*>  MapOtherWeaponIcon;      // 인벤토리 무기 UI (근접 및 투척류)
-    static TMap<int, UTexture*>  MapWeaponAttachmentIcon; // 인벤토리 무기 UI (근접 및 투척류)
+    static TMap<int, UTexture*>  MapWeaponAttachmentIcon; // 부속품 UI
 
     // 그 외 UI 관련
-    static TMap<int, UTexture*>  MapAmmoBoxIcon;
+    static TMap<int, UTexture*>  MapAmmoBoxIcon; // 탄박스 UI
+    static TMap<int, UTexture*>  MapUtilityIcon; // 그 외 상호작용 가능한 오브젝트 UI (가방, 회복아이템 등)
+
 
 private:
     // ------- 현재 쓰이고있는 변수들 -------
@@ -103,8 +105,8 @@ private:
     /** \brief 인벤토리 무기 UI 초기화 */
     void InitInventoryWeaponIcon();
 
-    /** \brief 총알 박스 UI 초기화 */
-    void InitBulletBoxIcon();
+    /** \brief 기타 UI 초기화 */
+    void InitUtilityIcon();
     
 // 시작 후 초기화
 public:

@@ -20,6 +20,7 @@ TMap<int, UTexture*>  AUI_manager::MapWeaponIcon;
 TMap<int, UTexture*>  AUI_manager::MapOtherWeaponIcon;
 TMap<int, UTexture*>  AUI_manager::MapWeaponAttachmentIcon;
 TMap<int, UTexture*>  AUI_manager::MapAmmoBoxIcon;
+TMap<int, UTexture*>  AUI_manager::MapUtilityIcon;
 
 AUI_manager::AUI_manager()
 {
@@ -31,7 +32,7 @@ AUI_manager::AUI_manager()
     InitPlayerIcon();
     InitInventoryWeaponIcon();
     InitMainWeaponIcon();
-    InitBulletBoxIcon();
+    InitUtilityIcon();
 }
 
 UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
@@ -73,6 +74,9 @@ UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
         return (Index < MapOtherWeaponIcon.Num()) ? Cast<UTexture2D>(MapOtherWeaponIcon[Index]) : nullptr;
 
     // 기타 물품
+    else if (Type == "Utility")
+        return (Index < MapUtilityIcon.Num()) ? Cast<UTexture2D>(MapUtilityIcon[Index]) : nullptr;
+
     else
         return nullptr;
 }
@@ -159,11 +163,10 @@ void AUI_manager::InitMainWeaponIcon()
 void AUI_manager::InitInventoryWeaponIcon()
 {
     const FString inventoryWeaponUI_Path = "/Game/UI/InventoryWeaponIcon/";
-    auto arrWeaponData           = ADataTableManager::ArrWeaponData;
-    auto arrOtherWeaponData      = ADataTableManager::ArrOtherWeaponData;
-    auto arrWeaponAttachmentData = ADataTableManager::ArrWeaponAttachmentData;
 
     // 총기 아이콘 초기화
+    auto arrWeaponData = ADataTableManager::ArrWeaponData;
+
     for (int i = 0; i < arrWeaponData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
@@ -174,6 +177,8 @@ void AUI_manager::InitInventoryWeaponIcon()
             AUI_manager::MapWeaponIcon.Add(i, UI_tex.Object);
     }
     // 근접 및 투척류 아이콘 초기화
+    auto arrOtherWeaponData = ADataTableManager::ArrOtherWeaponData;
+
     for (int i = 0; i < arrOtherWeaponData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
@@ -184,6 +189,8 @@ void AUI_manager::InitInventoryWeaponIcon()
             AUI_manager::MapOtherWeaponIcon.Add(i, UI_tex.Object);
     }
     // 부속품 아이콘 초기화
+    auto arrWeaponAttachmentData = ADataTableManager::ArrWeaponAttachmentData;
+
     for (int i = 0; i < arrWeaponAttachmentData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
@@ -195,19 +202,31 @@ void AUI_manager::InitInventoryWeaponIcon()
     }
 }
 
-void AUI_manager::InitBulletBoxIcon()
+void AUI_manager::InitUtilityIcon()
 {
     // 총알 박스 UI 초기화
-    auto arrWeaponBulletData = ADataTableManager::ArrWeaponBulletData;
+    auto arrAmmoBoxData = ADataTableManager::ArrWeaponBulletData;
 
-    for (int i = 0; i < arrWeaponBulletData.Num(); i++)
+    for (int i = 0; i < arrAmmoBoxData.Num(); i++)
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
-        FString UI_path = "/Game/UI/AmmoBoxIcon/AmmoBox" + arrWeaponBulletData[i].Type + "_Icon";
+        FString UI_path = "/Game/UI/AmmoBoxIcon/AmmoBox" + arrAmmoBoxData[i].Type + "_Icon";
         auto    UI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
 
         if (UI_tex.Succeeded())
             AUI_manager::MapAmmoBoxIcon.Add(i, UI_tex.Object);
+    }
+    // 그 외 아이콘 초기화
+    auto arrUtilityData = ADataTableManager::ArrUtilityData;
+
+    for (int i = 0; i < arrUtilityData.Num(); i++)
+    {
+        // 리소스를 불러온 후 데이터 테이블에 대입
+        FString UI_path = "/Game/UI/UtilityIcon/T_" + arrUtilityData[i].Type;
+        auto    UI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+
+        if (UI_tex.Succeeded())
+            AUI_manager::MapUtilityIcon.Add(i, UI_tex.Object);
     }
 }
 

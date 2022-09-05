@@ -5,6 +5,7 @@ TArray<FsWeaponData>           ADataTableManager::ArrWeaponData;
 TArray<FsOtherWeaponData>      ADataTableManager::ArrOtherWeaponData;
 TArray<FsWeaponAttachmentData> ADataTableManager::ArrWeaponAttachmentData;
 TArray<FsWeaponBulletData>     ADataTableManager::ArrWeaponBulletData;
+TArray<FsUtilityData>          ADataTableManager::ArrUtilityData;
 
 FsVehicleData ADataTableManager::GetVehicleData(int Index)
 {
@@ -31,6 +32,11 @@ FsWeaponBulletData ADataTableManager::GetWeaponBulletData(int Index)
     return (ArrWeaponBulletData.IsEmpty() ? FsWeaponBulletData() : ArrWeaponBulletData[Index]);
 }
 
+FsUtilityData ADataTableManager::GetUtilityData(int Index)
+{
+    return (ArrUtilityData.IsEmpty() ? FsUtilityData() : ArrUtilityData[Index]);
+}
+
 // Sets default values
 ADataTableManager::ADataTableManager()
 {
@@ -39,6 +45,7 @@ ADataTableManager::ADataTableManager()
     InitOtherWeaponData();
     InitWeaponAttachmentData();
     InitWeaponBulletData();
+    InitUtilityData();
 }
 
 void ADataTableManager::InitVehicleData()
@@ -198,5 +205,28 @@ void ADataTableManager::InitWeaponBulletData()
             break;
 
         ArrWeaponBulletData.Add(*p_row);
+    }
+}
+
+void ADataTableManager::InitUtilityData()
+{
+    // CSV 로드
+    ConstructorHelpers::FObjectFinder<UDataTable> UTILITY_DATA_TABLE(TEXT("/Game/Data/UTILITY_DATA_TABLE"));
+
+    if (!UTILITY_DATA_TABLE.Succeeded())
+        return;
+
+    UDataTable* pUtilityDataTable = UTILITY_DATA_TABLE.Object;
+
+    // 모든 이름 가져오기
+    TArray<FName> arrRowName = pUtilityDataTable->GetRowNames();
+
+    // 갖고온 CSV로부터 데이터 할당
+    for (int i = 0; i < arrRowName.Num(); i++)
+    {
+        // row_name_arr 안에 정보 및 명칭
+        auto p_row = pUtilityDataTable->FindRow<FsUtilityData>(arrRowName[i], arrRowName[i].ToString());
+
+        ADataTableManager::ArrUtilityData.Add(*p_row);
     }
 }

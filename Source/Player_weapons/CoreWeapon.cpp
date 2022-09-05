@@ -237,7 +237,7 @@ void ACoreWeapon::ChangeShootMode()
 
     // 팝업 UI 설정
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleSetShootTypeNotificationTxt.ExecuteIfBound(GetShootTypeStr());
+        p_customGameInst->DeleSetFadingTxt.ExecuteIfBound(GetShootTypeStr());
 }
 
 EGunShootType ACoreWeapon::GetNextShootType() const

@@ -114,7 +114,7 @@ private:
 
     UItemSlotUI* GetMatchingItemFromList(FString ItemName) const;
 
-    void CheckInventroyCapacity();
+    void CheckInventoryCapacity();
 
 public:
     UFUNCTION() void DeleteFromList();

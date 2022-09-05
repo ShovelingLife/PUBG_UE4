@@ -11,7 +11,7 @@ void UNotificationUI::NativeConstruct()
 	
 	// 처음 시작할 때만 바인딩
 	if (auto p_gameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
-		p_gameInst->DeleSetShootTypeNotificationTxt.BindUFunction(this, "UpdateNotificationText");
+		p_gameInst->DeleSetFadingTxt.BindUFunction(this, "UpdateNotificationText");
 }
 
 void UNotificationUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

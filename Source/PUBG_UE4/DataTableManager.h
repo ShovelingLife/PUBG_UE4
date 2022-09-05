@@ -14,6 +14,7 @@
 #include "WeaponData.h"
 #include "WeaponAttachmentData.h"
 #include "WeaponBulletData.h"
+#include "UtilityData.h"
 #include "GameFramework/Actor.h"
 #include "DataTableManager.generated.h"
 
@@ -31,6 +32,7 @@ public:
     static TArray<FsOtherWeaponData>      ArrOtherWeaponData;    
     static TArray<FsWeaponAttachmentData> ArrWeaponAttachmentData;
     static TArray<FsWeaponBulletData>     ArrWeaponBulletData;
+    static TArray<FsUtilityData>          ArrUtilityData;
 
 private:
     /** \brief 차량 데이터 관련 */
@@ -65,6 +67,8 @@ public:
 
     static FsWeaponBulletData GetWeaponBulletData(int Index);
 
+    static FsUtilityData GetUtilityData(int Index);
+
 public:
     ADataTableManager();
 
@@ -83,4 +87,6 @@ private:
 
     /** \brief 무기 총알 상자 데이터 초기화 */
     void InitWeaponBulletData();
+
+    void InitUtilityData();
 };
