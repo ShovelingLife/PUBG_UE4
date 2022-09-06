@@ -61,17 +61,17 @@ void AWeaponManager::InitGrenadePath()
     SplineComp = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComp"));   
     RootComponent = SplineComp;
 
-    auto BP_GrenadeEndPointRef = ConstructorHelpers::FClassFinder<AActor>(TEXT("/Game/UI/PredictGrenadePath/BP_PredictEndpoint.BP_PredictEndpoint_C"));
+    ConstructorHelpers::FClassFinder<AActor> BP_GrenadeEndPointRef(TEXT("/Game/UI/PredictGrenadePath/BP_PredictEndpoint.BP_PredictEndpoint_C"));
 
     if (BP_GrenadeEndPointRef.Succeeded())
         BP_GrenadeEndPoint = BP_GrenadeEndPointRef.Class;
 
-    auto PATH_MESH = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Engine/BasicShapes/Cylinder"));
+    ConstructorHelpers::FObjectFinder<UStaticMesh> PATH_MESH(TEXT("/Engine/BasicShapes/Cylinder"));
 
     if (PATH_MESH.Succeeded())
         PathMesh = PATH_MESH.Object;
 
-    auto PATH_MAT = ConstructorHelpers::FObjectFinder<UMaterial>(TEXT("/Game/UI/PredictGrenadePath/PredictionPathMat"));
+    ConstructorHelpers::FObjectFinder<UMaterial> PATH_MAT(TEXT("/Game/UI/PredictGrenadePath/PredictionPathMat"));
 
     if (PATH_MAT.Succeeded())
         PathMat = PATH_MAT.Object;

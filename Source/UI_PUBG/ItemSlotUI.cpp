@@ -32,6 +32,7 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
             subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, VISIBLE);
     }
+    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(ItemData.Count));
 }
 
 void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
@@ -44,9 +45,8 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
         DeleCheckForSlot   = p_slot->DeleCheckForSlot;
         DeleSwapWeaponSlot = p_slot->DeleSwapWeaponSlot;
         DeleDeleteFromList = p_slot->DeleDeleteFromList;
-        ItemData           = p_slot->ItemData;
 
-        // 현재 관련된 UI에 적용
+        ItemData = p_slot->ItemData;
         ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
         NameTxt->SetText(FText::FromString(ItemData.Name));
         CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));

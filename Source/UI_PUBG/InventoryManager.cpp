@@ -2,6 +2,7 @@
 #include "InventoryListUI.h"
 #include "InventoryUI.h"
 #include "ItemSlotUI.h"
+#include "SlotItemData.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "PUBG_UE4/DataTableManager.h"
@@ -48,6 +49,7 @@ void AInventoryManager::BeginPlay()
 void AInventoryManager::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    //CheckInventoryCapacity();
 }
 
 void AInventoryManager::InitInventoryUI()
@@ -68,6 +70,36 @@ void AInventoryManager::InitInventoryWidget()
     }      
 }
 
+void AInventoryManager::CheckInventoryCapacity()
+{
+    float total = 0;
+    float ammoSum = 0.f;
+    //int idx = 0;
+
+    // 인벤토리를 수시로 체크
+    for (auto item : MapCurrentItems)
+    {
+        auto data = item.Value->ItemData;
+        auto category = data.Category;
+
+        // 탄알박스 일 시
+        if (category=="AmmoBox")
+        {
+            // 탄알은 100개씩 셈
+           ammoSum += 100 / data.Count;
+        }
+        // 투척류 일 시
+        else if (category == "Throwable")
+        {
+            
+        }
+
+        //GEngine->AddOnScreenDebugMessage(idx++, 1.f, FColor::Red, data.Category);
+    }
+    total += ammoSum;
+    GetInventoryListUI()->CurCapacity = total;
+}
+
 void AInventoryManager::OpenInventory()
 {
     if (!pInventoryUI)
@@ -76,7 +108,7 @@ void AInventoryManager::OpenInventory()
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     pInventoryUI->SetVisibility(ESlateVisibility::Visible);
     p_playerController->SetShowMouseCursor(true);    
-    UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(p_playerController, pInventoryUI, EMouseLockMode::LockAlways);
+    UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(p_playerController, pInventoryUI, EMouseLockMode::LockAlways);       
 }
 
 void AInventoryManager::CloseInventory()
@@ -104,10 +136,7 @@ void AInventoryManager::DeleteInventoryItem(FString ItemType)
 {
     // 아이템을 1개만큼 차감
     if (MapCurrentItems.Contains(ItemType))
-    {
-        if (auto p_item = MapCurrentItems[ItemType])
-            p_item->ItemData.Count--;
-    }
+        GetInventoryListUI()->ChangeItemCount(MapCurrentItems[ItemType]->pDraggedItem, false);
 }
 
 UFUNCTION() void AInventoryManager::SetInventoryCapacity(int Capacity)

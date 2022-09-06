@@ -31,6 +31,8 @@ private:
     /** \brief 인벤토리 매니저 블프 */
     TSubclassOf<UUserWidget> BP_InventoryUI;
 
+    bool mbUpdatingList = false;
+
 public:
     // 현재 인벤토리
     TMap<FString, UItemSlotUI*> MapCurrentItems;
@@ -53,6 +55,8 @@ private:
 
     /** \brief 인벤토리 위젯 초기화 */
     void InitInventoryWidget();
+
+    void CheckInventoryCapacity();
 
 public:
     /** \brief 플레이어가 인벤토리를 열음 (델리게이트) */

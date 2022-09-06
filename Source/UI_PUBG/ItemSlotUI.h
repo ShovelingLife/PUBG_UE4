@@ -84,5 +84,4 @@ public:
       * \param Pos 슬롯 UI 위치 
      */
     void SetAsCursor(FVector2D Pos);
-
 };

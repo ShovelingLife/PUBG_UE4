@@ -35,8 +35,7 @@ private:
 
     float mWorldSizeBoxWidth     = 0.f;
     float mInventorySizeBoxWidth = 0.f;
-    int mMaxCapacity = 0;
-    int mCurCapacity = 0;
+    float mMaxCapacity = 25.f;
 
 public:
     // 가방 여유 게이지바
@@ -59,6 +58,7 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
     UPROPERTY() UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
 
+    float CurCapacity = 0;
 
 protected:
     virtual void NativeConstruct() override;
@@ -110,11 +110,9 @@ private:
     /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
     void GetItemListWidth();
 
-    UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData);
-
     UItemSlotUI* GetMatchingItemFromList(FString ItemName) const;
 
-    void CheckInventoryCapacity();
+    UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj);
 
 public:
     UFUNCTION() void DeleteFromList();
@@ -129,7 +127,7 @@ public:
 
     UFUNCTION() void ChangeItemCount(ABaseInteraction* pObj, bool bAdd = true);
 
-    UFUNCTION() void SetItemOntoInventory(ABaseInteraction* pObj, bool bDeleteFromList = false);
+    UFUNCTION() void UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList = false);
     
     UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
 };

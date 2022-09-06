@@ -227,6 +227,6 @@ void ADataTableManager::InitUtilityData()
         // row_name_arr 안에 정보 및 명칭
         auto p_row = pUtilityDataTable->FindRow<FsUtilityData>(arrRowName[i], arrRowName[i].ToString());
 
-        ADataTableManager::ArrUtilityData.Add(*p_row);
+        ArrUtilityData.Add(*p_row);
     }
 }

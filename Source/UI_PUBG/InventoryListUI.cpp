@@ -32,7 +32,7 @@ void UInventoryListUI::NativeConstruct()
 
     // 인벤토리에 아이템 추가되는 함수 바인딩
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "SetItemOntoInventory");
+        p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "UpdateInventoryList");
 
     pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
@@ -40,9 +40,10 @@ void UInventoryListUI::NativeConstruct()
 void UInventoryListUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
-
+    auto total = (mMaxCapacity / CurCapacity) * 0.1f;
+    auto percent = (total > 1.f) ? (mMaxCapacity / CurCapacity) * 0.01f : total;
     // 갱신
-    //BackpackFreeSpaceBar->SetPercent(mMaxCapacity / mCurCapacity);
+    BackpackFreeSpaceBar->SetPercent((CurCapacity > 0) ? percent : 0.f);
     //CheckInventoryCapacity();
 }
 
@@ -91,23 +92,23 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
     
     // 마우스 위치를 구함
-    auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_ItemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
     
-    if (!p_slot    ||
-        !mpSlotObj ||
+    if (!mpSlotObj ||
         !pGameInstanceSubsystemUI)
         return;
 
+    // 데이터를 옮김
+    //auto data = FsSlotItemData::GetDataFrom(mpSlotObj->pDraggedItem);
+    //auto p_tmpData = &data;
+    //p_tmpData->Name = mpSlotObj->ItemData.Name;
+    auto p_slot = GetInitializedSlotUI(mpSlotObj->pDraggedItem);
+
+    if (!p_slot)
+        return;
+
     // 슬롯 설정    
-    pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);
-    p_slot->pDraggedItem = mpSlotObj->pDraggedItem;
-    p_slot->ItemData     = mpSlotObj->ItemData;
-    p_slot->Priority     = 1;
-    p_slot->DeleDeleteFromList.BindUFunction(this, "DeleteFromList");
-    p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
-    p_slot->DeleSwapInventoryExplosive.BindUFunction(this, "SwapInventoryExplosive");
-    p_slot->DeleChangeItemCount.BindUFunction(this, "ChangeItemCount");
+    pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);                                           
     p_slot->SetAsCursor(mousePos);
 
     // 무기 부속품일 시 해당되는 칸 설정
@@ -199,14 +200,16 @@ void UInventoryListUI::GetItemListWidth()
     }
 }
 
-UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pObj, FsSlotItemData ItemData)
+UItemSlotUI* UInventoryListUI::GetInitializedSlotUI(ABaseInteraction* pObj)
 {
     auto p_slot = CreateWidget<UItemSlotUI>(this, BP_ItemSlotUI);
-    p_slot->ItemData     = ItemData;
+    p_slot->ItemData     = FsSlotItemData::GetDataFrom(pObj);
     p_slot->pDraggedItem = pObj;
+    p_slot->Priority = 1;
     p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
     p_slot->DeleDeleteFromList.BindUFunction(this, "DeleteFromList");
     p_slot->DeleSwapWeaponSlot.BindUFunction(this, "SwapWeaponSlot");
+    p_slot->DeleSwapInventoryExplosive.BindUFunction(this, "SwapInventoryExplosive");
     return p_slot;
 }
 
@@ -223,20 +226,6 @@ UItemSlotUI* UInventoryListUI::GetMatchingItemFromList(FString ItemName) const
         }
     }
     return nullptr;
-}
-
-void UInventoryListUI::CheckInventoryCapacity()
-{
-    mCurCapacity = 0;
-
-    if (auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager())
-    {
-        for (auto item : p_inventoryManager->MapCurrentItems)
-        {
-            auto data = item.Value->ItemData;
-            
-        }
-    }
 }
 
 void UInventoryListUI::DeleteFromList()
@@ -325,23 +314,29 @@ void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* pWeaponSlot)
 void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = true*/)
 {
     auto p_inventoryManager = pGameInstanceSubsystemUI->GetInventoryManager();
-    auto p_slotObj = GetInitializedSlotUI(pObj, FsSlotItemData::GetDataFrom(pObj));
 
-    if (!p_slotObj           ||
-        !p_inventoryManager)
+    // 새로 생성한 슬롯 UI
+    auto p_tmpSlot = GetInitializedSlotUI(pObj);
+
+    if (!p_inventoryManager ||
+        !p_tmpSlot)
         return;
+
+    auto itemData = p_tmpSlot->ItemData;
 
     // 현재 아이템이 있는지 확인 및 아이템 개수 갱신
     auto mapCurrentItems = &p_inventoryManager->MapCurrentItems;
-    auto itemData        = p_slotObj->ItemData;
+
+    // 현재 리스트에 존재하고 있는 슬롯 UI
     auto p_slot          = mapCurrentItems->FindRef(itemData.Name);
 
     // 아이템 개수 확인
-    if (mCurCapacity >= mMaxCapacity)
+    if (bAdd &&
+        CurCapacity >= mMaxCapacity)
     {
         // 팝업 UI 설정
         if (auto p_customGameInst = UCustomGameInstance::GetInst())
-            p_customGameInst->DeleSetFadingTxt.ExecuteIfBound("아이템 허용치를 초과 하였습니다.");
+            p_customGameInst->DeleSetFadingTxt.ExecuteIfBound("Inventory limit reached");
 
         return;
     }
@@ -350,22 +345,28 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
     {
         auto& itemCount = p_slot->ItemData.Count;
         itemCount = (bAdd) ? itemCount + itemData.Count : --itemCount;
+        p_tmpSlot->ItemData = p_slot->ItemData;
 
         // 삭제 후 재추가 (위젯을 재생성함)
-        p_slotObj->ItemData.Count = p_slot->ItemData.Count;
         InventoryListView->RemoveItem(p_slot);
-        InventoryListView->AddItem(p_slotObj);
+
+        // 총알 0개면 그대로 리스트에서 제거
+        if (itemCount == 0)
+            return;
+
+        InventoryListView->AddItem(p_tmpSlot);
         mapCurrentItems->Remove(itemData.Name);
-        mapCurrentItems->Add(itemData.Name, p_slotObj);
+        mapCurrentItems->Add(itemData.Name, p_tmpSlot);
+        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(mapCurrentItems->Num()));
     }
     else
     {
-        InventoryListView->AddItem(p_slotObj);
-        mapCurrentItems->Add(itemData.Name, p_slotObj);
+        InventoryListView->AddItem(p_tmpSlot);
+        mapCurrentItems->Add(itemData.Name, p_tmpSlot);
     }
 }
 
-void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
+void UInventoryListUI::UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
 {
     auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
@@ -379,7 +380,7 @@ void UInventoryListUI::SetItemOntoInventory(ABaseInteraction* pObj, bool bDelete
     if (pObj->IsA<ACoreBackpack>())
     {
         ACoreBackpack* backPack = Cast<ACoreBackpack>(pObj);
-        mMaxCapacity = backPack->Data.StorageVal;
+        mMaxCapacity = backPack->Data.PropVal;
 
         // 저장할 수 있는 한계치를 변경
         if(p_customGameInst)

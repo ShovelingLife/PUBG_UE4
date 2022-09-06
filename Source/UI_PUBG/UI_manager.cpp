@@ -110,7 +110,7 @@ void AUI_manager::BindDelegate()
 void AUI_manager::InitInteractionUI()
 {
     // 위젯 컴포넌트 블루프린트 초기화
-    auto widgetBP = ConstructorHelpers::FClassFinder<UInteractionUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_InteractionUI.BP_InteractionUI_C'"));
+    ConstructorHelpers::FClassFinder<UInteractionUI> widgetBP(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_InteractionUI.BP_InteractionUI_C'"));
 
     if (widgetBP.Succeeded())
         mInteractionWidgetBP = widgetBP.Class;
@@ -118,7 +118,7 @@ void AUI_manager::InitInteractionUI()
 
 void AUI_manager::InitPlayerUI()
 {
-    auto bp_playerUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerUI.BP_PlayerUI_C'"));
+    ConstructorHelpers::FClassFinder<UUserWidget> bp_playerUI(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerUI.BP_PlayerUI_C'"));
 
     if (bp_playerUI.Succeeded())
         mPlayerUI_BP = bp_playerUI.Class;
@@ -126,7 +126,7 @@ void AUI_manager::InitPlayerUI()
 
 void AUI_manager::InitPlayerEffectUI()
 {
-    auto bp_playerEffectUI = ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerEffectUI.BP_PlayerEffectUI_C'"));
+    ConstructorHelpers::FClassFinder<UUserWidget> bp_playerEffectUI(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerEffectUI.BP_PlayerEffectUI_C'"));
 
     if (bp_playerEffectUI.Succeeded())
         mPlayerEffectUI_BP = bp_playerEffectUI.Class;
@@ -138,7 +138,7 @@ void AUI_manager::InitPlayerIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString playerUI_path = "/Game/UI/Player/State/" + mkArrShootType[i] + "Icon";
-        auto    playerUI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*playerUI_path);
+        ConstructorHelpers::FObjectFinder<UTexture> playerUI_tex(*playerUI_path);
 
         if (playerUI_tex.Succeeded())
             MapPlayerIcon.Add(i, playerUI_tex.Object);
@@ -153,10 +153,10 @@ void AUI_manager::InitMainWeaponIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString weaponUI_path = "/Game/UI/WeaponIcon/T_" + arrWeaponData[i].SlotIconPath;
-        auto    weaponUI_mat = ConstructorHelpers::FObjectFinder<UMaterial>(*weaponUI_path);
+        ConstructorHelpers::FObjectFinder<UMaterial> weaponUI_mat(*weaponUI_path);
 
         if (weaponUI_mat.Succeeded())
-            AUI_manager::MapMainWeaponIcon.Add(i, weaponUI_mat.Object);
+            MapMainWeaponIcon.Add(i, weaponUI_mat.Object);
     }
 }
 
@@ -171,10 +171,10 @@ void AUI_manager::InitInventoryWeaponIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = inventoryWeaponUI_Path + "T_" + arrWeaponData[i].IconPath;
-        auto    UI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+        ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapWeaponIcon.Add(i, UI_tex.Object);
+            MapWeaponIcon.Add(i, UI_tex.Object);
     }
     // 근접 및 투척류 아이콘 초기화
     auto arrOtherWeaponData = ADataTableManager::ArrOtherWeaponData;
@@ -183,10 +183,10 @@ void AUI_manager::InitInventoryWeaponIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = inventoryWeaponUI_Path + arrOtherWeaponData[i].Type + "_icon";
-        auto    UI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+        ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapOtherWeaponIcon.Add(i, UI_tex.Object);
+            MapOtherWeaponIcon.Add(i, UI_tex.Object);
     }
     // 부속품 아이콘 초기화
     auto arrWeaponAttachmentData = ADataTableManager::ArrWeaponAttachmentData;
@@ -195,10 +195,10 @@ void AUI_manager::InitInventoryWeaponIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = inventoryWeaponUI_Path + "T_" + arrWeaponAttachmentData[i].Type + "_Icon";
-        auto    UI_tex  = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+        ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapWeaponAttachmentIcon.Add(i, UI_tex.Object);
+            MapWeaponAttachmentIcon.Add(i, UI_tex.Object);
     }
 }
 
@@ -211,10 +211,10 @@ void AUI_manager::InitUtilityIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = "/Game/UI/AmmoBoxIcon/AmmoBox" + arrAmmoBoxData[i].Type + "_Icon";
-        auto    UI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+        ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapAmmoBoxIcon.Add(i, UI_tex.Object);
+            MapAmmoBoxIcon.Add(i, UI_tex.Object);
     }
     // 그 외 아이콘 초기화
     auto arrUtilityData = ADataTableManager::ArrUtilityData;
@@ -223,10 +223,10 @@ void AUI_manager::InitUtilityIcon()
     {
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = "/Game/UI/UtilityIcon/T_" + arrUtilityData[i].Type;
-        auto    UI_tex = ConstructorHelpers::FObjectFinder<UTexture>(*UI_path);
+        ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
 
         if (UI_tex.Succeeded())
-            AUI_manager::MapUtilityIcon.Add(i, UI_tex.Object);
+            MapUtilityIcon.Add(i, UI_tex.Object);
     }
 }
 

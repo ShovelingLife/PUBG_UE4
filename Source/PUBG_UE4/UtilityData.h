@@ -14,8 +14,9 @@ public:
     UPROPERTY(BlueprintReadWrite, Category = UtilityData) FString Category = "";
     UPROPERTY(BlueprintReadWrite, Category = UtilityData) FString Type = "";
     UPROPERTY(BlueprintReadWrite, Category = UtilityData) FString MeshPath = "";
-    UPROPERTY(BlueprintReadWrite, Category = UtilityData) int StorageVal = 0;
-    UPROPERTY(BlueprintReadWrite, Category = UtilityData) int HealVal = 0;
+
+    // 가방 용량 / HP 회복 / 에너지 회복 등 하나로 통일
+    UPROPERTY(BlueprintReadWrite, Category = UtilityData) int PropVal = 0;
     
 public:
     FsUtilityData() = default;
