@@ -8,6 +8,6 @@
 class PUBG_UE4_API Global
 {
 public:
-    Global();
-    ~Global();
+    static const FLinearColor WhiteColor;
+    static const FLinearColor GrayColor;
 };

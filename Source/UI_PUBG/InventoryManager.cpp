@@ -102,9 +102,17 @@ void AInventoryManager::CheckInventoryCapacity()
 
 void AInventoryManager::OpenInventory()
 {
-    if (!pInventoryUI)
+    if (!IsValid(pInventoryUI))
         return;
 
+    // 마우스를 화면 정중앙으로 설정
+    auto gameViewport = GetWorld()->GetGameViewport();
+    FVector2D viewportSize;
+    gameViewport->GetViewportSize(viewportSize);
+    viewportSize /= 2;
+    gameViewport->Viewport->SetMouse(viewportSize.X, viewportSize.Y);
+
+    // 컨트롤러 설정
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     pInventoryUI->SetVisibility(ESlateVisibility::Visible);
     p_playerController->SetShowMouseCursor(true);    
@@ -113,7 +121,7 @@ void AInventoryManager::OpenInventory()
 
 void AInventoryManager::CloseInventory()
 {
-    if (!pInventoryUI)
+    if (!IsValid(pInventoryUI))
         return;
 
     auto p_playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);

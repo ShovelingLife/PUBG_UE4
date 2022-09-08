@@ -173,29 +173,15 @@ void ACustomPlayer::InitParticleComp()
 
 void ACustomPlayer::CheckIfMoving()
 {
-    auto characterMovementComp = GetCharacterMovement();
-
-    // 움직이고 있지 않음
-    if (!characterMovementComp->IsWalking())
-    {
-        if (mbMoving)
-        {
-            switch (CurrentState)
-            {
-            case CROUCH_WALK:  CurrentState = CROUCH;  break;
-            case PRONING_WALK: CurrentState = PRONING; break;
-            case AIM_WALK:     CurrentState = AIM;     break;
-
-            default: CurrentState = IDLE; break;
-            }
-        }
-        mbMoving  = false;
-    }
-    else
+    auto characterMovementComp = GetCharacterMovement();    
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, GetVelocity().ToString());
+    
+    // 움직이고 있음
+    if (characterMovementComp->Velocity.Size() > 0.f)
     {
         switch (CurrentState)
         {
-        // 숙이고 있음
+            // 숙이고 있음
         case CROUCH:
         case CROUCH_AIM:
             CurrentState = CROUCH_WALK;
@@ -231,12 +217,27 @@ void ACustomPlayer::CheckIfMoving()
                 }
                 // 
                 else if (CurrentState == IDLE ||
-                         CurrentState == JUMP)
-                         CurrentState = WALK;
+                    CurrentState == JUMP)
+                    CurrentState = WALK;
             }
             break;
         }
         mbMoving = true;
+    }
+    else
+    {
+        if (mbMoving)
+        {
+            switch (CurrentState)
+            {
+            case CROUCH_WALK:  CurrentState = CROUCH;  break;
+            case PRONING_WALK: CurrentState = PRONING; break;
+            case AIM_WALK:     CurrentState = AIM;     break;
+
+            default: CurrentState = IDLE; break;
+            }
+        }
+        mbMoving = false;       
     }
 }
 
@@ -476,6 +477,9 @@ void ACustomPlayer::Turn(float _Value)
 
 void ACustomPlayer::OpenInventory()
 {
+    if (mpWeaponManager->IsFiring())
+        return;
+
     if (!mbInventoryOpened)
     {
         DeleOpenInventory.ExecuteIfBound();
@@ -506,11 +510,11 @@ void ACustomPlayer::BeginShooting()
         return;
 
     // 연사일 때만 한번 발 사
-    if (auto p_gun = mpWeaponManager->GetCurrentGun())
-        mpWeaponManager->ClickEvent();
-
     // 투척류일 시 경로 예측
-    if (mpWeaponManager->CurrentType == THROWABLE)
+    auto p_gun = mpWeaponManager->GetCurrentGun();
+
+    if (p_gun ||
+        mpWeaponManager->CurrentType == THROWABLE)
         mpWeaponManager->ClickEvent();
 }
 
@@ -523,6 +527,8 @@ void ACustomPlayer::EndShooting()
     // 투척류 무기일 시 뗐을 때만 발동    
     if (mpWeaponManager->CurrentType == THROWABLE)
         mpWeaponManager->ThrowGrenade();
+
+    mpWeaponManager->DeactivateFiring();
 }
 
 void ACustomPlayer::Reload()
@@ -562,19 +568,27 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
         !p_soundManager)
         return;
 
+    if (mpWeaponManager->IsFiring())
+        return;
+
     // 마우스 휠로 무기 선택
     if (Direction != "" &&
         mpWeaponManager->ScrollSelect(Direction))
         p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
 
     // 키보드 숫자 키로 무기 선택
-    if (WeaponType != NONE &&
+    else
+    {
+        mpWeaponManager->Swap(WeaponType);
+        p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+    }
+    /*if (WeaponType != NONE &&
         WeaponType != mpWeaponManager->CurrentType &&
         mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)
     {
         mpWeaponManager->Swap(WeaponType);
         p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-    }
+    }*/
 }
 
 void ACustomPlayer::ChangePerspective()

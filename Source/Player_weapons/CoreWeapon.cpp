@@ -59,7 +59,7 @@ void ACoreWeapon::Tick(float DeltaTime)
         {
             mCurrentShootTime += DeltaTime;
 
-            if (mCurrentShootTime > 0.1f)
+            if (mCurrentShootTime > mNextShootTime)
             {
                 FireBullet();
                 mCurrentShootTime = 0.f;
@@ -91,7 +91,7 @@ void ACoreWeapon::ClickEvent()
         {
             // 총알 발사가 진행 중일 시 반환        
             if (!GetWorld()->GetTimerManager().IsTimerActive(mTimerHandle))
-                GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &ACoreWeapon::FireBullet, 0.1f, true);
+                GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &ACoreWeapon::FireBullet, mNextShootTime, true);
         }
         else
             FireBullet();
@@ -105,6 +105,12 @@ void ACoreWeapon::Init(EGunType Type)
     WeaponType = Type;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
+
+    if (ObjectGroupType == "ShotGun")
+        mNextShootTime = 0.25f;
+
+    else
+        mNextShootTime = 0.1f;
 
     Super::SetCollisionSettingsForObjects();
     Super::InitSkeletalMesh(WeaponData.MeshPath);
@@ -214,6 +220,7 @@ void ACoreWeapon::ResetBurstCount()
     GetWorld()->GetTimerManager().ClearTimer(mTimerHandle);
     mTimerHandle.Invalidate();
     mBurstCount = 0;
+    bShooting = false;
 }
 
 void ACoreWeapon::Reload()

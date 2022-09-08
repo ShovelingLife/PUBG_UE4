@@ -37,13 +37,13 @@ public:
 private:
     /** \brief 차량 데이터 관련 */
     const FString mkVehicleMeshPath    = "/Game/Characters/Vehicles/Skeletons/";
-    const FString mkAnimInstancePath   = "/Game/Blueprints/Vehicles/";
+    const FString mkAnimInstancePath   = "/Game/1_Blueprints/Vehicles/";
     const FString mkVehicleSoundPath   = "";
     int           mCurrentVehicleCount = 0;
 
     /** * \brief 무기 데이터 관련 */
     const FString mkWeaponMeshPath       = "/Game/AdvanceWeaponPack/Mesh/Weapon/";
-    const FString mkBulletBP_path        = "/Game/Blueprints/Items/Weapons/Ammo/BP_";
+    const FString mkBulletBP_path        = "/Game/1_Blueprints/Items/Weapons/Ammo/BP_";
     const FString mkRendertargetMeshPath = "/Game/Materials/Weapon_UI/UI_material_";
     const FString mkWeaponSoundPath      = "/Game/SFX/Gun_sounds/";
 

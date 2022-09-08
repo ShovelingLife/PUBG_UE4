@@ -32,7 +32,7 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
             subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, VISIBLE);
     }
-    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(ItemData.Count));
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(ItemData.Count));
 }
 
 void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)

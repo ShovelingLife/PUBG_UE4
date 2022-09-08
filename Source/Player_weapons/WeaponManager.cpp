@@ -429,13 +429,10 @@ void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWea
 
 void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
 {
-    // 총기 발사 해제
-    if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
-        p_gun->bShooting = false;
-
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("WeaponType : %d, CurrentType : %d"), (int)WeaponType, (int)CurrentType));    
     auto playerMesh   = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
     auto attachType   = (bScrolling) ? CurrentType : WeaponType;
-    auto detachType   = (bScrolling) ? WeaponType : CurrentType;
+    auto detachType   = (bScrolling ) ? WeaponType : CurrentType;
     CurrentType = attachType;
 
     // 장착 되있던 무기를 탈착
@@ -624,29 +621,6 @@ void AWeaponManager::SetNull(EWeaponType WeaponType)
     }
 }
 
-bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot)
-{
-    if (!pWeapon)
-        return true;
-
-    auto groupType = pWeapon->ObjectGroupType;
-    
-    switch (WeaponType)
-    {
-    // 총기 
-    case FIRST: 
-    case SECOND:
-    {
-        auto p_gun = Cast<ACoreWeapon>(pWeapon);
-        return (bFromWeaponSlot) ? (groupType == "Handgun") : (p_gun == pFirstGun || p_gun == pSecondGun);
-    }
-    case PISTOL:    return (Cast<ACoreWeapon>(pWeapon)          == pPistol    || groupType != "HandGun");
-    case MELEE:     return (Cast<ACoreMeleeWeapon>(pWeapon)     == pMelee     || groupType != "Melee");
-    case THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable || groupType != "Explosive");
-    }
-    return true;
-}
-
 void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)
 {
     auto p_firstGunUI  = Cast<ACoreWeapon>(pArrActor[(int)FIRST]);
@@ -660,4 +634,46 @@ void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)
     p_pistolUI->SetSkeletalMesh((pPistol) ? pPistol->GetSkeletalMesh() : nullptr);
     p_meleeUI->SetStaticMesh((pMelee) ? pMelee->GetStaticMesh() : nullptr);
     p_throwableUI->SetStaticMesh((pThrowable) ? pThrowable->GetStaticMesh() : nullptr);
+}
+
+void AWeaponManager::DeactivateFiring()
+{
+    if (auto p_gun= Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
+    {
+        if (p_gun->ShootType != EGunShootType::BURST)
+            p_gun->bShooting = false;
+    }
+}
+
+bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot)
+{
+    if (!pWeapon)
+        return true;
+
+    auto groupType = pWeapon->ObjectGroupType;
+
+    switch (WeaponType)
+    {
+        // 총기 
+    case FIRST:
+    case SECOND:
+    {
+        auto p_gun = Cast<ACoreWeapon>(pWeapon);
+        return (bFromWeaponSlot) ? (groupType == "Handgun") : (p_gun == pFirstGun || p_gun == pSecondGun);
+    }
+    case PISTOL:    return (Cast<ACoreWeapon>(pWeapon) == pPistol || groupType != "HandGun");
+    case MELEE:     return (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee || groupType != "Melee");
+    case THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable || groupType != "Explosive");
+    }
+    return true;
+}
+
+bool AWeaponManager::IsFiring()
+{
+    bool bFiring = false;
+
+    if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
+        bFiring = p_gun->bShooting;
+
+    return bFiring;
 }

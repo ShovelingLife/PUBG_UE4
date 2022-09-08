@@ -10,11 +10,14 @@
 #include "Farmable_items/CoreBackpack.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
+#include "PUBG_UE4/Global.h"
 #include "Player_weapons/CoreThrowableWeapon.h"
+#include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/WeaponManager.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Components/Button.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
@@ -28,6 +31,7 @@
 void UInventoryListUI::NativeConstruct()
 {
     Super::NativeConstruct();
+    InitButtons();
     GetItemListWidth();
 
     // 인벤토리에 아이템 추가되는 함수 바인딩
@@ -54,7 +58,7 @@ FReply UInventoryListUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, co
     // 왼쪽 클릭 / 마우스 커서 변경
     if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
-        HighlightImg->SetVisibility(ESlateVisibility::Hidden);
+        ImgHighlight->SetVisibility(ESlateVisibility::Hidden);
 
         // 클릭시 툴팁 숨김
         if (pGameInstanceSubsystemUI)
@@ -76,7 +80,7 @@ FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& InGeometry, const FP
     auto distance = pGameInstanceSubsystemUI->GetDistanceBetweenSlotCursor(mpSlotObj, b_first);
 
     if (pGameInstanceSubsystemUI->IsMouseLeftFromUI(distance, b_first))
-        HighlightImg->SetVisibility(ESlateVisibility::Hidden);
+        ImgHighlight->SetVisibility(ESlateVisibility::Hidden);
 
     return FReply::Handled();
 }
@@ -84,7 +88,7 @@ FReply UInventoryListUI::NativeOnMouseMove(const FGeometry& InGeometry, const FP
 void UInventoryListUI::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 {
     Super::NativeOnMouseLeave(InMouseEvent);
-    HighlightImg->SetVisibility(ESlateVisibility::Hidden);
+    ImgHighlight->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
@@ -164,7 +168,7 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
         p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
         p_slot->DeleDeleteFromList.ExecuteIfBound();
-        WorldListView->AddItem(p_slot);
+        LV_WorldList->AddItem(p_slot);
 
         if (auto p_weaponManager = pGameInstanceSubsystemUI->GetWeaponManager())
             p_weaponManager->Drop(p_weaponManager->GetWeaponIndex(p_slot->pDraggedItem));
@@ -177,26 +181,57 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
         p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
         p_slot->DeleDeleteFromList.ExecuteIfBound();
-        InventoryListView->AddItem(p_slot);
+        LV_InventoryList->AddItem(p_slot);
     }
     return true;
+}
+
+void UInventoryListUI::InitButtons()
+{
+    BtnOrderAlphabet->SetClickMethod(EButtonClickMethod::MouseDown);
+    BtnOrderAlphabet->OnClicked.AddDynamic(this, &UInventoryListUI::OrderAlphabetically);
+    BtnOrderRecent->SetClickMethod(EButtonClickMethod::MouseDown);
+    BtnOrderRecent->OnClicked.AddDynamic(this, &UInventoryListUI::OrderRecently);
+    TxtOrderAlphabet->SetColorAndOpacity(Global::WhiteColor);
+    TxtOrderRecent->SetColorAndOpacity(Global::GrayColor);
+}
+
+void UInventoryListUI::OrderInventory(FString Type)
+{
+    // 색상 갱신
+    auto whiteColor = Global::WhiteColor, grayColor = Global::GrayColor;
+    TxtOrderAlphabet->SetColorAndOpacity((Type == "Alphabet") ? whiteColor : grayColor);
+    TxtOrderRecent->SetColorAndOpacity((Type == "Recent") ? whiteColor : grayColor);
+
+    // 인벤토리를 종류에 따라 정렬
+    if (Type == "Alphabet")
+    {
+
+    }
+    else if (Type == "Recent")
+    {
+
+    }
+    /*for (auto  : index)
+    {
+    }*/
 }
 
 void UInventoryListUI::GetItemListWidth()
 {
     // 월드 사이즈 박스 넓이 구함
-    if (auto p_worldListCanvasSlot = Cast<UCanvasPanelSlot>(WorldListSizeBox->Slot))
+    if (auto p_worldListCanvasSlot = Cast<UCanvasPanelSlot>(SB_WorldList->Slot))
     {
-        FVector2D worldSizeBoxPos  = p_worldListCanvasSlot->GetPosition();
-        FVector2D worldSizeBoxSize = p_worldListCanvasSlot->GetSize();
-        mWorldSizeBoxWidth         = worldSizeBoxPos.X + worldSizeBoxSize.X;
+        FVector2D SB_WorldPos  = p_worldListCanvasSlot->GetPosition();
+        FVector2D SB_worldSize = p_worldListCanvasSlot->GetSize();
+        mSB_WidthWorld         = (SB_WorldPos + SB_worldSize).X;
     }
     // 인벤토리 사이즈 박스 넓이 구함    
-    if (auto p_inventoryListCanvasSlot = Cast<UCanvasPanelSlot>(InventoryListSizeBox->Slot))
+    if (auto p_inventoryListCanvasSlot = Cast<UCanvasPanelSlot>(SB_InventoryList->Slot))
     {
-        FVector2D inventorySizeBoxPos  = p_inventoryListCanvasSlot->GetPosition();
-        FVector2D inventorySizeBoxSize = p_inventoryListCanvasSlot->GetSize();
-        mInventorySizeBoxWidth         = inventorySizeBoxPos.X + inventorySizeBoxSize.X;
+        FVector2D SB_InvenPos  = p_inventoryListCanvasSlot->GetPosition();
+        FVector2D SB_InvenSize = p_inventoryListCanvasSlot->GetSize();
+        mSB_WidthInven         = (SB_InvenPos + SB_InvenSize).X;
     }
 }
 
@@ -237,33 +272,33 @@ void UInventoryListUI::DeleteFromList()
         return;
 
     // 월드 리스트부터 순차적으로 검색
-    for (int i = 0; i < WorldListView->GetNumItems(); i++)
+    for (int i = 0; i < LV_WorldList->GetNumItems(); i++)
     {
-        if (auto p_slot = Cast<UItemSlotUI>(WorldListView->GetItemAt(i)))
+        if (auto p_slot = Cast<UItemSlotUI>(LV_WorldList->GetItemAt(i)))
         {
             // 발견 시 해당하는 아이템 삭제
             if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
             {
                 p_itemSlotUI = p_slot;
-                WorldListView->RemoveItem(p_slot);
+                LV_WorldList->RemoveItem(p_slot);
                 mpSlotObj = nullptr;
                 break;
             }
         }
     }
     // 인벤토리 리스트부터 순차적으로 검색
-    for (int i = 0; i < InventoryListView->GetNumItems(); i++)
+    for (int i = 0; i < LV_InventoryList->GetNumItems(); i++)
     {
         if (p_itemSlotUI)
             break;
 
-        if (auto p_slot = Cast<UItemSlotUI>(InventoryListView->GetItemAt(i)))
+        if (auto p_slot = Cast<UItemSlotUI>(LV_InventoryList->GetItemAt(i)))
         {
             // 발견 시 해당하는 아이템 삭제
             if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
             {
                 p_itemSlotUI = p_slot;
-                InventoryListView->RemoveItem(p_slot);
+                LV_InventoryList->RemoveItem(p_slot);
                 mpSlotObj = nullptr;
                 break;
             }
@@ -286,29 +321,31 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
     auto      cachedGeometry = pSlotObj->GetCachedGeometry();
     mpSlotObj = pSlotObj;
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);
-
-    // 리스트 판별
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, movePos.ToString());
+    
+    // 리스트 판별 월드 리스트
     if (movePos.X == 100.f)
-    {
+    {        
         movePos.X = 0.f;
-        movePos.Y = ((int)movePos.Y > 86) ? (movePos.Y + 5.f) : 86.f;
+        //movePos.Y = (movePos.Y > 143.9f) ? (movePos.Y + 5.f) : 143.9f;
     }
+    // 인벤토리 리스트
     else
     {
-        movePos.X = 255.f;
-        movePos.Y = ((int)movePos.Y > 82) ? (movePos.Y + 5.f) : 82.f;
+        movePos.X = 248.25f;
+        movePos.Y = (movePos.Y > 149.f) ? (movePos.Y - 57.7f) : 86.5f;
     }
-    if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
+    if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(ImgHighlight->Slot))
         p_canvasPanelSlot->SetPosition(movePos);
 
-    HighlightImg->SetVisibility(ESlateVisibility::Visible);
+    ImgHighlight->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UInventoryListUI::SwapWeaponSlot(UItemSlotUI* pWeaponSlot)
 {
     DeleteFromList();
     pWeaponSlot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-    WorldListView->AddItem(pWeaponSlot);
+    LV_WorldList->AddItem(pWeaponSlot);
 }
 
 void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = true*/)
@@ -323,13 +360,21 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
         return;
 
     auto itemData = p_tmpSlot->ItemData;
+    auto itemName = itemData.Name;
 
     // 현재 아이템이 있는지 확인 및 아이템 개수 갱신
     auto mapCurrentItems = &p_inventoryManager->MapCurrentItems;
 
-    // 현재 리스트에 존재하고 있는 슬롯 UI
-    auto p_slot          = mapCurrentItems->FindRef(itemData.Name);
-
+    // 비어있을 시 현재 장착 중인 총기 총알 종류를 가져옴
+    auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    auto p_weaponManager = p_player->GetWeaponManager();
+    
+    // 발포 되었을 때만
+    if (auto p_gun = p_weaponManager->GetCurrentGun())
+    {
+        if (p_gun->bShooting)
+            itemName = p_gun->WeaponData.BulletType;
+    }
     // 아이템 개수 확인
     if (bAdd &&
         CurCapacity >= mMaxCapacity)
@@ -340,36 +385,40 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
 
         return;
     }
-    // 아이템이 존재함
-    if (p_slot)
+    // 현재 리스트에 존재하고 있는 슬롯 UI 아이템이 존재함
+    if (auto p_slot = mapCurrentItems->FindRef(itemName))
     {
+        // 기존 아이템 개수 추가 / 차감 후 적용
         auto& itemCount = p_slot->ItemData.Count;
         itemCount = (bAdd) ? itemCount + itemData.Count : --itemCount;
         p_tmpSlot->ItemData = p_slot->ItemData;
 
-        // 삭제 후 재추가 (위젯을 재생성함)
-        InventoryListView->RemoveItem(p_slot);
+        // 기존 슬롯을 제거
+        LV_InventoryList->RemoveItem(p_slot);
 
         // 총알 0개면 그대로 리스트에서 제거
         if (itemCount == 0)
             return;
 
-        InventoryListView->AddItem(p_tmpSlot);
-        mapCurrentItems->Remove(itemData.Name);
-        mapCurrentItems->Add(itemData.Name, p_tmpSlot);
-        GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(mapCurrentItems->Num()));
+        // 삭제 후 재추가 (위젯을 재생성함)
+        LV_InventoryList->AddItem(p_tmpSlot);
+        mapCurrentItems->Remove(itemName);
+        mapCurrentItems->Add(itemName, p_tmpSlot);
+        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(mapCurrentItems->Num()));
     }
     else
     {
-        InventoryListView->AddItem(p_tmpSlot);
-        mapCurrentItems->Add(itemData.Name, p_tmpSlot);
+        // 빈 정보인지 재검사
+        if (itemName != "")
+        {
+            LV_InventoryList->AddItem(p_tmpSlot);
+            mapCurrentItems->Add(itemName, p_tmpSlot);
+        }
     }
 }
 
 void UInventoryListUI::UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
 {
-    auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-
     if (!pObj)
         return;
 
@@ -383,7 +432,7 @@ void UInventoryListUI::UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteF
         mMaxCapacity = backPack->Data.PropVal;
 
         // 저장할 수 있는 한계치를 변경
-        if(p_customGameInst)
+        if (auto p_customGameInst = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
             p_customGameInst->DeleSetInventoryCapacity.ExecuteIfBound(mMaxCapacity);
     }
     else
@@ -397,9 +446,9 @@ void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive
         return;
 
     // 인벤토리 리스트부터 순차적으로 검색
-    for (int i = 0; i < InventoryListView->GetNumItems(); i++)
+    for (int i = 0; i < LV_InventoryList->GetNumItems(); i++)
     {
-        if (auto p_slot = Cast<UItemSlotUI>(InventoryListView->GetItemAt(i)))
+        if (auto p_slot = Cast<UItemSlotUI>(LV_InventoryList->GetItemAt(i)))
         {
             auto itemData = p_slot->ItemData;
             // 발견 시 해당하는 아이템 삭제
@@ -412,9 +461,21 @@ void UInventoryListUI::SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive
                     return;
                 }
             }
-            InventoryListView->RemoveItem(p_slot);
+            LV_InventoryList->RemoveItem(p_slot);
             //SetItemOntoInventory(Cast<ABaseInteraction>(NewExplosive));
             return;
         }
     }
+}
+
+UFUNCTION() void UInventoryListUI::OrderAlphabetically()
+{
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::Printf(TEXT("사전 순 정렬")));
+    OrderInventory("Alphabet");
+}
+
+UFUNCTION() void UInventoryListUI::OrderRecently()
+{
+    //GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Cyan, FString::Printf(TEXT("최근 순 정렬")));
+    OrderInventory("Recent");
 }

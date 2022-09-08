@@ -44,6 +44,7 @@ private:
     const float	mkReloadTime = 2.f;
     float mCurrentReloadTime = 0.f;
     float mCurrentShootTime  = 0.f;
+    float mNextShootTime = 0.f;
     int	  mBurstCount		 = 0;
     bool  mbReloading		 = false;
 	bool  mbChangedShootType = true;

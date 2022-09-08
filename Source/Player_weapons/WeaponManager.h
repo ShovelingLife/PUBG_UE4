@@ -187,7 +187,11 @@ public:
 
 	void SetNull(EWeaponType WeaponType);
 
-	bool IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot);
-
 	void SetMeshToPlayerUI(TArray<AActor*> pArrActor);
+
+	void DeactivateFiring();
+
+    bool IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot);
+
+	bool IsFiring();
 };

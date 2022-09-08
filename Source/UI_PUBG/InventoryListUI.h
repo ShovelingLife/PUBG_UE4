@@ -14,6 +14,7 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryListUI.generated.h"
 
+class UButton;
 class UImage;
 class UListView;
 class UProgressBar;
@@ -33,8 +34,8 @@ class UI_PUBG_API UInventoryListUI : public UUserWidget
 private:
     UPROPERTY() UItemSlotUI* mpSlotObj = nullptr;
 
-    float mWorldSizeBoxWidth     = 0.f;
-    float mInventorySizeBoxWidth = 0.f;
+    float mSB_WidthWorld = 0.f;
+    float mSB_WidthInven = 0.f;
     float mMaxCapacity = 25.f;
 
 public:
@@ -42,18 +43,25 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* BackpackFreeSpaceBar;
 
     /** \brief 월드 리스트 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* WorldTxt;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   WorldListSizeBox;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView*  WorldListView;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   SB_WorldList;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView*  LV_WorldList;
 
     /** \brief 인벤토리 리스트 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* InventoryTxt;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   InventoryListSizeBox;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView*  InventoryListView;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   SB_InventoryList;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView* LV_InventoryList;
+
+    // ------- 정렬 -------
+    // 가나다 순
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UButton* BtnOrderAlphabet;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TxtOrderAlphabet;
+
+    // 최근 순
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UButton* BtnOrderRecent; 
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TxtOrderRecent;
 
     /** \brief 기타 UI 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* HighlightImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* SeparatorImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ImgHighlight;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ImgSeparator;
 
     UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
     UPROPERTY() UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
@@ -107,6 +115,12 @@ protected:
     virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InMouseEvent, class UDragDropOperation* Operation) override;
 
 private:
+    // 버튼들을 초기화
+    void InitButtons();
+
+    // 정렬 함수 Type 변수는 종류
+    void OrderInventory(FString Type);
+
     /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
     void GetItemListWidth();
 
@@ -130,4 +144,9 @@ public:
     UFUNCTION() void UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList = false);
     
     UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
+
+    // 정렬 관련 함수
+    UFUNCTION() void OrderAlphabetically();
+
+    UFUNCTION() void OrderRecently();
 };
