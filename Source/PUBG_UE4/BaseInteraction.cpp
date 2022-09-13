@@ -53,7 +53,7 @@ void ABaseInteraction::InitComponents()
 void ABaseInteraction::InitInteractionUI()
 {
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleUpdateInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
+        p_customGameInst->DeleSetInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
 }
 
 void ABaseInteraction::AttachComponents()

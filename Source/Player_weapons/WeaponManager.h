@@ -27,8 +27,6 @@ class USplineMeshComponent;
 class UStaticMesh;
 class UMaterial;
 
-DECLARE_DELEGATE_OneParam(FDeleSetExplosiveUI, ACoreThrowableWeapon*)
-
 UCLASS()
 class PLAYER_WEAPONS_API AWeaponManager : public AActor
 {
@@ -48,7 +46,6 @@ public:
     UPROPERTY() ACoreWeapon*		  pPistol	 = nullptr;
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
-    FDeleSetExplosiveUI DeleSetExplosiveUI;
     FVector2D    ScreenCenterPos;
 
 	EWeaponType CurrentType = NONE;    
@@ -96,8 +93,6 @@ private:
 	 * \return e_current_weapon_type 현재 무기 타입
      */
     EWeaponType GetWeaponIndex(FString Direction, int StartIndex) const;
-
-    FString GetShootTypeStr(EGunShootType ShootType) const;
 
     /**
      * \brief 무기를 플레이어 메시에 부착

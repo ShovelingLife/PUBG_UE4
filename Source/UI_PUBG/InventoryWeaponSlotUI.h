@@ -22,6 +22,8 @@ class AWeaponManager;
 class ACoreAttachment;
 class ACoreThrowableWeapon;
 class UItemSlotUI;
+class USocketUI;
+
 class UBorder;
 class UCanvasPanel;
 class UImage;
@@ -50,14 +52,9 @@ private:
     FsSlotItemData  mItemData;
 
     // 부속품 UI 관련
-    TArray<UBorder*>     mArrFirstGunAttachmentBorder;
-    TArray<UBorder*>     mArrSecondGunAttachmentBorder;
-    TArray<UBorder*>     mArrPistolAttachmentBorder;
-    TArray<UItemSlotUI*> mArrFirstGunAttachmentUI;
-    TArray<UItemSlotUI*> mArrSecondGunAttachmentUI;
-    TArray<UItemSlotUI*> mArrPistolAttachmentUI;
-    const int mkTotalGunAttachmentUI    = 5;
-    const int mkTotalPistolAttachmentUI = 3;
+    TArray<USocketUI*> mArrFirstGunAttachment;
+    TArray<USocketUI*> mArrSecondGunAttachment;
+    TArray<USocketUI*> mArrPistolAttachment;
 
     // 플레이어 상호작용 하고있는 변수 관련
     EWeaponType mSelectedWeaponIndex;
@@ -79,16 +76,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       FirstGunSlotImg;
 
     /** \brief 1번 슬롯 부속품 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunScopeSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunStockSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunGripSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunMagazineSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     FirstGunMuzzleSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunScopeSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunStockSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunGripSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunMagazineSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* FirstGunMuzzleSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunScopeSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunStockSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunGripSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunMagazineSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunMuzzleSlot;
 
     /** \brief 2번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* SecondGunCanvasPanel;
@@ -100,16 +92,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       SecondGunSlotImg;
 
     /** \brief 2번 슬롯 부속품 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunScopeSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunStockSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunGripSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunMagazineSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     SecondGunMuzzleSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunScopeSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunStockSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunGripSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunMagazineSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* SecondGunMuzzleSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunScopeSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunStockSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunGripSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunMagazineSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunMuzzleSlot;
 
     /** \brief 3번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* PistolCanvasPanel;
@@ -121,12 +108,9 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       PistolSlotImg;
 
     /** \brief 3번 슬롯 부속품 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     PistolScopeSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     PistolMagazineSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*     PistolMuzzleSlotBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* PistolScopeSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* PistolMagazineSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* PistolMuzzleSlotUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* PistolScopeSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* PistolMagazineSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* PistolMuzzleSlot;
 
     /** \brief 4번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* MeleeCanvasPanel;
@@ -141,7 +125,7 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       GrenadeSlotImg;
 
     /** \brief 아이템 슬롯 BP */
-    UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItemSlotUI> BP_itemSlotUI;
+    UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
 
     UPROPERTY() class UGameInstanceSubsystemUI* pGameInstanceSubSystemUI = nullptr;
 
@@ -185,21 +169,14 @@ protected:
     virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 private:
-    // 무기 아이콘 및 슬롯 관한 함수
-    void InitSettings();
-
     /** \brief UI 상태 업데이트 */
     void SetWeaponSlotVisibility();
-
-    void UpdateAttachmentSlot();
 
     TArray<UTexture*> GetAttachmentTexArr(ACoreWeapon* pWeapon) const;
 
     void UpdateInventoryWeaponUI();
 
     void CheckForHoveredWeaponSlot();
-
-    void CheckForHoveredAttachmentSlot();
 
     // ------- 선택하고 있는 UI 관련 -------
     // 
@@ -216,6 +193,4 @@ public:
     UFUNCTION() void SetSlotNull();
 
     UFUNCTION() void UpdateThrowable(ACoreThrowableWeapon* pGrenade);
-
-    UFUNCTION() void VerifyAttachmentSlot(ACoreAttachment* pAttachment);
 };

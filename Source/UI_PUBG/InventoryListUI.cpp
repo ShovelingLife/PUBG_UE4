@@ -116,8 +116,8 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     p_slot->SetAsCursor(mousePos);
 
     // 무기 부속품일 시 해당되는 칸 설정
-    if (p_slot->ItemData.Category == "Attachment")
-        pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(Cast<ACoreAttachment>(p_slot->pDraggedItem));
+    /*if (p_slot->ItemData.Category == "Attachment")
+        pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(Cast<ACoreAttachment>(p_slot->pDraggedItem));*/
 
     // 드래그 구현
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();

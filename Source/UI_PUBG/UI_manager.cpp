@@ -101,7 +101,7 @@ void AUI_manager::BindDelegate()
     // 델리게이트 바인딩
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
     {
-        p_customGameInst->DeleUpdateInteractionWidgetComp.BindUFunction(this, "UpdateInteractionUI");
+        p_customGameInst->DeleSetInteractionWidgetComp.BindUFunction(this, "UpdateInteractionUI");
         p_customGameInst->DeleRunEffectAnim.BindUFunction(this, "RunEffectAnim");
         p_customGameInst->DeleKillUI_Anim.BindUFunction(this, "KillAnim");
     }

@@ -27,9 +27,10 @@ DECLARE_DELEGATE_OneParam(FDeleDealPlayerDmg, float)
 DECLARE_DELEGATE_OneParam(FDeleSetInventoryCapacity, int)
 DECLARE_DELEGATE_OneParam(FDeleDeleteInventoryItem, FString)
 DECLARE_DELEGATE_OneParam(FDeleSetFadingTxt, FString)
+DECLARE_DELEGATE_OneParam(FDeleSetExplosiveUI, ACoreThrowableWeapon*)
 DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
-DECLARE_DELEGATE_TwoParams(FDeleUpdateInteractionWidgetComp, UWidgetComponent*, FString)
+DECLARE_DELEGATE_TwoParams(FDeleSetInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
 // 무기 관련 델리게이트
@@ -49,15 +50,16 @@ public:
     /** \brief 전역 변수 */
     UPROPERTY() ASoundManager* pSoundManager;
     FDeleKillUI_Anim DeleKillUI_Anim;
-    FDeleSetPlayerOtherState         DeleSetPlayerOtherState;
-    FDeleDealPlayerDmg               DeleDealPlayerDmg;
-    FDeleSetInventoryCapacity        DeleSetInventoryCapacity;
-    FDeleDeleteInventoryItem         DeleDeleteInventoryItem;
-    FDeleSetFadingTxt DeleSetFadingTxt;
-    FDeleGetBulletCount              DeleGetBulletCount;
-    FDeleSetItemOntoInventory        DeleSetItemOntoInventory;
-    FDeleUpdateInteractionWidgetComp DeleUpdateInteractionWidgetComp;
-    FDeleRunEffectAnim               DeleRunEffectAnim;
+    FDeleSetPlayerOtherState      DeleSetPlayerOtherState;
+    FDeleDealPlayerDmg            DeleDealPlayerDmg;
+    FDeleSetInventoryCapacity     DeleSetInventoryCapacity;
+    FDeleDeleteInventoryItem      DeleDeleteInventoryItem;
+    FDeleSetFadingTxt             DeleSetFadingTxt;
+    FDeleSetExplosiveUI           DeleSetExplosiveUI;
+    FDeleGetBulletCount           DeleGetBulletCount;
+    FDeleSetItemOntoInventory     DeleSetItemOntoInventory;
+    FDeleSetInteractionWidgetComp DeleSetInteractionWidgetComp;
+    FDeleRunEffectAnim            DeleRunEffectAnim;
 
     FDelePredictGrenadePath DelePredictGrenadePath;
 

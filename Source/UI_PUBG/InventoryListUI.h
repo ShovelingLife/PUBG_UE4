@@ -66,7 +66,7 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
     UPROPERTY() UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
 
-    float CurCapacity = 0;
+    float CurCapacity = 0.f;
 
 protected:
     virtual void NativeConstruct() override;

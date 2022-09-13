@@ -282,7 +282,7 @@ void AWeaponManager::ThrowGrenade()
             GrenadeEndPoint->SetHidden(true);
     }
     SetNull(THROWABLE);
-    DeleSetExplosiveUI.ExecuteIfBound(nullptr);
+    GetWorld()->GetGameInstance<UCustomGameInstance>()->DeleSetExplosiveUI.ExecuteIfBound(nullptr);
     ResetGrenadePath();
 }
 
@@ -375,13 +375,8 @@ void AWeaponManager::Equip(AActor* pWeapon, bool bCheck /* = true */)
     {
         // 권총일 시 무조건 3번 슬롯
         if (Cast<ACoreWeapon>(pWeapon)->WeaponData.GroupType == "HandGun")
-        {
-            if (!pPistol)
-                AttachWeapon(pCollidedWeapon, "HandGunSock", bCheck);
+            AttachWeapon((!pPistol) ? pCollidedWeapon : pPistol, "HandGunSock", (!pPistol));
 
-            else
-                SwapWorld(pPistol, pWeapon, "HandGunSock");
-        }
         // 기타 총기 1,2번 슬롯
         else
         {
@@ -554,7 +549,7 @@ void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr
     pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
     pThrowable->Setup(pGrenade);
     AttachWeapon(pThrowable, pThrowable->WeaponData.Type + "Sock");
-    DeleSetExplosiveUI.ExecuteIfBound(pThrowable);
+    GetWorld()->GetGameInstance<UCustomGameInstance>()->DeleSetExplosiveUI.ExecuteIfBound(pThrowable);
 }
 
 ABaseInteraction* AWeaponManager::GetWeaponByIndex(EWeaponType WeaponType) const
@@ -670,10 +665,8 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
 
 bool AWeaponManager::IsFiring()
 {
-    bool bFiring = false;
-
     if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentType)))
-        bFiring = p_gun->bShooting;
+        return p_gun->bShooting;
 
-    return bFiring;
+    return false;
 }
