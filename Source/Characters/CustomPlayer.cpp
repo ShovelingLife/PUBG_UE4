@@ -369,9 +369,7 @@ void ACustomPlayer::CustomJump()
         return;
 
     Jump();
-
-    if (mpWeaponManager)
-        mpWeaponManager->UpdateGrenadePath();
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::CustomCrouch()
@@ -456,14 +454,11 @@ void ACustomPlayer::LookUp(float Value)
         AddControllerPitchInput(Value);
 
     // 경로 거리 설정
-    if (mpWeaponManager)
-    {
-        auto grenadeDir = mpWeaponManager->GrenadeDirection;
-        auto target = (Value / 10.f) + grenadeDir;
-        auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDir, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
-        mpWeaponManager->GrenadeDirection = interptVal;
-        mpWeaponManager->UpdateGrenadePath();
-    }
+    auto grenadeDir = mpWeaponManager->GrenadeDirection;
+    auto target = (Value / 10.f) + grenadeDir;
+    auto interptVal = UKismetMathLibrary::FInterpTo(grenadeDir, target, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 50.f);
+    mpWeaponManager->GrenadeDirection = interptVal;
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::Turn(float _Value)
@@ -471,8 +466,7 @@ void ACustomPlayer::Turn(float _Value)
     if (!mbInventoryOpened)
         AddControllerYawInput(_Value);
 
-    if (mpWeaponManager)
-        mpWeaponManager->UpdateGrenadePath();
+    mpWeaponManager->UpdateGrenadePath();
 }
 
 void ACustomPlayer::OpenInventory()
@@ -505,23 +499,19 @@ void ACustomPlayer::UpdateHealth()
 
 void ACustomPlayer::BeginShooting()
 {
-    if (mbInventoryOpened ||
-        !mpWeaponManager)
+    if (mbInventoryOpened)
         return;
 
     // 연사일 때만 한번 발 사
     // 투척류일 시 경로 예측
-    auto p_gun = mpWeaponManager->GetCurrentGun();
-
-    if (p_gun ||
+    if (mpWeaponManager->GetCurrentGun() ||
         mpWeaponManager->CurrentType == THROWABLE)
         mpWeaponManager->ClickEvent();
 }
 
 void ACustomPlayer::EndShooting()
 {
-    if (mbInventoryOpened ||
-        !mpWeaponManager)
+    if (mbInventoryOpened)
         return;
 
     // 투척류 무기일 시 뗐을 때만 발동    
@@ -558,18 +548,11 @@ void ACustomPlayer::Aim()
 void ACustomPlayer::ChangeShootMode() { mpWeaponManager->ChangeShootMode(); }
 
 void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponType::NONE */, FString Direction /* = "" */)
-{
-    ASoundManager* p_soundManager = nullptr;
-    
-    if (mpCustomGameInst)
-        p_soundManager = mpCustomGameInst->pSoundManager;
-
-    if (!mpWeaponManager  ||
-        !p_soundManager)
-        return;
-
+{    
     if (mpWeaponManager->IsFiring())
         return;
+
+    ASoundManager* p_soundManager = mpCustomGameInst->pSoundManager;
 
     // 마우스 휠로 무기 선택
     if (Direction != "" &&
@@ -617,7 +600,7 @@ void ACustomPlayer::DealDmg(float DmgVal)
 
 ACoreWeapon* ACustomPlayer::GetCurrentWeapon()
 {
-    return (mpWeaponManager) ? mpWeaponManager->GetCurrentGun() : nullptr;
+    return mpWeaponManager->GetCurrentGun();
 }
 
 void ACustomPlayer::ExitFromVehicle(FVector ExitPos)

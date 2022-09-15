@@ -121,10 +121,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
 
     // 드래그 구현
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();
-    p_dragOperation->pSlotUI           = p_slot;
-    p_dragOperation->DefaultDragVisual = p_slot;
-    p_dragOperation->Pivot             = EDragPivot::MouseDown;
-    p_dragOperation->bInventoryList = true;
+    p_dragOperation->Init(p_slot, "Inventory");
     OutOperation  = p_dragOperation;
 }
 

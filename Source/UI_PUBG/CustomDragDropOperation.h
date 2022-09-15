@@ -15,6 +15,8 @@
 #include "Engine/Texture2D.h"
 #include "CustomDragDropOperation.generated.h"
 
+class UItemSlotUI;
+
 UCLASS()
 class UI_PUBG_API UCustomDragDropOperation : public UDragDropOperation
 {
@@ -26,4 +28,8 @@ public:
     bool		 bInventoryList = false;
     bool		 bWeaponSlot	= false;
 	bool		 bGun			= false;
+
+public:
+	// 초기화 함수
+	void Init(UItemSlotUI* pSlot, FString Type = "");
 };

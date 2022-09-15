@@ -65,9 +65,7 @@ void ACoreThrowableWeapon::BeginDestroy()
 {
     Super::BeginDestroy();
     GrenadeEndPos = FVector::ZeroVector;
-
-    if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+    UCustomGameInstance::GetInst()->DeleKillUI_Anim.ExecuteIfBound();
 }
 
 void ACoreThrowableWeapon::BeginPlay()
@@ -140,7 +138,7 @@ void ACoreThrowableWeapon::InitMesh()
         StaticMeshComp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)), WeaponData.MeshPos, FVector(WeaponData.MeshSize)));
 
         // 강체 관련
-        StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+        StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No; 
         StaticMeshComp->SetSimulatePhysics(false);
         StaticMeshComp->SetCollisionProfileName("Explosive");
         StaticMeshComp->SetNotifyRigidBodyCollision(true);

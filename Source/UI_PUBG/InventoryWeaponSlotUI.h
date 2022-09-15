@@ -49,6 +49,9 @@ private:
         nullptr
     };
     AWeaponManager* mpWeaponManager = nullptr;
+
+    TArray<UCanvasPanel*> mArrCanvasPanel;
+
     FsSlotItemData  mItemData;
 
     // 부속품 UI 관련
@@ -57,7 +60,7 @@ private:
     TArray<USocketUI*> mArrPistolAttachment;
 
     // 플레이어 상호작용 하고있는 변수 관련
-    EWeaponType mSelectedWeaponIndex;
+    EWeaponType mSelectedWeaponIndex = EWeaponType::NONE;
     EWeaponType mDraggedWeaponIndex;
     bool        mbClicked = false;
 
@@ -170,7 +173,7 @@ protected:
 
 private:
     /** \brief UI 상태 업데이트 */
-    void SetWeaponSlotVisibility();
+    void UpdateWeaponSlotVisibility();
 
     TArray<UTexture*> GetAttachmentTexArr(ACoreWeapon* pWeapon) const;
 
