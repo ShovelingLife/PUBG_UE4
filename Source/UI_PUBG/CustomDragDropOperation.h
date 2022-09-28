@@ -23,8 +23,9 @@ class UI_PUBG_API UCustomDragDropOperation : public UDragDropOperation
 	GENERATED_BODY()
 	
 public:
+	UItemSlotUI* mCurrentSlot = nullptr;
+
 	/** \brief 슬롯 데이터 관련 */
-    UItemSlotUI* pSlotUI		= nullptr;
     bool		 bInventoryList = false;
     bool		 bWeaponSlot	= false;
 	bool		 bGun			= false;
@@ -32,4 +33,7 @@ public:
 public:
 	// 초기화 함수
 	void Init(UItemSlotUI* pSlot, FString Type = "");
+
+public:
+	UItemSlotUI* GetSlot() const;
 };

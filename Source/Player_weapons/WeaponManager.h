@@ -16,6 +16,7 @@
 #include "WeaponManager.generated.h"
 
 class ABaseInteraction;
+class ACoreAttachment;
 class ACoreWeapon;
 class ACoreMeleeWeapon;
 class ACoreThrowableWeapon;
@@ -46,12 +47,11 @@ public:
     UPROPERTY() ACoreWeapon*		  pPistol	 = nullptr;
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
-    FVector2D    ScreenCenterPos;
 
 	EWeaponType CurrentType = NONE;    
 	bool  bArrWeaponEquipped[5]{ false };
 
-    // 투척류 관련
+    // ------- 투척류 관련 -------
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TArray<USplineMeshComponent*> arrSplineMeshComp;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
@@ -61,6 +61,8 @@ public:
     FVector mGrenadeVelocity;
     float GrenadeDirection;
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) float GrenadeSpeed = 0.f;
+
+	TArray<ACoreAttachment*> arrAttachment;
 
 public:	
 	AWeaponManager();
@@ -83,6 +85,8 @@ private:
 	 * arr_is_weapon_equipped 배열 업데이트
 	 */
     void UpdateCurrentWeaponArr();
+
+    void UpdateAttachmentArr();
 
     UFUNCTION() void PredictGrenadePath();
 

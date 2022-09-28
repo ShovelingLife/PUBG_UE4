@@ -17,6 +17,8 @@ class UI_PUBG_API UCharacterSlotUI : public UUserWidget
 
 private:
     FVector2D mCharacterUIClickPos = FVector2D::ZeroVector;
+    /*UPROPERTY(EditAnywhere, category = var) float xval1;
+    UPROPERTY(EditAnywhere, category = var) float xval2;*/
 
 public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      HighlightImg;

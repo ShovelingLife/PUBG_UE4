@@ -102,7 +102,7 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
     if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
     {
-        if (auto p_slot = p_customDragOp->pSlotUI)
+        if (auto p_slot = p_customDragOp->GetSlot())
         {
             if (auto pGameInstanceSubsystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance()))
                 pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
@@ -168,7 +168,7 @@ void UCharacterSlotUI::UpdateHighlightImg()
         FVector2D dummyPos, movePos;
         auto geometry = tmpBorder->GetCachedGeometry();
         USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), geometry.GetAbsolutePosition(), dummyPos, movePos);
-        movePos.X = (movePos.X <= 818.f) ? 15.f : 375.f;
+        movePos.X = (movePos.X <= 818.f) ? -435.f : 50.f;
         movePos.Y += 1.f;
         //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, geometry.GetAbsolutePosition().ToString() + " " + movePos.ToString());
 

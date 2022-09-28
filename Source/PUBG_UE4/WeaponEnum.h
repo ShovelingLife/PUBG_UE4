@@ -135,3 +135,26 @@ enum class EGunShootType
     CONSECUTIVE,
     MAX
 };
+
+/* F = 첫번째 (소총)
+*  S = 두번째 (소총)
+*  P = 세번째 (권총)
+*/
+UENUM()
+enum class EAttachmentType
+{
+    FSCOPE,
+    FSTOCK,
+    FGRIP,
+    FMAGAZINE,
+    FMUZZLE,
+    SSCOPE,
+    SSTOCK,
+    SGRIP,
+    SMAGAZINE,
+    SMUZZLE,
+    PSCOPE,
+    PMAGAZINE,
+    PMUZZLE,
+    MAX
+};

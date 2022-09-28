@@ -28,6 +28,7 @@ class UBorder;
 class UCanvasPanel;
 class UImage;
 class UTextBlock;
+struct FPointerEvent;
 
 UCLASS()
 class UI_PUBG_API UInventoryWeaponSlotUI : public UUserWidget
@@ -52,6 +53,8 @@ private:
 
     TArray<UCanvasPanel*> mArrCanvasPanel;
 
+    FPointerEvent mCurrentPointerEvent;
+
     FsSlotItemData  mItemData;
 
     // 부속품 UI 관련
@@ -60,8 +63,7 @@ private:
     TArray<USocketUI*> mArrPistolAttachment;
 
     // 플레이어 상호작용 하고있는 변수 관련
-    EWeaponType mSelectedWeaponIndex = EWeaponType::NONE;
-    EWeaponType mDraggedWeaponIndex;
+    EWeaponType mSelectedWeaponType, mDraggedWeaponType;
     bool        mbClicked = false;
 
 public:
@@ -137,11 +139,6 @@ protected:
 
     void NativeTick(const FGeometry&, float) override;
 
-    /**
-      * \brief 마우스가 UI를 벗어날 시 선택 이미지 초기화
-      * \param _in_mouse_event 마우스 이벤트
-     */
-    virtual void NativeOnMouseLeave(const FPointerEvent& _InMouseEvent) override;
 
     /**
       * \brief 좌클릭 시 (선택된 UI에 맞게끔 슬롯 변환 > 드래그) / 우클릭 시 맵에 드롭
@@ -159,6 +156,14 @@ protected:
      */
     virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
+    /**
+      * \brief 마우스가 UI를 벗어날 시 선택 이미지 초기화
+      * \param _in_mouse_event 마우스 이벤트
+     */
+    virtual void NativeOnMouseLeave(const FPointerEvent& _InMouseEvent) override;
+
+    virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
     virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, class UDragDropOperation*& InOperation) override;
 
     virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, class UDragDropOperation* InOperation) override;
@@ -172,6 +177,8 @@ protected:
     virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 private:
+    void InitWeaponSlot();
+
     /** \brief UI 상태 업데이트 */
     void UpdateWeaponSlotVisibility();
 

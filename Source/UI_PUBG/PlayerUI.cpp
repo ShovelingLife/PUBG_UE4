@@ -37,9 +37,9 @@ void UPlayerUI::UpdateCrosshairVisibility()
                  arrSB_Crosshair[i]->SetVisibility(visibility);
 
             CrosshairCenterImg->SetVisibility(visibility);
-            auto cachedPos = CrosshairCenterImg->GetCachedGeometry().GetAbsolutePosition();
+            /*auto cachedPos = CrosshairCenterImg->GetCachedGeometry().GetAbsolutePosition();
             pWeaponManager->ScreenCenterPos = cachedPos / 2;
-            //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, (cachedPos / 2).ToString());
+            GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, (cachedPos / 2).ToString());*/
         }
     }
 }

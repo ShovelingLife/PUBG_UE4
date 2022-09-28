@@ -134,7 +134,7 @@ void UInventoryListUI::NativeOnDragCancelled(const FDragDropEvent& InDragDropEve
 
     if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
     {
-        if (auto p_slot = p_customDragOp->pSlotUI)
+        if (auto p_slot = p_customDragOp->GetSlot())
             pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
     }
 }
@@ -143,7 +143,7 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 {
     Super::NativeOnDrop(InGeometry, InMouseEvent, Operation);
     auto p_dragOperation = Cast<UCustomDragDropOperation>(Operation);
-    auto p_slot          = p_dragOperation->pSlotUI;
+    auto p_slot          = p_dragOperation->GetSlot();
 
     if (!p_slot ||
         !mpSlotObj)

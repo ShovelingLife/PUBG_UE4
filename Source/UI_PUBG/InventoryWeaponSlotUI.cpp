@@ -21,6 +21,7 @@
 #include "PUBG_UE4/BaseInteraction.h"
 #include "PUBG_UE4/CustomGameInstance.h"
 #include "PUBG_UE4/Global.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -37,7 +38,8 @@
 void UInventoryWeaponSlotUI::NativeConstruct()
 {
     Super::NativeConstruct();
-    
+    InitWeaponSlot();
+
     auto p_gameInst = UCustomGameInstance::GetInst();
     pGameInstanceSubSystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(p_gameInst);    
     //pGameInstanceSubSystemUI->DeleVerifyAttachmentSlot.BindUFunction(this, "VerifyAttachmentSlot");
@@ -73,14 +75,6 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
     }
 }
 
-void UInventoryWeaponSlotUI::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
-{
-    Super::NativeOnMouseLeave(InMouseEvent);
-
-    if (!mbClicked)
-        ResetHighlightImg();
-}
-
 FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
     Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
@@ -92,17 +86,17 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& InGeomet
     if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         if (mpWeaponManager)
-            mItemData = FsSlotItemData::GetDataFrom(mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex));
+            mItemData = FsSlotItemData::GetDataFrom(mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType));
 
-        HighlightImg->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.35f });
+        HighlightImg->SetColorAndOpacity({ 1.f,1.f,1.f,0.35f });
         mbClicked = true;
-        mDraggedWeaponIndex = mSelectedWeaponIndex;
+        mDraggedWeaponType = mSelectedWeaponType;
     }
     // 오른쪽 클릭 / 맵에다가 무기를 버림
     else if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
     {
         if (mpWeaponManager)
-            mpWeaponManager->Drop(mSelectedWeaponIndex);
+            mpWeaponManager->Drop(mSelectedWeaponType);
 
         ResetHighlightImg();
     }
@@ -118,6 +112,22 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseButtonUp(const FGeometry& InGeometry
     return FReply::Handled();
 }
 
+void UInventoryWeaponSlotUI::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
+{
+    Super::NativeOnMouseLeave(InMouseEvent);
+
+    if (!mbClicked)
+        ResetHighlightImg();
+}
+
+FReply UInventoryWeaponSlotUI::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    Super::NativeOnMouseMove(InGeometry, InMouseEvent);
+    mCurrentPointerEvent = InMouseEvent;
+    return FReply::Handled();
+}
+
+
 void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
@@ -125,12 +135,12 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     ABaseInteraction* p_weapon = nullptr;
 
     if (mpWeaponManager)
-        p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
+        p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType);
 
     auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_ItemSlotUI);
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
-    if (!p_slot ||
+    if (!p_slot   ||
         !p_weapon ||
         mItemData.IsEmpty())
         return;
@@ -148,7 +158,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     // 드래그 구현
     if (auto p_customOperation = NewObject<UCustomDragDropOperation>())
     {
-        if ((int)mSelectedWeaponIndex < 4)
+        if ((int)mSelectedWeaponType < 4)
             p_customOperation->bGun = true;
 
         p_customOperation->Init(p_slot);
@@ -165,7 +175,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
         !pGameInstanceSubSystemUI)
         return false;
 
-    auto p_slot = p_customOperation->pSlotUI;
+    auto p_slot = p_customOperation->GetSlot();
 
     if (!mpWeaponManager ||
         !p_slot)
@@ -175,13 +185,13 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     auto p_draggedWeapon = p_slot->pDraggedItem;
 
     // 맞지 않는 슬롯에 위치시킬 시
-    if (mpWeaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponIndex, p_customOperation->bWeaponSlot))
+    if (mpWeaponManager->IsWrongType(p_draggedWeapon, mSelectedWeaponType, p_customOperation->bWeaponSlot))
         return false;
 
     // 무기 선택
-    ABaseInteraction* p_selectedWeapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponIndex);
+    ABaseInteraction* p_selectedWeapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType);
     
-    if (mpWeaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponIndex) == -1)
+    if (mpWeaponManager->Swap(p_draggedWeapon, p_selectedWeapon, mSelectedWeaponType) == -1)
         return false;
 
     // 무기 배치 및 UI 설정이 완료 되었다면 초기화
@@ -228,30 +238,62 @@ void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragD
 bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 { 
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-    ResetHighlightImg();
+    //ResetHighlightImg();
+    /* auto p_slot = p_customOperation->pSlotUI;
+    p_customOperation->DefaultDragVisual = p_slot;
+    p_customOperation->Pivot = EDragPivot::MouseDown;*/
+
 
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
 
-    // 어떤 무기를 선택했는지 확인
-    for (int i = 0; i < mArrCanvasPanel.Num(); i++)
-    {
-        USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), mArrCanvasPanel[i]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
-        auto newIdx= (EWeaponType)(i + 1);
+    //USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), mArrCanvasPanel[((int)mSelectedWeaponIndex) - 1]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
+    //auto newIdx = (EWeaponType)(i + 1);
+    if      (mousePos.Y <= 306.f)
+             mSelectedWeaponType = FIRST;
 
-        if (i < 3) // 총기류
-        {
-            if (mousePos.Y >= widgetPos.Y)
-                mSelectedWeaponIndex = newIdx;
-        }
-        else // 투척류 또는 근접일 시 두 축으로 비교
-        {
-            if (mousePos.Y >= widgetPos.Y &&
-                mousePos.X >= widgetPos.X)
-                mSelectedWeaponIndex = (EWeaponType)(i + 1);
-        }
+    else if (mousePos.Y <= 513.f)
+             mSelectedWeaponType = SECOND;
+
+    else if  (mousePos.Y <= 719.f)
+             mSelectedWeaponType = PISTOL;
+
+    else
+    {
+        if      (mousePos.X <= 1550.f)
+                 mSelectedWeaponType = MELEE;
+
+        else if (mousePos.X >= 1584.f)
+                 mSelectedWeaponType = THROWABLE;
     }
+    UpdateHighlightImgPos();
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "마우스 : " + mousePos.ToString() + " 위젯 : " + widgetPos.ToString());
+    
     return true;
+}
+
+void UInventoryWeaponSlotUI::InitWeaponSlot()
+{
+    using enum EAttachmentType;
+
+    // 첫번째 총기 부착품
+    FirstGunScopeSlot->AttachmentType    = FSCOPE;
+    FirstGunStockSlot->AttachmentType    = FSTOCK;
+    FirstGunGripSlot->AttachmentType     = FGRIP;
+    FirstGunMagazineSlot->AttachmentType = FMAGAZINE;
+    FirstGunMuzzleSlot->AttachmentType   = FMUZZLE;
+
+    // 두번째 총기 부착품
+    FirstGunScopeSlot->AttachmentType    = SSCOPE;
+    FirstGunStockSlot->AttachmentType    = SSTOCK;
+    FirstGunGripSlot->AttachmentType     = SGRIP;
+    FirstGunMagazineSlot->AttachmentType = SMAGAZINE;
+    FirstGunMuzzleSlot->AttachmentType   = SMUZZLE;
+
+    // 세번째 총기 부착품
+    PistolScopeSlot->AttachmentType    = FSCOPE;
+    PistolMagazineSlot->AttachmentType = FMAGAZINE;
+    PistolMuzzleSlot->AttachmentType   = FMUZZLE;
 }
 
 void UInventoryWeaponSlotUI::UpdateWeaponSlotVisibility()
@@ -380,17 +422,21 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 
         if (weaponImg->IsVisible() &&
             weaponImg->IsHovered())
-            mSelectedWeaponIndex = (EWeaponType)(i + 1);
+            mSelectedWeaponType = (EWeaponType)(i + 1);
     }
 }
  
 void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
 {
-    if (mSelectedWeaponIndex == EWeaponType::NONE)
+    if (mSelectedWeaponType == NONE)
         return;
 
     // 무기가 선택됐을 시 이미지 설정
-    auto idx = (int)mSelectedWeaponIndex;
+    auto idx = (int)mSelectedWeaponType;
+    idx -= 1;
+
+    if (idx < 0)
+        return;
 
     if (UCanvasPanelSlot* p_canvasPanelSlot = mArrCanvasPanel[idx]->AddChildToCanvas(HighlightImg))
     {
@@ -403,14 +449,17 @@ void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
 
 void UInventoryWeaponSlotUI::ResetHighlightImg()
 {
-    if (mSelectedWeaponIndex == EWeaponType::NONE)
+    int idx = (int)mSelectedWeaponType - 1;
+
+    if (mSelectedWeaponType == NONE ||
+        idx < 0)
         return;
 
     // 선택 이미지 부모 새로 지정 및 무기 슬롯 이미지 설정
-    mArrCanvasPanel[(int)mSelectedWeaponIndex]->RemoveChild(HighlightImg);
+    mArrCanvasPanel[idx]->RemoveChild(HighlightImg);
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
     HighlightImg->SetVisibility(HIDDEN);
-    mSelectedWeaponIndex = EWeaponType::NONE;
+    mSelectedWeaponType = EWeaponType::NONE;
     mbClicked = false;
 }
 
@@ -434,9 +483,9 @@ void UInventoryWeaponSlotUI::SetSlotNull()
 {
     if (mpWeaponManager)
     {
-        mpWeaponManager->SetNull((EWeaponType)mDraggedWeaponIndex);
+        mpWeaponManager->SetNull(mDraggedWeaponType);
         ResetHighlightImg();
-        mDraggedWeaponIndex = NONE;
+        mDraggedWeaponType = NONE;
         mItemData.Reset();
     }
 }

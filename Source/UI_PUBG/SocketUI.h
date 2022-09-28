@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "PUBG_UE4/WeaponEnum.h"
 #include "SocketUI.generated.h"
 
 class UBorder;
@@ -16,6 +17,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder* ItemBorder;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*  ItemImg;
     class ACoreAttachment* Attachment = nullptr;
+    EAttachmentType AttachmentType;
+    int WeaponIdx = 1;
+
+public:
+    // USocketUI(const FObjectInitializer& ObjectInitializer);
 
 public:
     virtual void NativeConstruct() override;
