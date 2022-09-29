@@ -18,10 +18,8 @@ class UI_PUBG_API UInventoryUI : public UUserWidget
 {
 	GENERATED_BODY()
 
-private:
-    UItemSlotUI* mpCurrentItemSlot;
-
 public:
+    UPROPERTY(EditAnywhere, meta = (BindWidget)) UItemSlotUI* CurrentItemSlot = nullptr;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*       CharacterSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*       InventoryListUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
@@ -32,9 +30,15 @@ protected:
 
     virtual void NativeTick(const FGeometry&, float) override;
 
+    bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+    FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
 private:
     void CheckTooltipMouseDistance();
 
 public:
     UFUNCTION() void SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility);
+
+    UFUNCTION() void MoveSlotCursor(FVector2D NewPos);
 };

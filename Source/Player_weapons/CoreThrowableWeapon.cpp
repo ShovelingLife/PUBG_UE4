@@ -185,9 +185,9 @@ void ACoreThrowableWeapon::BindExplosionFunc()
 
         mExplosionEvent.BindLambda([this]()
             {
-                float distance = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+                float distance  = this->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
                 float startTime = (distance >= 300.f) ? 2.5f : 0.f;
-                float waitTime = (startTime == 0.f) ? 5.f : 2.5f;
+                float waitTime  = (startTime == 0.f)  ? 5.0f : 2.5f;
 
                 if (auto p_customGameInst = UCustomGameInstance::GetInst())
                     p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);

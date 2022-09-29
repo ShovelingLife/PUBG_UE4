@@ -6,6 +6,7 @@
 #include "SocketUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
+#include "InventoryListUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "Farmable_items/CoreAttachment.h"
@@ -133,21 +134,23 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 
     ABaseInteraction* p_weapon = nullptr;
+    UItemSlotUI* p_slot = nullptr;
+    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (mpWeaponManager)
         p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType);
 
-    auto      p_slot   = CreateWidget<UItemSlotUI>(GetWorld(), BP_ItemSlotUI);
-    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
-
+    // 슬롯 설정
+    if (auto subGameInst = UGameInstanceSubsystemUI::GetInst())
+    {
+        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);
+        p_slot = subGameInst->GetInventoryManager()->pInventoryUI->CurrentItemSlot;
+        p_slot->SetAsCursor(mousePos);
+    }
     if (!p_slot   ||
         !p_weapon ||
         mItemData.IsEmpty())
         return;
-
-    // 슬롯 설정
-    if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);
 
     p_slot->Priority = 1;
     p_slot->pDraggedItem = p_weapon;
@@ -238,14 +241,13 @@ void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragD
 bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 { 
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-    //ResetHighlightImg();
-    /* auto p_slot = p_customOperation->pSlotUI;
-    p_customOperation->DefaultDragVisual = p_slot;
-    p_customOperation->Pivot = EDragPivot::MouseDown;*/
-
+    // GEngine->AddOnScreenDebugMessage(4, 1.f, FColor::Blue, "Dragging Inventory Weapon UI");
 
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
+    
+    if (auto subGameInst = UGameInstanceSubsystemUI::GetInst())
+        subGameInst->DeleMoveSlotCursor.ExecuteIfBound(mousePos);
 
     //USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), mArrCanvasPanel[((int)mSelectedWeaponIndex) - 1]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
     //auto newIdx = (EWeaponType)(i + 1);

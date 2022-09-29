@@ -32,7 +32,6 @@ void UItemSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
         if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
             subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(this, VISIBLE);
     }
-    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt(ItemData.Count));
 }
 
 void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
@@ -67,6 +66,9 @@ void UItemSlotUI::SetAsCursor(FVector2D Pos)
     
     if (!p_canvasPanelSlot)
         return;
+
+    if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
+        subGameInst->DeleMoveSlotCursor.ExecuteIfBound(Pos);
 
     p_canvasPanelSlot->SetPosition(Pos);
     this->SetVisibility(VISIBLE);

@@ -330,7 +330,13 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
     else
     {
         movePos.X = 248.25f;
-        movePos.Y = (movePos.Y > 149.f) ? (movePos.Y - 57.7f) : 86.5f;
+        float addVal = 0.f;        
+        
+        if (movePos.Y > 149.f)
+            addVal = 4.85f;
+        
+        movePos.Y += addVal;
+        GEngine->AddOnScreenDebugMessage(3, 2.f, FColor::Cyan, FString::SanitizeFloat(movePos.Y));
     }
     if (auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(ImgHighlight->Slot))
         p_canvasPanelSlot->SetPosition(movePos);

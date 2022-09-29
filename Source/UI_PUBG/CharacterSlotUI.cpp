@@ -64,7 +64,17 @@ void UCharacterSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
 bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-    
+    GEngine->AddOnScreenDebugMessage(3, 1.f, FColor::Blue, "Dragging Character UI");
+
+
+    if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
+    {
+        if (auto p_slot = p_customDragOp->GetSlot())
+        {
+            if (auto pGameInstanceSubsystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance()))
+                pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
+        }
+    }
     // 캐릭터 UI 창 드래그 시 회전
     if (mCharacterUIClickPos != FVector2D::ZeroVector)
     {
@@ -99,15 +109,6 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     mCharacterUIClickPos = FVector2D::ZeroVector;
-
-    if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
-    {
-        if (auto p_slot = p_customDragOp->GetSlot())
-        {
-            if (auto pGameInstanceSubsystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance()))
-                pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
-        }
-    }
     return true;
 }
 

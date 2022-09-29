@@ -10,17 +10,27 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
+UWorld* UGameInstanceSubsystemUI::mpWorld;
+
 UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
 {
     auto BP_UImanager = ConstructorHelpers::FClassFinder<AUI_manager>(TEXT("Blueprint'/Game/1_Blueprints/Managers/BP_UI_manager.BP_UI_manager_C'"));
 
     if (BP_UImanager.Succeeded())
         mUImanagerClass = BP_UImanager.Class;
+
+}
+
+UGameInstanceSubsystemUI* UGameInstanceSubsystemUI::GetInst()
+{
+
+    return UGameplayStatics::GetGameInstance(mpWorld)->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
 void UGameInstanceSubsystemUI::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
+    UGameInstanceSubsystemUI::mpWorld = GetWorld();
     InitUImanager();
 }
 
