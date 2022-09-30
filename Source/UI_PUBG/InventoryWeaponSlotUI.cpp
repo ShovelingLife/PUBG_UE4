@@ -132,7 +132,6 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseMove(const FGeometry& InGeometry, co
 void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
-
     ABaseInteraction* p_weapon = nullptr;
     UItemSlotUI* p_slot = nullptr;
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
@@ -144,8 +143,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     if (auto subGameInst = UGameInstanceSubsystemUI::GetInst())
     {
         subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);
-        p_slot = subGameInst->GetInventoryManager()->pInventoryUI->CurrentItemSlot;
-        p_slot->SetAsCursor(mousePos);
+        p_slot = subGameInst->DeleActivateCursorSlot.Execute(true);
     }
     if (!p_slot   ||
         !p_weapon ||
@@ -156,7 +154,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData = mItemData;
     p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");
-    p_slot->SetAsCursor(mousePos);
+    p_slot->SetAsCursor();
 
     // 드래그 구현
     if (auto p_customOperation = NewObject<UCustomDragDropOperation>())
@@ -173,7 +171,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     auto p_customOperation = Cast<UCustomDragDropOperation>(InOperation);
-
+    
     if (!p_customOperation ||
         !pGameInstanceSubSystemUI)
         return false;
@@ -241,13 +239,10 @@ void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragD
 bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 { 
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-    // GEngine->AddOnScreenDebugMessage(4, 1.f, FColor::Blue, "Dragging Inventory Weapon UI");
+    GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Blue, "Drag Over Inventory Weapon Slot UI");    
 
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
-    
-    if (auto subGameInst = UGameInstanceSubsystemUI::GetInst())
-        subGameInst->DeleMoveSlotCursor.ExecuteIfBound(mousePos);
 
     //USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), mArrCanvasPanel[((int)mSelectedWeaponIndex) - 1]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
     //auto newIdx = (EWeaponType)(i + 1);

@@ -113,7 +113,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
 
     // 슬롯 설정    
     pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);                                           
-    p_slot->SetAsCursor(mousePos);
+    p_slot->SetAsCursor();
 
     // 무기 부속품일 시 해당되는 칸 설정
     /*if (p_slot->ItemData.Category == "Attachment")

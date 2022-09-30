@@ -12,7 +12,7 @@ class UItemSlotUI;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
 DECLARE_DELEGATE_OneParam(FDeleVerifyAttachmentSlot, ACoreAttachment*)
-DECLARE_DELEGATE_OneParam(FDeleMoveSlotCursor, FVector2D)
+DECLARE_DELEGATE_RetVal_OneParam(UItemSlotUI*, FDeleActivateCursorSlot, bool)
 DECLARE_DELEGATE_TwoParams(FDeleSetTooltipVisibility, UItemSlotUI*, ESlateVisibility)
 
 UCLASS()
@@ -22,14 +22,14 @@ class UI_PUBG_API UGameInstanceSubsystemUI : public UGameInstanceSubsystem
 	
 private:
     static UWorld* mpWorld;
-
-	UPROPERTY() TSubclassOf<AUI_manager> mUImanagerClass;
+    UPROPERTY() TSubclassOf<AUI_manager> mUImanagerClass;
 
 public:
     UPROPERTY() AUI_manager* pUImanager;
     FDeleSetTooltipVisibility DeleSetTooltipVisibility;
     FDeleVerifyAttachmentSlot DeleVerifyAttachmentSlot;
-    FDeleMoveSlotCursor DeleMoveSlotCursor;
+    FDeleActivateCursorSlot DeleActivateCursorSlot;
+    FDelegateHandle TickDelegateHandle;
 
 public:
 	UGameInstanceSubsystemUI();
@@ -40,7 +40,9 @@ public:
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
-	virtual void Deinitialize() override;
+    virtual void Deinitialize() override;
+
+    bool Tick(float DeltaSeconds);
 
 private:
     void InitUImanager();

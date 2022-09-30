@@ -83,5 +83,5 @@ public:
       * \brief 슬롯 UI를 커서 중앙 지점에 설정
       * \param Pos 슬롯 UI 위치 
      */
-    void SetAsCursor(FVector2D Pos);
+    void SetAsCursor();
 };

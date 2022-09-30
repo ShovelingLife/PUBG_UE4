@@ -1,5 +1,6 @@
 #include "GameInstanceSubsystemUI.h"
 #include "InventoryManager.h"
+#include "ItemSlotUI.h"
 #include "TooltipUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
@@ -7,6 +8,7 @@
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Components/CanvasPanelSlot.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -18,17 +20,16 @@ UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
 
     if (BP_UImanager.Succeeded())
         mUImanagerClass = BP_UImanager.Class;
-
 }
 
 UGameInstanceSubsystemUI* UGameInstanceSubsystemUI::GetInst()
 {
-
     return UGameplayStatics::GetGameInstance(mpWorld)->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
 void UGameInstanceSubsystemUI::Initialize(FSubsystemCollectionBase& Collection)
 {
+    TickDelegateHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UGameInstanceSubsystemUI::Tick));
     Super::Initialize(Collection);
     UGameInstanceSubsystemUI::mpWorld = GetWorld();
     InitUImanager();
@@ -37,6 +38,11 @@ void UGameInstanceSubsystemUI::Initialize(FSubsystemCollectionBase& Collection)
 void UGameInstanceSubsystemUI::Deinitialize()
 {
     Super::Deinitialize();
+}
+
+bool UGameInstanceSubsystemUI::Tick(float DeltaSeconds)
+{
+    return true;
 }
 
 void UGameInstanceSubsystemUI::InitUImanager()

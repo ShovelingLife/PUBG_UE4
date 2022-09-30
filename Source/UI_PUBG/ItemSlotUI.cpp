@@ -60,17 +60,16 @@ void UItemSlotUI::SetForAttachmentUI()
     MainCanvasPanel->AddChildToCanvas(ItemBorder);
 }
 
-void UItemSlotUI::SetAsCursor(FVector2D Pos)
+void UItemSlotUI::SetAsCursor()
 {
     auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(MainHorizontalBox->Slot);
     
     if (!p_canvasPanelSlot)
         return;
 
-    if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-        subGameInst->DeleMoveSlotCursor.ExecuteIfBound(Pos);
+    /*if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
+        subGameInst->DeleMoveSlotCursor.ExecuteIfBound(Pos);*/
 
-    p_canvasPanelSlot->SetPosition(Pos);
     this->SetVisibility(VISIBLE);
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
     NameTxt->SetVisibility(HIDDEN);

@@ -4,7 +4,7 @@
 
 void UCustomDragDropOperation::Init(UItemSlotUI* pSlot, FString Type /* = "" */)
 {
-    DefaultDragVisual = pSlot;
+    // DefaultDragVisual = pSlot;
     Payload = pSlot;
     Pivot = EDragPivot::MouseDown;
     bWeaponSlot = (Type == "Weapon");

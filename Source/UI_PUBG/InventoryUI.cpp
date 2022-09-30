@@ -12,40 +12,34 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include <Components/CanvasPanelSlot.h>
+#include <Blueprint/WidgetLayoutLibrary.h>
+
+UInventoryUI::UInventoryUI(const FObjectInitializer& Initializer) : Super(Initializer)
+{
+    /*auto slotUI = ConstructorHelpers::FClassFinder<UItemSlotUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_ItemSlotUI.BP_ItemSlotUI_C'"));
+
+    if (slotUI.Succeeded())
+        mSlotUIClass = slotUI.Class;*/
+}
 
 void UInventoryUI::NativeConstruct()
 {
     Super::NativeConstruct();
-    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
     
     if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
     {
         subGameInst->DeleSetTooltipVisibility.BindUFunction(this, "SetTooltipVisibility");
-        subGameInst->DeleMoveSlotCursor.BindUFunction(this,"MoveSlotCursor");
-
+        subGameInst->DeleActivateCursorSlot.BindUFunction(this,"ActivateCursorSlot");
     }
+    if (CurrentItemSlot)
+        CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInventoryUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
     CheckTooltipMouseDistance();
-}
-
-bool UInventoryUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
-{
-    Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-
-    if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
-    {
-        if (auto p_slot = p_customDragOp->GetSlot())
-        {
-            if (auto pGameInstanceSubsystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(GetWorld()->GetGameInstance()))
-                pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
-        }
-    }
-    GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Blue, "Dragging Inventory UI");
-    return true;
+    MoveSlotCursor();
 }
 
 FReply UInventoryUI::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -54,31 +48,80 @@ FReply UInventoryUI::NativeOnMouseMove(const FGeometry& InGeometry, const FPoint
     return FReply::Handled();
 }
 
+FReply UInventoryUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+    /*if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+        mbClicked = true;*/
+
+    return FReply::Handled();
+}
+
+FReply UInventoryUI::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
+    return FReply::Handled();
+}
+
+bool UInventoryUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
+    //auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation);
+
+    //if (p_customDragOp)
+    //{
+    //    p_customDragOp->Init(CurrentItemSlot);
+
+    //    if (auto pGameInstanceSubsystemUI = UGameInstanceSubsystemUI::GetInst())
+    //        pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
+    //}
+    ////GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Blue, "Dragging Inventory UI");
+    //InOperation = p_customDragOp;
+    GEngine->AddOnScreenDebugMessage(6, 1.f, FColor::Red, "Dragging Inventory UI");
+    
+    return true;
+}
+
+bool UInventoryUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
+    return true;
+}
+
+void UInventoryUI::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
+}
+
 void UInventoryUI::SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility)
 {
-    if (pItemSlotUI)
+    /*if (pItemSlotUI)
     {
         TooltipUI->SetVisibility(TooltipVisibility);
         TooltipUI->SetData(pItemSlotUI->ItemData);
-    }
+    }*/
 }
 
-UFUNCTION() void UInventoryUI::MoveSlotCursor(FVector2D NewPos)
+void UInventoryUI::MoveSlotCursor()
 {
-    GEngine->AddOnScreenDebugMessage(7, 2.f, FColor::Yellow, "Draggin slot" + NewPos.ToString());
-    // CurrentItemSlot->SetPositionInViewport(NewPos); 
+    if (CurrentItemSlot->GetVisibility() == ESlateVisibility::Hidden)
+        return;
+
+    FVector2D mousePos     = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());    
+    FVector2D viewportSize = UWidgetLayoutLibrary::GetViewportSize(GetWorld());
+    FVector2D finalPos{ mousePos.X + 38.5f,mousePos.Y + 0.5f };
     
     if (auto canvasSlot = Cast<UCanvasPanelSlot>(CurrentItemSlot->Slot))
-        canvasSlot->SetPosition(NewPos);
-
-    auto playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-    
-    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetMouseCursorWidget(EMouseCursor::Default, CurrentItemSlot);
+        canvasSlot->SetPosition(finalPos);
 }
 
 void UInventoryUI::CheckTooltipMouseDistance()
 {
-    auto p_subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
+    /*auto p_subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 
     if (!p_subGameInst)
         return;
@@ -87,5 +130,7 @@ void UInventoryUI::CheckTooltipMouseDistance()
     auto distance   = p_subGameInst->GetDistanceBetweenSlotCursor(CurrentItemSlot, bFirstSlot);
 
     if (p_subGameInst->IsMouseLeftFromUI(distance, bFirstSlot))
-        TooltipUI->SetVisibility(ESlateVisibility::Hidden);
+        TooltipUI->SetVisibility(ESlateVisibility::Hidden);*/
 }
+
+UItemSlotUI* UInventoryUI::ActivateCursorSlot(bool bActivated /* = false */) { CurrentItemSlot->SetVisibility(bActivated ? ESlateVisibility::Visible : ESlateVisibility::Hidden); return CurrentItemSlot; }

@@ -64,8 +64,6 @@ void UCharacterSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
 bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-    GEngine->AddOnScreenDebugMessage(3, 1.f, FColor::Blue, "Dragging Character UI");
-
 
     if (auto p_customDragOp = Cast<UCustomDragDropOperation>(InOperation))
     {

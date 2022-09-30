@@ -16,29 +16,47 @@ class UTooltipUI;
 UCLASS()
 class UI_PUBG_API UInventoryUI : public UUserWidget
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
+
+    // UPROPERTY() TSubclassOf<UItemSlotUI> mSlotUIClass;
+    const float mkCanvasSizeX = 1920.f, mkCanvasSizeY = 1080.f;
 
 public:
-    UPROPERTY(EditAnywhere, meta = (BindWidget)) UItemSlotUI* CurrentItemSlot = nullptr;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* CurrentItemSlot;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*       CharacterSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*       InventoryListUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTooltipUI*             TooltipUI;
+
+public:
+    UInventoryUI(const FObjectInitializer& Initializer);
 
 protected:
     virtual void NativeConstruct() override;
 
     virtual void NativeTick(const FGeometry&, float) override;
 
-    bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
     FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+    FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+    FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+    bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+    virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+    virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
 
 private:
     void CheckTooltipMouseDistance();
 
+    void MoveSlotCursor();
+
 public:
     UFUNCTION() void SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility);
 
-    UFUNCTION() void MoveSlotCursor(FVector2D NewPos);
+    UFUNCTION() UItemSlotUI* ActivateCursorSlot(bool bActivated = false);
 };
