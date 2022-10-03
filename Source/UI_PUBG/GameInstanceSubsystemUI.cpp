@@ -20,6 +20,11 @@ UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
 
     if (BP_UImanager.Succeeded())
         mUImanagerClass = BP_UImanager.Class;
+
+    auto slotUI = ConstructorHelpers::FClassFinder<UItemSlotUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_ItemSlotUI.BP_ItemSlotUI_C'"));
+
+    if (slotUI.Succeeded())
+        SlotUI_BP = slotUI.Class;
 }
 
 UGameInstanceSubsystemUI* UGameInstanceSubsystemUI::GetInst()

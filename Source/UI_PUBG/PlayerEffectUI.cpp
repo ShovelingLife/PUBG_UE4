@@ -16,16 +16,20 @@ UPlayerEffectUI::UPlayerEffectUI(const FObjectInitializer& ObjectInitializer) : 
 void UPlayerEffectUI::InitTex()
 {
     const FString path = "Texture2D'/Game/UI/Player/Screen/";
+
+    // 화상 입었을 때 연출 UI
     auto burnTex = ConstructorHelpers::FObjectFinder<UTexture2D>(*(path + "BurnScreen.BurnScreen'"));
 
     if (burnTex.Succeeded())
         BurnTex = burnTex.Object;
 
+    // 대미지를 입었을 때 피 튀기는 연출 UI
     auto bloodTex = ConstructorHelpers::FObjectFinder<UTexture2D>(*(path + "BloodScreen.BloodScreen'"));
 
     if (bloodTex.Succeeded())
         InjureTex = bloodTex.Object;
 
+    // 자기장 안에서 지속적인 대미지를 받는 연출 UI
     auto fieldTex = ConstructorHelpers::FObjectFinder<UTexture2D>(*(path + "FieldScreen.FieldScreen'"));
 
     if (fieldTex.Succeeded())

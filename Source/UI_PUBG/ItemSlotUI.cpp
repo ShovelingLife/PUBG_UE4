@@ -15,6 +15,9 @@
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
+#include <Blueprint/SlateBlueprintLibrary.h>
+#include <Blueprint/WidgetLayoutLibrary.h>
+#include "TimerManager.h"
 
 void UItemSlotUI::NativeConstruct()
 {
@@ -60,17 +63,8 @@ void UItemSlotUI::SetForAttachmentUI()
     MainCanvasPanel->AddChildToCanvas(ItemBorder);
 }
 
-void UItemSlotUI::SetAsCursor()
+void UItemSlotUI::SetAsCursor(FVector2D Pos)
 {
-    auto p_canvasPanelSlot = Cast<UCanvasPanelSlot>(MainHorizontalBox->Slot);
-    
-    if (!p_canvasPanelSlot)
-        return;
-
-    /*if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-        subGameInst->DeleMoveSlotCursor.ExecuteIfBound(Pos);*/
-
-    this->SetVisibility(VISIBLE);
     ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
     NameTxt->SetVisibility(HIDDEN);
     CountTxt->SetVisibility(HIDDEN);

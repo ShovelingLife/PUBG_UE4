@@ -490,7 +490,7 @@ void ACustomPlayer::OpenInventory()
 void ACustomPlayer::UpdateHealth()
 {
     if (CurrentHealth == 0.f && 
-        CurrentState != DEAD)
+        CurrentState  != DEAD)
         CurrentState = INJURED;
 
     if (CurrentInjuredHealth == 0.f)

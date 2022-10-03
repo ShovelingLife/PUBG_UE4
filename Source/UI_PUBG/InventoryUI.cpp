@@ -16,10 +16,6 @@
 
 UInventoryUI::UInventoryUI(const FObjectInitializer& Initializer) : Super(Initializer)
 {
-    /*auto slotUI = ConstructorHelpers::FClassFinder<UItemSlotUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_ItemSlotUI.BP_ItemSlotUI_C'"));
-
-    if (slotUI.Succeeded())
-        mSlotUIClass = slotUI.Class;*/
 }
 
 void UInventoryUI::NativeConstruct()
@@ -27,19 +23,14 @@ void UInventoryUI::NativeConstruct()
     Super::NativeConstruct();
     
     if (auto subGameInst = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>())
-    {
         subGameInst->DeleSetTooltipVisibility.BindUFunction(this, "SetTooltipVisibility");
-        subGameInst->DeleActivateCursorSlot.BindUFunction(this,"ActivateCursorSlot");
-    }
-    if (CurrentItemSlot)
-        CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInventoryUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
     CheckTooltipMouseDistance();
-    MoveSlotCursor();
+    // MoveSlotCursor();
 }
 
 FReply UInventoryUI::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -61,7 +52,6 @@ FReply UInventoryUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const 
 FReply UInventoryUI::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
     Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
-    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
     return FReply::Handled();
 }
 
@@ -87,14 +77,12 @@ bool UInventoryUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDrop
 bool UInventoryUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
-    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
     return true;
 }
 
 void UInventoryUI::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
-    CurrentItemSlot->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInventoryUI::SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility)
@@ -108,15 +96,9 @@ void UInventoryUI::SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibili
 
 void UInventoryUI::MoveSlotCursor()
 {
-    if (CurrentItemSlot->GetVisibility() == ESlateVisibility::Hidden)
-        return;
-
     FVector2D mousePos     = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());    
     FVector2D viewportSize = UWidgetLayoutLibrary::GetViewportSize(GetWorld());
-    FVector2D finalPos{ mousePos.X + 38.5f,mousePos.Y + 0.5f };
-    
-    if (auto canvasSlot = Cast<UCanvasPanelSlot>(CurrentItemSlot->Slot))
-        canvasSlot->SetPosition(finalPos);
+    FVector2D finalPos{ mousePos.X + 38.5f,mousePos.Y + 0.5f };    
 }
 
 void UInventoryUI::CheckTooltipMouseDistance()
@@ -132,5 +114,3 @@ void UInventoryUI::CheckTooltipMouseDistance()
     if (p_subGameInst->IsMouseLeftFromUI(distance, bFirstSlot))
         TooltipUI->SetVisibility(ESlateVisibility::Hidden);*/
 }
-
-UItemSlotUI* UInventoryUI::ActivateCursorSlot(bool bActivated /* = false */) { CurrentItemSlot->SetVisibility(bActivated ? ESlateVisibility::Visible : ESlateVisibility::Hidden); return CurrentItemSlot; }

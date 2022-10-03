@@ -40,6 +40,7 @@ class UI_PUBG_API UItemSlotUI : public UUserWidget, public IUserObjectListEntry
 	
 private:
     bool mbShouldCheckTooltipUI = false;
+    FTimerHandle mTimerHandle;
 
 public:
     /** \brief 현재 쓰여지는 변수 */
@@ -83,5 +84,5 @@ public:
       * \brief 슬롯 UI를 커서 중앙 지점에 설정
       * \param Pos 슬롯 UI 위치 
      */
-    void SetAsCursor();
+    void SetAsCursor(FVector2D Pos);
 };

@@ -30,6 +30,7 @@
 #include "Components/Border.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/CanvasPanel.h"
+#include "Components/HorizontalBox.h"
 #include "Components/Image.h"
 #include "Components/Sizebox.h"
 #include "Components/TextBlock.h"
@@ -68,12 +69,7 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
     else
         mpWeaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
 
-    if (!mbClicked)
-    {
-        UpdateHighlightImgPos();
-        CheckForHoveredWeaponSlot();
-        //CheckForHoveredAttachmentSlot();
-    }
+    CheckForHoveredWeaponSlot();
 }
 
 FReply UInventoryWeaponSlotUI::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -131,10 +127,9 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseMove(const FGeometry& InGeometry, co
 
 void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
-    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
-    ABaseInteraction* p_weapon = nullptr;
+    ABaseInteraction* p_weapon = nullptr;    
     UItemSlotUI* p_slot = nullptr;
-    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
+    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
 
     if (mpWeaponManager)
         p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType);
@@ -142,19 +137,22 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     // 슬롯 설정
     if (auto subGameInst = UGameInstanceSubsystemUI::GetInst())
     {
-        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);
-        p_slot = subGameInst->DeleActivateCursorSlot.Execute(true);
+        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);        
+
+        if (auto inventoryManager = subGameInst->GetInventoryManager())
+            p_slot = CreateWidget<UItemSlotUI>(GetWorld(), subGameInst->SlotUI_BP);
     }
     if (!p_slot   ||
         !p_weapon ||
         mItemData.IsEmpty())
         return;
 
+    // 정보 초기화
     p_slot->Priority = 1;
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData = mItemData;
     p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");
-    p_slot->SetAsCursor();
+    p_slot->SetAsCursor(mousePos);
 
     // 드래그 구현
     if (auto p_customOperation = NewObject<UCustomDragDropOperation>())
@@ -165,6 +163,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         p_customOperation->Init(p_slot);
         OutOperation = p_customOperation;
     }
+    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 }
 
 bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -221,7 +220,8 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
 void UInventoryWeaponSlotUI::NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
-    ResetHighlightImg();
+    CheckForHoveredWeaponSlot();
+    //GEngine->AddOnScreenDebugMessage(7, 1.f, FColor::Red, "Drag entered");
 }
 
 void UInventoryWeaponSlotUI::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -264,8 +264,7 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
                  mSelectedWeaponType = THROWABLE;
     }
     UpdateHighlightImgPos();
-    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "마우스 : " + mousePos.ToString() + " 위젯 : " + widgetPos.ToString());
-    
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "마우스 : " + mousePos.ToString() + " 위젯 : " + widgetPos.ToString());    
     return true;
 }
 
@@ -295,60 +294,17 @@ void UInventoryWeaponSlotUI::InitWeaponSlot()
 
 void UInventoryWeaponSlotUI::UpdateWeaponSlotVisibility()
 {
-    // 첫번째 무기
-    TArray<UWidget*> arrFirstGunWidget
-    {
-        FirstGunSlotImg,
-        FirstGunNameTxt,
-        FirstGunBulletTypeTxt,
-        FirstGunCurrentMagazineTxt,
-        FirstGunMaxMagazineTxt,
-        FirstGunNumberBackground
-    };
-    // 두번째 무기
-    TArray<UWidget*> arrSecondGunWidget
-    {
-        SecondGunSlotImg,
-        SecondGunNameTxt,
-        SecondGunBulletTypeTxt,
-        SecondGunCurrentMagazineTxt,
-        SecondGunMaxMagazineTxt,
-        SecondGunNumberBackground
-    };
-    // 세번째 무기
-    TArray<UWidget*> arrPistolWidget
-    {
-        PistolSlotImg,
-        PistolNameTxt,
-        PistolBulletTypeTxt,
-        PistolCurrentMagazineTxt,
-        PistolMaxMagazineTxt,
-        PistolNumberBackground
-    };
-    // 네번째 무기
-    TArray<UWidget*> arrMeleeWidget
-    {
-        MeleeSlotImg,
-        MeleeNameTxt,
-        MeleeNumberBackground
-    };
-    // 총기류 설정
-    for (int i = 0; i < 6; i++)
-    {
-        arrFirstGunWidget[i]->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
-        arrSecondGunWidget[i]->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
-        arrPistolWidget[i]->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
-
-        // 기타 무기 설정
-        if (i < 3)
-            arrMeleeWidget[i]->SetVisibility((mpWeaponManager->pMelee) ? VISIBLE : HIDDEN);
-    }         
+    FirstGunCanvasPanel->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
+    SecondGunCanvasPanel->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
+    PistolCanvasPanel->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
+    MeleeCanvasPanel->SetVisibility((mpWeaponManager->pMelee) ? VISIBLE : HIDDEN);
+    GrenadeCanvasPanel->SetVisibility((mpWeaponManager->pThrowable) ? VISIBLE : HIDDEN);
 }
 
 TArray<UTexture*> UInventoryWeaponSlotUI::GetAttachmentTexArr(ACoreWeapon* pWeapon) const
 {
     TArray<UTexture*> arrAttachmentTex;
-
+    
     if (!pWeapon)
         return arrAttachmentTex;
 
@@ -406,11 +362,11 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
     // 선택된 무기 인덱스 구함
     TArray<UImage*> arrWeaponImg
     {
-        FirstGunSlotImg,  
-        SecondGunSlotImg, 
-        PistolSlotImg,    
-        MeleeSlotImg,     
-        GrenadeSlotImg,   
+        FirstGunSlotImg,
+        SecondGunSlotImg,
+        PistolSlotImg,
+        MeleeSlotImg,
+        GrenadeSlotImg,
     };
     // 총 무기 다섯칸 중 어느거 선택했는지 확인
     for (int i = 0; i < arrWeaponImg.Num(); i++)
@@ -419,22 +375,26 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 
         if (weaponImg->IsVisible() &&
             weaponImg->IsHovered())
+        {
             mSelectedWeaponType = (EWeaponType)(i + 1);
+            UpdateHighlightImgPos();
+            return;
+        }
     }
+    ResetHighlightImg();
 }
  
 void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
 {
-    if (mSelectedWeaponType == NONE)
-        return;
-
     // 무기가 선택됐을 시 이미지 설정
-    auto idx = (int)mSelectedWeaponType;
-    idx -= 1;
+    auto idx = (int)mSelectedWeaponType - 1;
 
-    if (idx < 0)
+    if (mSelectedWeaponType == NONE ||
+        idx < 0)
+    {
+        ResetHighlightImg();
         return;
-
+    }
     if (UCanvasPanelSlot* p_canvasPanelSlot = mArrCanvasPanel[idx]->AddChildToCanvas(HighlightImg))
     {
         float sizeX = (idx < 3) ? 485.f : 225.f;
@@ -456,13 +416,13 @@ void UInventoryWeaponSlotUI::ResetHighlightImg()
     mArrCanvasPanel[idx]->RemoveChild(HighlightImg);
     MainCanvasPanel->AddChildToCanvas(HighlightImg);
     HighlightImg->SetVisibility(HIDDEN);
-    mSelectedWeaponType = EWeaponType::NONE;
+    mSelectedWeaponType = NONE;
     mbClicked = false;
 }
 
 int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType) const
 {
-    TMap<FString, int> mapType
+    TMap<FString, int> mapAttachmentIdx
     {
         { "Scope",  0 }, { "Sight",  0 }, { "IRS",    0 },
         { "Stock",  1 }, { "StockA", 1 }, { "StockB", 1 },
@@ -470,10 +430,10 @@ int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType) const
         { "Forend", 3 },
         { "Barrel", 4 }
     };
-    if (!mapType.Contains(AttachmentType))
+    if (!mapAttachmentIdx.Contains(AttachmentType))
         return -1;
 
-    return mapType[AttachmentType];
+    return mapAttachmentIdx[AttachmentType];
 }
 
 void UInventoryWeaponSlotUI::SetSlotNull()

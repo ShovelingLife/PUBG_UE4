@@ -12,7 +12,6 @@ class UItemSlotUI;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
 DECLARE_DELEGATE_OneParam(FDeleVerifyAttachmentSlot, ACoreAttachment*)
-DECLARE_DELEGATE_RetVal_OneParam(UItemSlotUI*, FDeleActivateCursorSlot, bool)
 DECLARE_DELEGATE_TwoParams(FDeleSetTooltipVisibility, UItemSlotUI*, ESlateVisibility)
 
 UCLASS()
@@ -26,9 +25,10 @@ private:
 
 public:
     UPROPERTY() AUI_manager* pUImanager;
+    UPROPERTY() TSubclassOf<UItemSlotUI> SlotUI_BP;
+
     FDeleSetTooltipVisibility DeleSetTooltipVisibility;
     FDeleVerifyAttachmentSlot DeleVerifyAttachmentSlot;
-    FDeleActivateCursorSlot DeleActivateCursorSlot;
     FDelegateHandle TickDelegateHandle;
 
 public:

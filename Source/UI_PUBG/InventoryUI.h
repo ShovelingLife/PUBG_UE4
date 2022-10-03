@@ -18,11 +18,7 @@ class UI_PUBG_API UInventoryUI : public UUserWidget
 {
     GENERATED_BODY()
 
-    // UPROPERTY() TSubclassOf<UItemSlotUI> mSlotUIClass;
-    const float mkCanvasSizeX = 1920.f, mkCanvasSizeY = 1080.f;
-
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UItemSlotUI* CurrentItemSlot;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*       CharacterSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*       InventoryListUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
@@ -57,6 +53,4 @@ private:
 
 public:
     UFUNCTION() void SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility);
-
-    UFUNCTION() UItemSlotUI* ActivateCursorSlot(bool bActivated = false);
 };
