@@ -1,4 +1,5 @@
 ﻿#include "InventoryWeaponSlotUI.h"
+#include "CursorSlotUI.h"
 #include "InventoryListUI.h"
 #include "InventoryManager.h"
 #include "InventoryUI.h"
@@ -6,7 +7,6 @@
 #include "SocketUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
-#include "InventoryListUI.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
 #include "Farmable_items/CoreAttachment.h"
@@ -128,39 +128,35 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseMove(const FGeometry& InGeometry, co
 void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     ABaseInteraction* p_weapon = nullptr;    
-    UItemSlotUI* p_slot = nullptr;
-    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
+
+    // 슬롯 설정
+    UItemSlotUI* p_slot = CreateWidget<UItemSlotUI>(GetOwningPlayer(), BP_ItemSlotUI);
+    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (mpWeaponManager)
         p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType);
-
-    // 슬롯 설정
-    if (auto subGameInst = UGameInstanceSubsystemUI::GetInst())
-    {
-        subGameInst->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, HIDDEN);        
-
-        if (auto inventoryManager = subGameInst->GetInventoryManager())
-            p_slot = CreateWidget<UItemSlotUI>(GetWorld(), subGameInst->SlotUI_BP);
-    }
+        
     if (!p_slot   ||
         !p_weapon ||
         mItemData.IsEmpty())
         return;
 
-    // 정보 초기화
-    p_slot->Priority = 1;
     p_slot->pDraggedItem = p_weapon;
     p_slot->ItemData = mItemData;
-    p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");
-    p_slot->SetAsCursor(mousePos);
+    p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");    
 
     // 드래그 구현
     if (auto p_customOperation = NewObject<UCustomDragDropOperation>())
     {
+        // 커서 슬롯 생성
+        p_customOperation->Init(p_slot, mousePos);
+
+        if (auto p_subGameInstUI = UGameInstanceSubsystemUI::GetInst())
+            p_customOperation->DefaultDragVisual = p_subGameInstUI->GetSlotCursorUI(mItemData, mousePos);
+
         if ((int)mSelectedWeaponType < 4)
             p_customOperation->bGun = true;
 
-        p_customOperation->Init(p_slot);
         OutOperation = p_customOperation;
     }
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
@@ -170,14 +166,10 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
     auto p_customOperation = Cast<UCustomDragDropOperation>(InOperation);
-    
-    if (!p_customOperation ||
-        !pGameInstanceSubSystemUI)
-        return false;
-
     auto p_slot = p_customOperation->GetSlot();
-
-    if (!mpWeaponManager ||
+    
+    if (!pGameInstanceSubSystemUI ||
+        !mpWeaponManager ||
         !p_slot)
         return false;
 
@@ -213,7 +205,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
         else
             p_slot->DeleSwapInventoryExplosive.ExecuteIfBound(Cast<ACoreThrowableWeapon>(p_selectedWeapon), Cast<ACoreThrowableWeapon>(p_draggedWeapon));
     }
-    p_customOperation->Init(p_slot, "Weapon");
+    p_customOperation->Classify("Weapon");
     return true;
 }
 
@@ -239,7 +231,6 @@ void UInventoryWeaponSlotUI::NativeOnDragCancelled(const FDragDropEvent& InDragD
 bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 { 
     Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
-    GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Blue, "Drag Over Inventory Weapon Slot UI");    
 
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
@@ -359,22 +350,13 @@ void UInventoryWeaponSlotUI::UpdateInventoryWeaponUI()
 
 void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
 {
-    // 선택된 무기 인덱스 구함
-    TArray<UImage*> arrWeaponImg
+    // 총 무기 다섯칸 중 어느거 선택했는지 확인 후 인덱스 구함
+    for (int i = 0; i < mArrCanvasPanel.Num(); i++)
     {
-        FirstGunSlotImg,
-        SecondGunSlotImg,
-        PistolSlotImg,
-        MeleeSlotImg,
-        GrenadeSlotImg,
-    };
-    // 총 무기 다섯칸 중 어느거 선택했는지 확인
-    for (int i = 0; i < arrWeaponImg.Num(); i++)
-    {
-        auto weaponImg = arrWeaponImg[i];
+        auto weaponCanvas = mArrCanvasPanel[i];
 
-        if (weaponImg->IsVisible() &&
-            weaponImg->IsHovered())
+        if (weaponCanvas->IsVisible() &&
+            weaponCanvas->IsHovered())
         {
             mSelectedWeaponType = (EWeaponType)(i + 1);
             UpdateHighlightImgPos();

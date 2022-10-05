@@ -54,19 +54,3 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
         CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
     }
 }
-
-void UItemSlotUI::SetForAttachmentUI()
-{
-    NameTxt->RemoveFromParent();
-    CountTxt->RemoveFromParent();
-    BackgroundSizeBox->RemoveFromParent();
-    MainCanvasPanel->AddChildToCanvas(ItemBorder);
-}
-
-void UItemSlotUI::SetAsCursor(FVector2D Pos)
-{
-    ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(ItemData));
-    NameTxt->SetVisibility(HIDDEN);
-    CountTxt->SetVisibility(HIDDEN);
-    BackgroundSizeBox->SetVisibility(HIDDEN);
-}

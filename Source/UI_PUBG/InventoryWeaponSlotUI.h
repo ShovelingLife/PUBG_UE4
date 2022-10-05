@@ -49,12 +49,9 @@ private:
         nullptr,
         nullptr
     };
-    AWeaponManager* mpWeaponManager = nullptr;
-
     TArray<UCanvasPanel*> mArrCanvasPanel;
-
+    AWeaponManager* mpWeaponManager = nullptr;
     FPointerEvent mCurrentPointerEvent;
-
     FsSlotItemData  mItemData;
 
     // 부속품 UI 관련
@@ -65,6 +62,8 @@ private:
     // 플레이어 상호작용 하고있는 변수 관련
     EWeaponType mSelectedWeaponType, mDraggedWeaponType;
     bool        mbClicked = false;
+
+    UPROPERTY(EditAnywhere) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
 
 public:
     /** \brief 선택 UI 관련 */
@@ -128,9 +127,6 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*      GrenadeNumberBackground;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*   GrenadeNameTxt;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       GrenadeSlotImg;
-
-    /** \brief 아이템 슬롯 BP */
-    UPROPERTY(EditDefaultsOnly, Category = Item_slot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
 
     UPROPERTY() class UGameInstanceSubsystemUI* pGameInstanceSubSystemUI = nullptr;
 

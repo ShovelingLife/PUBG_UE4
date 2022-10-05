@@ -121,7 +121,7 @@ void AUI_manager::InitPlayerUI()
     ConstructorHelpers::FClassFinder<UUserWidget> bp_playerUI(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerUI.BP_PlayerUI_C'"));
 
     if (bp_playerUI.Succeeded())
-        mPlayerUI_BP = bp_playerUI.Class;
+        mBP_PlayerUI = bp_playerUI.Class;
 }
 
 void AUI_manager::InitPlayerEffectUI()
@@ -129,7 +129,7 @@ void AUI_manager::InitPlayerEffectUI()
     ConstructorHelpers::FClassFinder<UUserWidget> bp_playerEffectUI(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_PlayerEffectUI.BP_PlayerEffectUI_C'"));
 
     if (bp_playerEffectUI.Succeeded())
-        mPlayerEffectUI_BP = bp_playerEffectUI.Class;
+        mBP_PlayerEffectUI = bp_playerEffectUI.Class;
 }
 
 void AUI_manager::InitPlayerIcon()
@@ -250,7 +250,7 @@ void AUI_manager::InitPlayerInventory()
 void AUI_manager::SetPlayerUI()
 {
     // 플레이어 UI
-    UUserWidget* p_playerUI_Widget = CreateWidget(GetWorld(), mPlayerUI_BP);
+    UUserWidget* p_playerUI_Widget = CreateWidget(GetWorld(), mBP_PlayerUI);
 
     if (p_playerUI_Widget)
     {
@@ -258,7 +258,7 @@ void AUI_manager::SetPlayerUI()
         mpPlayer_UI->AddToViewport(0);
     }
     // 플레이어 상태 UI
-    UUserWidget* p_playerEffectUI_Widget = CreateWidget(GetWorld(), mPlayerEffectUI_BP);
+    UUserWidget* p_playerEffectUI_Widget = CreateWidget(GetWorld(), mBP_PlayerEffectUI);
 
     if (p_playerEffectUI_Widget)
         pPlayerEffect_UI = Cast<UPlayerEffectUI>(p_playerEffectUI_Widget);

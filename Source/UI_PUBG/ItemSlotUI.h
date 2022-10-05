@@ -74,15 +74,5 @@ protected:
       * \brief 리스트에 아이템 설정 시 호출
       * \param pObj 슬롯 오브젝트
      */
-    virtual void NativeOnListItemObjectSet(UObject* pObj);
-    
-public:
-    // 무기 부착품 UI용으로 초기화
-    void SetForAttachmentUI();
-
-    /**
-      * \brief 슬롯 UI를 커서 중앙 지점에 설정
-      * \param Pos 슬롯 UI 위치 
-     */
-    void SetAsCursor(FVector2D Pos);
+    virtual void NativeOnListItemObjectSet(UObject* pObj);    
 };

@@ -2,12 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "SlotItemData.h"
 #include "GameInstanceSubsystemUI.generated.h"
 
 class AUI_manager;
 class ACoreAttachment;
 class AInventoryManager;
 class AWeaponManager;
+class UCursorSlotUI;
 class UItemSlotUI;
 
 //DECLARE_DELEGATE_OneParam(FDeleSetTooltipData,)
@@ -25,11 +27,12 @@ private:
 
 public:
     UPROPERTY() AUI_manager* pUImanager;
-    UPROPERTY() TSubclassOf<UItemSlotUI> SlotUI_BP;
 
     FDeleSetTooltipVisibility DeleSetTooltipVisibility;
     FDeleVerifyAttachmentSlot DeleVerifyAttachmentSlot;
     FDelegateHandle TickDelegateHandle;
+
+    UPROPERTY() TSubclassOf<UCursorSlotUI> BP_CursorSlotUI;
 
 public:
 	UGameInstanceSubsystemUI();
@@ -60,4 +63,6 @@ public:
     AWeaponManager* GetWeaponManager();
 
     AInventoryManager* GetInventoryManager();
+
+    UCursorSlotUI* GetSlotCursorUI(FsSlotItemData Data, FVector2D ClickPos);
 };

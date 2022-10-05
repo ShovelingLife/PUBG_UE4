@@ -1,4 +1,5 @@
 #include "GameInstanceSubsystemUI.h"
+#include "CursorSlotUI.h"
 #include "InventoryManager.h"
 #include "ItemSlotUI.h"
 #include "TooltipUI.h"
@@ -9,6 +10,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/CanvasPanelSlot.h"
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -21,10 +23,11 @@ UGameInstanceSubsystemUI::UGameInstanceSubsystemUI()
     if (BP_UImanager.Succeeded())
         mUImanagerClass = BP_UImanager.Class;
 
-    auto slotUI = ConstructorHelpers::FClassFinder<UItemSlotUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_ItemSlotUI.BP_ItemSlotUI_C'"));
+    // 커서 UI 초기화
+    auto cursorSlotUI = ConstructorHelpers::FClassFinder<UCursorSlotUI>(TEXT("WidgetBlueprint'/Game/1_Blueprints/UI/BP_CursorSlotUI.BP_CursorSlotUI_C'"));
 
-    if (slotUI.Succeeded())
-        SlotUI_BP = slotUI.Class;
+    if (cursorSlotUI.Succeeded())
+        BP_CursorSlotUI = cursorSlotUI.Class;
 }
 
 UGameInstanceSubsystemUI* UGameInstanceSubsystemUI::GetInst()
@@ -94,4 +97,13 @@ AWeaponManager* UGameInstanceSubsystemUI::GetWeaponManager()
 AInventoryManager* UGameInstanceSubsystemUI::GetInventoryManager()
 {
     return (pUImanager) ? pUImanager->pInventoryManager : nullptr;
+}
+
+UCursorSlotUI* UGameInstanceSubsystemUI::GetSlotCursorUI(FsSlotItemData Data, FVector2D ClickPos)
+{
+    // 정보 초기화
+    auto cursorSlotUI = CreateWidget<UCursorSlotUI>(GetWorld(), BP_CursorSlotUI);
+    cursorSlotUI->ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(Data));
+    cursorSlotUI->ClickPos = ClickPos;
+    return cursorSlotUI;
 }

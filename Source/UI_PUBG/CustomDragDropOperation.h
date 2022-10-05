@@ -21,16 +21,18 @@ UCLASS()
 class UI_PUBG_API UCustomDragDropOperation : public UDragDropOperation
 {
 	GENERATED_BODY()
-	
+
 public:
-	/** \brief 슬롯 데이터 관련 */
-    bool		 bInventoryList = false;
-    bool		 bWeaponSlot	= false;
-	bool		 bGun			= false;
+    /** \brief 슬롯 데이터 관련 */
+    bool bInventoryList = false;
+    bool bWeaponSlot	= false;
+	bool bGun			= false;
 
 public:
 	// 초기화 함수
-	void Init(UItemSlotUI* pSlot, FString Type = "");
+	void Init(UItemSlotUI* pSlot, FVector2D Pos);
+
+	void Classify(FString Type);
 
 public:
 	UItemSlotUI* GetSlot() const;

@@ -19,6 +19,7 @@
 
 class UPlayerUI;
 class UPlayerEffectUI;
+class UCursorSlotUI;
 class UItemSlotUI;
 class AInventoryManager;
 class UTooltipUI;
@@ -46,11 +47,11 @@ private:
     // ------- 현재 쓰이고있는 변수들 -------
 
     /** * \brief 플레이어 UI */
-    TSubclassOf<UPlayerUI> mPlayerUI_BP;
+    TSubclassOf<UPlayerUI> mBP_PlayerUI;
     UPROPERTY() UPlayerUI* mpPlayer_UI;
 
     /** * \brief 플레이어 상태이상 UI */
-    TSubclassOf<UPlayerEffectUI> mPlayerEffectUI_BP;
+    TSubclassOf<UPlayerEffectUI> mBP_PlayerEffectUI;
 
     /** * \brief 상호작용 UI 관련 */
     UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
@@ -76,6 +77,8 @@ public:
     static UTexture2D* GetTexture2D(int Index, FString Type = "");
 
     static UMaterial* GetMaterial(int Index);
+
+    static UCursorSlotUI* GetSlotCursorUI(FsSlotItemData Data);
 
 protected:
     virtual void BeginPlay() override;

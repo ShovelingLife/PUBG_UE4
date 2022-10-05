@@ -2,7 +2,7 @@
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
 #include "InventoryManager.h"
-#include "ItemSlotUI.h"
+#include "CursorSlotUI.h"
 #include "SlotItemData.h"
 #include "UI_manager.h"
 #include "Characters/CustomPlayer.h"
@@ -95,9 +95,6 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
     
-    // 마우스 위치를 구함
-    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
-    
     if (!mpSlotObj ||
         !pGameInstanceSubsystemUI)
         return;
@@ -112,16 +109,18 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
         return;
 
     // 슬롯 설정    
-    pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);                                           
-    p_slot->SetAsCursor(mousePos);
+    pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);                                               
 
     // 무기 부속품일 시 해당되는 칸 설정
     /*if (p_slot->ItemData.Category == "Attachment")
         pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(Cast<ACoreAttachment>(p_slot->pDraggedItem));*/
 
     // 드래그 구현
+    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
+
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();
-    p_dragOperation->Init(p_slot, "Inventory");
+    p_dragOperation->Init(p_slot, mousePos);
+    p_dragOperation->Classify("Inventory");
     OutOperation  = p_dragOperation;
 }
 

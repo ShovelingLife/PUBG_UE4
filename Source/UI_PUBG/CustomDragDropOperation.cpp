@@ -1,17 +1,23 @@
 ﻿#include "CustomDragDropOperation.h"
 #include "ItemSlotUI.h"
+#include "GameInstanceSubsystemUI.h"
 #include "PUBG_UE4/BaseInteraction.h"
+#include "Blueprint/UserWidget.h"
 
-void UCustomDragDropOperation::Init(UItemSlotUI* pSlot, FString Type /* = "" */)
+void UCustomDragDropOperation::Init(UItemSlotUI* pSlot, FVector2D Pos)
 {
-    DefaultDragVisual = pSlot;
+    if (!pSlot)
+        return;
+
     Payload = pSlot;
-    Pivot = EDragPivot::MouseDown;
-    bWeaponSlot = (Type == "Weapon");
+    Offset = FVector2D(0.f, 0.f);
+    Pivot = EDragPivot::CenterCenter;
+}
+
+void UCustomDragDropOperation::Classify(FString Type)
+{
+    bWeaponSlot    = (Type == "Weapon");
     bInventoryList = (Type == "Inventory");
 }
 
-UItemSlotUI* UCustomDragDropOperation::GetSlot() const
-{
-    return Cast<UItemSlotUI>(Payload);
-}
+UItemSlotUI* UCustomDragDropOperation::GetSlot() const { return Cast<UItemSlotUI>(Payload); }
