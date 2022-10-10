@@ -3,13 +3,13 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "PUBG_UE4/WeaponEnum.h"
-#include "SocketUI.generated.h"
+#include "WeaponSocketUI.generated.h"
 
 class UBorder;
 class UImage;
 
 UCLASS()
-class UI_PUBG_API USocketUI : public UUserWidget
+class UI_PUBG_API UWeaponSocketUI : public UUserWidget
 {
 	GENERATED_BODY()
 	

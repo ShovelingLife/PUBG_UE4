@@ -74,5 +74,8 @@ protected:
       * \brief 리스트에 아이템 설정 시 호출
       * \param pObj 슬롯 오브젝트
      */
-    virtual void NativeOnListItemObjectSet(UObject* pObj);    
+    virtual void NativeOnListItemObjectSet(UObject* pObj);  
+
+public:
+    void InitForCursor();
 };

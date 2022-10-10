@@ -22,7 +22,7 @@ class AWeaponManager;
 class ACoreAttachment;
 class ACoreThrowableWeapon;
 class UItemSlotUI;
-class USocketUI;
+class UWeaponSocketUI;
 
 class UBorder;
 class UCanvasPanel;
@@ -55,9 +55,9 @@ private:
     FsSlotItemData  mItemData;
 
     // 부속품 UI 관련
-    TArray<USocketUI*> mArrFirstGunAttachment;
-    TArray<USocketUI*> mArrSecondGunAttachment;
-    TArray<USocketUI*> mArrPistolAttachment;
+    TArray<UWeaponSocketUI*> mArrFirstGunAttachment;
+    TArray<UWeaponSocketUI*> mArrSecondGunAttachment;
+    TArray<UWeaponSocketUI*> mArrPistolAttachment;
 
     // 플레이어 상호작용 하고있는 변수 관련
     EWeaponType mSelectedWeaponType, mDraggedWeaponType;
@@ -80,11 +80,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       FirstGunSlotImg;
 
     /** \brief 1번 슬롯 부속품 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunScopeSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunStockSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunGripSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunMagazineSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* FirstGunMuzzleSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* FirstGunScopeSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* FirstGunStockSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* FirstGunGripSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* FirstGunMagazineSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* FirstGunMuzzleSlot;
 
     /** \brief 2번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* SecondGunCanvasPanel;
@@ -96,11 +96,11 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       SecondGunSlotImg;
 
     /** \brief 2번 슬롯 부속품 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunScopeSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunStockSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunGripSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunMagazineSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* SecondGunMuzzleSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* SecondGunScopeSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* SecondGunStockSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* SecondGunGripSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* SecondGunMagazineSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* SecondGunMuzzleSlot;
 
     /** \brief 3번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* PistolCanvasPanel;
@@ -112,9 +112,9 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*       PistolSlotImg;
 
     /** \brief 3번 슬롯 부속품 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* PistolScopeSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* PistolMagazineSlot;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USocketUI* PistolMuzzleSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* PistolScopeSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* PistolMagazineSlot;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UWeaponSocketUI* PistolMuzzleSlot;
 
     /** \brief 4번 슬롯 UI 관련 */
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel* MeleeCanvasPanel;

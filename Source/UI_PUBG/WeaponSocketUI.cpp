@@ -1,11 +1,11 @@
-#include "SocketUI.h"
+#include "WeaponSocketUI.h"
 #include "Characters/CustomPlayer.h"
 #include "Player_weapons/WeaponManager.h"
 #include "Components/Border.h"
 #include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 
-void USocketUI::NativeConstruct()
+void UWeaponSocketUI::NativeConstruct()
 {
     Super::NativeConstruct();
 
@@ -19,7 +19,7 @@ void USocketUI::NativeConstruct()
              WeaponIdx = 3;
 }
 
-void USocketUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
+void UWeaponSocketUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
     auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));

@@ -54,3 +54,8 @@ void UItemSlotUI::NativeOnListItemObjectSet(UObject* pObj)
         CountTxt->SetText(FText::FromString(FString::FromInt(ItemData.Count)));
     }
 }
+
+void UItemSlotUI::InitForCursor()
+{
+
+}

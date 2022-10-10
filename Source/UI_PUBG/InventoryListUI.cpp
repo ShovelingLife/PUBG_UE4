@@ -100,9 +100,6 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
         return;
 
     // 데이터를 옮김
-    //auto data = FsSlotItemData::GetDataFrom(mpSlotObj->pDraggedItem);
-    //auto p_tmpData = &data;
-    //p_tmpData->Name = mpSlotObj->ItemData.Name;
     auto p_slot = GetInitializedSlotUI(mpSlotObj->pDraggedItem);
 
     if (!p_slot)
@@ -121,6 +118,7 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();
     p_dragOperation->Init(p_slot, mousePos);
     p_dragOperation->Classify("Inventory");
+    p_dragOperation->DefaultDragVisual = pGameInstanceSubsystemUI->GetSlotCursorUI(p_slot->ItemData, mousePos);
     OutOperation  = p_dragOperation;
 }
 

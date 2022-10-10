@@ -1,7 +1,7 @@
 ﻿#include "CharacterSlotUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
-#include "ItemSlotUI.h"
+#include "EquipmentSlotUI.h"
 #include "Characters/CustomPlayer.h"
 #include "Characters/DummyCharacter.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
@@ -18,7 +18,6 @@
 void UCharacterSlotUI::NativeConstruct()
 {
     Super::NativeConstruct();
-    InitSlotUI();
 }
 
 void UCharacterSlotUI::NativeTick(const FGeometry& Geometry, float DeltaTime)
@@ -82,7 +81,7 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
         if (p_dummyCharacter)
         {
             FVector2D trackPos       = mCharacterUIClickPos - currentMousePos;
-            float     rotationValInZ = (trackPos.X - (trackPos.Y + 140.f)) * 0.1;
+            float     rotationValInZ = (trackPos.X - trackPos.Y + 140.f) * 0.1;
             
             // 회전 제한 속도 설정
             if (rotationValInZ > 5.f)
@@ -110,69 +109,46 @@ bool UCharacterSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
     return true;
 }
 
-void UCharacterSlotUI::InitSlotUI()
-{
-    TArray< UItemSlotUI* > p_arrSlotUI
-    {
-        // 장비 관련
-        HeadSlotUI,
-        BodyArmorSlotUI,
-        BackpackSlotUI,
-        BeltSlotUI,
-
-        // 스킨 관련
-        HatSlotUI,
-        MaskSlotUI,
-        CoatSlotUI,
-        ShirtSlotUI,
-        GlovesSlotUI,
-        PantsSlotUI,
-        ShoesSlotUI
-    };
-    for(const auto item : p_arrSlotUI)
-        item->BackgroundSizeBox->SetVisibility(ESlateVisibility::Hidden);
-}
-
 void UCharacterSlotUI::UpdateHighlightImg()
 {
-    UBorder* tmpBorder = nullptr;
-    TArray<UBorder*> p_ArrSlot
-    {
-        HeadSlotBorder,
-        BodyArmorSlotBorder,
-        BackpackSlotBorder,
-        BeltSlotBorder,
-        HatSlotBorder,
-        MaskSlotBorder,
-        CoatSlotBorder,
-        ShirtSlotBorder,
-        GlovesSlotBorder,
-        PantsSlotBorder,
-        ShoesSlotBorder 
-    };
-    // 11번 순회
-    for (const auto item : p_ArrSlot)
-    {
-        // 칸이 선택 되었을 시
-    	if (item->IsHovered())
-        {
-            GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
-            tmpBorder = item;
-            break;
-        }
-    }
-    // 선택된게 있다면 하얀 칸으로 표시
-    if (tmpBorder)
-    {
-        FVector2D dummyPos, movePos;
-        auto geometry = tmpBorder->GetCachedGeometry();
-        USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), geometry.GetAbsolutePosition(), dummyPos, movePos);
-        movePos.X = (movePos.X <= 818.f) ? -435.f : 50.f;
-        movePos.Y += 1.f;
-        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, geometry.GetAbsolutePosition().ToString() + " " + movePos.ToString());
+    //UBorder* tmpBorder = nullptr;
+    //TArray<UBorder*> p_ArrSlot
+    //{
+    //    HeadSlotBorder,
+    //    BodyArmorSlotBorder,
+    //    BackpackSlotBorder,
+    //    BeltSlotBorder,
+    //    HatSlotBorder,
+    //    MaskSlotBorder,
+    //    CoatSlotBorder,
+    //    ShirtSlotBorder,
+    //    GlovesSlotBorder,
+    //    PantsSlotBorder,
+    //    ShoesSlotBorder
+    //};
+    //// 11번 순회
+    //for (const auto item : p_ArrSlot)
+    //{
+    //    // 칸이 선택 되었을 시
+    //	if (item->IsHovered())
+    //    {
+    //        //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "Hovered");
+    //        tmpBorder = item;
+    //        break;
+    //    }
+    //}
+    //// 선택된게 있다면 하얀 칸으로 표시
+    //if (tmpBorder)
+    //{
+    //    FVector2D dummyPos, movePos;
+    //    auto geometry = tmpBorder->GetCachedGeometry();
+    //    USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), geometry.GetAbsolutePosition(), dummyPos, movePos);
+    //    movePos.X = (movePos.X <= 818.f) ? -435.f : 50.f;
+    //    movePos.Y += 1.f;
+    //    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, geometry.GetAbsolutePosition().ToString() + " " + movePos.ToString());
 
-        if (auto p_canvasSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
-            p_canvasSlot->SetPosition(movePos);
-    }
-    HighlightImg->SetVisibility((tmpBorder) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+    //    if (auto p_canvasSlot = Cast<UCanvasPanelSlot>(HighlightImg->Slot))
+    //        p_canvasSlot->SetPosition(movePos);
+    //}
+    //HighlightImg->SetVisibility((tmpBorder) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }

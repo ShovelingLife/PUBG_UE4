@@ -4,7 +4,7 @@
 #include "InventoryManager.h"
 #include "InventoryUI.h"
 #include "ItemSlotUI.h"
-#include "SocketUI.h"
+#include "WeaponSocketUI.h"
 #include "CustomDragDropOperation.h"
 #include "GameInstanceSubsystemUI.h"
 #include "UI_manager.h"
@@ -189,9 +189,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     // 무기 배치 및 UI 설정이 완료 되었다면 초기화
     if (!p_selectedWeapon)
     {
-        auto itemData = p_slot->ItemData;
-
-        if (itemData.Count > 1)
+        if (p_slot->ItemData.Count > 1)
             p_slot->DeleChangeItemCount.ExecuteIfBound(p_draggedWeapon, false);
 
         else
@@ -370,6 +368,7 @@ void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
 {
     // 무기가 선택됐을 시 이미지 설정
     auto idx = (int)mSelectedWeaponType - 1;
+    GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, FString::FromInt(idx));
 
     if (mSelectedWeaponType == NONE ||
         idx < 0)

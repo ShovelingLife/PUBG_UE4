@@ -11,6 +11,7 @@
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Image.h"
+#include "Components/SizeBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -103,6 +104,10 @@ UCursorSlotUI* UGameInstanceSubsystemUI::GetSlotCursorUI(FsSlotItemData Data, FV
 {
     // 정보 초기화
     auto cursorSlotUI = CreateWidget<UCursorSlotUI>(GetWorld(), BP_CursorSlotUI);
+    
+    if (auto p_canvasPanel = Cast<UCanvasPanelSlot>(cursorSlotUI->SB_Background->Slot))
+        p_canvasPanel->SetPosition(ClickPos);
+
     cursorSlotUI->ItemImg->SetBrushFromTexture(AUI_manager::GetTexture2D(Data));
     cursorSlotUI->ClickPos = ClickPos;
     return cursorSlotUI;

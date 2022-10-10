@@ -3,15 +3,16 @@
 #include "GameInstanceSubsystemUI.h"
 #include "PUBG_UE4/BaseInteraction.h"
 #include "Blueprint/UserWidget.h"
+#include <Kismet/KismetMathLibrary.h>
 
 void UCustomDragDropOperation::Init(UItemSlotUI* pSlot, FVector2D Pos)
 {
     if (!pSlot)
         return;
-
+    
     Payload = pSlot;
-    Offset = FVector2D(0.f, 0.f);
-    Pivot = EDragPivot::CenterCenter;
+    Offset = FVector2D::ZeroVector;
+    Pivot = EDragPivot::MouseDown;
 }
 
 void UCustomDragDropOperation::Classify(FString Type)
