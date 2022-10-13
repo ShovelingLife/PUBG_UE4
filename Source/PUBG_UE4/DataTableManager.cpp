@@ -9,7 +9,7 @@ TArray<FsUtilityData>          ADataTableManager::ArrUtilityData;
 
 FsVehicleData ADataTableManager::GetVehicleData(int Index)
 {
-    return (ArrVehicleData.IsEmpty() ? FsVehicleData() : ArrVehicleData[Index]);
+    return ArrVehicleData.IsEmpty() ? FsVehicleData() : ArrVehicleData[Index];
 }
 
 FsWeaponData ADataTableManager::GetWeaponData(int Index)
@@ -40,15 +40,15 @@ FsUtilityData ADataTableManager::GetUtilityData(int Index)
 // Sets default values
 ADataTableManager::ADataTableManager()
 {
-    InitVehicleData();
-    InitWeaponData();
-    InitOtherWeaponData();
-    InitWeaponAttachmentData();
-    InitWeaponBulletData();
-    InitUtilityData();
+    InitVehicleDataArr();
+    InitWeaponDataArr();
+    InitOtherWeaponDataArr();
+    InitWeaponAttachmentDataArr();
+    InitWeaponBulletDataArr();
+    InitUtilityDataArr();
 }
 
-void ADataTableManager::InitVehicleData()
+void ADataTableManager::InitVehicleDataArr()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> VEHICLE_DATA_TABLE(TEXT("/Game/Data/VEHICLE_DATA_TABLE"));
@@ -83,7 +83,7 @@ void ADataTableManager::InitVehicleData()
     }
 }
 
-void ADataTableManager::InitWeaponData()
+void ADataTableManager::InitWeaponDataArr()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_DATA_TABLE(TEXT("/Game/Data/WEAPON_DATA_TABLE"));
@@ -115,7 +115,7 @@ void ADataTableManager::InitWeaponData()
     }
 }
 
-void ADataTableManager::InitOtherWeaponData()
+void ADataTableManager::InitOtherWeaponDataArr()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> OTHER_WEAPON_DATA_TABLE(TEXT("/Game/Data/OTHER_WEAPON_DATA_TABLE"));    
@@ -137,13 +137,13 @@ void ADataTableManager::InitOtherWeaponData()
         if (!p_row)
             break;
 
-        auto data     = *p_row;
+        auto data = *p_row;
         data.MeshPath = mkOtherWeaponMeshPath + data.GroupType + "/Meshes/SM_" + data.Type;
         ArrOtherWeaponData.Add(data);
     }
 }
 
-void ADataTableManager::InitWeaponAttachmentData()
+void ADataTableManager::InitWeaponAttachmentDataArr()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_ATTACHMENT_DATA_TABLE(TEXT("/Game/Data/WEAPON_ATTACHMENT_DATA_TABLE"));
@@ -182,7 +182,7 @@ void ADataTableManager::InitWeaponAttachmentData()
     }
 }
 
-void ADataTableManager::InitWeaponBulletData()
+void ADataTableManager::InitWeaponBulletDataArr()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> WEAPON_ATTACHMENT_DATA_TABLE(TEXT("/Game/Data/WEAPON_BULLET_DATA_TABLE"));    
@@ -208,7 +208,7 @@ void ADataTableManager::InitWeaponBulletData()
     }
 }
 
-void ADataTableManager::InitUtilityData()
+void ADataTableManager::InitUtilityDataArr()
 {
     // CSV 로드
     ConstructorHelpers::FObjectFinder<UDataTable> UTILITY_DATA_TABLE(TEXT("/Game/Data/UTILITY_DATA_TABLE"));

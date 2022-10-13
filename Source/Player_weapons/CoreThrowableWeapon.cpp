@@ -193,7 +193,7 @@ void ACoreThrowableWeapon::BindExplosionFunc()
                     p_customGameInst->DeleRunEffectAnim.ExecuteIfBound(startTime, waitTime, EPlayerStateAnimType::BLINDED);
             });
         break;
-
+    
     case STICK:
     case FRAGMENTATION1:
     case FRAGMENTATION2:
@@ -240,7 +240,6 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
     AttachComponents();
     SetStaticMesh(OtherWeapon->GetStaticMesh());
     StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    StaticMeshComp->SetWorldScale3D(FVector(WeaponData.MeshSize));
     
     // 이펙트 정보 설정
     Particle = OtherWeapon->Particle;

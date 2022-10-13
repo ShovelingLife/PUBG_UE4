@@ -192,20 +192,20 @@ void ACoreWeapon::FireBullet()
     FVector startPos = SkeletalMeshComp->GetSocketLocation("Barrel");
     auto cameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
     auto cameraPos = cameraManager->GetCameraLocation();
-    auto cameraDirVec = cameraManager->GetActorForwardVector() * 12000.f;
-
+    auto cameraDir = UKismetMathLibrary::GetForwardVector(cameraManager->GetCameraRotation()) * 50000.f;
 
     // 게임 뷰포트 가운데 지점 구하기    
-    FVector2D vPortCenterPos = GEngine->GameViewport->Viewport->GetSizeXY() / 2.f;
-    FVector deprojPos, deprojDir;
-    UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), vPortCenterPos, deprojPos, deprojDir);    
+    //FVector2D vPortCenterPos = GEngine->GameViewport->Viewport->GetSizeXY() / 2.f;
+    //FVector deprojPos, deprojDir;
+    //UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), vPortCenterPos, deprojPos, deprojDir);    
     
     // 레이트레이스 충돌체 감지
     FHitResult hitResult;
     FCollisionQueryParams collisionQueryParams;
     collisionQueryParams.AddIgnoredActor(this);
 
-    bool bHit = GetWorld()->LineTraceSingleByChannel(hitResult, startPos, startPos + cameraDirVec, ECollisionChannel::ECC_Visibility, collisionQueryParams);
+    bool bHit = GetWorld()->LineTraceSingleByChannel(hitResult, cameraPos, cameraPos + cameraDir, ECollisionChannel::ECC_Visibility, collisionQueryParams);
+    DrawDebugLine(GetWorld(), cameraPos, cameraPos + cameraDir, FColor::Red, false, 1.f);
     auto selectedVec = UKismetMathLibrary::SelectVector(hitResult.ImpactPoint, hitResult.TraceEnd, bHit);
     auto rot = UKismetMathLibrary::FindLookAtRotation(startPos, selectedVec);
 

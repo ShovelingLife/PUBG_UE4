@@ -106,6 +106,7 @@ enum class EThrowableWeaponType : uint8
     STICK,
     MOLOTOV,
     CLAYMORE,
+    MINE,
     THROWABLE_MAX
 };
 
@@ -117,7 +118,7 @@ enum class EThrowableWeaponType : uint8
 UENUM()
 enum class EMeleeWeaponType : uint8
 {
-    PAN = (int)EThrowableWeaponType::THROWABLE_MAX,
+    PAN = (uint8)EThrowableWeaponType::MINE,
     KNIFE,
     MELEE_MAX
 };

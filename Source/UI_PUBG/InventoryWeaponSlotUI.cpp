@@ -170,8 +170,8 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     
     if (!pGameInstanceSubSystemUI ||
         !mpWeaponManager ||
-        !p_slot)
-        return false;
+        !p_slot)    
+        return false;   
 
     // 현재 선택하고 있는 인덱스 확인
     auto p_draggedWeapon = p_slot->pDraggedItem;
@@ -211,7 +211,6 @@ void UInventoryWeaponSlotUI::NativeOnDragEnter(const FGeometry& InGeometry, cons
 {
     Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
     CheckForHoveredWeaponSlot();
-    //GEngine->AddOnScreenDebugMessage(7, 1.f, FColor::Red, "Drag entered");
 }
 
 void UInventoryWeaponSlotUI::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -232,9 +231,8 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
 
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
-
     //USlateBlueprintLibrary::AbsoluteToViewport(GetWorld(), mArrCanvasPanel[((int)mSelectedWeaponIndex) - 1]->GetCachedGeometry().GetAbsolutePosition(), dummyVec, widgetPos);
-    //auto newIdx = (EWeaponType)(i + 1);
+    
     if      (mousePos.Y <= 306.f)
              mSelectedWeaponType = FIRST;
 
@@ -252,8 +250,7 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
         else if (mousePos.X >= 1584.f)
                  mSelectedWeaponType = THROWABLE;
     }
-    UpdateHighlightImgPos();
-    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, "마우스 : " + mousePos.ToString() + " 위젯 : " + widgetPos.ToString());    
+    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, FString::FromInt((int)mSelectedWeaponType));
     return true;
 }
 
@@ -283,10 +280,10 @@ void UInventoryWeaponSlotUI::InitWeaponSlot()
 
 void UInventoryWeaponSlotUI::UpdateWeaponSlotVisibility()
 {
-    FirstGunCanvasPanel->SetVisibility((mpWeaponManager->pFirstGun) ? VISIBLE : HIDDEN);
-    SecondGunCanvasPanel->SetVisibility((mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
-    PistolCanvasPanel->SetVisibility((mpWeaponManager->pPistol) ? VISIBLE : HIDDEN);
-    MeleeCanvasPanel->SetVisibility((mpWeaponManager->pMelee) ? VISIBLE : HIDDEN);
+    FirstGunCanvasPanel->SetVisibility(          (mpWeaponManager->pFirstGun)  ? VISIBLE : HIDDEN);
+    SecondGunCanvasPanel->SetVisibility(         (mpWeaponManager->pSecondGun) ? VISIBLE : HIDDEN);
+    PistolCanvasPanel->SetVisibility(            (mpWeaponManager->pPistol)    ? VISIBLE : HIDDEN);
+    MeleeCanvasPanel->SetVisibility ( (mpWeaponManager->pMelee)     ? VISIBLE : HIDDEN);
     GrenadeCanvasPanel->SetVisibility((mpWeaponManager->pThrowable) ? VISIBLE : HIDDEN);
 }
 
@@ -353,22 +350,21 @@ void UInventoryWeaponSlotUI::CheckForHoveredWeaponSlot()
     {
         auto weaponCanvas = mArrCanvasPanel[i];
 
-        if (weaponCanvas->IsVisible() &&
-            weaponCanvas->IsHovered())
+        if (weaponCanvas->IsHovered())
         {
-            mSelectedWeaponType = (EWeaponType)(i + 1);
+            ResetHighlightImg();
+            mSelectedWeaponType = static_cast<EWeaponType>(i + 1);
             UpdateHighlightImgPos();
-            return;
+            break;
         }
     }
-    ResetHighlightImg();
 }
  
 void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
 {
     // 무기가 선택됐을 시 이미지 설정
     auto idx = (int)mSelectedWeaponType - 1;
-    GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, FString::FromInt(idx));
+    //GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, FString::FromInt(idx));
 
     if (mSelectedWeaponType == NONE ||
         idx < 0)
@@ -379,9 +375,9 @@ void UInventoryWeaponSlotUI::UpdateHighlightImgPos()
     if (UCanvasPanelSlot* p_canvasPanelSlot = mArrCanvasPanel[idx]->AddChildToCanvas(HighlightImg))
     {
         float sizeX = (idx < 3) ? 485.f : 225.f;
-        p_canvasPanelSlot->SetSize(FVector2D(sizeX, 183.5f));
+        p_canvasPanelSlot->SetSize({ sizeX, 183.5f });
         HighlightImg->SetVisibility(VISIBLE);
-        HighlightImg->SetColorAndOpacity(FLinearColor{ 1.f,1.f,1.f,0.1f });
+        HighlightImg->SetColorAndOpacity({ 1.f,1.f,1.f,0.1f });
     }
 }
 

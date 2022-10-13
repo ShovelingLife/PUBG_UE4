@@ -45,7 +45,7 @@ void ADummyCharacter::InitMeshComp()
     // 메쉬 초기화
     DummySkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
     DummySkeletalMeshComp->SetupAttachment(RootComponent);
-    static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/Characters/UE4_Mannequin/Mesh/SK_Mannequin"));
+    static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/2_Meshes/UE4_Mannequin/Mesh/SK_Mannequin"));
     
     if (SK_MANNEQUIN.Succeeded())
         DummySkeletalMeshComp->SetSkeletalMesh(SK_MANNEQUIN.Object);
@@ -73,36 +73,28 @@ void ADummyCharacter::InitWeaponUI()
 {
     auto p_world = GetWorld();
 
-    if (!p_world)
-        return;
-
-    auto tmpThrowable = p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
-
     TArray<TPair<ABaseInteraction*, FString>> arrWeapons
     {
         TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "FirstGunSock"),
         TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "SecondGunSock"),
         TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "HandGunSock"),
         TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()), "MeleeSock"),
-        TPair<ABaseInteraction*, FString>(tmpThrowable, tmpThrowable->WeaponData.Type + "Sock")
+        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()), "")
     };
-    for (auto item : arrWeapons)
+    for (auto& [p_weapon, socketName] : arrWeapons)
     {
-        if (auto p_weapon = item.Key)
-        {
-            p_weapon->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-            p_weapon->SetForDummyCharacter();
-            p_weapon->AttachToComponent(DummySkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *item.Value);
-            mArrActorToShow.Add(p_weapon);
-        }
+        p_weapon->SetOwner(this);
+        p_weapon->SetForDummyCharacter();
+        p_weapon->AttachToComponent(DummySkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *socketName);
+        mArrActorToShow.Add(p_weapon);
     }
 }
 
 void ADummyCharacter::UpdateWeapon()
 {
-    auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
-    if (p_player)
+    return;
+    // ACustomPlayer 다운 캐스팅
+    if (auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
     {
         if (auto p_weaponManager = p_player->GetWeaponManager())
             p_weaponManager->SetMeshToPlayerUI(mArrActorToShow);

@@ -27,8 +27,8 @@ struct FsOtherWeaponData : public FTableRowBase
     UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString Description  = "";
 
 	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FVector MeshPos = FVector::ZeroVector;
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float MeshRotationX = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float MeshSize		= 0.f;
+    UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float MeshRotationX = 0.f;
+    UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float MeshSize = 0.f;
 
 	/** \brief 무기 정보 관련 */
 	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float Damage = 0.f;

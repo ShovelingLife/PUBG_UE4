@@ -143,7 +143,7 @@ void ACustomPlayer::InitCameraComp()
 void ACustomPlayer::InitMeshComp()
 {
     // 메쉬 초기화
-    static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/Characters/UE4_Mannequin/Mesh/SK_Mannequin"));
+    static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/2_Meshes/UE4_Mannequin/Mesh/SK_Mannequin"));
 
     if (SK_MANNEQUIN.Succeeded())
         GetMesh()->SetSkeletalMesh(SK_MANNEQUIN.Object);

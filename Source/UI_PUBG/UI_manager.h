@@ -33,6 +33,7 @@ public:
     static TMap<int, UTexture*>  MapPlayerIcon;           // 플레이어 UI
 
     // 무기 UI 관련 (인벤토리)
+    UPROPERTY(EditAnywhere) TArray< UTexture*> ArrMainWeaponIcon;
     static TMap<int, UMaterial*> MapMainWeaponIcon;       // 메인 무기 UI 벡터 이미지  
     static TMap<int, UTexture*>  MapWeaponIcon;           // 인벤토리 무기 UI (총기)   
     static TMap<int, UTexture*>  MapOtherWeaponIcon;      // 인벤토리 무기 UI (근접 및 투척류)

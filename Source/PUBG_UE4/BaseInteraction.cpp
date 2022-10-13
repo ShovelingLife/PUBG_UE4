@@ -29,10 +29,13 @@ void ABaseInteraction::Tick(float DeltaTime)
 
     if (WidgetComp)
     {
-        mCurrentTime = (bPlayerNear) ? mCurrentTime += DeltaTime : 0.f;
+        mCurrentTime += DeltaTime;
+
+        if (bPlayerNear)
+            mCurrentTime = 0.f;
 
         // 0.25초 지날 시 UI설정
-        WidgetComp->SetVisibility((mCurrentTime > 0.25f));
+        WidgetComp->SetVisibility(mCurrentTime > 0.25f);
     }
 }
 
@@ -72,6 +75,7 @@ void ABaseInteraction::SetCollisionSettingsForObjects()
         this->SetRootComponent(ColliderComp);
         ColliderComp->BodyInstance.SetCollisionProfileName("Object");
         ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
+        ColliderComp->SetSimulatePhysics(false);
     }
 }
 

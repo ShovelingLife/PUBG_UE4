@@ -36,22 +36,22 @@ public:
 
 private:
     /** \brief 차량 데이터 관련 */
-    const FString mkVehicleMeshPath    = "/Game/Characters/Vehicles/Skeletons/";
+    const FString mkVehicleMeshPath    = "/Game/2_Meshes/Vehicles/Skeletons/";
     const FString mkAnimInstancePath   = "/Game/1_Blueprints/Vehicles/";
     const FString mkVehicleSoundPath   = "";
     int           mCurrentVehicleCount = 0;
 
     /** * \brief 무기 데이터 관련 */
-    const FString mkWeaponMeshPath       = "/Game/AdvanceWeaponPack/Mesh/Weapon/";
+    const FString mkWeaponMeshPath       = "/Game/2_Meshes/AdvanceWeaponPack/Mesh/Weapon/";
     const FString mkBulletBP_path        = "/Game/1_Blueprints/Items/Weapons/Ammo/BP_";
     const FString mkRendertargetMeshPath = "/Game/Materials/Weapon_UI/UI_material_";
     const FString mkWeaponSoundPath      = "/Game/SFX/Gun_sounds/";
 
     /** \brief 기타 무기 (투척류/근접) 데이터 관련 */
-    const FString mkOtherWeaponMeshPath = "/Game/Items/Weapons/";
+    const FString mkOtherWeaponMeshPath = "/Game/2_Meshes/Items/Weapons/";
 
     /** \brief 무기 부속품 데이터 관련 */
-    const FString mkWeaponAttachmentMeshPath = "/Game/AdvanceWeaponPack/Mesh/Attachment/";
+    const FString mkWeaponAttachmentMeshPath = "/Game/2_Meshes/AdvanceWeaponPack/Mesh/Attachment/";
 
     /** \brief 총알 상자 데이터 관련 */
     const FString mkAmmoBoxMeshPath = "/Game/UI/AmmoBoxIcon/AmmoBox/";
@@ -74,19 +74,19 @@ public:
 
 private:
     /** \brief 차량 데이터 초기화 */
-    void InitVehicleData();
+    void InitVehicleDataArr();
 
     /** \brief 무기 데이터 초기화 */
-    void InitWeaponData();
+    void InitWeaponDataArr();
 
     /** \brief 기타 무기 데이터 초기화 */ 
-    void InitOtherWeaponData();
+    void InitOtherWeaponDataArr();
 
     /** \brief 무기 부속품 데이터 초기화 */
-    void InitWeaponAttachmentData();
+    void InitWeaponAttachmentDataArr();
 
     /** \brief 무기 총알 상자 데이터 초기화 */
-    void InitWeaponBulletData();
+    void InitWeaponBulletDataArr();
 
-    void InitUtilityData();
+    void InitUtilityDataArr();
 };
