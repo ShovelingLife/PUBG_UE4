@@ -8,6 +8,7 @@
 #include "NiagaraSystem.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include <NiagaraFunctionLibrary.h>
 
 ACoreBullet::ACoreBullet()
 {
@@ -26,8 +27,9 @@ void ACoreBullet::BeginPlay()
 void ACoreBullet::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-    NiagaraComp->SetAsset(ImpactEffect);
-    mCollided = true;
+    //NiagaraComp->SetAsset(ImpactEffect);
+    UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, HitLocation);
+    Destroy();
 }
 
 void ACoreBullet::Tick(float _DeltaTime)
@@ -36,9 +38,7 @@ void ACoreBullet::Tick(float _DeltaTime)
 
     mCurrentLifeTime += _DeltaTime;
 
-    if ((mCollided &&
-        NiagaraComp->IsComplete()) ||
-        mCurrentLifeTime > mkLifeTime)
+    if (mCurrentLifeTime > mkLifeTime)
         Destroy();
 }
 
@@ -72,11 +72,11 @@ void ACoreBullet::InitProjectileMovementComp()
 void ACoreBullet::InitVFX()
 {
     NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>("Effect");
-    NiagaraComp->SetupAttachment(RootComponent);
+    NiagaraComp->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
     NiagaraComp->SetWorldScale3D(FVector(0.5f));
 
     // 파티클 로드
-    const FString defaultPath = "/Game/sA_Megapack_v1/sA_ShootingVfxPack/FX/NiagaraSystems/NS_";
+    const FString defaultPath = "/Game/3_VFX/sA_Megapack_v1/sA_ShootingVfxPack/FX/NiagaraSystems/NS_";
 
     // 발사 즉시 발동될 이펙트
     FString particleType = (mWeaponData.Type == "RPG_17") ? "ROCKET_Trail" : "BulletTrail_1";

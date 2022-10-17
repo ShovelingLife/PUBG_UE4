@@ -109,7 +109,7 @@ void ADataTableManager::InitWeaponDataArr()
         auto weaponType = data.Type;
         data.MeshPath       = mkWeaponMeshPath + data.GroupType + "/SK_" + data.MeshPath;
         data.MagMeshPath    = mkWeaponMeshPath + weaponType + data.MagMeshPath;
-        data.BulletMeshPath = "/Game/AmmoPack/Models/" + data.BulletMeshPath;
+        data.BulletMeshPath = "/Game/2_Meshes/AmmoPack/Models/" + data.BulletMeshPath;
         data.BulletBP_path  = mkBulletBP_path + data.Type + ((data.bUnderlined) ? "_Bullet" : "Bullet");
         ArrWeaponData.Add(data);
     }

@@ -16,6 +16,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DrawDebugHelpers.h"
@@ -120,7 +121,6 @@ void ACustomPlayer::InitCameraComp()
     // 카메라 컴포넌트 초기화 > 카메라를 부모 컴포넌트에 부착 > 카메라 설정
 
     // ------- FPS (1인칭) -------
-
     FPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("FPS_SpringArm"));
     FPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_Camera"));
     FPS_SpringArmComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "FPS_CameraSocket");
@@ -128,11 +128,10 @@ void ACustomPlayer::InitCameraComp()
     FPS_SpringArmComp->TargetArmLength = 0.f;
     FPS_SpringArmComp->bUsePawnControlRotation = true;
 
-    // ------- TPS (3인칭) -------
-        
+    // ------- TPS (3인칭) -------        
     TPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("TPS_SpringArm"));
-    TPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("TPS_Camera"));
-    TPS_SpringArmComp->SetupAttachment(GetCapsuleComponent());
+    TPS_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("TPS_Camera"));
+    TPS_SpringArmComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
     TPS_CameraComp->SetupAttachment(TPS_SpringArmComp);
     TPS_SpringArmComp->TargetArmLength = 150.f;
     TPS_SpringArmComp->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 80.f), FRotator(-20.f, 0.f, 0.f));
@@ -481,9 +480,9 @@ void ACustomPlayer::OpenInventory()
     }
     else
     {
-        TPS_SpringArmComp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
         DeleCloseInventory.ExecuteIfBound();
         mbInventoryOpened = false;
+        TPS_SpringArmComp->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
     }
 }
 
@@ -543,6 +542,28 @@ void ACustomPlayer::Aim()
     case PRONING_AIM: CurrentState = PRONING; bAiming = false; break;
     }
     mpWeaponManager->ChangeAimPose(bAiming);
+
+    if (!bAiming)
+    {
+        FPS_CameraComp->AttachToComponent(FPS_SpringArmComp, FAttachmentTransformRules::KeepRelativeTransform);
+        FPS_CameraComp->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
+    }
+
+    //UKismetSystemLibrary::MoveComponentTo(FPS_CameraComp, FVector::ZeroVector, FRotator::ZeroRotator, true, true, 0.3f,false,EMoveComponentAction::Type::Move, FLatentActionInfo());
+}
+
+void ACustomPlayer::ChangeAimSight()
+{
+    // 카메라 조준하는 방향으로 전환
+    auto p_weapon = mpWeaponManager->GetCurrentGun();
+
+    if (p_weapon &&
+        bAiming)
+    {
+        FPS_CameraComp->AttachToComponent(p_weapon->SkeletalMeshComp, FAttachmentTransformRules::KeepRelativeTransform, "Sight");        
+        FPS_CameraComp->AddRelativeLocation(UKismetMathLibrary::MakeVector(0.f, 0.f, 3.5f));
+        FPS_CameraComp->AddRelativeRotation(UKismetMathLibrary::MakeRotator(-5.f, 0.f, 0.f));
+    }
 }
 
 void ACustomPlayer::ChangeShootMode() { mpWeaponManager->ChangeShootMode(); }

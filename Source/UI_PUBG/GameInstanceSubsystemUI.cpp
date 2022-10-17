@@ -38,9 +38,9 @@ UGameInstanceSubsystemUI* UGameInstanceSubsystemUI::GetInst()
 
 void UGameInstanceSubsystemUI::Initialize(FSubsystemCollectionBase& Collection)
 {
-    TickDelegateHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UGameInstanceSubsystemUI::Tick));
+    //TickDelegateHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UGameInstanceSubsystemUI::Tick));
     Super::Initialize(Collection);
-    UGameInstanceSubsystemUI::mpWorld = GetWorld();
+    mpWorld = GetWorld();
     InitUImanager();
 }
 

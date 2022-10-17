@@ -553,6 +553,7 @@ void AWeaponManager::ChangeShootMode()
 void AWeaponManager::ChangeAimPose(bool bAiming)
 {
     mbAiming = bAiming;
+
     // 현재 착용 중인 무기를 가지고옴
     ACoreWeapon* p_gun = nullptr;
     FString      socketName = "";
@@ -565,7 +566,7 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     }
     // 캐릭터 메쉬에다 부착
     if (p_gun)
-        p_gun->AttachToMesh(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh(), mbAiming ? "EquippedWeaponPosSock" : socketName);
+        p_gun->AttachToMesh(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh(), bAiming ? "EquippedWeaponPosSock" : socketName);
 }
 
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)

@@ -3,9 +3,9 @@
 
 void UPlayerAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
-    ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner());
+    Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 
-    if (p_player)
+    if (ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner()))
         p_player->bAnimationPlaying = true;
 }
 
@@ -13,8 +13,6 @@ void UPlayerAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSe
 {
     Super::NotifyEnd(MeshComp, Animation, EventReference);
 
-    ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner());
-
-    if (p_player)
+    if (ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner()))
         p_player->bAnimationPlaying = false;
 }

@@ -64,16 +64,16 @@ private:
     bool    mbInteracting       = false;
     bool    mbInventoryOpened   = false;
 
- // 플레이어 컴포넌트 및 상태 변수
+// 플레이어 컴포넌트 및 상태 변수
 public:
     UPROPERTY(EditAnywhere) TSubclassOf<ADummyCharacter> BP_DummyCharacter;
     UPROPERTY() ADummyCharacter* pDummyCharacter;
 
-    UPROPERTY(VisibleAnywhere, Category = FPS_Variable) USpringArmComponent* FPS_SpringArmComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = FPS_Variable) UCameraComponent*    FPS_CameraComp    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) USpringArmComponent* FPS_SpringArmComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent*    FPS_CameraComp    = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = TPS_Variable) USpringArmComponent* TPS_SpringArmComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UCameraComponent*    TPS_CameraComp    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) USpringArmComponent* TPS_SpringArmComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent*    TPS_CameraComp    = nullptr;
     //UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UStaticMeshComponent*    TPS_MeshComp    = nullptr;
 
     FDeleOpenInventory  DeleOpenInventory;
@@ -238,4 +238,7 @@ public:
      * \param _exit_location 나가는 위치
      */
     void ExitFromVehicle(FVector ExitLocation);
+
+    // 카메라 총기 위치로 변경
+    void ChangeAimSight();
 };

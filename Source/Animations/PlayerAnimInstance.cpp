@@ -17,12 +17,12 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     // 캐릭터가 널이 아닐 시
     if (ACustomPlayer* p_player = Cast<ACustomPlayer>(TryGetPawnOwner()))
     {
-        FRotator controlRot = p_player->GetControlRotation();
-        FRotator actorRot   = p_player->GetActorRotation();
+        FRotator controlRot   = p_player->GetControlRotation();
+        FRotator actorRot     = p_player->GetActorRotation();
         FRotator normDeltaRot = UKismetMathLibrary::NormalizedDeltaRotator(controlRot, actorRot);
-        FRotator currentRot = UKismetMathLibrary::MakeRotator(0.f, AimRotPitch, AimRotYaw);
-        FRotator interptRot = UKismetMathLibrary::RInterpTo(currentRot, normDeltaRot, DeltaSeconds, 15.f);
-        FVector  velocity   = p_player->GetVelocity();
+        FRotator currentRot   = UKismetMathLibrary::MakeRotator(0.f, AimRotPitch, AimRotYaw);
+        FRotator interptRot   = UKismetMathLibrary::RInterpTo(currentRot, normDeltaRot, DeltaSeconds, 15.f);
+        FVector  velocity     = p_player->GetVelocity();
         const float minAngleDeg = -90.f, maxAngleDeg = 90.f;
 
         // 값 적용
@@ -33,7 +33,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
         // 에임 오프셋 적용        
         AimRotPitch = UKismetMathLibrary::ClampAngle(interptRot.Pitch, minAngleDeg, maxAngleDeg);
-        AimRotYaw = UKismetMathLibrary::ClampAngle(interptRot.Yaw, minAngleDeg, maxAngleDeg);
+        AimRotYaw   = UKismetMathLibrary::ClampAngle(interptRot.Yaw, minAngleDeg, maxAngleDeg);
     }
     //// AI가 널이 아닐 시
     //else if (ai)
