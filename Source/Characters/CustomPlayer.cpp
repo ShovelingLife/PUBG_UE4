@@ -560,9 +560,8 @@ void ACustomPlayer::ChangeAimSight()
     if (p_weapon &&
         bAiming)
     {
-        FPS_CameraComp->AttachToComponent(p_weapon->SkeletalMeshComp, FAttachmentTransformRules::KeepRelativeTransform, "Sight");        
-        FPS_CameraComp->AddRelativeLocation(UKismetMathLibrary::MakeVector(0.f, 0.f, 3.5f));
-        FPS_CameraComp->AddRelativeRotation(UKismetMathLibrary::MakeRotator(-5.f, 0.f, 0.f));
+        FPS_CameraComp->AttachToComponent(p_weapon->SkeletalMeshComp, FAttachmentTransformRules::KeepRelativeTransform, "Sight");
+        FPS_CameraComp->SetRelativeLocationAndRotation(UKismetMathLibrary::MakeVector(0.f, 0.f, 5.f), FRotator::ZeroRotator);
     }
 }
 
