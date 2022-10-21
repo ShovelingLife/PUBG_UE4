@@ -62,7 +62,8 @@ private:
     float   mSprintMultiplier   = 1.f;
     bool    mbMoving            = false;
     bool    mbInteracting       = false;
-    bool    mbInventoryOpened   = false;
+    bool    mbInventoryOpened = false;
+    bool mbAiming = false;
 
 // 플레이어 컴포넌트 및 상태 변수
 public:
@@ -74,6 +75,9 @@ public:
 
     UPROPERTY(VisibleAnywhere, Category = CameraVar) USpringArmComponent* TPS_SpringArmComp = nullptr;
     UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent*    TPS_CameraComp    = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent* Aim_CameraComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) FTimerHandle AimTimerHandle;
     //UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UStaticMeshComponent*    TPS_MeshComp    = nullptr;
 
     FDeleOpenInventory  DeleOpenInventory;
@@ -87,7 +91,6 @@ public:
     float        CurrentInjuredHealth = 100.f;
     float        CurrentOxygen        = 1.f;
     bool         bAnimationPlaying    = false;
-    bool         bAiming              = false;
     
     /** \brief 차량 관련 변수 */
     ESeatType CurrentSeatType = ESeatType::NONE;
@@ -224,6 +227,12 @@ private:
 
     void ChangePerspective();
 
+    // 조준선을 확대
+    void ZoomIn();
+
+    // 조준선을 원위치 시킴
+    void ZoomOut();
+
 public:
     UFUNCTION() void DealDmg(float DmgVal);
 
@@ -238,7 +247,4 @@ public:
      * \param _exit_location 나가는 위치
      */
     void ExitFromVehicle(FVector ExitLocation);
-
-    // 카메라 총기 위치로 변경
-    void ChangeAimSight();
 };

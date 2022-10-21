@@ -21,6 +21,7 @@ class UAudioComponent;
 class USoundBase;
 //class ACoreBullet;
 class UParticleSystemComponent;
+class UCameraComponent;
 
 // 부속품들
 class ACoreBarrel;
@@ -50,9 +51,10 @@ private:
 	bool  mbChangedShootType = true;
 
 public:
+    UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent* CameraComp;
+
     // 총알 관련
     UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
-
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;
     EGunType      WeaponType = EGunType::GUN_MAX;

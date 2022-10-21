@@ -555,23 +555,26 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     mbAiming = bAiming;
 
     // 현재 착용 중인 무기를 가지고옴
-    ACoreWeapon* p_gun = nullptr;
+    ACoreWeapon* p_gun = GetCurrentGun();
     FString      socketName = "";
+
+    if (!IsValid((p_gun)))
+        return;
 
     switch (CurrentType)
     {
-    case FIRST:  p_gun = pFirstGun;  socketName = "FirstGunSock";  break;
-    case SECOND: p_gun = pSecondGun; socketName = "SecondGunSock"; break;
-    case PISTOL: p_gun = pPistol;    socketName = "HandGunSock";   break;
+    case FIRST:  socketName = "FirstGunSock";  break;
+    case SECOND: socketName = "SecondGunSock"; break;
+    case PISTOL: socketName = "HandGunSock";   break;
     }
     // 캐릭터 메쉬에다 부착
-    if (p_gun)
-        p_gun->AttachToMesh(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh(), bAiming ? "EquippedWeaponPosSock" : socketName);
+    auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    p_gun->AttachToMesh(p_player->GetMesh(), bAiming ? "EquippedWeaponPosSock" : socketName);
 }
 
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
 {
-    if (!pGrenade)
+    if (!IsValid(pGrenade))
         return;
 
     // 오브젝트 생성 후 투척류로 지정

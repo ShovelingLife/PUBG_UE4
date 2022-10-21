@@ -3,6 +3,6 @@
 
 void UEndAimAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-    if (ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner()))
-        p_player->ChangeAimSight();
+    /*if (ACustomPlayer* p_player = Cast<ACustomPlayer>(MeshComp->GetOwner()))
+        p_player->ChangeAimSight();*/
 }

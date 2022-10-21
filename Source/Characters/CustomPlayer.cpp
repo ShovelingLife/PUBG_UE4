@@ -68,10 +68,10 @@ void ACustomPlayer::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
     CheckIfMoving();
     CheckNearVehicle();
-    //Play_walk_sound();
     CheckNearObj();
     TryToInteract();
     UpdateHealth();
+    ChangePerspective();
 }
 
 void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -119,19 +119,26 @@ void ACustomPlayer::InitPlayerSettings()
 void ACustomPlayer::InitCameraComp()
 {
     // 카메라 컴포넌트 초기화 > 카메라를 부모 컴포넌트에 부착 > 카메라 설정
+    Aim_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("AimCamera"));
+    Aim_CameraComp->SetupAttachment(GetMesh());
+    //Aim_CameraComp->SetAutoActivate(false);
+    Aim_CameraComp->bUsePawnControlRotation = true;
+    //Aim_CameraComp->Activate();
 
     // ------- FPS (1인칭) -------
     FPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("FPS_SpringArm"));
     FPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_Camera"));
-    FPS_SpringArmComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "FPS_CameraSocket");
+    FPS_SpringArmComp->SetupAttachment(GetMesh(), "FPS_CameraSocket");
     FPS_CameraComp->SetupAttachment(FPS_SpringArmComp);
     FPS_SpringArmComp->TargetArmLength = 0.f;
     FPS_SpringArmComp->bUsePawnControlRotation = true;
+    FPS_CameraComp->Deactivate();
+    FPS_CameraComp->SetAutoActivate(false);
 
     // ------- TPS (3인칭) -------        
     TPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("TPS_SpringArm"));
     TPS_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("TPS_Camera"));
-    TPS_SpringArmComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+    TPS_SpringArmComp->SetupAttachment(GetMesh());
     TPS_CameraComp->SetupAttachment(TPS_SpringArmComp);
     TPS_SpringArmComp->TargetArmLength = 150.f;
     TPS_SpringArmComp->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 80.f), FRotator(-20.f, 0.f, 0.f));
@@ -526,6 +533,8 @@ void ACustomPlayer::Reload()
 
 void ACustomPlayer::Aim()
 {
+    bool bAiming = false;
+
     if (mbInventoryOpened)
         return;
 
@@ -537,32 +546,19 @@ void ACustomPlayer::Aim()
     case PRONING:     CurrentState = PRONING_AIM; bAiming = true;  break;
 
     // 에임 > 기본 자세
-    case AIM:         CurrentState = IDLE;    bAiming = false; break;
-    case CROUCH_AIM:  CurrentState = CROUCH;  bAiming = false; break;
-    case PRONING_AIM: CurrentState = PRONING; bAiming = false; break;
+    case AIM:         CurrentState = IDLE;    break;
+    case CROUCH_AIM:  CurrentState = CROUCH;  break;
+    case PRONING_AIM: CurrentState = PRONING; break;
     }
+    mbAiming = bAiming;
     mpWeaponManager->ChangeAimPose(bAiming);
+    //// 플레이어 카메라 위치 > 총기 카메라 위치
+    //if (bAiming)
+    //    GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomIn,1.f,true);
 
-    if (!bAiming)
-    {
-        FPS_CameraComp->AttachToComponent(FPS_SpringArmComp, FAttachmentTransformRules::KeepRelativeTransform);
-        FPS_CameraComp->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
-    }
-
-    //UKismetSystemLibrary::MoveComponentTo(FPS_CameraComp, FVector::ZeroVector, FRotator::ZeroRotator, true, true, 0.3f,false,EMoveComponentAction::Type::Move, FLatentActionInfo());
-}
-
-void ACustomPlayer::ChangeAimSight()
-{
-    // 카메라 조준하는 방향으로 전환
-    auto p_weapon = mpWeaponManager->GetCurrentGun();
-
-    if (p_weapon &&
-        bAiming)
-    {
-        FPS_CameraComp->AttachToComponent(p_weapon->SkeletalMeshComp, FAttachmentTransformRules::KeepRelativeTransform, "Sight");
-        FPS_CameraComp->SetRelativeLocationAndRotation(UKismetMathLibrary::MakeVector(0.f, 0.f, 5.f), FRotator::ZeroRotator);
-    }
+    //// 총기 카메라 위치 > 플레이어 카메라 위치
+    //else
+    //    GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomOut, 1.f, true);
 }
 
 void ACustomPlayer::ChangeShootMode() { mpWeaponManager->ChangeShootMode(); }
@@ -596,11 +592,45 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
 
 void ACustomPlayer::ChangePerspective()
 {
-    // 낙하 중일 시 리턴
-    if (GetCharacterMovement()->IsFalling())
-        return;
+    return;
+    // 플레이어 카메라 위치 > 총기 카메라 위치
+    if (mbAiming)
+        ZoomIn();
 
+    // 총기 카메라 위치 > 플레이어 카메라 위치
+    else
+        ZoomOut();    
+}
 
+void ACustomPlayer::ZoomIn()
+{
+    FPS_CameraComp->Deactivate();
+    Aim_CameraComp->Activate();
+
+    if (auto p_gun = mpWeaponManager->GetCurrentGun())
+    {
+        auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), gunCameraPos = p_gun->CameraComp->GetComponentLocation();
+        auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, gunCameraPos, GetWorld()->GetDeltaSeconds(), 15.f);
+        Aim_CameraComp->SetWorldLocation(movePos);
+        GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, p_gun->CameraComp->GetComponentLocation().ToString());
+        GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, p_gun->CameraComp->GetRelativeLocation().ToString());
+    }
+}
+
+void ACustomPlayer::ZoomOut()
+{
+    auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), mainCameraPos = FPS_CameraComp->GetComponentLocation();
+    auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, mainCameraPos, GetWorld()->GetDeltaSeconds(), 15.f);
+    Aim_CameraComp->SetWorldLocation(movePos);
+    //GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, FString::SanitizeFloat(aimCameraPos.Size()));
+    //GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, FString::SanitizeFloat(mainCameraPos.Size()));
+    
+    if (aimCameraPos.Equals(mainCameraPos, 0.f))
+    {
+        GEngine->AddOnScreenDebugMessage(10, 1.f, FColor::Red, "Zoom out ended");
+        FPS_CameraComp->Activate();
+        Aim_CameraComp->Deactivate();
+    }    
 }
 
 // UFUNCTION()
