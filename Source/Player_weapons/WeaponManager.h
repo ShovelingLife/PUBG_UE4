@@ -48,7 +48,7 @@ public:
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
-	EWeaponType CurrentType = NONE;    
+	EWeaponType CurrentWeaponType = NONE;    
 	bool  bArrWeaponEquipped[5]{ false };
 
     // ------- 투척류 관련 -------

@@ -56,7 +56,7 @@ void UCurrentWeaponUI::UpdateIconVisibility()
 void UCurrentWeaponUI::UpdateIconColor()
 {
     // 현재 선택된 무기
-    EWeaponType currentSelectedWeapon = pWeaponManager->CurrentType;
+    EWeaponType currentSelectedWeapon = pWeaponManager->CurrentWeaponType;
 
     if (currentSelectedWeapon == EWeaponType::NONE)
         return;

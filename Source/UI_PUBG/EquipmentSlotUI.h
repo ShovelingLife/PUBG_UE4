@@ -15,4 +15,6 @@ class UI_PUBG_API UEquipmentSlotUI : public UUserWidget
 public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder* ItemBorder;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ItemImg;
+
+
 };

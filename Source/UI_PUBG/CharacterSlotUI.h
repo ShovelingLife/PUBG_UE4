@@ -24,17 +24,17 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      HighlightImg;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      CharacterImg;
 
-    // 장비 관련
+    // 장비 관련 4개
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* HelmetSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* BodyArmorSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* BackpackSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* BeltSlotUI;
 
     // 방탄복 관련
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*      ArmorIconImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*  ArmorDurabilityText;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     ArmorIconImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* ArmorDurabilityText;
 
-    // 스킨 관련
+    // 스킨 관련 7개
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* HatSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* MaskSlotUI;
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UEquipmentSlotUI* CoatSlotUI;

@@ -28,7 +28,7 @@ void UPlayerUI::UpdateCrosshairVisibility()
     {
         if (auto pWeaponManager = pPlayer->GetWeaponManager())
         {
-            auto currentWeaponType = pWeaponManager->CurrentType;
+            auto currentWeaponType = pWeaponManager->CurrentWeaponType;
             auto visibility = (currentWeaponType == FIRST  ||
                                currentWeaponType == SECOND ||
                                currentWeaponType == PISTOL) ? ESlateVisibility::Visible : ESlateVisibility::Hidden;

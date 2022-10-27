@@ -511,7 +511,7 @@ void ACustomPlayer::BeginShooting()
     // 연사일 때만 한번 발 사
     // 투척류일 시 경로 예측
     if (mpWeaponManager->GetCurrentGun() ||
-        mpWeaponManager->CurrentType == THROWABLE)
+        mpWeaponManager->CurrentWeaponType == THROWABLE)
         mpWeaponManager->ClickEvent();
 }
 
@@ -521,7 +521,7 @@ void ACustomPlayer::EndShooting()
         return;
 
     // 투척류 무기일 시 뗐을 때만 발동    
-    if (mpWeaponManager->CurrentType == THROWABLE)
+    if (mpWeaponManager->CurrentWeaponType == THROWABLE)
         mpWeaponManager->ThrowGrenade();
 
     mpWeaponManager->DeactivateFiring();
@@ -533,10 +533,14 @@ void ACustomPlayer::Reload()
 
 void ACustomPlayer::Aim()
 {
-    bool bAiming = false;
+    auto currentWeaponType = mpWeaponManager->CurrentWeaponType;
 
-    if (mbInventoryOpened)
+    if (mbInventoryOpened ||
+        currentWeaponType == MELEE ||
+        currentWeaponType == THROWABLE)
         return;
+
+    bool bAiming = false;
 
     switch (CurrentState)
     {
@@ -571,8 +575,7 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
     ASoundManager* p_soundManager = mpCustomGameInst->pSoundManager;
 
     // 마우스 휠로 무기 선택
-    if (Direction != "" &&
-        mpWeaponManager->ScrollSelect(Direction))
+    if (mpWeaponManager->ScrollSelect(Direction))
         p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
 
     // 키보드 숫자 키로 무기 선택
