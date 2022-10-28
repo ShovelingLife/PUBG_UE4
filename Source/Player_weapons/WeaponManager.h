@@ -96,7 +96,7 @@ private:
 	 * \param StartIndex 시작 위치
 	 * \return e_current_weapon_type 현재 무기 타입
      */
-    EWeaponType GetWeaponIndex(FString Direction, int StartIndex) const;
+    EWeaponType GetWeaponIndex(bool bDown, int StartIndex) const;
 
     /**
      * \brief 무기를 플레이어 메시에 부착

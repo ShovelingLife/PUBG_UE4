@@ -200,33 +200,25 @@ EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
         { pMelee,     MELEE},
         { pThrowable, THROWABLE}
     };
-    for (auto item : arrWeaponKeyType)
+    for (auto [Weapon, Type] : arrWeaponKeyType)
     {
-        if (pWeapon == item.Key)
-            return item.Value;
+        if (pWeapon == Weapon)
+            return Type;
     }
     return NONE;
 }
 
-EWeaponType AWeaponManager::GetWeaponIndex(FString Direction, int StartIndex) const
+EWeaponType AWeaponManager::GetWeaponIndex(bool bDown, int StartIndex) const
 {
-    // 위에서 아래
-    if (Direction == "Down")
+    // 위에서 아래 또는 아래에서 위로
+    int i = StartIndex - 1;
+
+    while (bDown ? i >= 0 : i < 5)
     {
-        for (int i = StartIndex - 1; i > -1; i--)
-        {
-            if (bArrWeaponEquipped[i])
-                return (EWeaponType)(i + 1);
-        }
-    }
-    // 아래에서 위
-    else
-    {
-        for (int i = StartIndex - 1; i < 5; i++)
-        {
-            if (bArrWeaponEquipped[i])
-                return (EWeaponType)(i + 1);
-        }
+        if (bArrWeaponEquipped[i])
+            return static_cast<EWeaponType>(i + 1);
+
+        bDown ? i-- : i++;
     }
     return EWeaponType::NONE;
 }
@@ -263,19 +255,15 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
         CurrentWeaponType = SECOND;
     }
     // 근접무기/투척류
+    else if (SocketName == "MeleeSock")
+    {
+        pMelee = Cast<ACoreMeleeWeapon>(pWeapon);
+        CurrentWeaponType = MELEE;
+    }
     else
     {
-        if (SocketName == "MeleeSock")
-        {
-            pMelee = Cast<ACoreMeleeWeapon>(pWeapon);
-            CurrentWeaponType = MELEE;            
-        }
-        else
-        {
-            if (pWeapon->IsA<ACoreThrowableWeapon>())
-                CurrentWeaponType = THROWABLE;
-        }
-            
+        if (pWeapon->IsA<ACoreThrowableWeapon>())
+            CurrentWeaponType = THROWABLE;
     }
     auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
     pWeapon->ChangeCollisionSettings(false);
@@ -346,7 +334,6 @@ bool AWeaponManager::ScrollSelect(FString Pos)
 
     // 현재 무기 인덱스 갖고와서 선택
     auto tmpWeaponType = CurrentWeaponType;
-    int currentIndex = (int)CurrentWeaponType;
     int totalWeapon  = -1;
 
     for (int i = 0; i < 5; i++)
@@ -359,37 +346,21 @@ bool AWeaponManager::ScrollSelect(FString Pos)
     if (totalWeapon == 0)
         return false;
 
-    // 아래로 스크롤
-    if (Pos == "Down")
-    {
-        // 마지막 원소 0 도달 시
-        if (currentIndex == (int)FIRST)
-            CurrentWeaponType = GetWeaponIndex("Down", (int)THROWABLE);
+    auto currentIndex = static_cast<int>(CurrentWeaponType), first = static_cast<int>(FIRST), throwable = static_cast<int>(THROWABLE);
+    bool bDown = (Pos == "Down");
+    auto direction = bDown ? first : throwable, indexToFind = bDown ? throwable : first;
 
-        else
-        {
-            CurrentWeaponType = GetWeaponIndex("Down", currentIndex - 1); // 현재 위치에서 탐색
+    // 마지막 원소 0 도달 시
+    if (currentIndex == direction)
+        CurrentWeaponType = GetWeaponIndex(bDown, indexToFind);
 
-            // 발견하지 못했을 시
-            if (CurrentWeaponType == NONE)
-                CurrentWeaponType = GetWeaponIndex("Down", (int)THROWABLE);
-        }
-    }
-    // 위로 스크롤
     else
     {
-        // 현재 마지막 원소에 접근 할 시
-        if (currentIndex == (int)THROWABLE)
-            CurrentWeaponType = (pFirstGun) ? FIRST : GetWeaponIndex("Up", 1);
+        CurrentWeaponType = GetWeaponIndex(bDown, currentIndex + (bDown ? -1 : 1)); // 현재 위치에서 탐색
 
-        else
-        {
-            CurrentWeaponType = GetWeaponIndex("Up", currentIndex + 1); // 현재 위치에서 탐색
-
-            // 발견하지 못했을 시
-            if (CurrentWeaponType == NONE)
-                CurrentWeaponType = GetWeaponIndex("Up", 1);
-        }
+        // 발견하지 못했을 시
+        if (CurrentWeaponType == NONE)
+            CurrentWeaponType = GetWeaponIndex(bDown, indexToFind);
     }
     Swap(tmpWeaponType, true);
     return true;

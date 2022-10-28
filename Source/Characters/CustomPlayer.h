@@ -91,6 +91,8 @@ public:
     float        CurrentInjuredHealth = 100.f;
     float        CurrentOxygen        = 1.f;
     bool         bAnimationPlaying    = false;
+
+    UPROPERTY(EditAnywhere) float Zval;
     
     /** \brief 차량 관련 변수 */
     ESeatType CurrentSeatType = ESeatType::NONE;

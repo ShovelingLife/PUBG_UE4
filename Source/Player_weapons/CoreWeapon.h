@@ -51,8 +51,6 @@ private:
 	bool  mbChangedShootType = true;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent* CameraComp;
-
     // 총알 관련
     UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
     // class ACore_gun_mag* p_gun_mag = nullptr;

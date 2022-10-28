@@ -1,7 +1,6 @@
 ﻿#include "CoreWeapon.h"
 #include "InputCoreTypes.h"
 #include "TimerManager.h"
-#include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -17,9 +16,7 @@
 
 ACoreWeapon::ACoreWeapon()
 {
-    PrimaryActorTick.bCanEverTick = true;        
-    CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
-    CameraComp->SetWorldScale3D(FVector(0.1f));
+    PrimaryActorTick.bCanEverTick = true;       
 }
 
 void ACoreWeapon::BeginPlay()
@@ -115,7 +112,6 @@ void ACoreWeapon::Init(EGunType Type)
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     InitBullet();
     UpdateParticleSystem();
-    CameraComp->SetupAttachment(RootComponent);
 }
 
 void ACoreWeapon::InitBullet()

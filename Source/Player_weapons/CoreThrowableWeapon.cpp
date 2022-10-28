@@ -65,7 +65,9 @@ void ACoreThrowableWeapon::BeginDestroy()
 {
     Super::BeginDestroy();
     GrenadeEndPos = FVector::ZeroVector;
-    UCustomGameInstance::GetInst()->DeleKillUI_Anim.ExecuteIfBound();
+    
+    if (auto gameInst = UCustomGameInstance::GetInst())
+        gameInst->DeleKillUI_Anim.ExecuteIfBound();
 }
 
 void ACoreThrowableWeapon::BeginPlay()

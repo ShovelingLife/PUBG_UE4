@@ -324,9 +324,7 @@ void ACustomPlayer::CheckNearVehicle()
         if (p_hittedActor->IsA(ACoreVehicle::StaticClass()))
         {
             mpCollidedVehicle = Cast<ACoreVehicle>(p_hittedActor);
-
-            if (mpCollidedVehicle)
-                mpCollidedVehicle->bCollided = true;
+            mpCollidedVehicle->bCollided = true;
         }
     }
 }
@@ -595,7 +593,6 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
 
 void ACustomPlayer::ChangePerspective()
 {
-    return;
     // 플레이어 카메라 위치 > 총기 카메라 위치
     if (mbAiming)
         ZoomIn();
@@ -612,11 +609,13 @@ void ACustomPlayer::ZoomIn()
 
     if (auto p_gun = mpWeaponManager->GetCurrentGun())
     {
-        auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), gunCameraPos = p_gun->CameraComp->GetComponentLocation();
-        auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, gunCameraPos, GetWorld()->GetDeltaSeconds(), 15.f);
-        Aim_CameraComp->SetWorldLocation(movePos);
-        GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, p_gun->CameraComp->GetComponentLocation().ToString());
-        GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, p_gun->CameraComp->GetRelativeLocation().ToString());
+        auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), aimSocketPos = p_gun->SkeletalMeshComp->GetSocketLocation("Sight");
+        auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, aimSocketPos, GetWorld()->GetDeltaSeconds(), 10.f);
+        movePos.X -= Zval;
+        movePos.Z += 2.f;
+
+        if (aimCameraPos.Size() != movePos.Size())
+            Aim_CameraComp->SetWorldLocation(movePos);
     }
 }
 
