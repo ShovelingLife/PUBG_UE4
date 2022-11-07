@@ -55,7 +55,6 @@ void AWeaponManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
     UpdateCurrentWeaponArr();
-    UpdateAttachmentArr();
 }
 
 void AWeaponManager::CheckForEquippedWeapon()
@@ -68,44 +67,23 @@ void AWeaponManager::InitGrenadePath()
     SplineComp = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComp"));   
     RootComponent = SplineComp;
 
+    // 수류탄 경로 마지막 지점 엑터 생성
     ConstructorHelpers::FClassFinder<AActor> BP_GrenadeEndPointRef(TEXT("/Game/UI/PredictGrenadePath/BP_PredictEndpoint.BP_PredictEndpoint_C"));
 
     if (BP_GrenadeEndPointRef.Succeeded())
         BP_GrenadeEndPoint = BP_GrenadeEndPointRef.Class;
 
+    // 수류탄 경로 그리기를 위한 모형
     ConstructorHelpers::FObjectFinder<UStaticMesh> PATH_MESH(TEXT("/Engine/BasicShapes/Cylinder"));
 
     if (PATH_MESH.Succeeded())
         PathMesh = PATH_MESH.Object;
 
+    // 수류탄 경로 모형 색상
     ConstructorHelpers::FObjectFinder<UMaterial> PATH_MAT(TEXT("/Game/UI/PredictGrenadePath/PredictionPathMat"));
 
     if (PATH_MAT.Succeeded())
         PathMat = PATH_MAT.Object;
-}
-
-void AWeaponManager::UpdateAttachmentArr()
-{
-    arrAttachment.Empty();
-
-    // 첫번째 무기
-    arrAttachment.Add((pFirstGun) ? pFirstGun->CurrentSight  : nullptr);
-    arrAttachment.Add((pFirstGun) ? pFirstGun->CurrentStock  : nullptr);
-    arrAttachment.Add((pFirstGun) ? pFirstGun->CurrentGrip   : nullptr);
-    arrAttachment.Add((pFirstGun) ? pFirstGun->CurrentForend : nullptr);
-    arrAttachment.Add((pFirstGun) ? pFirstGun->CurrentBarrel : nullptr);
-                 
-    // 두번째 무기
-    arrAttachment.Add((pSecondGun) ? pSecondGun->CurrentSight  : nullptr);
-    arrAttachment.Add((pSecondGun) ? pSecondGun->CurrentStock  : nullptr);
-    arrAttachment.Add((pSecondGun) ? pSecondGun->CurrentGrip   : nullptr);
-    arrAttachment.Add((pSecondGun) ? pSecondGun->CurrentForend : nullptr);
-    arrAttachment.Add((pSecondGun) ? pSecondGun->CurrentBarrel : nullptr);
-                 
-    // 세번째 무기
-    arrAttachment.Add((pPistol) ? pPistol->CurrentSight  : nullptr);
-    arrAttachment.Add((pPistol) ? pPistol->CurrentForend : nullptr);
-    arrAttachment.Add((pPistol) ? pPistol->CurrentBarrel : nullptr);
 }
 
 void AWeaponManager::UpdateCurrentWeaponArr()
@@ -212,13 +190,22 @@ EWeaponType AWeaponManager::GetWeaponIndex(bool bDown, int StartIndex) const
 {
     // 위에서 아래 또는 아래에서 위로
     int i = StartIndex - 1;
-
-    while (bDown ? i >= 0 : i < 5)
+    
+    if (bDown)
     {
-        if (bArrWeaponEquipped[i])
-            return static_cast<EWeaponType>(i + 1);
-
-        bDown ? i-- : i++;
+        for (; i >= 0; i--)
+        {
+            if (bArrWeaponEquipped[i])
+                return static_cast<EWeaponType>(i + 1);
+        }
+    }
+    else
+    {
+        for (; i < 5; i++)
+        {
+            if (bArrWeaponEquipped[i])
+                return static_cast<EWeaponType>(i + 1);
+        }
     }
     return EWeaponType::NONE;
 }
@@ -463,7 +450,7 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
         {
             if (pNewWeapon->IsA<ACoreMeleeWeapon>()     ||
                 pNewWeapon->IsA<ACoreThrowableWeapon>() ||
-                p_newWeapon->WeaponData.GroupType == "HandGun")
+                p_newWeapon->IsGroupType("HandGun"))
                 return ERROR;
         }
         // 첫번째 총과 두번째 총 교체
@@ -494,7 +481,8 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
         auto p_newWeapon = Cast<ACoreWeapon>(pNewWeapon);
 
         if (!p_newWeapon || 
-            (p_newWeapon && p_newWeapon->WeaponData.GroupType != "HandGun"))
+            (p_newWeapon && 
+             p_newWeapon->IsGroupType("HandGun")))
             return ERROR;
 
         if (p_newWeapon != pPistol)
@@ -507,7 +495,8 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
         auto p_newMelee = Cast<ACoreMeleeWeapon>(pNewWeapon);
 
         if (!p_newMelee ||
-            (p_newMelee && p_newMelee->WeaponData.GroupType != "Melee"))
+            (p_newMelee && 
+             p_newMelee->IsGroupType("Melee")))
             return ERROR;
     }
     break;
@@ -534,7 +523,7 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     if (!IsValid((p_gun)))
         return;
 
-    FString arrSocketName[]
+    TArray<FString> arrSocketName
     {
         "FirstGunSock",
         "SecondGunSock",
@@ -660,11 +649,15 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
     {
         ACoreWeapon* p_gun = (WeaponType == FIRST) ? pFirstGun : pSecondGun;
 
-        if (groupType == "Handgun" || !pWeapon->IsA<ACoreWeapon>()) return true; return Cast<ACoreWeapon>(pWeapon) == p_gun;
+        if (pWeapon->IsGroupType("Handgun") ||
+            !pWeapon->IsA<ACoreWeapon>()) 
+            return true; 
+        
+        return Cast<ACoreWeapon>(pWeapon) == p_gun;
     }
-    case PISTOL:    return (Cast<ACoreWeapon>(pWeapon)          == pPistol    || groupType != "HandGun");
-    case MELEE:     return (Cast<ACoreMeleeWeapon>(pWeapon)     == pMelee     || groupType != "Melee");
-    case THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable || groupType != "Explosive");
+    case PISTOL:    return (Cast<ACoreWeapon>(pWeapon)          == pPistol    || pWeapon->IsGroupType("Handgun"));
+    case MELEE:     return (Cast<ACoreMeleeWeapon>(pWeapon)     == pMelee     || pWeapon->IsGroupType("Melee"));
+    case THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable || pWeapon->IsGroupType("Explosive"));
     }
     return true;
 }

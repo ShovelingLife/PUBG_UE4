@@ -22,16 +22,15 @@ DECLARE_DELEGATE(FDeleCloseInventory)
 class ACoreAmmoBox;
 class ACoreAttachment;
 class ACoreFarmableItem;
-class ACoreVehicle;
 class ACoreWeapon;
 class ADummyCharacter;
 class AWeaponManager;
+class UCustomGameInstance;
 
 class UAudioComponent;
-class UCustomGameInstance;
+class UCameraComponent;
 class UParticleSystemComponent;
 class USpringArmComponent;
-class UCameraComponent;
 
 UCLASS()
 class CHARACTERS_API ACustomPlayer : public ACharacter
@@ -46,9 +45,8 @@ private:
     /** \brief 플레이어가 사용하는 변수 */
     UPROPERTY() AWeaponManager*  mpWeaponManager            = nullptr;
     UPROPERTY() AActor*          mpCollidedWeapon           = nullptr;
-    UPROPERTY() ACoreVehicle*    mpCollidedVehicle          = nullptr;
     UPROPERTY() ACoreAttachment* mpCollidedWeaponAttachment = nullptr;
-    UPROPERTY() ACoreAmmoBox*    mpCollidedAmmoBox          = nullptr;
+    UPROPERTY() ACoreAmmoBox* mpCollidedAmmoBox = nullptr;
     UPROPERTY() ACoreFarmableItem* mpFarmableItem           = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp    = nullptr;

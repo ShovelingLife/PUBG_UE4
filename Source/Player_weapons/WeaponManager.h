@@ -86,8 +86,6 @@ private:
 	 */
     void UpdateCurrentWeaponArr();
 
-    void UpdateAttachmentArr();
-
     UFUNCTION() void PredictGrenadePath();
 
     /**

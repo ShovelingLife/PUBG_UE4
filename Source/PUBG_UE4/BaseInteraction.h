@@ -109,13 +109,22 @@ public:
     void SetSkeletalMesh(USkeletalMesh* Mesh);
 
     // ------- 그 외 함수들 -------
+
+    // UI일 시 기타 컴포넌트를 파괴
     void DestroyComponentsForUI();
 
+    // 인벤토리 내 더미 캐릭터 UI 설정
     void SetForDummyCharacter();
 
+    // 충돌체 설정 변경
     void ChangeCollisionSettings(bool bTurned = true);
 
+    // 메쉬에게 부착 주로 플레이어에게 사용
     void AttachToMesh(USceneComponent* RootComp, FString SocketName);
 
+    // 무기를 탈착
     void Detach(FTransform NewPos);
+
+    // 현재 오브젝트가 찾고자하는 타입인지 확인
+    bool IsGroupType(FString Type) { return ObjectGroupType == Type; }
 };

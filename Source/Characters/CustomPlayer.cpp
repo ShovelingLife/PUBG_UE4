@@ -308,25 +308,6 @@ void ACustomPlayer::CheckNearVehicle()
     FHitResult hitResult;
     GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
 
-    // 차량을 감지
-    AActor* p_hittedActor = hitResult.GetActor();
-
-    if (!p_hittedActor)
-    {
-        if (mpCollidedVehicle)
-        {
-            mpCollidedVehicle->bCollided = false;
-            mpCollidedVehicle = nullptr;
-        }
-    }
-    else
-    {
-        if (p_hittedActor->IsA(ACoreVehicle::StaticClass()))
-        {
-            mpCollidedVehicle = Cast<ACoreVehicle>(p_hittedActor);
-            mpCollidedVehicle->bCollided = true;
-        }
-    }
 }
 
 void ACustomPlayer::TryToInteract()
@@ -350,17 +331,6 @@ void ACustomPlayer::TryToInteract()
             mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpFarmableItem, false);
             mpFarmableItem->Destroy();
             mpFarmableItem = nullptr;
-        }
-        // 차량이랑 충돌 시
-        if (mpCollidedVehicle)
-        {
-            //  차량 탑승 상태
-            if (mpCollidedVehicle->IsSeatAvailable(this))
-            {
-                mpCollidedVehicle->bCollided = false;
-                bInVehicle = true;
-            }
-            mpCollidedVehicle = nullptr;
         }
     }
 }
