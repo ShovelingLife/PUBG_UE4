@@ -36,9 +36,10 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 using enum EWeaponType;
 
 private:
+	TArray<ABaseInteraction*> mArrWeapon;
+
 	// 총기 관련
-    bool  mbAiming = false;
-    bool  mbThrowingGrenade = false;
+    bool  mbAiming = false, mbThrowingGrenade = false;
 
 public:
 	/** \brief 현재 착용 중인 무기 */
@@ -48,8 +49,7 @@ public:
     UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
     UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
 
-	EWeaponType CurrentWeaponType = NONE;    
-	bool  bArrWeaponEquipped[5]{ false };
+    EWeaponType CurrentWeaponType = NONE;
 
     // ------- 투척류 관련 -------
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) TArray<USplineMeshComponent*> arrSplineMeshComp;
