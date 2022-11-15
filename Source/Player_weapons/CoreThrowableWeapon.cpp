@@ -23,8 +23,9 @@ ACoreThrowableWeapon::ACoreThrowableWeapon()
 
 ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThrowableWeapon()
 {
+    ItemIdx = (int)Type;
     WeaponType = Type;
-    WeaponData = ADataTableManager::GetOtherWeaponData((int)Type);
+    WeaponData = ADataTableManager::GetOtherWeaponData(ItemIdx);
     ObjectType      = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
 

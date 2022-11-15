@@ -26,7 +26,8 @@ void ACoreMeleeWeapon::BeginPlay()
 
 void ACoreMeleeWeapon::Init(EMeleeWeaponType Type)
 {
-    WeaponData = ADataTableManager::GetOtherWeaponData((int)Type);    
+    ItemIdx = (int)Type;
+    WeaponData = ADataTableManager::GetOtherWeaponData(ItemIdx);    
     this->WeaponType = Type;
     ObjectType = WeaponData.Type;
     Super::InitStaticMesh(WeaponData.MeshPath);

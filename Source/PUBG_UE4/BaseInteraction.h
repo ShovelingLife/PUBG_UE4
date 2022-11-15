@@ -46,7 +46,7 @@ public:
     FString ObjectGroupType = "";
     // 위젯 컴포넌트 UI용
     FString ObjectType      = "";
-    int     UI_index        = 0;
+    int     ItemIdx = 0;
     bool    bPlayerNear     = false;
 
     UPROPERTY() UTexture* CurrentItemTex;

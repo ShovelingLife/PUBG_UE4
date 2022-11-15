@@ -15,6 +15,7 @@
 #include "WeaponAttachmentData.h"
 #include "WeaponBulletData.h"
 #include "UtilityData.h"
+#include "Global.h"
 #include "GameFramework/Actor.h"
 #include "DataTableManager.generated.h"
 
@@ -36,38 +37,38 @@ public:
 
 private:
     /** \brief 차량 데이터 관련 */
-    const FString mkVehicleMeshPath    = "/Game/2_Meshes/Vehicles/Skeletons/";
-    const FString mkAnimInstancePath   = "/Game/1_Blueprints/Vehicles/";
+    const FString mkAnimInstancePath   = Global::BlueprintFolder + "Vehicles/";
+    const FString mkVehicleMeshPath    = Global::MeshFolder + "Vehicles/Skeletons/";
     const FString mkVehicleSoundPath   = "";
     int           mCurrentVehicleCount = 0;
 
     /** * \brief 무기 데이터 관련 */
-    const FString mkWeaponMeshPath       = "/Game/2_Meshes/AdvanceWeaponPack/Mesh/Weapon/";
-    const FString mkBulletBP_path        = "/Game/1_Blueprints/Items/Weapons/Ammo/BP_";
+    const FString mkBulletBP_path        = Global::BlueprintFolder + "Items/Weapons/Ammo/BP_";
+    const FString mkWeaponMeshPath       = Global::MeshFolder + "AdvanceWeaponPack/Mesh/Weapon/";
     const FString mkRendertargetMeshPath = "/Game/Materials/Weapon_UI/UI_material_";
     const FString mkWeaponSoundPath      = "/Game/SFX/Gun_sounds/";
 
     /** \brief 기타 무기 (투척류/근접) 데이터 관련 */
-    const FString mkOtherWeaponMeshPath = "/Game/2_Meshes/Items/Weapons/";
+    const FString mkOtherWeaponMeshPath = Global::MeshFolder + "Items/Weapons/";
 
     /** \brief 무기 부속품 데이터 관련 */
-    const FString mkWeaponAttachmentMeshPath = "/Game/2_Meshes/AdvanceWeaponPack/Mesh/Attachment/";
+    const FString mkWeaponAttachmentMeshPath = Global::MeshFolder + "AdvanceWeaponPack/Mesh/Attachment/";
 
     /** \brief 총알 상자 데이터 관련 */
     const FString mkAmmoBoxMeshPath = "/Game/UI/AmmoBoxIcon/AmmoBox/";
 
 public:
-    static FsVehicleData GetVehicleData(int Index);
+    static FsVehicleData GetVehicleData(int Index) { return ArrVehicleData.IsEmpty() ? FsVehicleData() : ArrVehicleData[Index]; }
 
-    static FsWeaponData GetWeaponData(int Index);
+    static FsWeaponData GetWeaponData(int Index) { return (ArrWeaponData.IsEmpty() ? FsWeaponData() : ArrWeaponData[Index]); }
 
-    static FsOtherWeaponData GetOtherWeaponData(int Index);
+    static FsOtherWeaponData GetOtherWeaponData(int Index) { return (ArrOtherWeaponData.IsEmpty() ? FsOtherWeaponData() : ArrOtherWeaponData[Index]); }
 
-    static FsWeaponAttachmentData GetWeaponAttachmentData(int Index);
+    static FsWeaponAttachmentData GetWeaponAttachmentData(int Index) { return (ArrWeaponAttachmentData.IsEmpty() ? FsWeaponAttachmentData() : ArrWeaponAttachmentData[Index]); }
 
-    static FsWeaponBulletData GetWeaponBulletData(int Index);
+    static FsWeaponBulletData GetWeaponBulletData(int Index) { return (ArrWeaponBulletData.IsEmpty() ? FsWeaponBulletData() : ArrWeaponBulletData[Index]); }
 
-    static FsUtilityData GetUtilityData(int Index);
+    static FsUtilityData GetUtilityData(int Index) { return (ArrUtilityData.IsEmpty() ? FsUtilityData() : ArrUtilityData[Index]); }
 
 public:
     ADataTableManager();

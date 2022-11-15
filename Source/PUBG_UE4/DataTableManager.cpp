@@ -7,36 +7,6 @@ TArray<FsWeaponAttachmentData> ADataTableManager::ArrWeaponAttachmentData;
 TArray<FsWeaponBulletData>     ADataTableManager::ArrWeaponBulletData;
 TArray<FsUtilityData>          ADataTableManager::ArrUtilityData;
 
-FsVehicleData ADataTableManager::GetVehicleData(int Index)
-{
-    return ArrVehicleData.IsEmpty() ? FsVehicleData() : ArrVehicleData[Index];
-}
-
-FsWeaponData ADataTableManager::GetWeaponData(int Index)
-{
-    return (ArrWeaponData.IsEmpty() ? FsWeaponData() : ArrWeaponData[Index]);
-}
-
-FsOtherWeaponData ADataTableManager::GetOtherWeaponData(int Index)
-{
-    return (ArrOtherWeaponData.IsEmpty() ? FsOtherWeaponData() : ArrOtherWeaponData[Index]);
-}
-
-FsWeaponAttachmentData ADataTableManager::GetWeaponAttachmentData(int Index)
-{
-    return (ArrWeaponAttachmentData.IsEmpty() ? FsWeaponAttachmentData() : ArrWeaponAttachmentData[Index]);
-}
-
-FsWeaponBulletData ADataTableManager::GetWeaponBulletData(int Index)
-{
-    return (ArrWeaponBulletData.IsEmpty() ? FsWeaponBulletData() : ArrWeaponBulletData[Index]);
-}
-
-FsUtilityData ADataTableManager::GetUtilityData(int Index)
-{
-    return (ArrUtilityData.IsEmpty() ? FsUtilityData() : ArrUtilityData[Index]);
-}
-
 // Sets default values
 ADataTableManager::ADataTableManager()
 {

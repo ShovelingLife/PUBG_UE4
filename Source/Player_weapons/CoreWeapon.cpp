@@ -100,7 +100,8 @@ void ACoreWeapon::ClickEvent()
 
 void ACoreWeapon::Init(EGunType Type)
 {
-    WeaponData = ADataTableManager::GetWeaponData((int)Type);
+    ItemIdx = (int)Type;
+    WeaponData = ADataTableManager::GetWeaponData(ItemIdx);
     WeaponData.BulletCount = WeaponData.BulletLimitCount;
     WeaponType = Type;
     ObjectType = WeaponData.Type;

@@ -156,7 +156,6 @@ public:
 
 	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);
 
-
 	// ------- 부착 관련 함수 -------
 
     /**
@@ -182,7 +181,7 @@ public:
 	 */
 	void Drop(EWeaponType WeaponType);
 
-	void SetNull(EWeaponType WeaponType);
+	void SetNull(EWeaponType WeaponType) { mArrWeapon[(int)WeaponType - 1] = nullptr; }
 
 	void SetMeshToPlayerUI(TArray<AActor*> pArrActor);
 

@@ -27,7 +27,7 @@ void ABaseInteraction::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    if (WidgetComp)
+    if (IsValid(WidgetComp))
     {
         mCurrentTime += DeltaTime;
 
@@ -70,7 +70,7 @@ void ABaseInteraction::AttachComponents()
 
 void ABaseInteraction::SetCollisionSettingsForObjects()
 {
-    if (ColliderComp)
+    if (IsValid(ColliderComp))
     {
         this->SetRootComponent(ColliderComp);
         ColliderComp->BodyInstance.SetCollisionProfileName("Object");
@@ -81,10 +81,10 @@ void ABaseInteraction::SetCollisionSettingsForObjects()
 
 void ABaseInteraction::InitStaticMesh(FString Path)
 {
-    if (SkeletalMeshComp)
+    if (IsValid(SkeletalMeshComp))
         SkeletalMeshComp->DestroyComponent();
 
-    if (ColliderComp)
+    if (IsValid(ColliderComp))
         ColliderComp->DestroyComponent();
 
     this->SetRootComponent(StaticMeshComp);
@@ -102,10 +102,10 @@ void ABaseInteraction::InitStaticMesh(FString Path)
 
 void ABaseInteraction::InitSkeletalMesh(FString Path)
 {
-    if (StaticMeshComp)
+    if (IsValid(StaticMeshComp))
         StaticMeshComp->DestroyComponent();
 
-    if (!RootComponent)
+    if (!IsValid(RootComponent))
         this->SetRootComponent(SkeletalMeshComp);
 
     else
@@ -145,7 +145,7 @@ void ABaseInteraction::SetForDummyCharacter()
 {
     DestroyComponentsForUI();
 
-    if (SkeletalMeshComp)
+    if (IsValid(SkeletalMeshComp))
     {
         this->SetRootComponent(SkeletalMeshComp);
         SkeletalMeshComp->SetOwnerNoSee(true);
@@ -155,7 +155,7 @@ void ABaseInteraction::SetForDummyCharacter()
             StaticMeshComp->DestroyComponent();
 
     }
-    if (StaticMeshComp)
+    if (IsValid(StaticMeshComp))
     {
         this->SetRootComponent(StaticMeshComp);
         StaticMeshComp->SetOwnerNoSee(true);
@@ -177,7 +177,7 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
     };
     for (auto comp : arrComp)
     {
-        if (comp)
+        if (IsValid(comp))
         {
             comp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
             comp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
@@ -200,13 +200,13 @@ void ABaseInteraction::Detach(FTransform NewPos)
 {
     UMeshComponent* meshComp = nullptr;
 
-    if (SkeletalMeshComp)
+    if (IsValid(SkeletalMeshComp))
         meshComp = SkeletalMeshComp;
 
-    if (StaticMeshComp)
+    if (IsValid(StaticMeshComp))
         meshComp = StaticMeshComp;
 
-    if (!meshComp)
+    if (!IsValid(meshComp))
         return;
 
     // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
