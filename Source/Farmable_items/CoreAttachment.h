@@ -12,6 +12,9 @@ class FARMABLE_ITEMS_API ACoreAttachment : public ACoreFarmableItem
 	GENERATED_BODY()
 	
 public:
+    UPROPERTY()
+    UTexture* CurrentItemTex;
+
     FsWeaponAttachmentData WeaponAttachmentData;
 	EWeaponAttachmentType  WeaponAttachmentType;
 

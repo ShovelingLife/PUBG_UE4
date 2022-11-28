@@ -1,8 +1,10 @@
 ﻿#include "CoreWeapon.h"
+#include "GunRecoilComponent.h"
 #include "InputCoreTypes.h"
 #include "TimerManager.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Curves/CurveVector.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -68,6 +70,10 @@ void ACoreWeapon::Tick(float DeltaTime)
     }
     else
         mCurrentShootTime = 0.f;
+
+    if (!bShooting &&
+        GunRecoilComponent)
+        GunRecoilComponent->RecoilStop();
 }
 
 void ACoreWeapon::ClickEvent()
@@ -90,8 +96,8 @@ void ACoreWeapon::ClickEvent()
         if (ShootType == BURST)
         {
             // 총알 발사가 진행 중일 시 반환        
-            if (!GetWorld()->GetTimerManager().IsTimerActive(mTimerHandle))
-                GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &ACoreWeapon::FireBullet, mNextShootTime, true);
+            if (!GetWorld()->GetTimerManager().IsTimerActive(mBurstTimerHandle))
+                GetWorld()->GetTimerManager().SetTimer(mBurstTimerHandle, this, &ACoreWeapon::FireBullet, mNextShootTime, true);
         }
         else
             FireBullet();
@@ -107,6 +113,14 @@ void ACoreWeapon::Init(EGunType Type)
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
     mNextShootTime = (ObjectGroupType == "ShotGun") ? 0.25f : 0.1f;
+
+    // 총기 반동 초기화
+    GunRecoilComponent = CreateDefaultSubobject<UGunRecoilComponent>(TEXT("GunRecoilComp"));
+    FString curvePath = "/Game/Data/GunRecoilCurve/RecoilCurve" + ObjectType;
+    auto recoilCurveFloat = ConstructorHelpers::FObjectFinder<UCurveVector>(*curvePath);
+
+    if (recoilCurveFloat.Succeeded())
+        GunRecoilComponent->RecoilCurve = recoilCurveFloat.Object;
 
     Super::SetCollisionSettingsForObjects();
     Super::InitSkeletalMesh(WeaponData.MeshPath);
@@ -178,6 +192,7 @@ void ACoreWeapon::FireBullet()
         return;
     }
     // 사운드 적용 및 총알 1개 차감
+    GunRecoilComponent->RecoilStart();
     PlaySound(EWeaponSoundType::SHOT);
 
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
@@ -203,8 +218,8 @@ void ACoreWeapon::FireBullet()
 void ACoreWeapon::ResetBurstCount()
 {
     // 점사 타이머 초기화
-    GetWorld()->GetTimerManager().ClearTimer(mTimerHandle);
-    mTimerHandle.Invalidate();
+    GetWorld()->GetTimerManager().ClearTimer(mBurstTimerHandle);
+    mBurstTimerHandle.Invalidate();
     mBurstCount = 0;
     bShooting = false;
 }
@@ -220,7 +235,7 @@ void ACoreWeapon::Reload()
 
 void ACoreWeapon::ChangeShootMode()
 {
-    if (GetWorld()->GetTimerManager().IsTimerActive(mTimerHandle))
+    if (GetWorld()->GetTimerManager().IsTimerActive(mBurstTimerHandle))
         ResetBurstCount();
 
     bShooting = false;

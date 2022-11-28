@@ -18,10 +18,11 @@
 #include "CoreWeapon.generated.h"
 
 class UAudioComponent;
-class USoundBase;
 //class ACoreBullet;
-class UParticleSystemComponent;
 class UCameraComponent;
+class UGunRecoilComponent;
+class UParticleSystemComponent;
+class USoundBase;
 
 // 부속품들
 class ACoreBarrel;
@@ -40,33 +41,50 @@ using enum EGunShootType;
 using enum EWeaponSoundType;
 
 private:
-    FTimerHandle mTimerHandle;
+    const float	mkReloadTime = 2.f; // 재장전 시간
 
-    const float	mkReloadTime = 2.f;
+    // 총기 속성 관련
+    FTimerHandle mBurstTimerHandle; // 점사 타이머 핸들
     float mCurrentReloadTime = 0.f;
     float mCurrentShootTime  = 0.f;
-    float mNextShootTime = 0.f;
+    float mNextShootTime     = 0.f;
     int	  mBurstCount		 = 0;
     bool  mbReloading		 = false;
 	bool  mbChangedShootType = true;
 
+    // 총기 반동 관련
+
 public:
     // 총알 관련
-    UPROPERTY(VisibleAnywhere, Category = Bullet) TSubclassOf< ACoreBullet > BP_Bullet;
+    UPROPERTY(VisibleAnywhere, Category = Bullet) 
+    TSubclassOf<ACoreBullet> BP_Bullet;
+
     // class ACore_gun_mag* p_gun_mag = nullptr;
     FsWeaponData  WeaponData;
     EGunType      WeaponType = EGunType::GUN_MAX;
     EGunShootType ShootType  = EGunShootType::SINGLE;
 
     // 부속품 관련 변수들
-    UPROPERTY(VisibleAnywhere) ACoreBarrel* CurrentBarrel = nullptr;
-    UPROPERTY(VisibleAnywhere) ACoreForend* CurrentForend = nullptr;
-    UPROPERTY(VisibleAnywhere) ACoreGrip*   CurrentGrip   = nullptr;
-    UPROPERTY(VisibleAnywhere) ACoreSight*  CurrentSight  = nullptr;
-    UPROPERTY(VisibleAnywhere) ACoreStock*  CurrentStock  = nullptr;
+    UPROPERTY(VisibleAnywhere) // 소음기
+    ACoreBarrel* CurrentBarrel = nullptr;
+
+    UPROPERTY(VisibleAnywhere) // 탄알집
+    ACoreForend* CurrentForend = nullptr;
+
+    UPROPERTY(VisibleAnywhere) // 손잡이
+    ACoreGrip* CurrentGrip = nullptr;
+
+    UPROPERTY(VisibleAnywhere) // 조준경
+    ACoreSight* CurrentSight = nullptr;
+
+    UPROPERTY(VisibleAnywhere) // 개머리판
+    ACoreStock* CurrentStock = nullptr;
+
+    UPROPERTY(EditAnywhere)
+    UGunRecoilComponent* GunRecoilComponent = nullptr;
 
     bool bInInventory = false;
-    bool  bShooting = false;
+    bool bShooting = false;
 
 public:
     ACoreWeapon();

@@ -38,18 +38,27 @@ protected:
     float mCurrentTime = 0.f;
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Collider) UBoxComponent*            ColliderComp     = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Mesh)     UStaticMeshComponent*     StaticMeshComp   = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Mesh)     USkeletalMeshComponent*   SkeletalMeshComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp     = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystem*          Particle         = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Collider) 
+    UBoxComponent* ColliderComp = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Mesh)     
+    UStaticMeshComponent* StaticMeshComp = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Mesh)     
+    USkeletalMeshComponent* SkeletalMeshComp = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Particle) 
+    UParticleSystemComponent* ParticleComp = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Particle) 
+    UParticleSystem* Particle = nullptr;
+
     FString ObjectGroupType = "";
+
     // 위젯 컴포넌트 UI용
     FString ObjectType      = "";
     int     ItemIdx = 0;
     bool    bPlayerNear     = false;
-
-    UPROPERTY() UTexture* CurrentItemTex;
 
 public:
     ABaseInteraction();

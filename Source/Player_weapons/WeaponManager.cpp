@@ -3,6 +3,7 @@
 #include "CoreThrowableWeapon.h"
 #include "CoreWeapon.h"
 #include "DrawDebugHelpers.h"
+#include "GunRecoilComponent.h"
 #include "Farmable_items/CoreAttachment.h"
 #include "Farmable_items/CoreBarrel.h"
 #include "Farmable_items/CoreForend.h"
@@ -259,8 +260,8 @@ void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform N
 
 void AWeaponManager::ClickEvent()
 {
-    if (ABaseInteraction* p_weapon = GetWeaponByIndex(CurrentWeaponType))
-        p_weapon->ClickEvent();
+    if (ABaseInteraction* p_obj = GetWeaponByIndex(CurrentWeaponType))
+        p_obj->ClickEvent();
 }
 
 void AWeaponManager::ThrowGrenade()
@@ -539,13 +540,7 @@ ABaseInteraction* AWeaponManager::GetWeaponByIndex(EWeaponType WeaponType) const
 
 ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)); }
 
-int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const
-{
-    if (!IsValid(pWeapon))
-        return 0;
-
-    return pWeapon->ItemIdx;
-}
+int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const { return IsValid(pWeapon) ? pWeapon->ItemIdx : 0; }
 
 void AWeaponManager::Drop(EWeaponType WeaponType)
 {
@@ -587,7 +582,7 @@ void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)
 
 void AWeaponManager::DeactivateFiring()
 {
-    if (auto p_gun= Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
+    if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
     {
         if (p_gun->ShootType != EGunShootType::BURST)
             p_gun->bShooting = false;
