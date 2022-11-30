@@ -66,19 +66,21 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
 UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
 {
     // 총기류
-    if (Type == "Gun")
-        return (Index < MapWeaponIcon.Num()) ? Cast<UTexture2D>(MapWeaponIcon[Index]) : nullptr;
+    if      (Type == "Gun" &&
+             Index < MapWeaponIcon.Num())
+             return Cast<UTexture2D>(MapWeaponIcon[Index]);
 
     // 투척류
-    else if (Type == "Explosive")
-        return (Index < MapOtherWeaponIcon.Num()) ? Cast<UTexture2D>(MapOtherWeaponIcon[Index]) : nullptr;
+    else if (Type == "Explosive" &&
+             Index < MapOtherWeaponIcon.Num())
+             return Cast<UTexture2D>(MapOtherWeaponIcon[Index]);
 
     // 기타 물품
-    else if (Type == "Utility")
-        return (Index < MapUtilityIcon.Num()) ? Cast<UTexture2D>(MapUtilityIcon[Index]) : nullptr;
+    else if (Type == "Utility" &&
+             Index < MapUtilityIcon.Num())
+             return Cast<UTexture2D>(MapUtilityIcon[Index]);
 
-    else
-        return nullptr;
+    return nullptr;
 }
 
 UMaterial* AUI_manager::GetMaterial(int Index)
@@ -250,17 +252,13 @@ void AUI_manager::InitPlayerInventory()
 void AUI_manager::SetPlayerUI()
 {
     // 플레이어 UI
-    UUserWidget* p_playerUI_Widget = CreateWidget(GetWorld(), mBP_PlayerUI);
-
-    if (p_playerUI_Widget)
+    if (UUserWidget* p_playerUI_Widget = CreateWidget(GetWorld(), mBP_PlayerUI))
     {
         mpPlayer_UI = Cast<UPlayerUI>(p_playerUI_Widget);
         mpPlayer_UI->AddToViewport(0);
     }
     // 플레이어 상태 UI
-    UUserWidget* p_playerEffectUI_Widget = CreateWidget(GetWorld(), mBP_PlayerEffectUI);
-
-    if (p_playerEffectUI_Widget)
+    if (UUserWidget* p_playerEffectUI_Widget = CreateWidget(GetWorld(), mBP_PlayerEffectUI))
         pPlayerEffect_UI = Cast<UPlayerEffectUI>(p_playerEffectUI_Widget);
 }
 
@@ -274,16 +272,17 @@ void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type
     WidgetComp->SetRelativeLocation(FVector::ZeroVector);
     WidgetComp->SetWidgetClass(mInteractionWidgetBP);
 
-    auto p_interactionUI = Cast<UInteractionUI>(WidgetComp->GetWidget());
-
-    if (p_interactionUI)
+    // 적용한 위젯을 갖고와 텍스트 초기화
+    if (auto p_interactionUI = Cast<UInteractionUI>(WidgetComp->GetWidget()))
         p_interactionUI->TitleTxt->SetText(FText::FromString(Type));
 }
 
 void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAnimType Type)
 {
-    if (pPlayerEffect_UI &&
-        !pPlayerEffect_UI->IsAnyAnimationPlaying())
+    if (!pPlayerEffect_UI)
+        return;
+
+    if (!pPlayerEffect_UI->IsAnyAnimationPlaying())
     {
         pPlayerEffect_UI->AddToViewport(3);
         pPlayerEffect_UI->PlayAnim(StartTime, WaitTime, Type);
@@ -292,9 +291,9 @@ void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAn
 
 void AUI_manager::KillAnim()
 {
-    if (pPlayerEffect_UI)
-    {
-        pPlayerEffect_UI->StopAllAnimations();
-        pPlayerEffect_UI->RemoveFromParent();
-    }
+    if (!pPlayerEffect_UI)
+        return;
+    
+    pPlayerEffect_UI->StopAllAnimations();
+    pPlayerEffect_UI->RemoveFromParent();
 }

@@ -1,15 +1,14 @@
 ﻿#include "BaseInteraction.h"
 #include "DataTableManager.h"
 #include "CustomGameInstance.h"
+#include "InteractionComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
-
 
 ABaseInteraction::ABaseInteraction()
 {
@@ -20,23 +19,12 @@ ABaseInteraction::ABaseInteraction()
 void ABaseInteraction::BeginPlay()
 {
     Super::BeginPlay();
-    InitInteractionUI();
+    InteractionComp->InitInteractionText(ObjectType);
 }
 
 void ABaseInteraction::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-    if (IsValid(WidgetComp))
-    {
-        mCurrentTime += DeltaTime;
-
-        if (bPlayerNear)
-            mCurrentTime = 0.f;
-
-        // 0.25초 지날 시 UI설정
-        WidgetComp->SetVisibility(mCurrentTime > 0.25f);
-    }
 }
 
 void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -46,46 +34,23 @@ void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Othe
 
 void ABaseInteraction::InitComponents()
 {
-    ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
     SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
     StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
-    WidgetComp       = CreateDefaultSubobject<UWidgetComponent>("InteractionWidgetComp");
     ParticleComp     = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
-}
-
-void ABaseInteraction::InitInteractionUI()
-{
-    if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleSetInteractionWidgetComp.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 줍기"), *ObjectType));
+    InteractionComp  = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComp"));
+    InitCollider();
 }
 
 void ABaseInteraction::AttachComponents()
 {
-    if (WidgetComp)
-        WidgetComp->SetupAttachment(RootComponent);
-
     if (ParticleComp)
         ParticleComp->SetupAttachment(RootComponent);
-}
-
-void ABaseInteraction::SetCollisionSettingsForObjects()
-{
-    if (IsValid(ColliderComp))
-    {
-        this->SetRootComponent(ColliderComp);
-        ColliderComp->BodyInstance.SetCollisionProfileName("Object");
-        ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
-        ColliderComp->SetSimulatePhysics(false);
-    }
 }
 
 void ABaseInteraction::InitStaticMesh(FString Path)
 {
     if (IsValid(SkeletalMeshComp))
         SkeletalMeshComp->DestroyComponent();
-
-    if (IsValid(ColliderComp))
-        ColliderComp->DestroyComponent();
 
     this->SetRootComponent(StaticMeshComp);
     StaticMeshComp->RegisterComponent();
@@ -124,6 +89,15 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     AttachComponents();
 }
 
+void ABaseInteraction::InitCollider()
+{
+    // 충돌체 초기화
+    ColliderComp = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
+    ColliderComp->BodyInstance.SetCollisionProfileName("Object");
+    ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
+    ColliderComp->SetSimulatePhysics(false);
+}
+
 UStaticMesh* ABaseInteraction::GetStaticMesh() const { return StaticMeshComp->GetStaticMesh(); }
 
 USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const { return SkeletalMeshComp->SkeletalMesh; }
@@ -132,14 +106,7 @@ void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (StaticMeshComp) St
 
 void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (SkeletalMeshComp) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
 
-void ABaseInteraction::DestroyComponentsForUI()
-{
-    if (ColliderComp)
-        ColliderComp->DestroyComponent();
-    
-    if (WidgetComp)
-        WidgetComp->DestroyComponent();
-}
+void ABaseInteraction::DestroyComponentsForUI() { InteractionComp->DestroyComponent(); }
 
 void ABaseInteraction::SetForDummyCharacter()
 {
@@ -169,22 +136,18 @@ void ABaseInteraction::SetForDummyCharacter()
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
     // 컴포넌트에 따라 콜라이더 업데이트
-    TArray<UPrimitiveComponent*> arrComp
-    {
-        ColliderComp,
-        SkeletalMeshComp,
-        StaticMeshComp
-    };
-    for (auto comp : arrComp)
-    {
-        if (IsValid(comp))
-        {
-            comp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
-            comp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
-            comp->SetSimulatePhysics(false);
-            break;
-        }
-    }
+    if      (IsValid(SkeletalMeshComp))
+             ChangeCollisionSettings(SkeletalMeshComp, bTurned);
+
+    else if (IsValid(StaticMeshComp))
+             ChangeCollisionSettings(StaticMeshComp,bTurned);
+}
+
+void ABaseInteraction::ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bool bTurned)
+{
+    MeshComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
+    MeshComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+    MeshComp->SetSimulatePhysics(false);
 }
 
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
@@ -219,6 +182,8 @@ void ABaseInteraction::Detach(FTransform NewPos)
     this->SetActorTransform(NewPos);
     this->ChangeCollisionSettings();
 }
+
+void ABaseInteraction::TurnUI(bool bOnOff /* = true */) { InteractionComp->bPlayerNear = bOnOff; }
 
 void ABaseInteraction::InitParticleSystem(FString Path)
 {

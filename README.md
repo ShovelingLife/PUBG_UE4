@@ -44,6 +44,8 @@
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Backpacks & Bags / 22+ Variations	Pack Dev $
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Input Keys Icon Pack $
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; MarketplaceBlockout $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; SkyDive and Parachute Kit $
+##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; Ultimate Health Pack $
 #### &#x2B1B; 유니티 에셋 스토어)
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; SFX bundle
 ##### &nbsp;&nbsp;&nbsp;&nbsp; &#x25FC; ProgressBars #4

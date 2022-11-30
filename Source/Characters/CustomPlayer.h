@@ -19,9 +19,7 @@
 DECLARE_DELEGATE(FDeleOpenInventory)
 DECLARE_DELEGATE(FDeleCloseInventory)
 
-class ACoreAmmoBox;
-class ACoreAttachment;
-class ACoreFarmableItem;
+class ABaseInteraction;
 class ACoreWeapon;
 class ADummyCharacter;
 class AWeaponManager;
@@ -41,16 +39,21 @@ using enum EWeaponType;
 using enum EPlayerState;
 
 private:
-    UPROPERTY() UCustomGameInstance* mpCustomGameInst = nullptr;
-    /** \brief 플레이어가 사용하는 변수 */
-    UPROPERTY() AWeaponManager*  mpWeaponManager            = nullptr;
-    UPROPERTY() AActor*          mpCollidedWeapon           = nullptr;
-    UPROPERTY() ACoreAttachment* mpCollidedWeaponAttachment = nullptr;
-    UPROPERTY() ACoreAmmoBox* mpCollidedAmmoBox = nullptr;
-    UPROPERTY() ACoreFarmableItem* mpFarmableItem           = nullptr;
+    UPROPERTY() 
+    UCustomGameInstance* mpCustomGameInst = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = Audio)    UAudioComponent*          AudioComp    = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Particle) UParticleSystemComponent* ParticleComp = nullptr;
+    /** \brief 플레이어가 사용하는 변수 */
+    UPROPERTY() 
+    AWeaponManager* mpWeaponManager = nullptr;
+
+    UPROPERTY() 
+    ABaseInteraction* mpCollidedItem = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Audio)    
+    UAudioComponent* AudioComp    = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category = Particle) 
+    UParticleSystemComponent* ParticleComp = nullptr;
 
     /** \brief 이동 관련 변수 */
     FVector mDirectionUpDown    = FVector::ZeroVector;
@@ -65,18 +68,34 @@ private:
 
 // 플레이어 컴포넌트 및 상태 변수
 public:
-    UPROPERTY(EditAnywhere) TSubclassOf<ADummyCharacter> BP_DummyCharacter;
-    UPROPERTY() ADummyCharacter* pDummyCharacter;
+    // ------- FPS 카메라 -------
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
+    USpringArmComponent* FPS_SpringArmComp = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) USpringArmComponent* FPS_SpringArmComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent*    FPS_CameraComp    = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
+    UCameraComponent* FPS_CameraComp = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) USpringArmComponent* TPS_SpringArmComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent*    TPS_CameraComp    = nullptr;
+    // ------- TPS 카메라 -------
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
+    USpringArmComponent* TPS_SpringArmComp = nullptr;
+    
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
+    UCameraComponent* TPS_CameraComp = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) UCameraComponent* Aim_CameraComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) FTimerHandle AimTimerHandle;
+    // ------- 에임 카메라 -------
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
+    UCameraComponent* Aim_CameraComp = nullptr;
+    
+    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
+    FTimerHandle AimTimerHandle;
     //UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UStaticMeshComponent*    TPS_MeshComp    = nullptr;
+
+    // ------- 인벤토리 캐릭터 UI 관련 -------
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<ADummyCharacter> BP_DummyCharacter;
+
+    UPROPERTY()
+    ADummyCharacter* pDummyCharacter;
 
     FDeleOpenInventory  DeleOpenInventory;
     FDeleCloseInventory DeleCloseInventory;
@@ -94,7 +113,8 @@ public:
     
     /** \brief 차량 관련 변수 */
     ESeatType CurrentSeatType = ESeatType::NONE;
-    UPROPERTY(BlueprintReadOnly) bool bInVehicle = false;
+
+    bool bInVehicle = false;
 
 public:
     ACustomPlayer();

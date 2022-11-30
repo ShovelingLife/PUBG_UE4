@@ -33,21 +33,16 @@ void UGunRecoilComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 }
 
 void UGunRecoilComponent::RecoilStart()
-{
+{   
     if (RecoilCurve)
     {
-        PlayerDeltaRot = FRotator(0.0f, 0.0f, 0.0f);
-        RecoilDeltaRot = FRotator(0.0f, 0.0f, 0.0f);
-        Del = FRotator(0.0f, 0.0f, 0.0f);
+        PlayerDeltaRot = RecoilDeltaRot = Del = FRotator::ZeroRotator;
         RecoilStartRot = PCRef->GetControlRotation();
-
-        bFiring = true;
-
-        //Timer for the recoil: I have set it to 10s but dependeding how long it takes to empty the gun mag, you can increase the time.
-
+       
+        // 반동 효과 주기위한 (10초 후)
         GetWorld()->GetTimerManager().SetTimer(FireTimer, this, &UGunRecoilComponent::RecoilTimerFunction, 10.0f, false);
 
-        bRecoil = true;
+        bFiring = bRecoil = true;
         bRecoilRecovery = false;
     }
 }
@@ -69,30 +64,26 @@ void UGunRecoilComponent::RecoveryStart()
 
 void UGunRecoilComponent::RecoilTick(float DeltaTime)
 {
-    float recoiltime;
     FVector RecoilVec;
+    float recoiltime;
 
     if (bRecoil)
     {
         recoiltime = GetWorld()->GetTimerManager().GetTimerElapsed(FireTimer);
         RecoilVec = RecoilCurve->GetVectorValue(recoiltime);
-        Del.Roll = 0;
-        Del.Pitch = (RecoilVec.Y);
-        Del.Yaw = (RecoilVec.Z);
+        Del = FRotator(RecoilVec.Y, RecoilVec.Z, 0.f);
         PlayerDeltaRot = PCRef->GetControlRotation() - RecoilStartRot - RecoilDeltaRot;
         PCRef->SetControlRotation(RecoilStartRot + PlayerDeltaRot + Del);
         RecoilDeltaRot = Del;
 
-        if (!bFiring)
+        // 반동 멈춤
+        if (!bFiring &&
+            recoiltime > FireRate)
         {
-            if (recoiltime > FireRate)
-            {
-                GetWorld()->GetTimerManager().ClearTimer(FireTimer);
-                RecoilStop();
-                bRecoil = false;
-                RecoveryStart();
-
-            }
+            GetWorld()->GetTimerManager().ClearTimer(FireTimer);
+            RecoveryStart();
+            bFiring = false;
+            bRecoil = false;
         }
     }
     else if (bRecoilRecovery)
@@ -100,6 +91,7 @@ void UGunRecoilComponent::RecoilTick(float DeltaTime)
         // 반동 초기화
         FRotator tmpRot = PCRef->GetControlRotation();
         pcRot = tmpRot;
+
         if (tmpRot.Pitch >= RecoilStartRot.Pitch)
         {
             PCRef->SetControlRotation(UKismetMathLibrary::RInterpTo(pcRot, pcRot - RecoilDeltaRot, DeltaTime, 10.0f));

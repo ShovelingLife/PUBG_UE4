@@ -89,14 +89,6 @@ private:
     UFUNCTION() void PredictGrenadePath();
 
     /**
-     * \brief 배열 내에 원소 찾음
-	 * \param Direction 방향
-	 * \param StartIndex 시작 위치
-	 * \return e_current_weapon_type 현재 무기 타입
-     */
-    EWeaponType GetWeaponIndex(bool bDown, int StartIndex) const;
-
-    /**
      * \brief 무기를 플레이어 메시에 부착
 	 * \param pNewWeapon 무기 종류
 	 * \param SocketName 소켓 이름
@@ -132,7 +124,7 @@ public:
 	 * \param pWeapon 착용할 무기
 	 * \param bCheck 무기 중복 여부 체크
 	 */
-	void Equip(AActor* pWeapon, bool bCheck = true);
+	bool TryToEquip(ABaseInteraction* pWeapon, bool bCheck = true);
 
 	/**
 	 * \brief 무기 교체

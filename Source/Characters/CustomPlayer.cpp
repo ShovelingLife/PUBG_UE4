@@ -257,42 +257,20 @@ void ACustomPlayer::CheckNearObj()
     GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
     AActor* p_hittedActor = hitResult.GetActor();
 
-    // 충돌한 오브젝트가 있을 시
-    if (p_hittedActor)
-    {
-        // 충돌한 오브젝트가 무기일 시
-        if      (p_hittedActor->IsA<ACoreWeapon>()          ||
-                 p_hittedActor->IsA<ACoreThrowableWeapon>() ||
-                 p_hittedActor->IsA<ACoreMeleeWeapon>())
-        {
-            if (auto p_grenade = Cast<ACoreThrowableWeapon>(p_hittedActor))
-            {
-                if (p_grenade->bThrowed)
-                    return;
-            }
-            mpCollidedWeapon = p_hittedActor;
-        }
+    if (!p_hittedActor)
+        return;
 
-        // 획득 가능한 오브젝트일 시
-        else if (p_hittedActor->IsA<ACoreFarmableItem>())
-                 mpFarmableItem = Cast<ACoreFarmableItem>(p_hittedActor);
+    // 오브젝트 접근 후 벗어남
+    if (mpCollidedItem)
+        mpCollidedItem->TurnUI(false);
 
-        // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시 
-        if (auto p_obj = Cast<ABaseInteraction>(p_hittedActor))
-            p_obj->bPlayerNear = true;
-    }
     else
     {
-        // 무기 접근 후 벗어남
-        if (mpCollidedWeapon)
+        // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
+        if (p_hittedActor->IsA<ABaseInteraction>())
         {
-            Cast<ABaseInteraction>(mpCollidedWeapon)->bPlayerNear = false;
-            mpCollidedWeapon = nullptr;
-        }
-        if (mpFarmableItem)
-        {
-            mpFarmableItem->bPlayerNear = false;
-            mpFarmableItem = nullptr;
+            mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
+            mpCollidedItem->TurnUI();
         }
     }
 }
@@ -312,26 +290,27 @@ void ACustomPlayer::CheckNearVehicle()
 
 void ACustomPlayer::TryToInteract()
 {
-    if (mbInteracting &&
-        mpCustomGameInst)
-    {
-        // 충돌된 오브젝트 체크
-        if (mpCollidedWeapon)
-        {
-            if (auto p_soundManager = mpCustomGameInst->pSoundManager)
-                p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
+    if (!mpCustomGameInst ||
+        !mpCollidedItem   ||
+        !mbInteracting)
+        return;
 
-            // 무기랑 충돌 시
-            mpWeaponManager->Equip(mpCollidedWeapon);
-        }
-        // 획득 가능한 오브젝트일 시
-        if (mpFarmableItem)
-        {
-            // 인벤토리에 추가한 뒤 맵에서 제거
-            mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpFarmableItem, false);
-            mpFarmableItem->Destroy();
-            mpFarmableItem = nullptr;
-        }
+    // 충돌된 오브젝트가 무기일 시
+    if (mpWeaponManager->TryToEquip(mpCollidedItem))
+    {
+        if (auto p_soundManager = mpCustomGameInst->pSoundManager)
+            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
+
+        mpCollidedItem = nullptr;
+        return;
+    }
+    // 획득 가능한 오브젝트일 시
+    if (mpCollidedItem->IsA<ACoreFarmableItem>())
+    {
+        // 인벤토리에 추가한 뒤 맵에서 제거
+        mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedItem, false);
+        mpCollidedItem->Destroy();
+        mpCollidedItem = nullptr;
     }
 }
 

@@ -21,7 +21,7 @@ void ACoreMeleeWeapon::ClickEvent()
 void ACoreMeleeWeapon::BeginPlay()
 {
     Super::BeginPlay();
-    ABaseInteraction::SetCollisionSettingsForObjects();
+    ABaseInteraction::ChangeCollisionSettings();
 }
 
 void ACoreMeleeWeapon::Init(EMeleeWeaponType Type)

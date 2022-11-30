@@ -24,7 +24,6 @@ ACoreWeapon::ACoreWeapon()
 void ACoreWeapon::BeginPlay()
 {
     Super::BeginPlay();
-    Super::SetCollisionSettingsForObjects();
 }
 
 void ACoreWeapon::NotifyActorBeginOverlap(AActor* CollidedActor)
@@ -73,7 +72,7 @@ void ACoreWeapon::Tick(float DeltaTime)
 
     if (!bShooting &&
         GunRecoilComponent)
-        GunRecoilComponent->RecoilStop();
+        GunRecoilComponent->bFiring = true;
 }
 
 void ACoreWeapon::ClickEvent()
@@ -122,7 +121,7 @@ void ACoreWeapon::Init(EGunType Type)
     if (recoilCurveFloat.Succeeded())
         GunRecoilComponent->RecoilCurve = recoilCurveFloat.Object;
 
-    Super::SetCollisionSettingsForObjects();
+    Super::ChangeCollisionSettings();
     Super::InitSkeletalMesh(WeaponData.MeshPath);
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     InitBullet();

@@ -54,10 +54,7 @@ public:
     void RecoilStart();
 
     // 일정 시간 후 반동 멈춤
-    void RecoilTimerFunction();
-
-    // 밤동 멈춤
-    void RecoilStop() { bFiring = false; }
+    void RecoilTimerFunction(); 
 
     // 반동 이전 원래 위치로 복구
     void RecoveryStart();
