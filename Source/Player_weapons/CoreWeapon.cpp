@@ -114,8 +114,8 @@ void ACoreWeapon::Init(EGunType Type)
     mNextShootTime = (ObjectGroupType == "ShotGun") ? 0.25f : 0.1f;
 
     // 총기 반동 초기화
-    GunRecoilComponent = CreateDefaultSubobject<UGunRecoilComponent>(TEXT("GunRecoilComp"));
-    FString curvePath = "/Game/Data/GunRecoilCurve/RecoilCurve" + ObjectType;
+    GunRecoilComponent    = CreateDefaultSubobject<UGunRecoilComponent>(TEXT("GunRecoilComp"));
+    FString curvePath     = "/Game/Data/GunRecoilCurve/RecoilCurve" + ObjectType;
     auto recoilCurveFloat = ConstructorHelpers::FObjectFinder<UCurveVector>(*curvePath);
 
     if (recoilCurveFloat.Succeeded())
@@ -130,7 +130,7 @@ void ACoreWeapon::Init(EGunType Type)
 
 void ACoreWeapon::InitBullet()
 {
-    ConstructorHelpers::FClassFinder<ACoreBullet> BP_BULLET(*(WeaponData.BulletBP_path));
+    ConstructorHelpers::FClassFinder<ACoreBullet> BP_BULLET(*WeaponData.BulletBP_path);
 
     if (BP_BULLET.Succeeded())
         BP_Bullet = BP_BULLET.Class;

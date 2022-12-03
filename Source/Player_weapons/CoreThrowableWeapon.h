@@ -37,10 +37,18 @@ protected:
     FDeleExplosionEvent mExplosionEvent;
 
 public:
-    UPROPERTY(EditAnywhere, category = Collider) USphereComponent* SphereComp;
-    UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) UProjectileMovementComponent* ProjectileMovementComp = nullptr;    
-    UPROPERTY(VisibleAnywhere) UParticleSystemComponent* GrenadeParticleComp;
-    UPROPERTY(EditAnywhere) URadialForceComponent* RadialForceComp;
+    UPROPERTY(EditAnywhere, category = Collider) 
+    USphereComponent* SphereComp;
+
+    UPROPERTY(VisibleAnywhere, Category = ProjectileMovementComp) 
+    UProjectileMovementComponent* ProjectileMovementComp = nullptr;   
+
+    UPROPERTY(VisibleAnywhere) 
+    UParticleSystemComponent* GrenadeParticleComp;
+
+    UPROPERTY(EditAnywhere) 
+    URadialForceComponent* RadialForceComp;
+
     FsOtherWeaponData    WeaponData;
     EThrowableWeaponType WeaponType = THROWABLE_MAX;
 

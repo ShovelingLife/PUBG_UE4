@@ -392,30 +392,24 @@ void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWea
 // 추가 수정
 void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
 {
-    if (WeaponType == CurrentWeaponType)
+    if (WeaponType == CurrentWeaponType ||
+        WeaponType == NONE)
         return;
 
     // 무기 맞교환
-    if(WeaponType==MELEE)
+    if (WeaponType == MELEE)
     {
 
     }
-    else if(WeaponType == THROWABLE)
+    else if (WeaponType == THROWABLE)
     {
         CreateExplosive(pThrowable);
     }
     else
     {
-        TArray<FString> arrSocketName
-        {
-            "",
-            "FirstGunSock",
-            "SecondGunSock",
-            "HandGunSock"
-        };
         // 새로운 무기 장착
         int idx = (int)WeaponType;
-        AttachWeapon(mArrWeapon[idx], arrSocketName[idx]);
+        AttachWeapon(mArrWeapon[idx], mArrSocketName[idx - 1]);
 
         // 기존 무기 탈착
         if (auto p_gun = mArrWeapon[(int)CurrentWeaponType])
@@ -429,20 +423,22 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
 {
 #define ERROR -1
 
+    if (!IsValid(pNewWeapon))
+        return ERROR;
+
     switch (WeaponType)
     {
     case FIRST: case SECOND:
     {
-        auto p_newWeapon     = Cast<ACoreWeapon>(pNewWeapon);
-        auto p_currentWeapon = Cast<ACoreWeapon>(pCurrentWeapon);
+        // 타입이 안맞을 시
+        if (pNewWeapon->IsA<ACoreMeleeWeapon>()     ||
+            pNewWeapon->IsA<ACoreThrowableWeapon>() ||
+            pNewWeapon->IsGroupType("HandGun"))
+            return ERROR;
 
-        if (IsValid(pNewWeapon))
-        {
-            if (pNewWeapon->IsA<ACoreMeleeWeapon>()     ||
-                pNewWeapon->IsA<ACoreThrowableWeapon>() ||
-                p_newWeapon->IsGroupType("HandGun"))
-                return ERROR;
-        }
+        auto p_newWeapon     = Cast<ACoreWeapon>(pNewWeapon);
+        auto p_currentWeapon = Cast<ACoreWeapon>(pCurrentWeapon);        
+
         // 첫번째 총과 두번째 총 교체
         if (p_newWeapon     == pFirstGun &&
             p_currentWeapon == pSecondGun)
@@ -468,27 +464,17 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
 
     case PISTOL:
     {
-        auto p_newWeapon = Cast<ACoreWeapon>(pNewWeapon);
-
-        if (!IsValid(p_newWeapon))
+        if (pNewWeapon->IsGroupType("HandGun"))
             return ERROR;
 
-        if (p_newWeapon->IsGroupType("HandGun"))
-            return ERROR;
-
-        if (p_newWeapon != pPistol)
-            SwapWorld(pCurrentWeapon, p_newWeapon, "HandGunSock");
+        if (pNewWeapon != pPistol)
+            SwapWorld(pCurrentWeapon, pNewWeapon, "HandGunSock");
     }
     break;
 
     case MELEE:
     {
-        auto p_newMelee = Cast<ACoreMeleeWeapon>(pNewWeapon);
-
-        if (!IsValid(p_newMelee))
-            return ERROR;
-
-        if (p_newMelee->IsGroupType("Melee"))
+        if (pNewWeapon->IsGroupType("Melee"))
             return ERROR;
     }
     break;
@@ -515,22 +501,16 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     if (!IsValid((p_gun)))
         return;
 
-    TArray<FString> arrSocketName
-    {
-        "FirstGunSock",
-        "SecondGunSock",
-        "HandGunSock"
-    };
     // 캐릭터 메쉬에다 부착
     auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-    p_gun->AttachToMesh(p_player->GetMesh(), bAiming ? "EquippedWeaponPosSock" : arrSocketName[(int)CurrentWeaponType - 1]);
+    p_gun->AttachToMesh(p_player->GetMesh(), bAiming ? "EquippedWeaponPosSock" : mArrSocketName[(int)CurrentWeaponType - 1]);
 }
 
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
 {
     if (!IsValid(pGrenade))
         return;
-
+    
     // 오브젝트 생성 후 투척류로 지정
     pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
     pThrowable->Setup(pGrenade);
@@ -566,6 +546,7 @@ void AWeaponManager::Drop(EWeaponType WeaponType)
 
 void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)
 {
+    // 종류에 따라 스켈레탈 또는 스태틱 메시를 더미 캐릭터가 장착하게 함.
     for (int i = 1; i < mArrWeapon.Num(); i++)
     {
         ABaseInteraction* pWeapon = nullptr;
@@ -610,7 +591,7 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
 
     switch (WeaponType)
     {
-        // 총기 
+    // 총기 
     case FIRST:  
     case SECOND: 
     {

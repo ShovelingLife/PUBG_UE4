@@ -41,30 +41,37 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
     FString   category = ItemData.Category;
     int       imageIndex = ItemData.ImageIndex;
 
-    if (imageIndex >= MapOtherWeaponIcon.Num())
-        return nullptr;
-
     // 투척류 또는 근접무기일 시
     if      (category == "Throwable" ||
              category == "Melee")
-             weaponTex = MapOtherWeaponIcon[imageIndex];
-
+    {
+        if (IsOtherWeaponIconGettable(imageIndex))
+            weaponTex = MapOtherWeaponIcon[imageIndex];
+    }
     // 총기 무기일 시
     else if (category == "Gun")
-             weaponTex = MapWeaponIcon[imageIndex];
-
+    {
+        if (IsMainWeaponIconGettable(imageIndex))
+            weaponTex = MapWeaponIcon[imageIndex];
+    }
     // 무기 부속품일 시
     else if (category == "Attachment")
-             weaponTex = MapWeaponAttachmentIcon[imageIndex];
-
+    {
+        if (IsWeaponAttachmentIconGettable(imageIndex))
+            weaponTex = MapWeaponAttachmentIcon[imageIndex];
+    }
     else if (category == "AmmoBox")
-             weaponTex = MapAmmoBoxIcon[imageIndex];
-
+    {
+        if (IsAmmoBoxIconGettable(imageIndex))
+            weaponTex = MapAmmoBoxIcon[imageIndex];
+    }
     return Cast<UTexture2D>(weaponTex);
 }
 
 UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
 {
+    UTexture* iconTex = nullptr;
+
     // 총기류
     if      (Type == "Gun" &&
              Index < MapWeaponIcon.Num())
@@ -80,7 +87,7 @@ UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
              Index < MapUtilityIcon.Num())
              return Cast<UTexture2D>(MapUtilityIcon[Index]);
 
-    return nullptr;
+    return Cast<UTexture2D>(iconTex);
 }
 
 UMaterial* AUI_manager::GetMaterial(int Index)
@@ -174,9 +181,7 @@ void AUI_manager::InitInventoryWeaponIcon()
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = inventoryWeaponUI_Path + "T_" + arrWeaponData[i].IconPath;
         ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
-
-        if (UI_tex.Succeeded())
-            MapWeaponIcon.Add(i, UI_tex.Object);
+        MapWeaponIcon.Add(i, UI_tex.Object);
     }
     // 근접 및 투척류 아이콘 초기화
     auto arrOtherWeaponData = ADataTableManager::ArrOtherWeaponData;
@@ -186,9 +191,7 @@ void AUI_manager::InitInventoryWeaponIcon()
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = inventoryWeaponUI_Path + arrOtherWeaponData[i].Type + "_icon";
         ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
-
-        if (UI_tex.Succeeded())
-            MapOtherWeaponIcon.Add(i, UI_tex.Object);
+        MapOtherWeaponIcon.Add(i, UI_tex.Object);
     }
     // 부속품 아이콘 초기화
     auto arrWeaponAttachmentData = ADataTableManager::ArrWeaponAttachmentData;
@@ -198,9 +201,7 @@ void AUI_manager::InitInventoryWeaponIcon()
         // 리소스를 불러온 후 데이터 테이블에 대입
         FString UI_path = inventoryWeaponUI_Path + "T_" + arrWeaponAttachmentData[i].Type + "_Icon";
         ConstructorHelpers::FObjectFinder<UTexture> UI_tex(*UI_path);
-
-        if (UI_tex.Succeeded())
-            MapWeaponAttachmentIcon.Add(i, UI_tex.Object);
+        MapWeaponAttachmentIcon.Add(i, UI_tex.Object);
     }
 }
 

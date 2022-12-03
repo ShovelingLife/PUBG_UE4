@@ -25,7 +25,7 @@ UCLASS()
 class PUBG_UE4_API ADataTableManager : public AActor
 {
     GENERATED_BODY()
-        
+
 public:
     /** \brief 게임 오브젝트 데이터 배열 (static) */
     static TArray<FsVehicleData>          ArrVehicleData;
@@ -44,15 +44,15 @@ private:
 
     /** * \brief 무기 데이터 관련 */
     const FString mkBulletBP_path        = Global::BlueprintFolder + "Items/Weapons/Ammo/BP_";
-    const FString mkWeaponMeshPath       = Global::MeshFolder + "AdvanceWeaponPack/Mesh/Weapon/";
+    const FString mkWeaponMeshPath       = Global::MeshFolder + "Weapons/Mesh/Guns/";
     const FString mkRendertargetMeshPath = "/Game/Materials/Weapon_UI/UI_material_";
     const FString mkWeaponSoundPath      = "/Game/SFX/Gun_sounds/";
 
     /** \brief 기타 무기 (투척류/근접) 데이터 관련 */
-    const FString mkOtherWeaponMeshPath = Global::MeshFolder + "Items/Weapons/";
+    const FString mkOtherWeaponMeshPath = Global::MeshFolder + "Weapons/Mesh/";
 
     /** \brief 무기 부속품 데이터 관련 */
-    const FString mkWeaponAttachmentMeshPath = Global::MeshFolder + "AdvanceWeaponPack/Mesh/Attachment/";
+    const FString mkWeaponAttachmentMeshPath = Global::MeshFolder + "Weapons/Mesh/Attachment/";
 
     /** \brief 총알 상자 데이터 관련 */
     const FString mkAmmoBoxMeshPath = "/Game/UI/AmmoBoxIcon/AmmoBox/";

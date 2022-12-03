@@ -519,25 +519,15 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
     if (mpWeaponManager->IsFiring())
         return;
 
-    ASoundManager* p_soundManager = mpCustomGameInst->pSoundManager;
-
     // 마우스 휠로 무기 선택
-    if (mpWeaponManager->ScrollSelect(Direction))
-        p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+    if (Direction != "")
+        mpWeaponManager->ScrollSelect(Direction);
 
     // 키보드 숫자 키로 무기 선택
     else
-    {
         mpWeaponManager->Swap(WeaponType);
-        p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-    }
-    /*if (WeaponType != NONE &&
-        WeaponType != mpWeaponManager->CurrentType &&
-        mpWeaponManager->GetWeaponByIndex(WeaponType) != nullptr)
-    {
-        mpWeaponManager->Swap(WeaponType);
-        p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
-    }*/
+
+    mpCustomGameInst->pSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
 }
 
 void ACustomPlayer::ChangePerspective()
@@ -599,10 +589,7 @@ void ACustomPlayer::DealDmg(float DmgVal)
         CurrentHealth -= DmgVal;
 }
 
-ACoreWeapon* ACustomPlayer::GetCurrentWeapon()
-{
-    return mpWeaponManager->GetCurrentGun();
-}
+ACoreWeapon* ACustomPlayer::GetCurrentWeapon() { return mpWeaponManager->GetCurrentGun(); }
 
 void ACustomPlayer::ExitFromVehicle(FVector ExitPos)
 {

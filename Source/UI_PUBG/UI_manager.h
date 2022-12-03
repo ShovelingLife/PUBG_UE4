@@ -112,6 +112,14 @@ private:
     /** \brief 기타 UI 초기화 */
     void InitUtilityIcon();
     
+    static bool IsMainWeaponIconGettable(int idx) { return !MapMainWeaponIcon.IsEmpty() && idx < MapMainWeaponIcon.Num(); }
+    
+    static bool IsOtherWeaponIconGettable(int idx) { return !MapOtherWeaponIcon.IsEmpty() && idx < MapOtherWeaponIcon.Num(); }
+    
+    static bool IsWeaponAttachmentIconGettable(int idx) { return !MapWeaponAttachmentIcon.IsEmpty() && idx < MapWeaponAttachmentIcon.Num(); }
+    
+    static bool IsAmmoBoxIconGettable(int idx) { return !MapAmmoBoxIcon.IsEmpty() && idx < MapAmmoBoxIcon.Num(); }
+
 // 시작 후 초기화
 public:
     /** \brief 플레이어 인벤토리 설정 */

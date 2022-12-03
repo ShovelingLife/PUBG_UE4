@@ -182,8 +182,6 @@ private:
 
     void UpdateInventoryWeaponUI();
 
-    void CheckForHoveredWeaponSlot();
-
     // ------- 선택하고 있는 UI 관련 -------
     // 
     // 갱신

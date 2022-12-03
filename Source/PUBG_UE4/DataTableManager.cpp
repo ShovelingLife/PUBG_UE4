@@ -108,7 +108,7 @@ void ADataTableManager::InitOtherWeaponDataArr()
             break;
 
         auto data = *p_row;
-        data.MeshPath = mkOtherWeaponMeshPath + data.GroupType + "/Meshes/SM_" + data.Type;
+        data.MeshPath = mkOtherWeaponMeshPath + data.GroupType + "s/" + data.Type + "/SK_" + data.Type;
         ArrOtherWeaponData.Add(data);
     }
 }

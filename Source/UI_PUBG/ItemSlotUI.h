@@ -44,13 +44,26 @@ private:
 
 public:
     /** \brief 현재 쓰여지는 변수 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCanvasPanel*   MainCanvasPanel;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UHorizontalBox* MainHorizontalBox;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*       BackgroundSizeBox;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder*        ItemBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*         ItemImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     NameTxt;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*     CountTxt;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UCanvasPanel* MainCanvasPanel;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UHorizontalBox* MainHorizontalBox;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    USizeBox* BackgroundSizeBox;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UBorder* ItemBorder;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* ItemImg;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTextBlock* NameTxt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTextBlock* CountTxt;
 
     UPROPERTY() ABaseInteraction* pDraggedItem;
     FDeleDeleteFromList           DeleDeleteFromList;

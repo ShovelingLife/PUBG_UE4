@@ -38,13 +38,16 @@ void ABaseInteraction::InitComponents()
     StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     ParticleComp     = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
     InteractionComp  = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComp"));
-    InitCollider();
+    ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
 }
 
 void ABaseInteraction::AttachComponents()
 {
     if (ParticleComp)
         ParticleComp->SetupAttachment(RootComponent);
+
+    if (ColliderComp)
+        ColliderComp->SetupAttachment(RootComponent);
 }
 
 void ABaseInteraction::InitStaticMesh(FString Path)
@@ -53,7 +56,6 @@ void ABaseInteraction::InitStaticMesh(FString Path)
         SkeletalMeshComp->DestroyComponent();
 
     this->SetRootComponent(StaticMeshComp);
-    StaticMeshComp->RegisterComponent();
 
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(*Path);
@@ -70,13 +72,7 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     if (IsValid(StaticMeshComp))
         StaticMeshComp->DestroyComponent();
 
-    if (!IsValid(RootComponent))
-        this->SetRootComponent(SkeletalMeshComp);
-
-    else
-        SkeletalMeshComp->SetupAttachment(RootComponent);
-
-    SkeletalMeshComp->RegisterComponent();
+    this->SetRootComponent(SkeletalMeshComp);
 
     // 경로로부터 메시 생성
     ConstructorHelpers::FObjectFinder<USkeletalMesh> MESH(*Path);
@@ -87,12 +83,13 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     SkeletalMeshComp->SetSimulatePhysics(false);
     SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
     AttachComponents();
+
+    InitCollider();
 }
 
 void ABaseInteraction::InitCollider()
 {
     // 충돌체 초기화
-    ColliderComp = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
     ColliderComp->BodyInstance.SetCollisionProfileName("Object");
     ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
     ColliderComp->SetSimulatePhysics(false);
@@ -135,19 +132,19 @@ void ABaseInteraction::SetForDummyCharacter()
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
+    ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
+    ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;    
     // 컴포넌트에 따라 콜라이더 업데이트
-    if      (IsValid(SkeletalMeshComp))
+    /*if      (IsValid(SkeletalMeshComp))
              ChangeCollisionSettings(SkeletalMeshComp, bTurned);
 
     else if (IsValid(StaticMeshComp))
-             ChangeCollisionSettings(StaticMeshComp,bTurned);
+             ChangeCollisionSettings(StaticMeshComp,bTurned);*/
 }
 
 void ABaseInteraction::ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bool bTurned)
 {
-    MeshComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
-    MeshComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
-    MeshComp->SetSimulatePhysics(false);
+    
 }
 
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)

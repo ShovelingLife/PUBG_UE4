@@ -1,6 +1,6 @@
 #include "Mine.h"
 
-//AMine::AMine() : Super(EThrowableWeaponType::MINE)
-//{
-//
-//}
+AMine::AMine() : Super(EThrowableWeaponType::MINE)
+{
+
+}

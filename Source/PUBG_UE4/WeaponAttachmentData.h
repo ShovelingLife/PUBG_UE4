@@ -9,10 +9,18 @@ struct FsWeaponAttachmentData : public FTableRowBase
 {
     GENERATED_BODY()
 
-public:
-    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) FString Type;
-    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) FString GroupType;
-    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) FString WeaponMatchType;
-    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) FString MeshPath;
-    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) FString Description;
+    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) 
+    FString Type;
+
+    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) 
+    FString GroupType;
+
+    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) 
+    FString WeaponMatchType;
+
+    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) 
+    FString MeshPath;
+
+    UPROPERTY(BlueprintReadWrite, Category = WeaponAttachmentData) 
+    FString Description;
 };

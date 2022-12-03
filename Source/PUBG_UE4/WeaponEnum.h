@@ -98,15 +98,13 @@ enum class EGunType : uint8
 UENUM()
 enum class EThrowableWeaponType : uint8
 {
-    FRAGMENTATION1,
-    FRAGMENTATION2,
-    ILLUMINATION,
-    GRAY_SMOKE,
-    RED_SMOKE,
-    STICK,
-    MOLOTOV,
+    TIMEBOMB,
     CLAYMORE,
     MINE,
+    GRENADE,
+    MOLOTOV,
+    ILLUMINATION,
+    SMOKE,
     THROWABLE_MAX
 };
 

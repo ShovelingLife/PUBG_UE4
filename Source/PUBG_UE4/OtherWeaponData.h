@@ -20,20 +20,34 @@ struct FsOtherWeaponData : public FTableRowBase
 	GENERATED_BODY()
 
     /** \brief 기타 컴포넌트 경로 관련 */
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString Type		 = "";
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString GroupType	 = "";
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString AudioPath	 = "";
-    UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString ParticlePath = "";
-    UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FString Description  = "";
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	FString Type = "";
 
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) FVector MeshPos = FVector::ZeroVector;
-    UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float MeshRotationX = 0.f;
-    UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float MeshSize = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	FString GroupType = "";
+
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	FString AudioPath = "";
+
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData)
+	FString ParticlePath = "";
+
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	FString Description = "";
 
 	/** \brief 무기 정보 관련 */
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float Damage = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float ExplosionRadius = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) float ExplosionTime	  = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	float Damage = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	float ExplosionRadius = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	float ExplosionTime = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, Category = OtherWeaponData) 
+	int Effect = 0;
+
 	FString MeshPath = "";
 
 public:

@@ -36,6 +36,13 @@ class PLAYER_WEAPONS_API AWeaponManager : public AActor
 using enum EWeaponType;
 
 private:
+    const TArray<FString> mArrSocketName
+    {
+        "FirstGunSock",
+        "SecondGunSock",
+        "HandGunSock"
+    };
+
 	TArray<ABaseInteraction*> mArrWeapon;
 
 	// 총기 관련

@@ -43,6 +43,7 @@ void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other,
 
 UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+    // 플레이어가 접촉 시 화상 효과를 줌 (오직 Molotov만)
     if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
     {
         if (auto p_customGameInst = UCustomGameInstance::GetInst())
@@ -52,6 +53,7 @@ UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* Overlap
 
 UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+    // 
     if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
     {
         if (auto p_customGameInst = UCustomGameInstance::GetInst())
@@ -88,17 +90,14 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 
     switch (WeaponType)
     {
-    case FRAGMENTATION1:
-    case FRAGMENTATION2:
+    case GRENADE:
     case CLAYMORE:
         particlePath = explosionPath + "P_Explosion_Big_A.P_Explosion_Big_A'"; break;
 
     case ILLUMINATION:
-    case STICK:
         particlePath = "ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'"; break;
 
-    case GRAY_SMOKE: particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
-    case RED_SMOKE:  particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
+    case SMOKE: particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
     case MOLOTOV:    particlePath = explosionPath + "P_Molotov.P_Molotov'"; break;
     }
     // 파티클 설정
@@ -134,17 +133,15 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
 
 void ACoreThrowableWeapon::InitMesh()
 {
-    Super::InitStaticMesh(WeaponData.MeshPath);
+    Super::InitSkeletalMesh(WeaponData.MeshPath);
 
-    if (StaticMeshComp)
+    if (SkeletalMeshComp)
     {
-        StaticMeshComp->SetRelativeTransform(FTransform(FRotator::MakeFromEuler(FVector(WeaponData.MeshRotationX, 0.f, 0.f)), WeaponData.MeshPos, FVector(WeaponData.MeshSize)));
-
         // 강체 관련
-        StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No; 
-        StaticMeshComp->SetSimulatePhysics(false);
-        StaticMeshComp->SetCollisionProfileName("Explosive");
-        StaticMeshComp->SetNotifyRigidBodyCollision(true);
+        SkeletalMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+        SkeletalMeshComp->SetSimulatePhysics(false);
+        SkeletalMeshComp->SetCollisionProfileName("Explosive");
+        SkeletalMeshComp->SetNotifyRigidBodyCollision(true);
     }
 }
 
@@ -197,9 +194,7 @@ void ACoreThrowableWeapon::BindExplosionFunc()
             });
         break;
     
-    case STICK:
-    case FRAGMENTATION1:
-    case FRAGMENTATION2:
+    case GRENADE:
     case CLAYMORE:
 
         mExplosionEvent.BindLambda([this]()
@@ -259,7 +254,6 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
 
     // 메쉬 설정
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    this->SetActorScale3D(FVector(WeaponData.MeshSize));
     StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
     StaticMeshComp->SetCollisionProfileName("Explosive");
 
@@ -291,9 +285,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 mExplosionEvent.ExecuteIfBound();
 
             // 이펙트 재생 
-            if (WeaponType == GRAY_SMOKE ||
-                WeaponType == RED_SMOKE  ||
-                WeaponType == MOLOTOV)
+            if (WeaponData.Effect)
             {
                 StaticMeshComp->SetVisibility(false);
 
