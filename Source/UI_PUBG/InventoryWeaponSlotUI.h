@@ -135,28 +135,14 @@ protected:
 
     void NativeTick(const FGeometry&, float) override;
 
+    // 좌클릭 시 (선택된 UI에 맞게끔 슬롯 변환 > 드래그) / 우클릭 시 맵에 드롭
+    virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-    /**
-      * \brief 좌클릭 시 (선택된 UI에 맞게끔 슬롯 변환 > 드래그) / 우클릭 시 맵에 드롭
-      * 선택 이미지 초기화
-      * \param _InGeometry UI 정보
-      * \param _InMouseEvent 마우스 이벤트
-      * \return FReply 마우스 처리 이벤트
-     */
-    virtual FReply NativeOnMouseButtonDown(const FGeometry& _InGeometry, const FPointerEvent& _InMouseEvent) override;
-
-    /**
-      * \brief 마우스 버튼 땠을 시 선택 이미지 및 클릭된 UI 정보 삭제
-      * \param _in_geometry UI 정보 \param _in_mouse_event 마우스 이벤트
-      * \return FReply 마우스 처리 이벤트
-     */
+    // 마우스 버튼 땠을 시 선택 이미지 및 클릭된 UI 정보 삭제
     virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-    /**
-      * \brief 마우스가 UI를 벗어날 시 선택 이미지 초기화
-      * \param _in_mouse_event 마우스 이벤트
-     */
-    virtual void NativeOnMouseLeave(const FPointerEvent& _InMouseEvent) override;
+    // 마우스가 UI를 벗어날 시 선택 이미지 초기화
+    virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 
     virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 

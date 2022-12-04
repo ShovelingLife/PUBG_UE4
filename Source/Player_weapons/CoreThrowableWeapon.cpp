@@ -119,7 +119,7 @@ void ACoreThrowableWeapon::InitProjectileMovementComp()
         return;
 
     ProjectileMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComp"));
-    ProjectileMovementComp->SetUpdatedComponent(StaticMeshComp);
+    ProjectileMovementComp->SetUpdatedComponent(SkeletalMeshComp);
     ProjectileMovementComp->InitialSpeed  = 0.f;
     ProjectileMovementComp->MaxSpeed      = 0.f;
     ProjectileMovementComp->bShouldBounce = false;
@@ -167,7 +167,7 @@ void ACoreThrowableWeapon::InitSphereComp()
 void ACoreThrowableWeapon::InitRadialForce()
 {
     RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
-    this->SetRootComponent(StaticMeshComp);
+    this->SetRootComponent(SkeletalMeshComp);
     RadialForceComp->SetupAttachment(RootComponent);
     RadialForceComp->bImpulseVelChange = true;
     RadialForceComp->ImpulseStrength = 350.f;
@@ -231,13 +231,10 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
     DestroyComponentsForUI();
 
     // 메쉬 설정
-    if (SkeletalMeshComp)
-        SkeletalMeshComp->DestroyComponent();
-
-    SetRootComponent(StaticMeshComp);
+    SetRootComponent(SkeletalMeshComp);
     AttachComponents();
-    SetStaticMesh(OtherWeapon->GetStaticMesh());
-    StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    SetSkeletalMesh(OtherWeapon->GetSkeletalMesh());
+    SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     
     // 이펙트 정보 설정
     Particle = OtherWeapon->Particle;
@@ -246,7 +243,7 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
 
 void ACoreThrowableWeapon::Throw(FVector Velocity)
 {
-    if (!StaticMeshComp ||
+    if (!SkeletalMeshComp ||
         !ProjectileMovementComp)
         return;
 
@@ -254,8 +251,8 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
 
     // 메쉬 설정
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    StaticMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
-    StaticMeshComp->SetCollisionProfileName("Explosive");
+    SkeletalMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+    SkeletalMeshComp->SetCollisionProfileName("Explosive");
 
     // 발사체 컴포넌트 설정
     Velocity.Z = 0.1f;
@@ -266,7 +263,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
 
     GetWorld()->GetTimerManager().SetTimer(mWaitHandle, FTimerDelegate::CreateLambda([&]()
         {
-            auto meshLocation = StaticMeshComp->GetComponentLocation();
+            auto meshLocation = SkeletalMeshComp->GetComponentLocation();
 
             // 사운드 재생
             if (auto p_customGameInst = UCustomGameInstance::GetInst())
@@ -287,7 +284,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
             // 이펙트 재생 
             if (WeaponData.Effect)
             {
-                StaticMeshComp->SetVisibility(false);
+                SkeletalMeshComp->SetVisibility(false);
 
                 if (!GrenadeParticleComp)
                 {
@@ -308,6 +305,6 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 RadialForceComp->Activate();
                 RadialForceComp->FireImpulse();
                 Destroy();
-            }
+            }   
         }), (WeaponType == MOLOTOV) ? 0.5f : 3.5f, false);
 }

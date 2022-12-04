@@ -169,7 +169,7 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     
     if (!pGameInstanceSubSystemUI ||
         !mpWeaponManager ||
-        !p_slot)    
+        !p_slot)
         return false;   
 
     // 현재 선택하고 있는 인덱스 확인

@@ -99,12 +99,6 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
         !pGameInstanceSubsystemUI)
         return;
 
-    // 데이터를 옮김
-    auto p_slot = GetInitializedSlotUI(mpSlotObj->pDraggedItem);
-
-    if (!p_slot)
-        return;
-
     // 슬롯 설정    
     pGameInstanceSubsystemUI->DeleSetTooltipVisibility.ExecuteIfBound(nullptr, ESlateVisibility::Hidden);                                               
 
@@ -116,9 +110,9 @@ void UInventoryListUI::NativeOnDragDetected(const FGeometry& InGeometry, const F
     FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     auto p_dragOperation = NewObject<UCustomDragDropOperation>();
-    p_dragOperation->Init(p_slot, mousePos);
+    p_dragOperation->Init(mpSlotObj, mousePos);
     p_dragOperation->Classify("Inventory");
-    p_dragOperation->DefaultDragVisual = pGameInstanceSubsystemUI->GetSlotCursorUI(p_slot->ItemData, mousePos);
+    p_dragOperation->DefaultDragVisual = pGameInstanceSubsystemUI->GetSlotCursorUI(mpSlotObj->ItemData, mousePos);
     OutOperation  = p_dragOperation;
 }
 

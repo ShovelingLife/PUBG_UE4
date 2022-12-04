@@ -423,7 +423,7 @@ int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurren
 {
 #define ERROR -1
 
-    if (!IsValid(pNewWeapon))
+    if (!pNewWeapon)
         return ERROR;
 
     switch (WeaponType)
@@ -508,13 +508,13 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
 
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
 {
-    if (!IsValid(pGrenade))
+    if (!pGrenade)
         return;
     
     // 오브젝트 생성 후 투척류로 지정
     pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
     pThrowable->Setup(pGrenade);
-    AttachWeapon(pThrowable, pThrowable->WeaponData.Type + "Sock");
+    AttachWeapon(pThrowable, "GrenadeSock");
     GetWorld()->GetGameInstance<UCustomGameInstance>()->DeleSetExplosiveUI.ExecuteIfBound(pThrowable);
 }
 
@@ -584,10 +584,8 @@ void AWeaponManager::DeactivateFiring()
 
 bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot)
 {
-    if (!IsValid(pWeapon))
+    if (!pWeapon)
         return true;
-
-    auto groupType = pWeapon->ObjectGroupType;
 
     switch (WeaponType)
     {
@@ -595,17 +593,39 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
     case FIRST:  
     case SECOND: 
     {
-        ACoreWeapon* p_gun = (WeaponType == FIRST) ? pFirstGun : pSecondGun;
-
         if (pWeapon->IsGroupType("Handgun") ||
             !pWeapon->IsA<ACoreWeapon>()) 
             return true; 
         
+        ACoreWeapon* p_gun = (WeaponType == FIRST) ? pFirstGun : pSecondGun;
         return Cast<ACoreWeapon>(pWeapon) == p_gun;
     }
-    case PISTOL:    return (Cast<ACoreWeapon>(pWeapon)          == pPistol    || pWeapon->IsGroupType("Handgun"));
-    case MELEE:     return (Cast<ACoreMeleeWeapon>(pWeapon)     == pMelee     || pWeapon->IsGroupType("Melee"));
-    case THROWABLE: return (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable || pWeapon->IsGroupType("Explosive"));
+    case PISTOL:    
+    {
+        if (Cast<ACoreWeapon>(pWeapon) == pPistol)
+            return true;
+
+
+        else if (pWeapon->IsGroupType("Handgun"))
+                 return false;
+    }
+    case MELEE:     
+    {
+        if (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee)
+            return true;
+
+        else if (pWeapon->IsGroupType("Melee"))
+                 return false;
+    }
+    case THROWABLE: 
+    {
+        if (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable)
+            return true;
+
+        else if (pWeapon->IsGroupType("Explosive") ||
+                 pWeapon->IsGroupType("Grenade"))
+                 return false;
+    }
     }
     return true;
 }
