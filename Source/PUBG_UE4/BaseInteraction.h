@@ -84,8 +84,6 @@ protected:
     /** \brief 오디오 컴포넌트 초기화 */
     void InitComponents();
 
-    void AttachComponents();
-
     /**
       * \brief 스태틱 메시 컴포넌트 초기화 (무기,아이템)
       * \param Path 메시 경로
@@ -134,7 +132,7 @@ public:
     void AttachToMesh(USceneComponent* RootComp, FString SocketName);
 
     // 무기를 탈착
-    void Detach(FTransform NewPos);
+    void Detach(FVector NewPos);
 
     void TurnUI(bool bOnOff = true);
 

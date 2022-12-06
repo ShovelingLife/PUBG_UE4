@@ -127,13 +127,16 @@ protected:
     void ResetBurstCount();
 
 public:
-    void Reload();
-
-    void ChangeShootMode();
-
+    // 게터 모음
     EGunShootType GetNextShootType() const;
 
     EGunShootType GetMaxShootType() const;
 
     FString GetShootTypeStr() const;
+
+    void Reload();
+
+    void ChangeShootMode();
+
+    void ResetSettings();
 };

@@ -68,6 +68,7 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
     else
         mpWeaponManager = pGameInstanceSubSystemUI->GetWeaponManager();
 
+    CheckForHoveredSlot();
     UpdateHighlightImgPos();
 }
 
@@ -122,7 +123,6 @@ FReply UInventoryWeaponSlotUI::NativeOnMouseMove(const FGeometry& InGeometry, co
     mCurrentPointerEvent = InMouseEvent;
     return FReply::Handled();
 }
-
 
 void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
@@ -206,11 +206,6 @@ bool UInventoryWeaponSlotUI::NativeOnDrop(const FGeometry& InGeometry, const FDr
     return true;
 }
 
-void UInventoryWeaponSlotUI::NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
-{
-    Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
-}
-
 void UInventoryWeaponSlotUI::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragLeave(InDragDropEvent, InOperation);
@@ -230,6 +225,7 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
     // 마우스 위치 기반으로 선택되고 있는 타입 가져오기
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
+    GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, "Pos : " + mousePos.ToString());
     
     if      (mousePos.Y <= 306.f)
              mSelectedWeaponType = FIRST;
@@ -237,17 +233,18 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
     else if (mousePos.Y <= 513.f)
              mSelectedWeaponType = SECOND;
 
-    else if  (mousePos.Y <= 719.f)
+    else if (mousePos.Y <= 719.f)
              mSelectedWeaponType = PISTOL;
 
     else
     {
-        if      (mousePos.X <= 1550.f)
+        if      (mousePos.X <= 1660.f)
                  mSelectedWeaponType = MELEE;
 
-        else if (mousePos.X >= 1584.f)
+        else if (mousePos.X >= 1693.f)
                  mSelectedWeaponType = THROWABLE;
     }
+    UpdateHighlightImgPos();
     return true;
 }
 
@@ -302,6 +299,27 @@ void UInventoryWeaponSlotUI::UpdateWeaponSlotVisibility()
         // 다섯번째 무기
         if (auto grenadeUI = GrenadeCanvasPanel->GetChildAt(i))
             grenadeUI->SetVisibility((mpWeaponManager->pThrowable) ? VISIBLE : HIDDEN);
+    }
+}
+
+void UInventoryWeaponSlotUI::CheckForHoveredSlot()
+{
+    TArray<UImage*> arrWeaponImg
+    {
+        FirstGunSlotImg,
+        SecondGunSlotImg,
+        PistolSlotImg,
+        MeleeSlotImg,
+        GrenadeSlotImg
+    };
+    // 총 무기 다섯칸 중 어느거 선택했는지 확인 후 인덱스 구함
+    for (int i = 0; i < arrWeaponImg.Num(); i++)
+    {        
+        if (arrWeaponImg[i]->IsHovered())
+        {
+            mSelectedWeaponType = static_cast<EWeaponType>(i + 1);
+            break;
+        }
     }
 }
 
@@ -404,9 +422,7 @@ int UInventoryWeaponSlotUI::GetAttachmentSlotIndex(FString AttachmentType) const
     {
         { "Scope",  0 }, { "Sight",  0 }, { "IRS",    0 },
         { "Stock",  1 }, { "StockA", 1 }, { "StockB", 1 },
-        { "Grip",   2 },
-        { "Forend", 3 },
-        { "Barrel", 4 }
+        { "Grip",   2 }, { "Forend", 3 }, { "Barrel", 4 }
     };
     if (!mapAttachmentIdx.Contains(AttachmentType))
         return -1;

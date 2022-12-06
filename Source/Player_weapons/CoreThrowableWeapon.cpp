@@ -69,8 +69,8 @@ void ACoreThrowableWeapon::BeginDestroy()
     Super::BeginDestroy();
     GrenadeEndPos = FVector::ZeroVector;
     
-    if (auto gameInst = UCustomGameInstance::GetInst())
-        gameInst->DeleKillUI_Anim.ExecuteIfBound();
+    /*if (auto gameInst = UCustomGameInstance::GetInst())
+        gameInst->DeleKillUI_Anim.ExecuteIfBound();*/
 }
 
 void ACoreThrowableWeapon::BeginPlay()
@@ -231,10 +231,9 @@ void ACoreThrowableWeapon::Setup(ACoreThrowableWeapon* OtherWeapon)
     DestroyComponentsForUI();
 
     // 메쉬 설정
-    SetRootComponent(SkeletalMeshComp);
-    AttachComponents();
     SetSkeletalMesh(OtherWeapon->GetSkeletalMesh());
     SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    SetRootComponent(SkeletalMeshComp);
     
     // 이펙트 정보 설정
     Particle = OtherWeapon->Particle;

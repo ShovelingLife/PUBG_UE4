@@ -41,15 +41,6 @@ void ABaseInteraction::InitComponents()
     ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
 }
 
-void ABaseInteraction::AttachComponents()
-{
-    if (ParticleComp)
-        ParticleComp->SetupAttachment(RootComponent);
-
-    if (ColliderComp)
-        ColliderComp->SetupAttachment(RootComponent);
-}
-
 void ABaseInteraction::InitStaticMesh(FString Path)
 {
     if (IsValid(SkeletalMeshComp))
@@ -63,8 +54,7 @@ void ABaseInteraction::InitStaticMesh(FString Path)
     if (MESH.Succeeded())
         StaticMeshComp->SetStaticMesh(MESH.Object);
 
-    StaticMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
-    AttachComponents();
+    StaticMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);    
 }
 
 void ABaseInteraction::InitSkeletalMesh(FString Path)
@@ -81,8 +71,7 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
         SkeletalMeshComp->SetSkeletalMesh(MESH.Object);
 
     SkeletalMeshComp->SetSimulatePhysics(false);
-    SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
-    AttachComponents();
+    SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);    
 
     InitCollider();
 }
@@ -90,6 +79,7 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
 void ABaseInteraction::InitCollider()
 {
     // 충돌체 초기화
+    ColliderComp->SetupAttachment(RootComponent);
     ColliderComp->BodyInstance.SetCollisionProfileName("Object");
     ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
     ColliderComp->SetSimulatePhysics(false);
@@ -152,31 +142,30 @@ void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketNam
     if (SkeletalMeshComp)
         SkeletalMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *SocketName);
 
-    if (StaticMeshComp)
-        StaticMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+    else if (StaticMeshComp)
+             StaticMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
 }
 
-void ABaseInteraction::Detach(FTransform NewPos)
+void ABaseInteraction::Detach(FVector NewPos)
 {
     UMeshComponent* meshComp = nullptr;
 
-    if (IsValid(SkeletalMeshComp))
-        meshComp = SkeletalMeshComp;
+    if      (IsValid(SkeletalMeshComp))
+             meshComp = SkeletalMeshComp;
 
-    if (IsValid(StaticMeshComp))
-        meshComp = StaticMeshComp;
+    else if (IsValid(StaticMeshComp))
+             meshComp = StaticMeshComp;
 
-    if (!IsValid(meshComp))
+    else
         return;
 
     // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
     meshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-    //meshComp->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
     meshComp->ResetRelativeTransform();
 
     // 현재 무기를 탈착 후 월드에 소환
     this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    this->SetActorTransform(NewPos);
+    this->SetActorLocation(NewPos);
     this->ChangeCollisionSettings();
 }
 

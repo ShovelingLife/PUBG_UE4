@@ -103,12 +103,8 @@ private:
      */
     void AttachWeapon(ABaseInteraction* pNewWeapon, FString SocketName, bool bCheck = true);
 
-	/**
-	 * \brief 무기 버린 후 초기화
-	 * \param pWeapon 맵에다가 버릴 무기
-	 * \param NewPos 새로운 위치
-	 */
-    void ResetAfterDetaching(ABaseInteraction* pWeapon, FTransform NewPos);
+	// 무기 버린 후 초기화
+    void ResetAfterDetaching(ABaseInteraction* pWeapon);
 
 public:
 	/** \brief 발사 */

@@ -223,30 +223,6 @@ void ACoreWeapon::ResetBurstCount()
     bShooting = false;
 }
 
-void ACoreWeapon::Reload()
-{
-    PlaySound(EWeaponSoundType::RELOAD);
-    int result = (WeaponData.BulletCount > 0) ? (WeaponData.MaxBulletCount - WeaponData.BulletCount) : WeaponData.MaxBulletCount;
-    WeaponData.MaxBulletCount -= result;
-    WeaponData.BulletCount += result;
-    mbReloading = true;
-}
-
-void ACoreWeapon::ChangeShootMode()
-{
-    if (GetWorld()->GetTimerManager().IsTimerActive(mBurstTimerHandle))
-        ResetBurstCount();
-
-    bShooting = false;
-
-    // 격발 방식 변경
-    ShootType = GetNextShootType();
-
-    // 팝업 UI 설정
-    if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleSetFadingTxt.ExecuteIfBound(GetShootTypeStr());
-}
-
 EGunShootType ACoreWeapon::GetNextShootType() const
 {
     if (ShootType != GetMaxShootType())
@@ -277,6 +253,36 @@ EGunShootType ACoreWeapon::GetMaxShootType() const
         {"SMG"       , CONSECUTIVE}
     };
     return mapGunShootType[WeaponData.GroupType];
+}
+
+void ACoreWeapon::Reload()
+{
+    PlaySound(EWeaponSoundType::RELOAD);
+    int result = (WeaponData.BulletCount > 0) ? (WeaponData.MaxBulletCount - WeaponData.BulletCount) : WeaponData.MaxBulletCount;
+    WeaponData.MaxBulletCount -= result;
+    WeaponData.BulletCount += result;
+    mbReloading = true;
+}
+
+void ACoreWeapon::ChangeShootMode()
+{
+    if (GetWorld()->GetTimerManager().IsTimerActive(mBurstTimerHandle))
+        ResetBurstCount();
+
+    bShooting = false;
+
+    // 격발 방식 변경
+    ShootType = GetNextShootType();
+
+    // 팝업 UI 설정
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
+        p_customGameInst->DeleSetFadingTxt.ExecuteIfBound(GetShootTypeStr());
+}
+
+void ACoreWeapon::ResetSettings()
+{
+    WeaponData.MaxBulletCount = 0;
+    bInInventory = false;
 }
 
 FString ACoreWeapon::GetShootTypeStr() const
