@@ -15,11 +15,15 @@ class CHARACTERS_API ADummyCharacter : public AActor
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(VisibleAnywhere, Category = RenderedActors) TArray<AActor*> mArrActorToShow;
+	UPROPERTY(VisibleAnywhere, Category = RenderedActors)
+	TArray<AActor*> mArrActorToShow;
 
 public:
-	UPROPERTY(EditAnywhere, Category = Mesh)		 USkeletalMeshComponent*   DummySkeletalMeshComp;
-    UPROPERTY(EditAnywhere, Category = SceneCapture) USceneCaptureComponent2D* SceneCaptureComp;
+	UPROPERTY(EditAnywhere, Category = Mesh)		 
+	USkeletalMeshComponent*   DummySkeletalMeshComp;
+
+    UPROPERTY(EditAnywhere, Category = SceneCapture) 
+	USceneCaptureComponent2D* SceneCaptureComp;
 
 public:
 	// Sets default values for this character's properties

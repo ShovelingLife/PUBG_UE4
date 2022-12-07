@@ -13,13 +13,21 @@ class UI_PUBG_API UMiniMapUI : public UUserWidget
 {
 	GENERATED_BODY()
 	
-
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*	 MagneticTimerTxt;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock*	 PhaseTxt;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*		 MiniMapImg;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*		 WarringImg;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* MagneticFieldBar;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UTextBlock*	MagneticTimerTxt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UTextBlock* PhaseTxt;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage*	MiniMapImg;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage*	WarringImg;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UProgressBar* MagneticFieldBar;
 
 protected:
 	void NativeConstruct() override;

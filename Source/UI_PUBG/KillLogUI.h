@@ -13,9 +13,14 @@ class UI_PUBG_API UKillLogUI : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* KillerNameTxt;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* VictimNameTxt;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*	   KilllogIconImg;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UTextBlock* KillerNameTxt;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UTextBlock* VictimNameTxt;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage*	KilllogIconImg;
 
 protected:
 	void NativeConstruct() override;

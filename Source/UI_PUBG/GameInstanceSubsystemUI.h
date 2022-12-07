@@ -23,16 +23,19 @@ class UI_PUBG_API UGameInstanceSubsystemUI : public UGameInstanceSubsystem
 	
 private:
     static UWorld* mpWorld;
-    UPROPERTY() TSubclassOf<AUI_manager> mUImanagerClass;
+    UPROPERTY() 
+    TSubclassOf<AUI_manager> mUImanagerClass;
 
 public:
-    UPROPERTY() AUI_manager* pUImanager;
+    UPROPERTY() 
+    AUI_manager* pUImanager;
+
+    UPROPERTY() 
+    TSubclassOf<UCursorSlotUI> BP_CursorSlotUI;
 
     FDeleSetTooltipVisibility DeleSetTooltipVisibility;
     FDeleVerifyAttachmentSlot DeleVerifyAttachmentSlot;
-    FDelegateHandle TickDelegateHandle;
-
-    UPROPERTY() TSubclassOf<UCursorSlotUI> BP_CursorSlotUI;
+    FDelegateHandle           TickDelegateHandle;
 
 public:
 	UGameInstanceSubsystemUI();
@@ -49,7 +52,6 @@ public:
 
 private:
     void InitUImanager();
-
 
 public:
     /**

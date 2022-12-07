@@ -31,30 +31,57 @@ private:
     float mCurrentTime = 0.f;
 
 public:
-    /** \brief 체력 회복력(에너지드링크, 진통제바) 산소 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* HP_bar;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* Injured_HP_bar;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* RecoveryBar;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* OxygenBar;
+// ------- 체력 회복력(에너지드링크, 진통제바) 산소 -------
+    
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UProgressBar* HP_bar;
 
-    /** \brief 장비 착용 여부 이미지 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* BackbagImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* HeadImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* BodyArmorImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UProgressBar* Injured_HP_bar;
 
-    /** \brief 버프 지속 여부 이미지 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* SpeedupImg;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* HealingImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UProgressBar* RecoveryBar;
 
-    /** \brief 사용중인 총기 현황 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* MagazineCurrentTxt;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* MagazineTotalTxt;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*     BoltActionImg;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UProgressBar* OxygenBar;
 
-    /** \brief 자세 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* PostureImg;
+// ------- 장비 착용 여부 이미지 관련 -------
 
-    UPROPERTY() ACustomPlayer* pPlayer;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* BackbagImg;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* HeadImg;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* BodyArmorImg;
+
+// ------- 버프 지속 여부 이미지 관련 -------
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* SpeedupImg;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* HealingImg;
+
+// ------- 사용중인 총기 현황 -------
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTextBlock* MagazineCurrentTxt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTextBlock* MagazineTotalTxt;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* BoltActionImg;
+
+// ------- 자세 -------
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* PostureImg;
+
+    UPROPERTY() 
+    ACustomPlayer* pPlayer;
 
 protected:
 	void NativeConstruct() override;

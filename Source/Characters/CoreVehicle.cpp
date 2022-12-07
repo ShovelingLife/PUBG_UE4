@@ -22,6 +22,9 @@ ACoreVehicle::ACoreVehicle()
 {
     PrimaryActorTick.bCanEverTick = true;
     AutoPossessAI = EAutoPossessAI::Disabled;
+
+    for (int i = 0; i < (int)ESeatType::NONE; i++)
+         mMapEmptySeat.Add({ (ESeatType)i, false });
 }
 
 void ACoreVehicle::BeginPlay()
@@ -184,30 +187,26 @@ void ACoreVehicle::InitWheeledComp()
         !floatCurve.Succeeded())
         return;
 
-    // 앞 좌측 바퀴
-    FChaosWheelSetup frontLeftWheelSetup;
-    frontLeftWheelSetup.WheelClass = bpFrontWheel.Class;
-    frontLeftWheelSetup.BoneName = "Wheel_Front_Left";
-    vehicleMoveComp->WheelSetups.Add(frontLeftWheelSetup);
+    // 차량 바퀴 설정
+    TArray<FName> arrWheelName
+    {
+        "Wheel_Front_Left",
+        "Wheel_Front_Right",
+        "Wheel_Rear_Left",
+        "Wheel_Rear_Right"
+    };
+    FChaosWheelSetup wheelSetup;
+    wheelSetup.WheelClass = bpFrontWheel.Class;
 
-    // 앞 우측 바퀴
-    FChaosWheelSetup frontRightWheelSetup;
-    frontRightWheelSetup.WheelClass = bpFrontWheel.Class;
-    frontRightWheelSetup.BoneName = "Wheel_Front_Right";
-    vehicleMoveComp->WheelSetups.Add(frontRightWheelSetup);
+    for (int i = 0; i < arrWheelName.Num(); i++)
+    {
+        // 뒷바퀴 초기화
+        if (i == 2)
+            wheelSetup.WheelClass = bpRearWheel.Class;
 
-    // 뒤 좌측 바퀴
-    FChaosWheelSetup rearLeftWheelSetup;
-    rearLeftWheelSetup.WheelClass = bpRearWheel.Class;
-    rearLeftWheelSetup.BoneName = "Wheel_Rear_Left";
-    vehicleMoveComp->WheelSetups.Add(rearLeftWheelSetup);
-
-    // 뒤 우측 바퀴
-    FChaosWheelSetup rearRightWheelSetup;
-    rearRightWheelSetup.WheelClass = bpRearWheel.Class;
-    rearRightWheelSetup.BoneName = "Wheel_Rear_Right";
-    vehicleMoveComp->WheelSetups.Add(rearRightWheelSetup);
-
+        wheelSetup.BoneName = arrWheelName[i];
+        vehicleMoveComp->WheelSetups.Add(wheelSetup);
+    }
     vehicleMoveComp->EngineSetup.TorqueCurve.ExternalCurve = floatCurve.Object;
 }
 

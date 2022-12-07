@@ -25,7 +25,6 @@ ADummyCharacter::ADummyCharacter()
 void ADummyCharacter::BeginPlay()
 {
     Super::BeginPlay();
-    this->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
     mArrActorToShow.Add(this);
     DummySkeletalMeshComp->SetOwnerNoSee(true);
     SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
@@ -92,7 +91,6 @@ void ADummyCharacter::InitWeaponUI()
 
 void ADummyCharacter::UpdateWeapon()
 {
-    return;
     // ACustomPlayer 다운 캐스팅
     if (auto p_player = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
     {

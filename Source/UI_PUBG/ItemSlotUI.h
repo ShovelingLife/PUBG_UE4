@@ -43,7 +43,7 @@ private:
     FTimerHandle mTimerHandle;
 
 public:
-    /** \brief 현재 쓰여지는 변수 */
+// ------- 현재 쓰여지는 변수 -------
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
     UCanvasPanel* MainCanvasPanel;
 
@@ -65,7 +65,9 @@ public:
     UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
     UTextBlock* CountTxt;
 
-    UPROPERTY() ABaseInteraction* pDraggedItem;
+    UPROPERTY() 
+    ABaseInteraction* pDraggedItem;
+
     FDeleDeleteFromList           DeleDeleteFromList;
     FDeleCheckForSlot             DeleCheckForSlot;
     FDeleSwapWeaponSlot           DeleSwapWeaponSlot;

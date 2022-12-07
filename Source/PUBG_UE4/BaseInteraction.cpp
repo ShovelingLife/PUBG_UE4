@@ -98,38 +98,34 @@ void ABaseInteraction::DestroyComponentsForUI() { InteractionComp->DestroyCompon
 void ABaseInteraction::SetForDummyCharacter()
 {
     DestroyComponentsForUI();
+    
+    // 메쉬 판별해내기
+    UMeshComponent* meshComp = nullptr;
 
-    if (IsValid(SkeletalMeshComp))
+    if (StaticMeshComp)
     {
-        this->SetRootComponent(SkeletalMeshComp);
-        SkeletalMeshComp->SetOwnerNoSee(true);
-        SkeletalMeshComp->SetVisibility(true);
-
-        if (StaticMeshComp)
-            StaticMeshComp->DestroyComponent();
-
+        meshComp = SkeletalMeshComp;
+        StaticMeshComp->DestroyComponent();
     }
-    if (IsValid(StaticMeshComp))
+    else if (SkeletalMeshComp)
     {
-        this->SetRootComponent(StaticMeshComp);
-        StaticMeshComp->SetOwnerNoSee(true);
-        StaticMeshComp->SetVisibility(true);       
-
-        if (SkeletalMeshComp)
-            SkeletalMeshComp->DestroyComponent();
+        meshComp = StaticMeshComp;
+        SkeletalMeshComp->DestroyComponent();
+    }
+    // 메쉬 설정 변경
+    if (meshComp)
+    {
+        SetRootComponent(meshComp);
+        meshComp->SetOwnerNoSee(true);
+        meshComp->SetVisibility(true);
     }
 }
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
-    ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
-    ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;    
     // 컴포넌트에 따라 콜라이더 업데이트
-    /*if      (IsValid(SkeletalMeshComp))
-             ChangeCollisionSettings(SkeletalMeshComp, bTurned);
-
-    else if (IsValid(StaticMeshComp))
-             ChangeCollisionSettings(StaticMeshComp,bTurned);*/
+    ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
+    ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
 }
 
 void ABaseInteraction::ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bool bTurned)
@@ -139,15 +135,26 @@ void ABaseInteraction::ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bo
 
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
 {
-    if (SkeletalMeshComp)
-        SkeletalMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, *SocketName);
+    // 메쉬 가져오기    
+    UMeshComponent* meshComp = nullptr;
+    FAttachmentTransformRules transformRules = FAttachmentTransformRules::SnapToTargetIncludingScale;
 
-    else if (StaticMeshComp)
-             StaticMeshComp->AttachToComponent(RootComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
+    if      (StaticMeshComp)
+             meshComp = StaticMeshComp;
+
+    else if (SkeletalMeshComp)
+    {
+        transformRules = FAttachmentTransformRules::SnapToTargetNotIncludingScale;
+        meshComp = SkeletalMeshComp;
+    }
+    // 메쉬에 따라 설정하기
+    if (meshComp)
+        meshComp->AttachToComponent(RootComp, transformRules, *SocketName);
 }
 
 void ABaseInteraction::Detach(FVector NewPos)
 {
+    // 메쉬 가져오기
     UMeshComponent* meshComp = nullptr;
 
     if      (IsValid(SkeletalMeshComp))
@@ -164,9 +171,10 @@ void ABaseInteraction::Detach(FVector NewPos)
     meshComp->ResetRelativeTransform();
 
     // 현재 무기를 탈착 후 월드에 소환
-    this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    this->SetActorLocation(NewPos);
-    this->ChangeCollisionSettings();
+    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    SetActorLocation(NewPos);
+    ChangeCollisionSettings();
+    ResetSettings();
 }
 
 void ABaseInteraction::TurnUI(bool bOnOff /* = true */) { InteractionComp->bPlayerNear = bOnOff; }

@@ -19,6 +19,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void ResetSettings() final;
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 };

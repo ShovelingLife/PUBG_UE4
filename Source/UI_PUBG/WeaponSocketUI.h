@@ -5,6 +5,8 @@
 #include "PUBG_UE4/WeaponEnum.h"
 #include "WeaponSocketUI.generated.h"
 
+class ACoreAttachment;
+
 class UBorder;
 class UImage;
 
@@ -14,9 +16,13 @@ class UI_PUBG_API UWeaponSocketUI : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UBorder* ItemBorder;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage*  ItemImg;
-    class ACoreAttachment* Attachment = nullptr;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UBorder* ItemBorder;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* ItemImg;
+
+    ACoreAttachment* Attachment = nullptr;
     EAttachmentType AttachmentType;
     int WeaponIdx = 1;
 

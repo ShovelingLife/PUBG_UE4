@@ -74,11 +74,14 @@ protected:
      */
     virtual void Tick(float DeltaTime) override;
 
+    virtual void ResetSettings() override { }
+
 public:
     virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
     // 클릭 이벤트
-    virtual void ClickEvent() override { };
+    virtual void ClickEvent() override { }
+
 
 protected:
     /** \brief 오디오 컴포넌트 초기화 */

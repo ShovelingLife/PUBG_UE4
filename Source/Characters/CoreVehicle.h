@@ -31,39 +31,57 @@ using enum ESeatType;
     GENERATED_BODY()
 
 protected:
-    /** \brief 차량 관련 컴포넌트들 */
-    UPROPERTY(VisibleAnywhere, Category = Property) UInstaDeformComponent* InstaDeformComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Camera) USpringArmComponent* SpringArmComp = nullptr;
-    UPROPERTY(VisibleAnywhere, Category = Camera) UCameraComponent* CameraComp = nullptr;
+    // ------- 차량 관련 컴포넌트들 -------
+    UPROPERTY(VisibleAnywhere, Category = Property) 
+    UInstaDeformComponent* InstaDeformComp = nullptr;
 
-    /** \brief 문짝 위치 컴포넌트들 */
-    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* FirstDoorPosComp;
-    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* SecondDoorPosComp;
-    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* ThirdDoorPosComp;
-    UPROPERTY(EditAnywhere, Category = DoorPos) USceneComponent* FourthDoorPosComp;
+    UPROPERTY(VisibleAnywhere, Category = Camera) 
+    USpringArmComponent* SpringArmComp = nullptr;
 
-    /** \brief 좌석 위치 컴포넌트들 */
-    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* FirstSeatPosComp;
-    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* SecondSeatPosComp;
-    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* ThirdSeatPosComp;
-    UPROPERTY(EditAnywhere, Category = SeatPos) USceneComponent* FourthSeatPosComp;
+    UPROPERTY(VisibleAnywhere, Category = Camera) 
+    UCameraComponent* CameraComp = nullptr;
 
-    /** \brief 기타 변수들 */
-    UPROPERTY(VisibleAnywhere,Category = SeatPos)  TMap<ESeatType, FVector> MapSeatPos;
-    UPROPERTY(VisibleAnywhere, Category = DoorPos) TMap<ESeatType, FVector> MapDoorPos;
 
-    /** \brief 차량 좌석 위치 변수 */
-    TMap<ESeatType, bool> mMapEmptySeat
-    {
-        { FIRST, false },
-        { SECOND,false },
-        { THIRD, false },
-        { FOURTH,false },
-        { NONE,  false }
-    };
+    // ------- brief 문짝 위치 컴포넌트들 -------
+    UPROPERTY(EditAnywhere, Category = DoorPos) 
+    USceneComponent* FirstDoorPosComp;
+
+    UPROPERTY(EditAnywhere, Category = DoorPos) 
+    USceneComponent* SecondDoorPosComp;
+
+    UPROPERTY(EditAnywhere, Category = DoorPos) 
+    USceneComponent* ThirdDoorPosComp;
+
+    UPROPERTY(EditAnywhere, Category = DoorPos) 
+    USceneComponent* FourthDoorPosComp;
+
+
+    // ------- 좌석 위치 컴포넌트들 -------
+    UPROPERTY(EditAnywhere, Category = SeatPos) 
+    USceneComponent* FirstSeatPosComp;
+
+    UPROPERTY(EditAnywhere, Category = SeatPos) 
+    USceneComponent* SecondSeatPosComp;
+
+    UPROPERTY(EditAnywhere, Category = SeatPos) 
+    USceneComponent* ThirdSeatPosComp;
+
+    UPROPERTY(EditAnywhere, Category = SeatPos) 
+    USceneComponent* FourthSeatPosComp;
+
+
+    // ------- 기타 변수들 -------
+    UPROPERTY(VisibleAnywhere,Category = SeatPos)  
+    TMap<ESeatType, FVector> MapSeatPos;
+
+    UPROPERTY(VisibleAnywhere, Category = DoorPos) 
+    TMap<ESeatType, FVector> MapDoorPos;
+
+    // ------- 차량 좌석 위치 변수 -------
+    const FString  mkWheelPath = "/Game/1_Blueprints/Vehicles/Wheel/";
+    TMap<ESeatType, bool> mMapEmptySeat;
     ACustomPlayer* mpPlayer;
     FsVehicleData  mVehicleData;                       
-    const FString  mkWheelPath         = "/Game/1_Blueprints/Vehicles/Wheel/";
     FString        mMeshPath           = "";
     int            mCurrentPlayerCount = 0;
     bool           mbPlayerInFirstSeat = false;

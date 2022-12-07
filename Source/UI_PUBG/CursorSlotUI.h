@@ -13,8 +13,12 @@ class UI_PUBG_API UCursorSlotUI : public UUserWidget
 	GENERATED_BODY()
 
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox* SB_Background;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ItemImg; 
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    USizeBox* SB_Background;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* ItemImg; 
+
     FVector2D ClickPos;
 
 public:

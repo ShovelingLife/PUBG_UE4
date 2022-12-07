@@ -19,10 +19,17 @@ class UI_PUBG_API UInventoryUI : public UUserWidget
     GENERATED_BODY()
 
 public:
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UCharacterSlotUI*       CharacterSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryListUI*       InventoryListUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTooltipUI*             TooltipUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UCharacterSlotUI* CharacterSlotUI;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UInventoryListUI* InventoryListUI;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UInventoryWeaponSlotUI* InventoryWeaponSlotUI;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTooltipUI* TooltipUI;
 
 public:
     UInventoryUI(const FObjectInitializer& Initializer);
@@ -52,5 +59,6 @@ private:
     void MoveSlotCursor();
 
 public:
-    UFUNCTION() void SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility);
+    UFUNCTION() 
+    void SetTooltipVisibility(UItemSlotUI* pItemSlotUI, ESlateVisibility TooltipVisibility);
 };

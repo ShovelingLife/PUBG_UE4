@@ -39,32 +39,51 @@ private:
     float mMaxCapacity = 25.f;
 
 public:
-    // 가방 여유 게이지바
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UProgressBar* BackpackFreeSpaceBar;
+// ------- 가방 여유 게이지바 -------
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UProgressBar* BackpackFreeSpaceBar;
 
-    /** \brief 월드 리스트 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   SB_WorldList;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView*  LV_WorldList;
+// ------- 월드 리스트 관련 -------
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    USizeBox* SB_WorldList;
 
-    /** \brief 인벤토리 리스트 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) USizeBox*   SB_InventoryList;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView* LV_InventoryList;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UListView* LV_WorldList;
 
-    // ------- 정렬 -------
-    // 가나다 순
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UButton* BtnOrderAlphabet;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TxtOrderAlphabet;
+// ------- 인벤토리 리스트 관련 -------
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    USizeBox* SB_InventoryList;
 
-    // 최근 순
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UButton* BtnOrderRecent; 
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TxtOrderRecent;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UListView* LV_InventoryList;
 
-    /** \brief 기타 UI 관련 */
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ImgHighlight;
-    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ImgSeparator;
+// ------- 정렬 -------
+// 가나다 순
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    UButton* BtnOrderAlphabet;
 
-    UPROPERTY(EditDefaultsOnly, Category = ItemSlot) TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
-    UPROPERTY() UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTextBlock* TxtOrderAlphabet;
+
+// ------- 최근 순 -------
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UButton* BtnOrderRecent; 
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UTextBlock* TxtOrderRecent;
+
+// ------- 기타 UI 관련 -------
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* ImgHighlight;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+    UImage* ImgSeparator;
+
+    UPROPERTY(EditDefaultsOnly, Category = ItemSlot) 
+    TSubclassOf<UItemSlotUI> BP_ItemSlotUI;
+
+    UPROPERTY() 
+    UGameInstanceSubsystemUI* pGameInstanceSubsystemUI;
 
     float CurCapacity = 0.f;
 

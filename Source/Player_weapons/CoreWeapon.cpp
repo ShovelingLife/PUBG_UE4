@@ -26,16 +26,6 @@ void ACoreWeapon::BeginPlay()
     Super::BeginPlay();
 }
 
-void ACoreWeapon::NotifyActorBeginOverlap(AActor* CollidedActor)
-{
-    Super::NotifyActorBeginOverlap(CollidedActor);
-}
-
-void ACoreWeapon::NotifyActorEndOverlap(AActor* ColliderActor)
-{
-    Super::NotifyActorEndOverlap(ColliderActor);
-}
-
 void ACoreWeapon::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
@@ -73,6 +63,12 @@ void ACoreWeapon::Tick(float DeltaTime)
     if (!bShooting &&
         GunRecoilComponent)
         GunRecoilComponent->bFiring = true;
+}
+
+void ACoreWeapon::ResetSettings()
+{
+    WeaponData.MaxBulletCount = 0;
+    bInInventory = false;
 }
 
 void ACoreWeapon::ClickEvent()
@@ -199,8 +195,8 @@ void ACoreWeapon::FireBullet()
 
     // ------- 레이캐스트 범위 구하기 -------
     auto cameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-    auto cameraPos = cameraManager->GetCameraLocation();
-    auto cameraDir = UKismetMathLibrary::GetForwardVector(cameraManager->GetCameraRotation()) * 50000.f;
+    auto cameraPos     = cameraManager->GetCameraLocation();
+    auto cameraDir     = UKismetMathLibrary::GetForwardVector(cameraManager->GetCameraRotation()) * 50000.f;
 
     // 레이트레이스 충돌체 감지
     FHitResult hitResult;
@@ -219,21 +215,22 @@ void ACoreWeapon::ResetBurstCount()
     // 점사 타이머 초기화
     GetWorld()->GetTimerManager().ClearTimer(mBurstTimerHandle);
     mBurstTimerHandle.Invalidate();
-    mBurstCount = 0;
-    bShooting = false;
+    mBurstCount = bShooting = 0;
 }
 
 EGunShootType ACoreWeapon::GetNextShootType() const
 {
+    EGunShootType shootType = SINGLE;
+
     if (ShootType != GetMaxShootType())
     {
         switch (ShootType)
         {
-        case SINGLE: return BURST;
-        case BURST:  return CONSECUTIVE;
+        case SINGLE: shootType = BURST;       break;
+        case BURST:  shootType = CONSECUTIVE; break;
         }
     }
-    return SINGLE;
+    return shootType;
 }
 
 EGunShootType ACoreWeapon::GetMaxShootType() const
@@ -258,7 +255,9 @@ EGunShootType ACoreWeapon::GetMaxShootType() const
 void ACoreWeapon::Reload()
 {
     PlaySound(EWeaponSoundType::RELOAD);
-    int result = (WeaponData.BulletCount > 0) ? (WeaponData.MaxBulletCount - WeaponData.BulletCount) : WeaponData.MaxBulletCount;
+    // 총알 있을 시 재장전 
+    int curBulletCount = WeaponData.BulletCount, maxBulletCount = WeaponData.MaxBulletCount;
+    int result = (curBulletCount > 0) ? (maxBulletCount - curBulletCount) : maxBulletCount;
     WeaponData.MaxBulletCount -= result;
     WeaponData.BulletCount += result;
     mbReloading = true;
@@ -279,22 +278,14 @@ void ACoreWeapon::ChangeShootMode()
         p_customGameInst->DeleSetFadingTxt.ExecuteIfBound(GetShootTypeStr());
 }
 
-void ACoreWeapon::ResetSettings()
-{
-    WeaponData.MaxBulletCount = 0;
-    bInInventory = false;
-}
-
 FString ACoreWeapon::GetShootTypeStr() const
 {
-    if (ShootType == MAX)
-        return "Fail";
-
+    // 조정간을 어디까지 적용 가능한지 확인
     TMap<EGunShootType, FString> mapGunShootType
     {
         { SINGLE,      "Single" },
         { BURST,       "Burst" },
         { CONSECUTIVE, "Consecutive" }
     };
-    return "Current type : " + mapGunShootType[ShootType];
+    return (ShootType == MAX) ? "Fail" : "Current type : " + mapGunShootType[ShootType];
 }

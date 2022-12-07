@@ -40,16 +40,30 @@ private:
     const FLinearColor mkUnselectedNoAmmoColor{ 0.25f,   0.f,   0.f, 1.f };
 
 public:
-	/** \brief 현재 착용 중인 무기 아이콘 */
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* FirstWeaponImg;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* SecondWeaponImg;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* ThirdWeaponImg;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* FourthWeaponImg;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* FifthWeaponImg;
+// ------- 현재 착용 중인 무기 아이콘 -------
 
-	/** \brief 현재 이미지 배열 */
-	UPROPERTY() TArray<UImage*> pArrImg;
-	UPROPERTY() AWeaponManager* pWeaponManager;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage* FirstWeaponImg;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage* SecondWeaponImg;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage* ThirdWeaponImg;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage* FourthWeaponImg;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UImage* FifthWeaponImg;
+
+// ------- 현재 이미지 배열 -------
+
+	UPROPERTY() 
+	TArray<UImage*> pArrImg;
+
+	UPROPERTY() 
+	AWeaponManager* pWeaponManager;
 
 protected:
 	void NativeConstruct() override;

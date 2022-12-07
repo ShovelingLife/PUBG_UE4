@@ -4,19 +4,20 @@
 #include "CoreFarmableItem.h"
 #include "CrateBox.generated.h"
 
-/**
- * 
- */
+class UStaticMeshComponent;
+
 UCLASS()
 class FARMABLE_ITEMS_API ACrateBox : public ACoreFarmableItem
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(VisibleAnywhere, Category = Mesh) class UStaticMeshComponent* ParachuteMesh = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = Mesh) 
+	UStaticMeshComponent* ParachuteMesh = nullptr;
         
-	float mCurrentTime			  = 0.f;
     const float mkMaxParticleTime = 15.f;
-	bool  mbParticleEnded		  = false;
+
+	float mCurrentTime	  = 0.f;
+	bool  mbParticleEnded = false;
 
 public:
 	ACrateBox();

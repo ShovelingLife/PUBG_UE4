@@ -1,5 +1,4 @@
-﻿/**
- * \file UI_manager.h
+﻿/*** \file UI_manager.h
  *
  * \brief UI 매니저
  *
@@ -33,7 +32,9 @@ public:
     static TMap<int, UTexture*>  MapPlayerIcon;           // 플레이어 UI
 
     // 무기 UI 관련 (인벤토리)
-    UPROPERTY(EditAnywhere) TArray< UTexture*> ArrMainWeaponIcon;
+    UPROPERTY(EditAnywhere) 
+    TArray< UTexture*> ArrMainWeaponIcon;
+
     static TMap<int, UMaterial*> MapMainWeaponIcon;       // 메인 무기 UI 벡터 이미지  
     static TMap<int, UTexture*>  MapWeaponIcon;           // 인벤토리 무기 UI (총기)   
     static TMap<int, UTexture*>  MapOtherWeaponIcon;      // 인벤토리 무기 UI (근접 및 투척류)
@@ -47,17 +48,20 @@ public:
 private:
     // ------- 현재 쓰이고있는 변수들 -------
 
-    /** * \brief 플레이어 UI */
+    // 플레이어 UI 
     TSubclassOf<UPlayerUI> mBP_PlayerUI;
-    UPROPERTY() UPlayerUI* mpPlayer_UI;
 
-    /** * \brief 플레이어 상태이상 UI */
+    UPROPERTY() 
+    UPlayerUI* mpPlayer_UI;
+
+    // 플레이어 상태이상 UI
     TSubclassOf<UPlayerEffectUI> mBP_PlayerEffectUI;
 
-    /** * \brief 상호작용 UI 관련 */
-    UPROPERTY(VisibleAnywhere, Category = WidgetBP) TSubclassOf<UUserWidget> mInteractionWidgetBP;
+    // 상호작용 UI 관련 
+    UPROPERTY(VisibleAnywhere, Category = WidgetBP) 
+    TSubclassOf<UUserWidget> mInteractionWidgetBP;
 
-    /** * \brief 메인 플레이어 UI 리소스 경로명 */
+    // 메인 플레이어 UI 리소스 경로명
     const TArray<FString> mkArrShootType 
     {
         "SingleShot",
@@ -66,8 +70,11 @@ private:
     };
 
 public:
-    UPROPERTY() AInventoryManager* pInventoryManager;
-    UPROPERTY() UPlayerEffectUI*   pPlayerEffect_UI;
+    UPROPERTY() 
+    AInventoryManager* pInventoryManager;
+
+    UPROPERTY() 
+    UPlayerEffectUI* pPlayerEffect_UI;
 
 public:
     AUI_manager();
@@ -133,9 +140,12 @@ public:
 
 public:
     /** \brief 상호작용 UI 업데이트 (델리게이트) */
-    UFUNCTION() void UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
+    UFUNCTION() 
+    void UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
 
-    UFUNCTION() void RunEffectAnim(float StartTime, float WaitTime, EPlayerStateAnimType Type);
+    UFUNCTION() 
+    void RunEffectAnim(float StartTime, float WaitTime, EPlayerStateAnimType Type);
 
-    UFUNCTION() void KillAnim();
+    UFUNCTION() 
+    void KillAnim();
 };

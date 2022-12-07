@@ -84,22 +84,20 @@ public:
     UGunRecoilComponent* GunRecoilComponent = nullptr;
 
     bool bInInventory = false;
-    bool bShooting = false;
+    bool bShooting    = false;
 
 public:
     ACoreWeapon();
 
-public:
-    virtual void ClickEvent() final;
-
 protected:
     virtual void BeginPlay() override;
 
-    virtual void NotifyActorBeginOverlap(AActor*) override;
-
-    virtual void NotifyActorEndOverlap(AActor*) override;
-
     virtual void Tick(float DeltaTime) override;
+
+    virtual void ResetSettings() final;
+
+public:
+    virtual void ClickEvent() final;
 
 protected:
     /**
@@ -137,6 +135,4 @@ public:
     void Reload();
 
     void ChangeShootMode();
-
-    void ResetSettings();
 };

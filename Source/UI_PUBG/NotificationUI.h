@@ -18,8 +18,11 @@ private:
     int mCount = 0;
 
 public:
-    UPROPERTY(meta = (BindWidget)) UListView* NotificationListView;
-    UPROPERTY(EditAnywhere, category = NotificationVariables) TSubclassOf<UNotificationTextUI> BP_NotificationText;
+    UPROPERTY(meta = (BindWidget)) 
+    UListView* NotificationListView;
+
+    UPROPERTY(EditAnywhere, category = NotificationVariables) 
+    TSubclassOf<UNotificationTextUI> BP_NotificationText;
 
 protected:
     virtual void NativeConstruct() override;
@@ -27,7 +30,9 @@ protected:
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
-    UFUNCTION() void UpdateNotificationText(FString Msg);
+    UFUNCTION() 
+    void UpdateNotificationText(FString Msg);
 
-    UFUNCTION() void DeleteNotificationTextUI(UNotificationTextUI* pNotificationTextUI);
+    UFUNCTION() 
+    void DeleteNotificationTextUI(UNotificationTextUI* pNotificationTextUI);
 };

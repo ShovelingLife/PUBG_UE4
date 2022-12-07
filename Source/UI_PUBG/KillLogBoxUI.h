@@ -14,9 +14,14 @@ class UI_PUBG_API UKillLogBoxUI : public UUserWidget
 
 
 public:
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* PlayerKillTxt;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* CurrentSurvivorTxt;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UListView*  KillLogListView;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UTextBlock* PlayerKillTxt;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UTextBlock* CurrentSurvivorTxt;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) 
+	UListView* KillLogListView;
 
 protected:
 	void NativeConstruct() override;

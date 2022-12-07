@@ -21,11 +21,20 @@ class ANIMATIONS_API UPlayerAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerProperty") EPlayerState PlayerState;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Direction = 0.f;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float Speed     = 0.f;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float AimRotPitch = 0.f;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") float AimRotYaw = 0.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerProperty") 
+    EPlayerState PlayerState;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") 
+    float Direction = 0.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") 
+    float Speed     = 0.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") 
+    float AimRotPitch = 0.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVariable") 
+    float AimRotYaw = 0.f;
 
     /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch")
     float crouch_walk_speed = 0.f;*/

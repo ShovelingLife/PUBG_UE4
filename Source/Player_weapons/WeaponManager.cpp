@@ -226,13 +226,9 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
 void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon)
 {
     auto playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-    FVector newPos = playerCharacter->GetActorLocation();
 
     if (pWeapon)
-        pWeapon->Detach(newPos);
-
-    if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
-        p_gun->ResetSettings();
+        pWeapon->Detach(playerCharacter->GetActorLocation());
 }
 
 void AWeaponManager::ClickEvent()
@@ -243,16 +239,17 @@ void AWeaponManager::ClickEvent()
 
 void AWeaponManager::ThrowGrenade()
 {
-    if (pThrowable)
-    {
-        pThrowable->Throw(mGrenadeVelocity);
-        mGrenadeVelocity  = FVector::ZeroVector;
-        mbThrowingGrenade = false;
-        GrenadeDirection  = 0.f;
-        
-        if (GrenadeEndPoint)
-            GrenadeEndPoint->SetHidden(true);
-    }
+    if (!pThrowable)
+        return;
+    
+    pThrowable->Throw(mGrenadeVelocity);
+    mGrenadeVelocity = FVector::ZeroVector;
+    mbThrowingGrenade = false;
+    GrenadeDirection = 0.f;
+
+    if (GrenadeEndPoint)
+        GrenadeEndPoint->SetHidden(true);
+
     SetNull(THROWABLE);
     GetWorld()->GetGameInstance<UCustomGameInstance>()->DeleSetExplosiveUI.ExecuteIfBound(nullptr);
     ResetGrenadePath();
@@ -288,8 +285,8 @@ bool AWeaponManager::ScrollSelect(FString Pos)
     // 스크롤을 위 아래로 향하는지 판별
     if (Pos == "Down")
     {
-        if (direction == 1)
-            direction = 6;
+        if (direction == (int)FIRST)
+            direction = (int)NONE;
 
         for (int i = direction - 1; i > 0; i--)
         {
@@ -327,20 +324,20 @@ bool AWeaponManager::TryToEquip(ABaseInteraction* pWeapon, bool bCheck /* = true
         // 권총일 시 무조건 3번 슬롯
         if (Cast<ACoreWeapon>(pWeapon)->WeaponData.GroupType == "HandGun")
         {
-            AttachWeapon((!IsValid(pPistol)) ? pWeapon : pPistol, "HandGunSock", (!pPistol));
+            AttachWeapon((!pPistol) ? pWeapon : pPistol, "HandGunSock", (!pPistol));
             return pPistol == nullptr;
         }
         // 기타 총기 1,2번 슬롯
         else
         {
-            if (!IsValid(pFirstGun)) // 첫번째 무기가 없을 시
+            if (!pFirstGun) // 첫번째 무기가 없을 시
             {
                 AttachWeapon(pWeapon, "FirstGunSock", bCheck);
                 return true;
             }
             else
             {
-                if (!IsValid(pSecondGun)) // 두번째 무기가 없을 시
+                if (!pSecondGun) // 두번째 무기가 없을 시
                 {
                     AttachWeapon(pWeapon, "SecondGunSock", bCheck);
                     return true;
@@ -397,15 +394,13 @@ void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
         return;
 
     // 무기 맞교환
-    if (WeaponType == MELEE)
-    {
 
-    }
-    else if (WeaponType == THROWABLE)
+    switch (WeaponType)
     {
-        CreateExplosive(pThrowable);
-    }
-    else
+    case EWeaponType::MELEE: break;
+    case EWeaponType::THROWABLE: CreateExplosive(pThrowable); break;
+
+    default:
     {
         // 새로운 무기 장착
         int idx = (int)WeaponType;
@@ -414,7 +409,8 @@ void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
         // 기존 무기 탈착
         ResetAfterDetaching(mArrWeapon[(int)CurrentWeaponType]);
         ChangeAimPose(mbAiming);
-    }
+    }            
+    }    
 }
 
 int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurrentWeapon /* = nullptr */, EWeaponType WeaponType /* = ECurrentWeaponType::NONE */)

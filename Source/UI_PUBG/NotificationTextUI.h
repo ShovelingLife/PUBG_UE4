@@ -19,9 +19,14 @@ private:
 	bool mbErase = false;
 	
 public:
-	FDeleDeleteNotificationTextUI DeleDeleteNotificationTextUI;
-    UPROPERTY(meta = (BindWidgetAnim), transient) UWidgetAnimation* FadeAnim; // 텍스트 사라지는 효과
-	UPROPERTY(meta = (BindWidget)) UTextBlock* NotificationTxt;
+
+    UPROPERTY(meta = (BindWidgetAnim), transient) 
+	UWidgetAnimation* FadeAnim; // 텍스트 사라지는 효과
+
+	UPROPERTY(meta = (BindWidget)) 
+	UTextBlock* NotificationTxt;
+
+    FDeleDeleteNotificationTextUI DeleDeleteNotificationTextUI;
 	FString TxtStr = "";
 
 protected:
@@ -32,5 +37,6 @@ protected:
 	virtual void NativeOnEntryReleased() override;
 
 public:
-	UFUNCTION() void DeleteNotificationText();
+	UFUNCTION() 
+	void DeleteNotificationText();
 };

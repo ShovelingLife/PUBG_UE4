@@ -12,6 +12,10 @@ void ACoreFarmableItem::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ACoreFarmableItem::ResetSettings()
+{
+}
+
 void ACoreFarmableItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
