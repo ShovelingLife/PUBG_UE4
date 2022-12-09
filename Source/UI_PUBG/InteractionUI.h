@@ -1,13 +1,4 @@
-﻿/**
- * \file Interaction_UI.h
- *
- * \brief 상호작용 UI
- *
- * \ingroup UI_PUBG
- *
- * \author ShovelingLife
- */
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"

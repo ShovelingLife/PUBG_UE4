@@ -10,6 +10,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 
+UStaticMesh* ABaseInteraction::GetStaticMesh() const { return StaticMeshComp->GetStaticMesh(); }
+
+USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const { return SkeletalMeshComp->SkeletalMesh; }
+
+void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (StaticMeshComp) StaticMeshComp->SetStaticMesh(Mesh); }
+
+void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (SkeletalMeshComp) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
+
+void ABaseInteraction::SetTurnUI(bool bOnOff /* = true */) { InteractionComp->bPlayerNear = bOnOff; }
+
 ABaseInteraction::ABaseInteraction()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -85,40 +95,33 @@ void ABaseInteraction::InitCollider()
     ColliderComp->SetSimulatePhysics(false);
 }
 
-UStaticMesh* ABaseInteraction::GetStaticMesh() const { return StaticMeshComp->GetStaticMesh(); }
+UMeshComponent* ABaseInteraction::GetMeshComp() const
+{
+    if (StaticMeshComp)
+        return StaticMeshComp;
 
-USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const { return SkeletalMeshComp->SkeletalMesh; }
+    else if (SkeletalMeshComp)
+        return SkeletalMeshComp;
 
-void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (StaticMeshComp) StaticMeshComp->SetStaticMesh(Mesh); }
+    else
+        return nullptr;
+}
 
-void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (SkeletalMeshComp) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
-
-void ABaseInteraction::DestroyComponentsForUI() { InteractionComp->DestroyComponent(); }
+void ABaseInteraction::DestroyComponentsForUI() { if (InteractionComp) InteractionComp->DestroyComponent(); }
 
 void ABaseInteraction::SetForDummyCharacter()
 {
-    DestroyComponentsForUI();
-    
     // 메쉬 판별해내기
-    UMeshComponent* meshComp = nullptr;
+    UMeshComponent* meshComp = GetMeshComp();
 
-    if (StaticMeshComp)
-    {
-        meshComp = SkeletalMeshComp;
-        StaticMeshComp->DestroyComponent();
-    }
-    else if (SkeletalMeshComp)
-    {
-        meshComp = StaticMeshComp;
-        SkeletalMeshComp->DestroyComponent();
-    }
+    if (!meshComp)
+        return;
+
     // 메쉬 설정 변경
-    if (meshComp)
-    {
-        SetRootComponent(meshComp);
-        meshComp->SetOwnerNoSee(true);
-        meshComp->SetVisibility(true);
-    }
+    DestroyComponentsForUI();
+    SetRootComponent(meshComp);
+    meshComp->SetOwnerNoSee(true);
+    meshComp->SetVisibility(true);
 }
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
@@ -136,34 +139,22 @@ void ABaseInteraction::ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bo
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
 {
     // 메쉬 가져오기    
-    UMeshComponent* meshComp = nullptr;
+    UMeshComponent* meshComp = GetMeshComp();
     FAttachmentTransformRules transformRules = FAttachmentTransformRules::SnapToTargetIncludingScale;
 
-    if      (StaticMeshComp)
-             meshComp = StaticMeshComp;
+    if (!meshComp)
+        return;
 
-    else if (SkeletalMeshComp)
-    {
-        transformRules = FAttachmentTransformRules::SnapToTargetNotIncludingScale;
-        meshComp = SkeletalMeshComp;
-    }
     // 메쉬에 따라 설정하기
-    if (meshComp)
-        meshComp->AttachToComponent(RootComp, transformRules, *SocketName);
+    meshComp->AttachToComponent(RootComp, transformRules, *SocketName);
 }
 
 void ABaseInteraction::Detach(FVector NewPos)
 {
     // 메쉬 가져오기
-    UMeshComponent* meshComp = nullptr;
+    UMeshComponent* meshComp = GetMeshComp();
 
-    if      (IsValid(SkeletalMeshComp))
-             meshComp = SkeletalMeshComp;
-
-    else if (IsValid(StaticMeshComp))
-             meshComp = StaticMeshComp;
-
-    else
+    if (!meshComp)
         return;
 
     // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
@@ -172,12 +163,11 @@ void ABaseInteraction::Detach(FVector NewPos)
 
     // 현재 무기를 탈착 후 월드에 소환
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    
     SetActorLocation(NewPos);
     ChangeCollisionSettings();
     ResetSettings();
 }
-
-void ABaseInteraction::TurnUI(bool bOnOff /* = true */) { InteractionComp->bPlayerNear = bOnOff; }
 
 void ABaseInteraction::InitParticleSystem(FString Path)
 {

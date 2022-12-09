@@ -84,7 +84,7 @@ public:
 
 
 protected:
-    /** \brief 오디오 컴포넌트 초기화 */
+    // 오디오 컴포넌트 초기화
     void InitComponents();
 
     /**
@@ -109,6 +109,8 @@ protected:
 
 public:
     // ------- 게터 세터 -------
+    UMeshComponent* GetMeshComp() const;
+    
     UStaticMesh* GetStaticMesh() const;
 
     USkeletalMesh* GetSkeletalMesh() const;
@@ -116,6 +118,8 @@ public:
     void SetStaticMesh(UStaticMesh* Mesh);
 
     void SetSkeletalMesh(USkeletalMesh* Mesh);
+
+    void SetTurnUI(bool bOnOff = true);
 
     // ------- 그 외 함수들 -------
 
@@ -136,8 +140,6 @@ public:
 
     // 무기를 탈착
     void Detach(FVector NewPos);
-
-    void TurnUI(bool bOnOff = true);
 
     // 현재 오브젝트가 찾고자하는 타입인지 확인
     bool IsGroupType(FString Type) { return ObjectGroupType == Type; }

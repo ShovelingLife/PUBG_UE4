@@ -262,7 +262,7 @@ void ACustomPlayer::CheckNearObj()
 
     // 오브젝트 접근 후 벗어남
     if (mpCollidedItem)
-        mpCollidedItem->TurnUI(false);
+        mpCollidedItem->SetTurnUI(false);
 
     else
     {
@@ -270,7 +270,7 @@ void ACustomPlayer::CheckNearObj()
         if (p_hittedActor->IsA<ABaseInteraction>())
         {
             mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
-            mpCollidedItem->TurnUI();
+            mpCollidedItem->SetTurnUI();
         }
     }
 }
@@ -367,8 +367,8 @@ void ACustomPlayer::Proning()
 
     default: return;
     }
-    TPS_SpringArmComp->SetRelativeLocation((CurrentState == PRONING || 
-                                            CurrentState == PRONING_AIM) ? FVector(0.f, 0.f, -50.f) : FVector(0.f, 0.f, 80.f));
+    bool bProwning = (CurrentState == PRONING || CurrentState == PRONING_AIM);
+    TPS_SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, bProwning  ? -50.f : 80.f));
 }
 
 void ACustomPlayer::BeginSprint()

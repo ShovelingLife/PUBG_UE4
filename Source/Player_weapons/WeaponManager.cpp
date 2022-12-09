@@ -165,16 +165,6 @@ void AWeaponManager::PredictGrenadePath()
     }
 }
 
-EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
-{
-    for (int i = 1; i < mArrWeapon.Num(); i++)
-    {
-        if (pWeapon == mArrWeapon[i])
-            return (EWeaponType)(i + 1);
-    }
-    return NONE;
-}
-
 void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName, bool bCheck /* = true */)
 {
     if (!pWeapon)
@@ -198,11 +188,10 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
     else if (SocketName == "SecondGunSock")
     {
         // 중복 무기 방지
-        if (bCheck)
-        {
-            if (pFirstGun == Cast<ACoreWeapon>(pWeapon))
-                return;
-        }
+        if (bCheck &&
+            pFirstGun == Cast<ACoreWeapon>(pWeapon))
+            return;
+
         pSecondGun  = Cast<ACoreWeapon>(pWeapon);
         CurrentWeaponType = SECOND;
     }
@@ -223,7 +212,7 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
     // pWeapon->SkeletalMeshComp->AttachToComponent(, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
 }
 
-void AWeaponManager::ResetAfterDetaching(ABaseInteraction* pWeapon)
+void AWeaponManager::Detach(ABaseInteraction* pWeapon)
 {
     auto playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
@@ -243,9 +232,9 @@ void AWeaponManager::ThrowGrenade()
         return;
     
     pThrowable->Throw(mGrenadeVelocity);
-    mGrenadeVelocity = FVector::ZeroVector;
+    mGrenadeVelocity  = FVector::ZeroVector;
     mbThrowingGrenade = false;
-    GrenadeDirection = 0.f;
+    GrenadeDirection  = 0.f;
 
     if (GrenadeEndPoint)
         GrenadeEndPoint->SetHidden(true);
@@ -350,7 +339,6 @@ bool AWeaponManager::TryToEquip(ABaseInteraction* pWeapon, bool bCheck /* = true
                         SwapWorld(pFirstGun, pWeapon, "FirstGunSock");
                         return pFirstGun == nullptr;
                     }
-
                     // 두째 무기 장착중
                     else if (CurrentWeaponType == SECOND)
                     {
@@ -382,7 +370,7 @@ bool AWeaponManager::TryToEquip(ABaseInteraction* pWeapon, bool bCheck /* = true
 
 void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName)
 {
-    ResetAfterDetaching(pNewWeapon);
+    Detach(pNewWeapon);
     AttachWeapon(Cast<ABaseInteraction>(pCurrentWeapon), SocketName);
 }
 
@@ -407,7 +395,7 @@ void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
         AttachWeapon(mArrWeapon[idx], mArrSocketName[idx - 1]);
 
         // 기존 무기 탈착
-        ResetAfterDetaching(mArrWeapon[(int)CurrentWeaponType]);
+        Detach(mArrWeapon[(int)CurrentWeaponType]);
         ChangeAimPose(mbAiming);
     }            
     }    
@@ -512,14 +500,21 @@ void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr
 
 ABaseInteraction* AWeaponManager::GetWeaponByIndex(EWeaponType WeaponType) const
 {
-    // 원소 인덱스에 따라 현재 무기를 가져옴
-    int index = static_cast<int>(WeaponType);
-
-    if (WeaponType == NONE ||
-        index == 0)
+    if (WeaponType == NONE)
         return nullptr;
 
-    return mArrWeapon[index];
+    // 원소 인덱스에 따라 현재 무기를 가져옴
+    return mArrWeapon[static_cast<int>(WeaponType)];
+}
+
+EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
+{
+    for (int i = 1; i < mArrWeapon.Num(); i++)
+    {
+        if (pWeapon == mArrWeapon[i])
+            return (EWeaponType)(i + 1);
+    }
+    return NONE;
 }
 
 ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)); }
@@ -529,7 +524,7 @@ int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const { return IsVa
 void AWeaponManager::Drop(EWeaponType WeaponType)
 {
     // 무기를 맵에다 드롭
-    ResetAfterDetaching(GetWeaponByIndex(WeaponType));
+    Detach(GetWeaponByIndex(WeaponType));
     SetNull(WeaponType);
 }
 
@@ -588,24 +583,24 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
     }
     case PISTOL:    
     {
-        if (Cast<ACoreWeapon>(pWeapon) == pPistol)
-            return true;
+        if      (Cast<ACoreWeapon>(pWeapon) == pPistol)
+                 return true;
 
         else if (pWeapon->IsGroupType("Handgun"))
                  return false;
     }
     case MELEE:     
     {
-        if (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee)
-            return true;
+        if      (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee)
+                 return true;
 
         else if (pWeapon->IsGroupType("Melee"))
                  return false;
     }
     case THROWABLE: 
     {
-        if (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable)
-            return true;
+        if      (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable)
+                 return true;
 
         else if (pWeapon->IsGroupType("Explosive") ||
                  pWeapon->IsGroupType("Grenade"))

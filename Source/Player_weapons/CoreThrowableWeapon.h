@@ -1,13 +1,4 @@
-﻿/**
- * \file Core_throwable_weapon.h
- *
- * \brief 모든 투척류 무기들은 이로부터 상속받음
- *
- * \ingroup Player_weapons
- *
- * \author ShovelingLife
- */
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "PUBG_UE4/WeaponEnum.h"
@@ -63,9 +54,11 @@ public:
     // 대입 연산자
     FORCEINLINE	ACoreThrowableWeapon& operator=(ACoreThrowableWeapon& Src)
     {
+        using namespace std;
+
         // swap 함수 사용함으로서 복사 오버헤드 방지
-        std::swap(this->StaticMeshComp, Src.StaticMeshComp);
-        std::swap(this->WeaponData, Src.WeaponData);
+        swap(this->StaticMeshComp, Src.StaticMeshComp);
+        swap(this->WeaponData, Src.WeaponData);
         return *this;
     }
 

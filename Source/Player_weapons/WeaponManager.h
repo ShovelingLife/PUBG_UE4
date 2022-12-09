@@ -49,27 +49,49 @@ private:
     bool  mbAiming = false, mbThrowingGrenade = false;
 
 public:
-	/** \brief 현재 착용 중인 무기 */
-	UPROPERTY() ACoreWeapon*		  pFirstGun  = nullptr;
-    UPROPERTY() ACoreWeapon*		  pSecondGun = nullptr;
-    UPROPERTY() ACoreWeapon*		  pPistol	 = nullptr;
-    UPROPERTY() ACoreMeleeWeapon*	  pMelee	 = nullptr;
-    UPROPERTY() ACoreThrowableWeapon* pThrowable = nullptr;
+// ------- 현재 착용 중인 무기 -------
+	UPROPERTY() 
+    ACoreWeapon* pFirstGun = nullptr;
+
+    UPROPERTY()
+	ACoreWeapon* pSecondGun = nullptr;
+
+    UPROPERTY() 
+	ACoreWeapon* pPistol = nullptr;
+
+    UPROPERTY() 
+	ACoreMeleeWeapon* pMelee = nullptr;
+
+    UPROPERTY() 
+	ACoreThrowableWeapon* pThrowable = nullptr;
 
     EWeaponType CurrentWeaponType = NONE;
 
-    // ------- 투척류 관련 -------
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) TArray<USplineMeshComponent*> arrSplineMeshComp;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) AActor* GrenadeEndPoint = nullptr;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) USplineComponent* SplineComp = nullptr;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) UStaticMesh* PathMesh;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) UMaterial* PathMat;
-    FVector mGrenadeVelocity;
-    float GrenadeDirection;
-    UPROPERTY(EditAnywhere, Category = GrenadeVariable) float GrenadeSpeed = 0.f;
+// ------- 투척류 관련 -------
+
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
+	TArray<USplineMeshComponent*> arrSplineMeshComp;
+
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
+	TSubclassOf<AActor> BP_GrenadeEndPoint = nullptr;
+
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
+	AActor* GrenadeEndPoint = nullptr;
+
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
+	USplineComponent* SplineComp = nullptr;
+
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
+	UStaticMesh* PathMesh;
+
+    UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
+	UMaterial* PathMat;
 
 	TArray<ACoreAttachment*> arrAttachment;
+
+    FVector mGrenadeVelocity;
+    float GrenadeDirection;
+	float GrenadeSpeed = 0.f;
 
 public:	
 	AWeaponManager();
@@ -104,7 +126,7 @@ private:
     void AttachWeapon(ABaseInteraction* pNewWeapon, FString SocketName, bool bCheck = true);
 
 	// 무기 버린 후 초기화
-    void ResetAfterDetaching(ABaseInteraction* pWeapon);
+    void Detach(ABaseInteraction* pWeapon);
 
 public:
 	/** \brief 발사 */
@@ -158,12 +180,12 @@ public:
      * \param WeaponType 무기 종류
      * \return 현재 착용 중인 무기
      */
-	ABaseInteraction* GetWeaponByIndex(EWeaponType WeaponType) const;
+    ABaseInteraction* GetWeaponByIndex(EWeaponType WeaponType) const;
+
+    // 무기의 인덱스를 구함
+    EWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
 
 	ACoreWeapon* GetCurrentGun() const;
-
-	// 무기의 인덱스를 구함
-	EWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
 
 	// 무기의 종류를 구함
 	int GetWeaponType(ABaseInteraction* pWeapon) const;

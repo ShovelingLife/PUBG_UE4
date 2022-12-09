@@ -39,60 +39,60 @@ UTexture2D* AUI_manager::GetTexture2D(FsSlotItemData ItemData)
 {
     UTexture* weaponTex = nullptr;
     FString   category = ItemData.Category;
-    int       imageIndex = ItemData.ImageIndex;
+    int       imageIdx = ItemData.ImageIndex;
 
     // 투척류 또는 근접무기일 시
     if      (category == "Throwable" ||
              category == "Melee")
     {
-        if (IsOtherWeaponIconGettable(imageIndex))
-            weaponTex = MapOtherWeaponIcon[imageIndex];
+        if (imageIdx < MapOtherWeaponIcon.Num())
+            weaponTex = MapOtherWeaponIcon[imageIdx];
     }
     // 총기 무기일 시
     else if (category == "Gun")
     {
-        if (IsMainWeaponIconGettable(imageIndex))
-            weaponTex = MapWeaponIcon[imageIndex];
+        if (imageIdx < MapMainWeaponIcon.Num())
+            weaponTex = MapWeaponIcon[imageIdx];
     }
     // 무기 부속품일 시
     else if (category == "Attachment")
     {
-        if (IsWeaponAttachmentIconGettable(imageIndex))
-            weaponTex = MapWeaponAttachmentIcon[imageIndex];
+        if (imageIdx < MapWeaponAttachmentIcon.Num())
+            weaponTex = MapWeaponAttachmentIcon[imageIdx];
     }
     else if (category == "AmmoBox")
     {
-        if (IsAmmoBoxIconGettable(imageIndex))
-            weaponTex = MapAmmoBoxIcon[imageIndex];
+        if (imageIdx < MapAmmoBoxIcon.Num())
+            weaponTex = MapAmmoBoxIcon[imageIdx];
     }
     return Cast<UTexture2D>(weaponTex);
 }
 
-UTexture2D* AUI_manager::GetTexture2D(int Index, FString Type /* = "" */)
+UTexture2D* AUI_manager::GetTexture2D(int Idx, FString Type /* = "" */)
 {
     UTexture* iconTex = nullptr;
 
     // 총기류
     if      (Type == "Gun" &&
-             Index < MapWeaponIcon.Num())
-             return Cast<UTexture2D>(MapWeaponIcon[Index]);
+             Idx < MapWeaponIcon.Num())
+             iconTex = Cast<UTexture2D>(MapWeaponIcon[Idx]);
 
     // 투척류
     else if (Type == "Explosive" &&
-             Index < MapOtherWeaponIcon.Num())
-             return Cast<UTexture2D>(MapOtherWeaponIcon[Index]);
+             Idx < MapOtherWeaponIcon.Num())
+             iconTex = Cast<UTexture2D>(MapOtherWeaponIcon[Idx]);
 
     // 기타 물품
     else if (Type == "Utility" &&
-             Index < MapUtilityIcon.Num())
-             return Cast<UTexture2D>(MapUtilityIcon[Index]);
+             Idx < MapUtilityIcon.Num())
+             iconTex = Cast<UTexture2D>(MapUtilityIcon[Idx]);
 
     return Cast<UTexture2D>(iconTex);
 }
 
-UMaterial* AUI_manager::GetMaterial(int Index)
+UMaterial* AUI_manager::GetMaterial(int Idx)
 {
-    return (Index < MapMainWeaponIcon.Num()) ? MapMainWeaponIcon[Index] : nullptr;
+    return (Idx < MapMainWeaponIcon.Num()) ? MapMainWeaponIcon[Idx] : nullptr;
 }
 
 void AUI_manager::BeginPlay()
