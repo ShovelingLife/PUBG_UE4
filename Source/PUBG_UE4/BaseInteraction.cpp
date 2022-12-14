@@ -14,9 +14,9 @@ UStaticMesh* ABaseInteraction::GetStaticMesh() const { return StaticMeshComp->Ge
 
 USkeletalMesh* ABaseInteraction::GetSkeletalMesh() const { return SkeletalMeshComp->SkeletalMesh; }
 
-void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (StaticMeshComp) StaticMeshComp->SetStaticMesh(Mesh); }
+void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (IsValid(StaticMeshComp)) StaticMeshComp->SetStaticMesh(Mesh); }
 
-void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (SkeletalMeshComp) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
+void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (IsValid(SkeletalMeshComp)) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
 
 void ABaseInteraction::SetTurnUI(bool bOnOff /* = true */) { InteractionComp->bPlayerNear = bOnOff; }
 
@@ -126,6 +126,9 @@ void ABaseInteraction::SetForDummyCharacter()
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
+    if (!ColliderComp)
+        return;
+
     // 컴포넌트에 따라 콜라이더 업데이트
     ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
     ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;

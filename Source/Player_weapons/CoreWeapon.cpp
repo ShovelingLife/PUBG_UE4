@@ -1,4 +1,10 @@
 ﻿#include "CoreWeapon.h"
+#include "Farmable_items/CoreAttachment.h"
+#include "Farmable_items/CoreBarrel.h"
+#include "Farmable_items/CoreForend.h"
+#include "Farmable_items/CoreGrip.h"
+#include "Farmable_items/CoreSight.h"
+#include "Farmable_items/CoreStock.h"
 #include "GunRecoilComponent.h"
 #include "InputCoreTypes.h"
 #include "TimerManager.h"
@@ -117,11 +123,19 @@ void ACoreWeapon::Init(EGunType Type)
     if (recoilCurveFloat.Succeeded())
         GunRecoilComponent->RecoilCurve = recoilCurveFloat.Object;
 
-    Super::ChangeCollisionSettings();
+    //Super::ChangeCollisionSettings();
     Super::InitSkeletalMesh(WeaponData.MeshPath);
     Super::InitParticleSystem("/Game/VFX/FXVarietyPack/Particles/P_ky_shotShockwave.P_ky_shotShockwave");
     InitBullet();
     UpdateParticleSystem();
+
+    if (ColliderComp)
+        ColliderComp->DestroyComponent();
+
+    // 메쉬 컴포넌트 재설정
+    SkeletalMeshComp->SetCollisionProfileName("Object");
+    SkeletalMeshComp->SetSimulatePhysics(true);
+    SkeletalMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_Yes;
 }
 
 void ACoreWeapon::InitBullet()
@@ -288,4 +302,10 @@ FString ACoreWeapon::GetShootTypeStr() const
         { CONSECUTIVE, "Consecutive" }
     };
     return (ShootType == MAX) ? "Fail" : "Current type : " + mapGunShootType[ShootType];
+}
+
+UTexture* ACoreWeapon::GetAttachmentTex(int Idx) const
+{
+    auto attachment = TArray<ACoreAttachment*>{ CurrentBarrel, CurrentForend, CurrentGrip, CurrentSight, CurrentStock } [Idx];
+    return attachment ? attachment->CurrentItemTex : nullptr;
 }

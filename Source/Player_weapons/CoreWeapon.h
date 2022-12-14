@@ -106,10 +106,10 @@ protected:
      */
     void Init(EGunType WeaponType);
 
-    /** \brief 탄알 초기화 */
+    // 탄알 초기화
     void InitBullet();
 
-    /** \brief 파티클 시스템 갱신 */
+    // 파티클 시스템 갱신
     void UpdateParticleSystem();
 
     void PlaySound(EWeaponSoundType SoundType);
@@ -131,6 +131,8 @@ public:
     EGunShootType GetMaxShootType() const;
 
     FString GetShootTypeStr() const;
+
+    UTexture* GetAttachmentTex(int Idx) const;
 
     void Reload();
 

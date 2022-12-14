@@ -45,11 +45,7 @@ void UInventoryWeaponSlotUI::NativeConstruct()
     pGameInstanceSubSystemUI = UGameInstance::GetSubsystem<UGameInstanceSubsystemUI>(p_gameInst);    
     //pGameInstanceSubSystemUI->DeleVerifyAttachmentSlot.BindUFunction(this, "VerifyAttachmentSlot");
     p_gameInst->DeleSetExplosiveUI.BindUFunction(this, "UpdateThrowable");
-    mArrCanvasPanel.Add(FirstGunCanvasPanel);
-    mArrCanvasPanel.Add(SecondGunCanvasPanel);
-    mArrCanvasPanel.Add(PistolCanvasPanel);
-    mArrCanvasPanel.Add(MeleeCanvasPanel);
-    mArrCanvasPanel.Add(GrenadeCanvasPanel);
+    mArrCanvasPanel = { FirstGunCanvasPanel, SecondGunCanvasPanel, PistolCanvasPanel, MeleeCanvasPanel, GrenadeCanvasPanel };
 }
 
 void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
@@ -58,10 +54,7 @@ void UInventoryWeaponSlotUI::NativeTick(const FGeometry& InGeometry, float Delta
 
     if (mpWeaponManager)
     {
-        mArrWeapon[0] = mpWeaponManager->pFirstGun;
-        mArrWeapon[1] = mpWeaponManager->pSecondGun;
-        mArrWeapon[2] = mpWeaponManager->pPistol;
-
+        mArrWeapon = { mpWeaponManager->pFirstGun, mpWeaponManager->pSecondGun, mpWeaponManager->pPistol };
         UpdateWeaponSlotVisibility();
         UpdateInventoryWeaponUI();
     }
@@ -141,7 +134,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         return;
 
     p_slot->pDraggedItem = p_weapon;
-    p_slot->ItemData = mItemData;
+    p_slot->ItemData     = mItemData;
     p_slot->DeleDeleteFromList.BindUFunction(this, "SetSlotNull");    
 
     // 드래그 구현
@@ -153,9 +146,7 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
         if (auto p_subGameInstUI = UGameInstanceSubsystemUI::GetInst())
             p_customOperation->DefaultDragVisual = p_subGameInstUI->GetSlotCursorUI(mItemData, mousePos);
 
-        if ((int)mSelectedWeaponType < 4)
-            p_customOperation->bGun = true;
-
+        p_customOperation->bGun = (int)mSelectedWeaponType < 4;
         OutOperation = p_customOperation;
     }
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
@@ -225,7 +216,7 @@ bool UInventoryWeaponSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const
     // 마우스 위치 기반으로 선택되고 있는 타입 가져오기
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
     FVector2D dummyVec = FVector2D::ZeroVector, widgetPos = FVector2D::ZeroVector;
-    GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, "Pos : " + mousePos.ToString());
+    //GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, "Pos : " + mousePos.ToString());
     
     if      (mousePos.Y <= 306.f)
              mSelectedWeaponType = FIRST;
@@ -325,23 +316,15 @@ void UInventoryWeaponSlotUI::CheckForHoveredSlot()
 
 TArray<UTexture*> UInventoryWeaponSlotUI::GetAttachmentTexArr(ACoreWeapon* pWeapon) const
 {
-    TArray<UTexture*> arrAttachmentTex;
-    
     if (!pWeapon)
-        return arrAttachmentTex;
+        return {};
 
-    ACoreBarrel* p_barrel = pWeapon->CurrentBarrel;
-    ACoreGrip*   p_grip   = pWeapon->CurrentGrip;
-    ACoreForend* p_forend = pWeapon->CurrentForend;
-    ACoreSight*  p_scope  = pWeapon->CurrentSight;
-    ACoreStock*  p_stock  = pWeapon->CurrentStock;
+    TArray<UTexture*> arrAttachmentTex;    
 
     // 텍스처 설정
-    arrAttachmentTex.Add((p_barrel) ? p_barrel->CurrentItemTex : nullptr);
-    arrAttachmentTex.Add((p_grip)   ? p_grip->CurrentItemTex   : nullptr);
-    arrAttachmentTex.Add((p_forend) ? p_forend->CurrentItemTex : nullptr);
-    arrAttachmentTex.Add((p_stock)  ? p_stock->CurrentItemTex  : nullptr);
-    arrAttachmentTex.Add((p_scope)  ? p_scope->CurrentItemTex  : nullptr);
+    for (int i = 0; i < 5; i++)
+        arrAttachmentTex.Add(pWeapon->GetAttachmentTex(i));
+
     return arrAttachmentTex;
 }
 

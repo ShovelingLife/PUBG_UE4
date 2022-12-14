@@ -56,7 +56,7 @@ void AWeaponManager::BeginPlay()
 void AWeaponManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-    UpdateCurrentWeaponArr();
+    mArrWeapon = { nullptr, pFirstGun, pSecondGun, pPistol, pMelee, pThrowable };
 }
 
 void AWeaponManager::CheckForEquippedWeapon()
@@ -86,16 +86,6 @@ void AWeaponManager::InitGrenadePath()
 
     if (PATH_MAT.Succeeded())
         PathMat = PATH_MAT.Object;
-}
-
-void AWeaponManager::UpdateCurrentWeaponArr()
-{
-    mArrWeapon[0] = nullptr;
-    mArrWeapon[1] = pFirstGun;
-    mArrWeapon[2] = pSecondGun;
-    mArrWeapon[3] = pPistol;
-    mArrWeapon[4] = pMelee;
-    mArrWeapon[5] = pThrowable;
 }
 
 void AWeaponManager::PredictGrenadePath()
@@ -167,9 +157,6 @@ void AWeaponManager::PredictGrenadePath()
 
 void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName, bool bCheck /* = true */)
 {
-    if (!pWeapon)
-        return;
-
     // 총기일 때만 인벤토리 총알과 연동 용도
     if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
         p_gun->bInInventory = true;
@@ -206,9 +193,13 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
         pThrowable = Cast<ACoreThrowableWeapon>(pWeapon);
         CurrentWeaponType = THROWABLE;
     }
-    auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-    pWeapon->ChangeCollisionSettings(false);
-    pWeapon->AttachToMesh(playerMesh, SocketName);
+    if (pWeapon)
+    {
+        auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
+        pWeapon->ChangeCollisionSettings(false);
+        pWeapon->GetMeshComp()->SetSimulatePhysics(false);
+        pWeapon->AttachToMesh(playerMesh, SocketName);
+    }
     // pWeapon->SkeletalMeshComp->AttachToComponent(, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
 }
 
@@ -478,7 +469,7 @@ void AWeaponManager::ChangeAimPose(bool bAiming)
     mbAiming = bAiming;
 
     // 현재 착용 중인 무기를 가지고옴
-    if (ACoreWeapon * p_gun = GetCurrentGun())
+    if (ACoreWeapon* p_gun = GetCurrentGun())
     {
         // 캐릭터 메쉬에다 부착
         auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
@@ -530,30 +521,12 @@ void AWeaponManager::Drop(EWeaponType WeaponType)
 
 void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)
 {
-    // 종류에 따라 스켈레탈 또는 스태틱 메시를 더미 캐릭터가 장착하게 함.
+    // 스켈레탈 메쉬를 더미 캐릭터가 장착하게 함.
     for (int i = 1; i < mArrWeapon.Num(); i++)
     {
-        ABaseInteraction* pWeapon = nullptr;
-
         // 더미 캐릭터에게 UI 적용
-        if (i < 3)
-        {
-            // 총기류
-            pWeapon = Cast<ACoreWeapon>(pArrActor[i + 1]);
+        if (ABaseInteraction* pWeapon = Cast<ACoreWeapon>(pArrActor[i]))
             pWeapon->SetSkeletalMesh((mArrWeapon[i]) ? mArrWeapon[i]->GetSkeletalMesh() : nullptr);
-        }
-        else
-        {
-            // 근접 무기
-            if      (i == 3)
-                     pWeapon = Cast<ACoreMeleeWeapon>(pArrActor[(int)MELEE]);
-
-            // 투척류
-            else if (i == 4)
-                     pWeapon = Cast<ACoreThrowableWeapon>(pArrActor[(int)THROWABLE]);
-
-            pWeapon->SetStaticMesh(mArrWeapon[i] ? mArrWeapon[i]->GetStaticMesh() : nullptr);
-        }
     }
 }
 

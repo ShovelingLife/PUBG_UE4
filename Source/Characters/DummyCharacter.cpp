@@ -17,6 +17,7 @@ ADummyCharacter::ADummyCharacter()
 {
     PrimaryActorTick.bCanEverTick = true;
     this->SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("RootComp")));
+    mArrActorToShow.Add(this);
     InitMeshComp();
     InitAnimInstance();
     InitRenderTarget();
@@ -25,9 +26,6 @@ ADummyCharacter::ADummyCharacter()
 void ADummyCharacter::BeginPlay()
 {
     Super::BeginPlay();
-    mArrActorToShow.Add(this);
-    DummySkeletalMeshComp->SetOwnerNoSee(true);
-    SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
     this->SetOwner(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
     InitWeaponUI();
 }
@@ -51,6 +49,7 @@ void ADummyCharacter::InitMeshComp()
 
     DummySkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, -88.f));
     DummySkeletalMeshComp->bHiddenInGame = true;
+    DummySkeletalMeshComp->SetOwnerNoSee(true);
 }
 
 void ADummyCharacter::InitAnimInstance()
@@ -66,6 +65,7 @@ void ADummyCharacter::InitRenderTarget()
 {
     SceneCaptureComp = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComp"));
     SceneCaptureComp->SetupAttachment(RootComponent);
+    SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
 }
 
 void ADummyCharacter::InitWeaponUI()
@@ -74,11 +74,11 @@ void ADummyCharacter::InitWeaponUI()
 
     TArray<TPair<ABaseInteraction*, FString>> arrWeapons
     {
-        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "FirstGunSock"),
-        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "SecondGunSock"),
-        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "HandGunSock"),
-        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()), "MeleeSock"),
-        TPair<ABaseInteraction*, FString>(p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()), "")
+        { p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "FirstGunSock" },
+        { p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "SecondGunSock" },
+        { p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "HandGunSock" },
+        { p_world->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()), "MeleeSock" },
+        { p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()), "" }
     };
     for (auto& [p_weapon, socketName] : arrWeapons)
     {

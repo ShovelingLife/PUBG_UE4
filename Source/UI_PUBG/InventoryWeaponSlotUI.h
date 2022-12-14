@@ -96,15 +96,10 @@ public:
 private:
     // 뒷배경 색상 관련
     const FLinearColor mkHighlightColor = FLinearColor(FColor::White),
-                       mkNormalColor    = FLinearColor(0.f, 0.f, 0.f, 0.25f);
+                       mkNormalColor    = {0.f, 0.f, 0.f, 0.25f};
 
     /** \brief 현재 쓰여지는 변수 */
-    TArray<ACoreWeapon*> mArrWeapon
-    {
-        nullptr,
-        nullptr,
-        nullptr
-    };
+    TArray<ACoreWeapon*>  mArrWeapon;
     TArray<UCanvasPanel*> mArrCanvasPanel;
     AWeaponManager*       mpWeaponManager = nullptr;
     FPointerEvent         mCurrentPointerEvent;

@@ -109,12 +109,6 @@ private:
 
     void InitGrenadePath();
 
-	/**
-     * \brief 현재 장착 중인 무기에 따라 착용 여부 \n
-	 * arr_is_weapon_equipped 배열 업데이트
-	 */
-    void UpdateCurrentWeaponArr();
-
     UFUNCTION() void PredictGrenadePath();
 
     /**
