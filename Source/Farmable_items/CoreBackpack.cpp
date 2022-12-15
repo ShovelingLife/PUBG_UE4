@@ -28,5 +28,5 @@ ACoreBackpack::ACoreBackpack(EBackpackType BackpackType) : Super()
     StaticMeshComp->AddRelativeLocation(newPos);
 
     // 저장 용량 25 > 50 > 100 순
-    ChangeCollisionSettings();
+    ChangeMeshSettings();
 }

@@ -196,7 +196,7 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
     if (pWeapon)
     {
         auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-        pWeapon->ChangeCollisionSettings(false);
+        pWeapon->ChangeMeshSettings(false);
         pWeapon->GetMeshComp()->SetSimulatePhysics(false);
         pWeapon->AttachToMesh(playerMesh, SocketName);
     }
@@ -208,7 +208,7 @@ void AWeaponManager::Detach(ABaseInteraction* pWeapon)
     auto playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
     if (pWeapon)
-        pWeapon->Detach(playerCharacter->GetActorLocation());
+        pWeapon->Detach();
 }
 
 void AWeaponManager::ClickEvent()

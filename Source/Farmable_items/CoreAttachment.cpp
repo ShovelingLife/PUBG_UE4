@@ -7,5 +7,5 @@ void ACoreAttachment::Init(EWeaponAttachmentType Type)
     this->WeaponAttachmentType = Type;
     WeaponAttachmentData = ADataTableManager::GetWeaponAttachmentData((int)Type);
     Super::InitStaticMesh(WeaponAttachmentData.MeshPath);
-    Super::ChangeCollisionSettings();
+    Super::ChangeMeshSettings();
 }

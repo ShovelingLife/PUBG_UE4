@@ -129,17 +129,16 @@ public:
     // 인벤토리 내 더미 캐릭터 UI 설정
     void SetForDummyCharacter();
 
-    // 충돌체 설정 변경
     void ChangeCollisionSettings(bool bTurned = true);
 
-    // 컴포넌트 충돌 관한 설정 변경
-    void ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bool bTurned);
+    // 메쉬 설정 변경
+    void ChangeMeshSettings(bool bTurned = true);
 
     // 메쉬에게 부착 주로 플레이어에게 사용
     void AttachToMesh(USceneComponent* RootComp, FString SocketName);
 
     // 무기를 탈착
-    void Detach(FVector NewPos);
+    void Detach();
 
     // 현재 오브젝트가 찾고자하는 타입인지 확인
     bool IsGroupType(FString Type) { return ObjectGroupType == Type; }

@@ -134,9 +134,19 @@ void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
     ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
 }
 
-void ABaseInteraction::ChangeCollisionSettings(UPrimitiveComponent* MeshComp, bool bTurned)
+void ABaseInteraction::ChangeMeshSettings(bool bTurned /* = true */)
 {
-    
+    // 메쉬 가져오기
+    UMeshComponent* meshComp = GetMeshComp();
+
+    if (!meshComp)
+        return;
+
+    // 컴포넌트에 따라 콜라이더 업데이트
+    meshComp->SetCollisionProfileName("Object");
+    meshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    meshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_Yes;
+    meshComp->SetSimulatePhysics(true);
 }
 
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
@@ -152,23 +162,11 @@ void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketNam
     meshComp->AttachToComponent(RootComp, transformRules, *SocketName);
 }
 
-void ABaseInteraction::Detach(FVector NewPos)
+void ABaseInteraction::Detach()
 {
-    // 메쉬 가져오기
-    UMeshComponent* meshComp = GetMeshComp();
-
-    if (!meshComp)
-        return;
-
-    // 컴포넌트를 탈착 > 현재 루트 컴포넌트에 부착 > 트랜스폼 초기화
-    meshComp->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
-    meshComp->ResetRelativeTransform();
-
     // 현재 무기를 탈착 후 월드에 소환
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    
-    SetActorLocation(NewPos);
-    ChangeCollisionSettings();
+    ChangeMeshSettings();
     ResetSettings();
 }
 
