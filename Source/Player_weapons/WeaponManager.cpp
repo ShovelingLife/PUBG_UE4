@@ -387,7 +387,6 @@ void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
 
         // 기존 무기 탈착
         Detach(mArrWeapon[(int)CurrentWeaponType]);
-        ChangeAimPose(mbAiming);
     }            
     }    
 }
@@ -464,19 +463,6 @@ void AWeaponManager::ChangeShootMode()
         p_gun->ChangeShootMode();
 }
 
-void AWeaponManager::ChangeAimPose(bool bAiming)
-{
-    mbAiming = bAiming;
-
-    // 현재 착용 중인 무기를 가지고옴
-    if (ACoreWeapon* p_gun = GetCurrentGun())
-    {
-        // 캐릭터 메쉬에다 부착
-        auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-        p_gun->AttachToMesh(p_player->GetMesh(), bAiming ? "EquippedWeaponPosSock" : mArrSocketName[(int)CurrentWeaponType - 1]);
-    }    
-}
-
 void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
 {
     if (!pGrenade)
@@ -517,6 +503,19 @@ void AWeaponManager::Drop(EWeaponType WeaponType)
     // 무기를 맵에다 드롭
     Detach(GetWeaponByIndex(WeaponType));
     SetNull(WeaponType);
+    DeleAim.ExecuteIfBound();
+}
+
+void AWeaponManager::SetNull(EWeaponType WeaponType)
+{
+    switch (WeaponType)
+    {
+    case EWeaponType::FIRST:     pFirstGun  = nullptr; break;
+    case EWeaponType::SECOND:    pSecondGun = nullptr; break;
+    case EWeaponType::PISTOL:    pPistol    = nullptr; break;
+    case EWeaponType::MELEE:     pMelee     = nullptr; break;
+    case EWeaponType::THROWABLE: pThrowable = nullptr; break;
+    }
 }
 
 void AWeaponManager::SetMeshToPlayerUI(TArray<AActor*> pArrActor)

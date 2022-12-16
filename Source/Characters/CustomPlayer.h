@@ -42,7 +42,7 @@ private:
     UPROPERTY() 
     UCustomGameInstance* mpCustomGameInst = nullptr;
 
-    /** \brief 플레이어가 사용하는 변수 */
+    // 플레이어가 사용하는 변수
     UPROPERTY() 
     AWeaponManager* mpWeaponManager = nullptr;
 
@@ -64,7 +64,6 @@ private:
     bool    mbMoving            = false;
     bool    mbInteracting       = false;
     bool    mbInventoryOpened = false;
-    bool mbAiming = false;
 
 // 플레이어 컴포넌트 및 상태 변수
 public:
@@ -100,7 +99,7 @@ public:
     FDeleOpenInventory  DeleOpenInventory;
     FDeleCloseInventory DeleCloseInventory;
 
-    /** \brief 플레이어 상태 관련 변수 */
+    // 플레이어 상태 관련 변수
     EPlayerState CurrentState;
     EPlayerOtherState CurrentOtherState = EPlayerOtherState::NONE;
     const float  kMaxHealth           = 100.f;
@@ -111,7 +110,7 @@ public:
 
     UPROPERTY(EditAnywhere) float Zval;
     
-    /** \brief 차량 관련 변수 */
+    // 차량 관련 변수
     ESeatType CurrentSeatType = ESeatType::NONE;
 
     bool bInVehicle = false;
@@ -128,62 +127,62 @@ private:
 
 // 초기화 함수들
 private:
-    /** \brief 플레이어에 대한 정보 갱신 */
+    // 플레이어에 대한 정보 갱신
     void InitPlayerSettings();
 
-    /** \brief 카메라 컴포넌트 초기화 */
+    // 카메라 컴포넌트 초기화
     void InitCameraComp();
 
-    /** \brief 메시 컴포넌트 초기화 */
+    // 메시 컴포넌트 초기화
     void InitMeshComp();
 
-    /** \brief 오디오 컴포넌트 초기화 */
+    // 오디오 컴포넌트 초기화
     void InitAudioComp();
 
-    /** \brief 애님 인스턴스 초기화 */
+    // 애님 인스턴스 초기화
     void InitAnimInstance();
 
-    /** \brief 파티클 시스템 초기화 */
+    // 파티클 시스템 초기화
     void InitParticleComp();
 
 private:
-    /** \brief 플레이어 움직임 감지 */
+    // 플레이어 움직임 감지
     void CheckIfMoving();
 
-    /** \brief 충돌한 오브젝트 확인 (아이템) (레이캐스트 : 플레이어 발 밑) */
+    // 충돌한 오브젝트 확인 (아이템) (레이캐스트 : 플레이어 발 밑)
     void CheckNearObj();
 
-    /** \brief 근처에 차량이 있는지 감지 (레이캐스트 : 플레이어 상체) */
+    // 근처에 차량이 있는지 감지 (레이캐스트 : 플레이어 상체)
     void CheckNearVehicle();
 
-    /** \brief 상호 작용 중일 시 (무기 줍기/차량 탑승) */
+    // 상호 작용 중일 시 (무기 줍기/차량 탑승)
     void TryToInteract();
 
-    /** \brief F키 눌렀을 시 상호 작용 */
+    // F키 눌렀을 시 상호 작용
     void BeginInteract() { mbInteracting = true; }
 
-    /** \brief F키를 뗐을 시 */
+    // F키를 뗐을 시
     void EndInteract()   { mbInteracting = false; }
 
-    /** \brief 점프 */
+    // 점프
     void CustomJump();
 
-    /** \brief 숙임 */
+    // 숙임
     void CustomCrouch();
 
-    /** \brief 엎드림 */
+    // 엎드림
     void Proning();
 
-    /** \brief 뛰기 시작함 */
+    // 뛰기 시작함
     void BeginSprint();
 
-    /** \brief 뛰다 멈춤 */
+    // 뛰다 멈춤
     void EndSprint();
 
-    /** \brief 앞 뒤로 움직임 */
+    // 앞 뒤로 움직임
     void MoveForwardBack(float Value);
 
-    /** \brief 좌 우로 움직임 */
+    // 좌 우로 움직임
     void MoveLeftRight(float Value);
 
     /**
@@ -200,52 +199,51 @@ private:
 
     // ------- UI 관련 -------
 
-    /** \brief 인벤토리 열음/닫음 */
+    // 인벤토리 열음/닫음
     void OpenInventory();
 
     void UpdateHealth();
 
     // ------- 무기 관련 -------
 
-    /** \brief 사격 */
+    // 사격
     void BeginShooting();
 
-    /** \brief 사격 중지 */
+    // 사격 중지
     void EndShooting();
 
-    /** \brief 재장전 */
+    // 재장전
     void Reload();
 
-    /** \brief 조준 */
+    // 조준 
+    UFUNCTION()
     void Aim();
 
-    /** \brief 격발 모드 변경 */
+    // 격발 모드 변경
     void ChangeShootMode();
 
-    /** \brief 마우스 위로 스크롤 */
+    // 마우스 위로 스크롤
     void SwapScrollingUp() { CheckForWeapon(NONE, "Up"); }
 
-    /** \brief 마우스 아래로 스크롤 */
+    // 마우스 아래로 스크롤
     void SwapScrollingDown() { CheckForWeapon(NONE, "Down"); }
 
-    /** \brief 첫번째 무기 장착 */
+    // 첫번째 무기 장착
     void EquipFirstWeapon() { CheckForWeapon(FIRST); }
 
-    /** \brief 두번째 무기 장착 */
+    // 두번째 무기 장착
     void EquipSecondWeapon() { CheckForWeapon(SECOND); }
 
-    /** \brief 세번째 무기 장착 */
+    // 세번째 무기 장착
     void EquipThirdWeapon() { CheckForWeapon(PISTOL); }
 
-    /** \brief 네번째 무기 장착 */
+    // 네번째 무기 장착
     void EquipFourthWeapon() { CheckForWeapon(MELEE); }
 
-    /** \brief 다섯번째 무기 장착 */
+    // 다섯번째 무기 장착
     void EquipFifthWeapon() { CheckForWeapon(THROWABLE); }
 
     void CheckForWeapon(EWeaponType CurrentWeaponType = NONE, FString Direction = "");
-
-    void ChangePerspective();
 
     // 조준선을 확대
     void ZoomIn();

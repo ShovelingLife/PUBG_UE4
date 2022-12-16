@@ -15,6 +15,8 @@
 #include "PUBG_UE4/WeaponEnum.h"
 #include "WeaponManager.generated.h"
 
+DECLARE_DELEGATE(FDeleAim)
+
 class ABaseInteraction;
 class ACoreAttachment;
 class ACoreWeapon;
@@ -46,7 +48,7 @@ private:
 	TArray<ABaseInteraction*> mArrWeapon;
 
 	// 총기 관련
-    bool  mbAiming = false, mbThrowingGrenade = false;
+    bool  mbThrowingGrenade = false;
 
 public:
 // ------- 현재 착용 중인 무기 -------
@@ -64,6 +66,8 @@ public:
 
     UPROPERTY() 
 	ACoreThrowableWeapon* pThrowable = nullptr;
+
+	FDeleAim DeleAim;
 
     EWeaponType CurrentWeaponType = NONE;
 
@@ -92,6 +96,8 @@ public:
     FVector mGrenadeVelocity;
     float GrenadeDirection;
 	float GrenadeSpeed = 0.f;
+
+	bool bAiming = false;
 
 public:	
 	AWeaponManager();
@@ -162,9 +168,6 @@ public:
 	/** \brief 착용 중인 무기를 체크함 */
 	void ChangeShootMode();
 
-	// 미구현 상태
-	void ChangeAimPose(bool bAiming);
-
 	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);
 
 	// ------- 부착 관련 함수 -------
@@ -192,7 +195,7 @@ public:
 	 */
 	void Drop(EWeaponType WeaponType);
 
-	void SetNull(EWeaponType WeaponType) { mArrWeapon[(int)WeaponType - 1] = nullptr; }
+	void SetNull(EWeaponType WeaponType);
 
 	void SetMeshToPlayerUI(TArray<AActor*> pArrActor);
 

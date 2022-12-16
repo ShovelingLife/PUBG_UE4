@@ -122,8 +122,8 @@ void UInventoryWeaponSlotUI::NativeOnDragDetected(const FGeometry& InGeometry, c
     ABaseInteraction* p_weapon = nullptr;    
 
     // 슬롯 설정
-    UItemSlotUI* p_slot = CreateWidget<UItemSlotUI>(GetOwningPlayer(), BP_ItemSlotUI);
-    FVector2D mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
+    UItemSlotUI* p_slot   = CreateWidget<UItemSlotUI>(GetOwningPlayer(), BP_ItemSlotUI);
+    FVector2D    mousePos = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition()) + FVector2D(-25.f);
 
     if (mpWeaponManager)
         p_weapon = mpWeaponManager->GetWeaponByIndex(mSelectedWeaponType);

@@ -40,6 +40,7 @@ ACustomPlayer::ACustomPlayer()
     InitAnimInstance();
     InitParticleComp();
 
+    // 캐릭터 UI 업데이트
     auto bp_DummyCharacter = ConstructorHelpers::FClassFinder<ADummyCharacter>(TEXT("Blueprint'/Game/1_Blueprints/BP_DummyCharacter.BP_DummyCharacter_C'"));
 
     if (bp_DummyCharacter.Succeeded())
@@ -52,6 +53,7 @@ void ACustomPlayer::BeginPlay()
 
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
+    mpWeaponManager->DeleAim.BindUFunction(this, "Aim");
     mpCustomGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
 
     if (mpCustomGameInst)
@@ -71,7 +73,6 @@ void ACustomPlayer::Tick(float DeltaTime)
     CheckNearObj();
     TryToInteract();
     UpdateHealth();
-    ChangePerspective();
 }
 
 void ACustomPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -121,7 +122,8 @@ void ACustomPlayer::InitCameraComp()
     // 카메라 컴포넌트 초기화 > 카메라를 부모 컴포넌트에 부착 > 카메라 설정
     Aim_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("AimCamera"));
     Aim_CameraComp->SetupAttachment(GetMesh());
-    //Aim_CameraComp->SetAutoActivate(false);
+    Aim_CameraComp->SetAutoActivate(false);
+    Aim_CameraComp->Deactivate();
     Aim_CameraComp->bUsePawnControlRotation = true;
     //Aim_CameraComp->Activate();
 
@@ -132,8 +134,7 @@ void ACustomPlayer::InitCameraComp()
     FPS_CameraComp->SetupAttachment(FPS_SpringArmComp);
     FPS_SpringArmComp->TargetArmLength = 0.f;
     FPS_SpringArmComp->bUsePawnControlRotation = true;
-    FPS_CameraComp->Deactivate();
-    FPS_CameraComp->SetAutoActivate(false);
+    FPS_CameraComp->SetAutoActivate(true);
 
     // ------- TPS (3인칭) -------        
     TPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("TPS_SpringArm"));
@@ -482,11 +483,12 @@ void ACustomPlayer::Aim()
 {
     auto currentWeaponType = mpWeaponManager->CurrentWeaponType;
 
-    if (mbInventoryOpened ||
-        currentWeaponType == MELEE ||
+    if (currentWeaponType == MELEE ||
         currentWeaponType == THROWABLE)
         return;
 
+    // 현재 착용 중인 무기를 가지고옴
+    ACoreWeapon* p_gun = mpWeaponManager->GetCurrentGun();
     bool bAiming = false;
 
     switch (CurrentState)
@@ -501,8 +503,20 @@ void ACustomPlayer::Aim()
     case CROUCH_AIM:  CurrentState = CROUCH;  break;
     case PRONING_AIM: CurrentState = PRONING; break;
     }
-    mbAiming = bAiming;
-    mpWeaponManager->ChangeAimPose(bAiming);
+    if (!p_gun)
+    {
+        // 총기 카메라 위치 > 플레이어 카메라 위치
+        ZoomOut();
+        return;
+    }
+    // 캐릭터 메쉬에다 부착
+    auto p_player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    p_gun->AttachToMesh(GetMesh(), bAiming ? "EquippedWeaponPosSock" : TArray<FString>{ "FirstGunSock", "SecondGunSock", "HandGunSock" } [(int)mpWeaponManager->CurrentWeaponType - 1] );
+
+    // 플레이어 카메라 위치 > 총기 카메라 위치
+    if (bAiming)
+        ZoomIn();
+
     //// 플레이어 카메라 위치 > 총기 카메라 위치
     //if (bAiming)
     //    GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomIn,1.f,true);
@@ -530,17 +544,6 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
     mpCustomGameInst->pSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
 }
 
-void ACustomPlayer::ChangePerspective()
-{
-    // 플레이어 카메라 위치 > 총기 카메라 위치
-    if (mbAiming)
-        ZoomIn();
-
-    // 총기 카메라 위치 > 플레이어 카메라 위치
-    else
-        ZoomOut();    
-}
-
 void ACustomPlayer::ZoomIn()
 {
     FPS_CameraComp->Deactivate();
@@ -560,6 +563,9 @@ void ACustomPlayer::ZoomIn()
 
 void ACustomPlayer::ZoomOut()
 {
+    if (!Aim_CameraComp->IsActive())
+        return;
+
     auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), mainCameraPos = FPS_CameraComp->GetComponentLocation();
     auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, mainCameraPos, GetWorld()->GetDeltaSeconds(), 15.f);
     Aim_CameraComp->SetWorldLocation(movePos);
@@ -568,7 +574,7 @@ void ACustomPlayer::ZoomOut()
     
     if (aimCameraPos.Equals(mainCameraPos, 0.f))
     {
-        GEngine->AddOnScreenDebugMessage(10, 1.f, FColor::Red, "Zoom out ended");
+        // GEngine->AddOnScreenDebugMessage(10, 1.f, FColor::Red, "Zoom out ended");
         FPS_CameraComp->Activate();
         Aim_CameraComp->Deactivate();
     }    
