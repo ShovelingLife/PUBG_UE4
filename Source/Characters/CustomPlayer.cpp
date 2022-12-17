@@ -533,15 +533,18 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
     if (mpWeaponManager->IsFiring())
         return;
 
+    bool bChanged = false;
+
     // 마우스 휠로 무기 선택
     if (Direction != "")
-        mpWeaponManager->ScrollSelect(Direction);
+        bChanged = mpWeaponManager->ScrollSelect(Direction);
 
     // 키보드 숫자 키로 무기 선택
     else
-        mpWeaponManager->Swap(WeaponType);
+        bChanged = mpWeaponManager->Swap(WeaponType);
 
-    mpCustomGameInst->pSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
+    if (bChanged)
+        mpCustomGameInst->pSoundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_SWAP);
 }
 
 void ACustomPlayer::ZoomIn()

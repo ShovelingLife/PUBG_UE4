@@ -162,36 +162,46 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
         p_gun->bInInventory = true;
 
     // 소켓 기반 무기 종류 판별 후 다운캐스팅
-    if (SocketName == "HandGunSock")
-    {
-        pPistol = Cast<ACoreWeapon>(pWeapon);
-        CurrentWeaponType = PISTOL;
-    }
-    else if (SocketName == "FirstGunSock")
+    if (SocketName == "FirstGunSock")
     {
         pFirstGun = Cast<ACoreWeapon>(pWeapon);
-        CurrentWeaponType = FIRST;
+
+        if (pFirstGun)
+            CurrentWeaponType = FIRST;
     }
     else if (SocketName == "SecondGunSock")
     {
-        // 중복 무기 방지
+        // 무기 중복 방지
         if (bCheck &&
             pFirstGun == Cast<ACoreWeapon>(pWeapon))
             return;
 
         pSecondGun  = Cast<ACoreWeapon>(pWeapon);
-        CurrentWeaponType = SECOND;
+
+        if (pSecondGun)
+            CurrentWeaponType = SECOND;
+    }
+    else if (SocketName == "HandGunSock")
+    {
+        pPistol = Cast<ACoreWeapon>(pWeapon);
+
+        if (pPistol)
+            CurrentWeaponType = PISTOL;
     }
     // 근접무기/투척류
     else if (SocketName == "MeleeSock")
     {
         pMelee = Cast<ACoreMeleeWeapon>(pWeapon);
-        CurrentWeaponType = MELEE;
+
+        if (pMelee)
+            CurrentWeaponType = MELEE;
     }
     else
     {
         pThrowable = Cast<ACoreThrowableWeapon>(pWeapon);
-        CurrentWeaponType = THROWABLE;
+
+        if (pThrowable)
+            CurrentWeaponType = THROWABLE;
     }
     if (pWeapon)
     {
@@ -292,8 +302,7 @@ bool AWeaponManager::ScrollSelect(FString Pos)
         if (changeType == NONE)
             changeType = FIRST;
     }
-    Swap(changeType, true);
-    return true;
+    return Swap(changeType, true);
 } 
 
 bool AWeaponManager::TryToEquip(ABaseInteraction* pWeapon, bool bCheck /* = true */)
@@ -366,14 +375,17 @@ void AWeaponManager::SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWea
 }
 
 // 추가 수정
-void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
+bool AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
 {
     if (WeaponType == CurrentWeaponType ||
         WeaponType == NONE)
-        return;
+        return false;
+
+    // 키 숫자 눌렀는데 없을 시
+    if (!mArrWeapon[(int)WeaponType])
+        return false;
 
     // 무기 맞교환
-
     switch (WeaponType)
     {
     case EWeaponType::MELEE: break;
@@ -381,14 +393,19 @@ void AWeaponManager::Swap(EWeaponType WeaponType, bool bScrolling /* = false */)
 
     default:
     {
-        // 새로운 무기 장착
         int idx = (int)WeaponType;
-        AttachWeapon(mArrWeapon[idx], mArrSocketName[idx - 1]);
+
+        // 조준 시 탈착 후 재장착
 
         // 기존 무기 탈착
-        Detach(mArrWeapon[(int)CurrentWeaponType]);
+        AttachWeapon(mArrWeapon[(int)CurrentWeaponType], mArrSocketName[idx - 1]);        
+        // Detach(mArrWeapon[(int)CurrentWeaponType]);
+
+        // 새로운 무기 장착
+        AttachWeapon(mArrWeapon[idx], mArrSocketName[idx - 1]);
     }            
-    }    
+    } 
+    return true;
 }
 
 int AWeaponManager::Swap(ABaseInteraction* pNewWeapon, ABaseInteraction* pCurrentWeapon /* = nullptr */, EWeaponType WeaponType /* = ECurrentWeaponType::NONE */)

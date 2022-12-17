@@ -160,7 +160,7 @@ public:
 	void SwapWorld(ABaseInteraction* pNewWeapon, AActor* pCurrentWeapon, FString SocketName);
 
 	// 현재 착용 중인 무기랑 교체
-	void Swap(EWeaponType WeaponType, bool bScrolling = false);
+	bool Swap(EWeaponType WeaponType, bool bScrolling = false);
 
 	// 반환값 = -1 에러 / 0 성공 / 1 근접 또는 투척 무기
 	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, EWeaponType WeaponType = NONE);
