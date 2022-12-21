@@ -2,6 +2,7 @@
 #include "CoreVehicle.h"
 #include "CustomGameModeBase.h"
 #include "DummyCharacter.h"
+#include "TimerManager.h"
 #include "AI_PUBG/AI_character.h"
 #include "Player_weapons/CoreWeapon.h"
 #include "Player_weapons/CoreMeleeWeapon.h"
@@ -45,6 +46,8 @@ ACustomPlayer::ACustomPlayer()
 
     if (bp_DummyCharacter.Succeeded())
         BP_DummyCharacter = bp_DummyCharacter.Class;
+
+    ZoomInTimerDele.BindUFunction(this, "ZoomIn");
 }
 
 void ACustomPlayer::BeginPlay()
@@ -53,7 +56,7 @@ void ACustomPlayer::BeginPlay()
 
     // 무기 매니저 생성
     mpWeaponManager = GetWorld()->SpawnActor<AWeaponManager>(AWeaponManager::StaticClass());
-    mpWeaponManager->DeleAim.BindUFunction(this, "Aim");
+    mpWeaponManager->DeleAim.BindUFunction(this, "TryToAim");
     mpCustomGameInst = Cast<UCustomGameInstance>(GetWorld()->GetGameInstance());
 
     if (mpCustomGameInst)
@@ -306,7 +309,7 @@ void ACustomPlayer::TryToInteract()
         return;
     }
     // 획득 가능한 오브젝트일 시
-    if (mpCollidedItem->IsA<ACoreFarmableItem>())
+    else if (mpCollidedItem->IsA<ACoreFarmableItem>())
     {
         // 인벤토리에 추가한 뒤 맵에서 제거
         mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedItem, false);
@@ -515,7 +518,7 @@ void ACustomPlayer::Aim()
 
     // 플레이어 카메라 위치 > 총기 카메라 위치
     if (bAiming)
-        ZoomIn();
+        GetWorld()->GetTimerManager().SetTimer(Handle, ZoomInTimerDele, 0.01f, true);
 
     //// 플레이어 카메라 위치 > 총기 카메라 위치
     //if (bAiming)
@@ -524,6 +527,15 @@ void ACustomPlayer::Aim()
     //// 총기 카메라 위치 > 플레이어 카메라 위치
     //else
     //    GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomOut, 1.f, true);
+}
+
+void ACustomPlayer::TryToAim()
+{
+    // 조준 하고 있을 시 해제
+    if (CurrentState == AIM        ||
+        CurrentState == CROUCH_AIM ||
+        CurrentState == PRONING_AIM)
+        Aim();
 }
 
 void ACustomPlayer::ChangeShootMode() { mpWeaponManager->ChangeShootMode(); }
@@ -554,7 +566,7 @@ void ACustomPlayer::ZoomIn()
 
     if (auto p_gun = mpWeaponManager->GetCurrentGun())
     {
-        auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), aimSocketPos = p_gun->SkeletalMeshComp->GetSocketLocation("Sight");
+        auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), aimSocketPos = p_gun->SkeletalMeshComp->GetSocketLocation("AimSock");
         auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, aimSocketPos, GetWorld()->GetDeltaSeconds(), 10.f);
         movePos.X -= Zval;
         movePos.Z += 2.f;

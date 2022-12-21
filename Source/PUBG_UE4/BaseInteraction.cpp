@@ -18,7 +18,7 @@ void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (IsValid(StaticMesh
 
 void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (IsValid(SkeletalMeshComp)) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
 
-void ABaseInteraction::SetTurnUI(bool bOnOff /* = true */) { InteractionComp->bPlayerNear = bOnOff; }
+void ABaseInteraction::SetTurnUI(bool bOnOff /* = true */) { if (IsValid(InteractionComp)) InteractionComp->bPlayerNear = bOnOff; }
 
 ABaseInteraction::ABaseInteraction()
 {

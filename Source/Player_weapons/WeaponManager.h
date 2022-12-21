@@ -109,8 +109,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	/* \brief 착용 중인 무기를 체크함 */
-	// 미구현상태
+	// 착용 중인 무기를 체크함 미구현상태
     void CheckForEquippedWeapon();
 
     void InitGrenadePath();

@@ -99,6 +99,10 @@ public:
     FDeleOpenInventory  DeleOpenInventory;
     FDeleCloseInventory DeleCloseInventory;
 
+    // 에임 관련
+    FTimerHandle Handle;
+    FTimerDelegate ZoomInTimerDele;
+
     // 플레이어 상태 관련 변수
     EPlayerState CurrentState;
     EPlayerOtherState CurrentOtherState = EPlayerOtherState::NONE;
@@ -112,7 +116,6 @@ public:
     
     // 차량 관련 변수
     ESeatType CurrentSeatType = ESeatType::NONE;
-
     bool bInVehicle = false;
 
 public:
@@ -216,8 +219,11 @@ private:
     void Reload();
 
     // 조준 
-    UFUNCTION()
     void Aim();
+
+    // 조준 해제 체크
+    UFUNCTION()
+    void TryToAim();
 
     // 격발 모드 변경
     void ChangeShootMode();
@@ -246,15 +252,19 @@ private:
     void CheckForWeapon(EWeaponType CurrentWeaponType = NONE, FString Direction = "");
 
     // 조준선을 확대
+    UFUNCTION()
     void ZoomIn();
 
+    UFUNCTION()
     // 조준선을 원위치 시킴
     void ZoomOut();
 
 public:
-    UFUNCTION() void DealDmg(float DmgVal);
+    UFUNCTION() 
+    void DealDmg(float DmgVal);
 
-    UFUNCTION() void SetOtherState(EPlayerOtherState OtherState) { this->CurrentOtherState = OtherState; }
+    UFUNCTION() 
+    void SetOtherState(EPlayerOtherState OtherState) { this->CurrentOtherState = OtherState; }
 
     AWeaponManager* GetWeaponManager() { return mpWeaponManager; }
 
