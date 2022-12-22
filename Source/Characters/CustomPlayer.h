@@ -81,14 +81,6 @@ public:
     UPROPERTY(VisibleAnywhere, Category = CameraVar) 
     UCameraComponent* TPS_CameraComp = nullptr;
 
-    // ------- 에임 카메라 -------
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
-    UCameraComponent* Aim_CameraComp = nullptr;
-    
-    UPROPERTY(VisibleAnywhere, Category = CameraVar) 
-    FTimerHandle AimTimerHandle;
-    //UPROPERTY(VisibleAnywhere, Category = TPS_Variable) UStaticMeshComponent*    TPS_MeshComp    = nullptr;
-
     // ------- 인벤토리 캐릭터 UI 관련 -------
     UPROPERTY(EditAnywhere)
     TSubclassOf<ADummyCharacter> BP_DummyCharacter;
@@ -100,8 +92,6 @@ public:
     FDeleCloseInventory DeleCloseInventory;
 
     // 에임 관련
-    FTimerHandle Handle;
-    FTimerDelegate ZoomInTimerDele;
 
     // 플레이어 상태 관련 변수
     EPlayerState CurrentState;
@@ -113,6 +103,7 @@ public:
     bool         bAnimationPlaying    = false;
 
     UPROPERTY(EditAnywhere) float Zval;
+    FTimerHandle AimTimerHandle;
     
     // 차량 관련 변수
     ESeatType CurrentSeatType = ESeatType::NONE;

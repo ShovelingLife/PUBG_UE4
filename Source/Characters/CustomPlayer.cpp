@@ -46,8 +46,6 @@ ACustomPlayer::ACustomPlayer()
 
     if (bp_DummyCharacter.Succeeded())
         BP_DummyCharacter = bp_DummyCharacter.Class;
-
-    ZoomInTimerDele.BindUFunction(this, "ZoomIn");
 }
 
 void ACustomPlayer::BeginPlay()
@@ -122,14 +120,6 @@ void ACustomPlayer::InitPlayerSettings()
 
 void ACustomPlayer::InitCameraComp()
 {
-    // 카메라 컴포넌트 초기화 > 카메라를 부모 컴포넌트에 부착 > 카메라 설정
-    Aim_CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("AimCamera"));
-    Aim_CameraComp->SetupAttachment(GetMesh());
-    Aim_CameraComp->SetAutoActivate(false);
-    Aim_CameraComp->Deactivate();
-    Aim_CameraComp->bUsePawnControlRotation = true;
-    //Aim_CameraComp->Activate();
-
     // ------- FPS (1인칭) -------
     FPS_SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("FPS_SpringArm"));
     FPS_CameraComp    = CreateDefaultSubobject<UCameraComponent>(TEXT("FPS_Camera"));
@@ -509,7 +499,7 @@ void ACustomPlayer::Aim()
     if (!p_gun)
     {
         // 총기 카메라 위치 > 플레이어 카메라 위치
-        ZoomOut();
+        GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomOut, 0.01f, true);
         return;
     }
     // 캐릭터 메쉬에다 부착
@@ -518,15 +508,11 @@ void ACustomPlayer::Aim()
 
     // 플레이어 카메라 위치 > 총기 카메라 위치
     if (bAiming)
-        GetWorld()->GetTimerManager().SetTimer(Handle, ZoomInTimerDele, 0.01f, true);
+        GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomIn, 0.01f, true);
 
-    //// 플레이어 카메라 위치 > 총기 카메라 위치
-    //if (bAiming)
-    //    GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomIn,1.f,true);
-
-    //// 총기 카메라 위치 > 플레이어 카메라 위치
-    //else
-    //    GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomOut, 1.f, true);
+    // 총기 카메라 위치 > 플레이어 카메라 위치
+    else
+        GetWorld()->GetTimerManager().SetTimer(AimTimerHandle, this, &ACustomPlayer::ZoomOut, 0.01f, true);
 }
 
 void ACustomPlayer::TryToAim()
@@ -561,38 +547,26 @@ void ACustomPlayer::CheckForWeapon(EWeaponType WeaponType /* = ECurrentWeaponTyp
 
 void ACustomPlayer::ZoomIn()
 {
-    FPS_CameraComp->Deactivate();
-    Aim_CameraComp->Activate();
+    auto fieldOfView = FPS_CameraComp->FieldOfView;
 
-    if (auto p_gun = mpWeaponManager->GetCurrentGun())
+    if (fieldOfView <= 45.f)
     {
-        auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), aimSocketPos = p_gun->SkeletalMeshComp->GetSocketLocation("AimSock");
-        auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, aimSocketPos, GetWorld()->GetDeltaSeconds(), 10.f);
-        movePos.X -= Zval;
-        movePos.Z += 2.f;
-
-        if (aimCameraPos.Size() != movePos.Size())
-            Aim_CameraComp->SetWorldLocation(movePos);
+        GetWorld()->GetTimerManager().ClearTimer(AimTimerHandle);
+        return;
     }
+    FPS_CameraComp->SetFieldOfView(--fieldOfView);
 }
 
 void ACustomPlayer::ZoomOut()
 {
-    if (!Aim_CameraComp->IsActive())
-        return;
+    auto fieldOfView = FPS_CameraComp->FieldOfView;
 
-    auto aimCameraPos = Aim_CameraComp->GetComponentLocation(), mainCameraPos = FPS_CameraComp->GetComponentLocation();
-    auto movePos = UKismetMathLibrary::VInterpTo(aimCameraPos, mainCameraPos, GetWorld()->GetDeltaSeconds(), 15.f);
-    Aim_CameraComp->SetWorldLocation(movePos);
-    //GEngine->AddOnScreenDebugMessage(8, 1.f, FColor::Red, FString::SanitizeFloat(aimCameraPos.Size()));
-    //GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, FString::SanitizeFloat(mainCameraPos.Size()));
-    
-    if (aimCameraPos.Equals(mainCameraPos, 0.f))
+    if (fieldOfView >= 90.f)
     {
-        // GEngine->AddOnScreenDebugMessage(10, 1.f, FColor::Red, "Zoom out ended");
-        FPS_CameraComp->Activate();
-        Aim_CameraComp->Deactivate();
-    }    
+        GetWorld()->GetTimerManager().ClearTimer(AimTimerHandle);
+        return;
+    }
+    FPS_CameraComp->SetFieldOfView(++fieldOfView);
 }
 
 // UFUNCTION()
