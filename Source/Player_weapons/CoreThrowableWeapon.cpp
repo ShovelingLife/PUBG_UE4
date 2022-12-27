@@ -97,8 +97,8 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
     case ILLUMINATION:
         particlePath = "ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'"; break;
 
-    case SMOKE: particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
-    case MOLOTOV:    particlePath = explosionPath + "P_Molotov.P_Molotov'"; break;
+    case SMOKE:   particlePath = explosionPath + "P_Explosion_Smoke.P_Explosion_Smoke'"; break;
+    case MOLOTOV: particlePath = explosionPath + "P_Molotov.P_Molotov'"; break;
     }
     // 파티클 설정
     ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE(*particlePath);

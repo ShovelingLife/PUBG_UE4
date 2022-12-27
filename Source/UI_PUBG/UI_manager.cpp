@@ -98,7 +98,7 @@ UMaterial* AUI_manager::GetMaterial(int Idx)
 void AUI_manager::BeginPlay()
 {
     Super::BeginPlay();
-    
+
     BindDelegate();
     SetPlayerUI();
     InitPlayerInventory();
@@ -263,19 +263,20 @@ void AUI_manager::SetPlayerUI()
         pPlayerEffect_UI = Cast<UPlayerEffectUI>(p_playerEffectUI_Widget);
 }
 
-void AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type)
+bool AUI_manager::UpdateInteractionUI(UWidgetComponent* WidgetComp, FString Type)
 {
     if (!WidgetComp)
-        return;
+        return false;
 
     // 위젯 설정
     WidgetComp->SetWidgetSpace(EWidgetSpace::Screen);
-    WidgetComp->SetRelativeLocation(FVector::ZeroVector);
     WidgetComp->SetWidgetClass(mInteractionWidgetBP);
 
     // 적용한 위젯을 갖고와 텍스트 초기화
     if (auto p_interactionUI = Cast<UInteractionUI>(WidgetComp->GetWidget()))
         p_interactionUI->TitleTxt->SetText(FText::FromString(Type));
+
+    return true;
 }
 
 void AUI_manager::RunEffectAnim(float  StartTime, float WaitTime, EPlayerStateAnimType Type)

@@ -156,7 +156,7 @@ private:
     void BeginInteract() { mbInteracting = true; }
 
     // F키를 뗐을 시
-    void EndInteract()   { mbInteracting = false; }
+    void EndInteract() { mbInteracting = false; }
 
     // 점프
     void CustomJump();

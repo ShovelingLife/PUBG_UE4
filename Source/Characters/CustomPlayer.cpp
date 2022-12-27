@@ -243,7 +243,7 @@ void ACustomPlayer::CheckIfMoving()
 
 void ACustomPlayer::CheckNearObj()
 {
-    FVector    direction = GetActorForwardVector() * 50;
+    FVector    direction = GetActorForwardVector() * 100;
     FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
     FVector    endPos    = beginPos + direction;
     FHitResult hitResult;
@@ -254,19 +254,9 @@ void ACustomPlayer::CheckNearObj()
     if (!p_hittedActor)
         return;
 
-    // 오브젝트 접근 후 벗어남
-    if (mpCollidedItem)
-        mpCollidedItem->SetTurnUI(false);
-
-    else
-    {
-        // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
-        if (p_hittedActor->IsA<ABaseInteraction>())
-        {
-            mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
-            mpCollidedItem->SetTurnUI();
-        }
-    }
+    // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
+    if (p_hittedActor->IsA<ABaseInteraction>())
+        mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
 }
 
 void ACustomPlayer::CheckNearVehicle()

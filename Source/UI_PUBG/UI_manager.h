@@ -125,7 +125,7 @@ public:
 public:
     // 상호작용 UI 업데이트 (델리게이트)
     UFUNCTION() 
-    void UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
+    bool UpdateInteractionUI(class UWidgetComponent* WidgetComp, FString Title);
 
     UFUNCTION() 
     void RunEffectAnim(float StartTime, float WaitTime, EPlayerStateAnimType Type);

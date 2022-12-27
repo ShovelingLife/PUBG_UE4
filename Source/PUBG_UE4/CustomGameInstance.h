@@ -30,7 +30,7 @@ DECLARE_DELEGATE_OneParam(FDeleSetFadingTxt, FString)
 DECLARE_DELEGATE_OneParam(FDeleSetExplosiveUI, ACoreThrowableWeapon*)
 DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
-DECLARE_DELEGATE_TwoParams(FDeleSetInteractionWidgetComp, UWidgetComponent*, FString)
+DECLARE_DELEGATE_RetVal_TwoParams(bool, FDeleSetInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
 // 무기 관련 델리게이트

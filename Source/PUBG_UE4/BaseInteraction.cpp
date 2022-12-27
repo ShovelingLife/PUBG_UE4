@@ -1,11 +1,11 @@
 ﻿#include "BaseInteraction.h"
 #include "DataTableManager.h"
 #include "CustomGameInstance.h"
-#include "InteractionComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -18,7 +18,7 @@ void ABaseInteraction::SetStaticMesh(UStaticMesh* Mesh) { if (IsValid(StaticMesh
 
 void ABaseInteraction::SetSkeletalMesh(USkeletalMesh* Mesh) { if (IsValid(SkeletalMeshComp)) SkeletalMeshComp->SetSkeletalMesh(Mesh); }
 
-void ABaseInteraction::SetTurnUI(bool bOnOff /* = true */) { if (IsValid(InteractionComp)) InteractionComp->bPlayerNear = bOnOff; }
+void ABaseInteraction::SetTurnUI(bool bOnOff /* = true */) { } // if (IsValid(InteractionComp)) InteractionComp->bPlayerNear = bOnOff;
 
 ABaseInteraction::ABaseInteraction()
 {
@@ -28,13 +28,13 @@ ABaseInteraction::ABaseInteraction()
 
 void ABaseInteraction::BeginPlay()
 {
-    Super::BeginPlay();
-    InteractionComp->InitInteractionText(ObjectType);
+    Super::BeginPlay();    
 }
 
 void ABaseInteraction::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    InitWidget();    
 }
 
 void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -44,10 +44,10 @@ void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Othe
 
 void ABaseInteraction::InitComponents()
 {
+    WidgetComp       = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
     SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
     StaticMeshComp   = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     ParticleComp     = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleComp"));
-    InteractionComp  = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComp"));
     ColliderComp     = CreateDefaultSubobject<UBoxComponent>("ColliderComp");
 }
 
@@ -84,6 +84,7 @@ void ABaseInteraction::InitSkeletalMesh(FString Path)
     SkeletalMeshComp->SetWorldLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);    
 
     InitCollider();
+    WidgetComp->SetupAttachment(RootComponent);
 }
 
 void ABaseInteraction::InitCollider()
@@ -93,6 +94,25 @@ void ABaseInteraction::InitCollider()
     ColliderComp->BodyInstance.SetCollisionProfileName("Object");
     ColliderComp->BodyInstance.bNotifyRigidBodyCollision = false;
     ColliderComp->SetSimulatePhysics(false);
+}
+
+void ABaseInteraction::InitWidget()
+{
+    if (!mbWidgetInitialized)
+    {
+        // 상호작용 텍스트 == ""일 시
+        if (!ObjectType.IsEmpty())
+        {
+            // 상호작용 텍스트 초기화
+            if (auto p_customGameInst = UCustomGameInstance::GetInst())
+            {
+                auto event = p_customGameInst->DeleSetInteractionWidgetComp;
+
+                if (event.IsBound())
+                    mbWidgetInitialized = event.Execute(WidgetComp, FString::Printf(TEXT("%s PickUp "), *ObjectType));
+            }
+        }
+    }
 }
 
 UMeshComponent* ABaseInteraction::GetMeshComp() const
@@ -107,7 +127,7 @@ UMeshComponent* ABaseInteraction::GetMeshComp() const
         return nullptr;
 }
 
-void ABaseInteraction::DestroyComponentsForUI() { if (InteractionComp) InteractionComp->DestroyComponent(); }
+void ABaseInteraction::DestroyComponentsForUI() { if (WidgetComp) WidgetComp->DestroyComponent(); }
 
 void ABaseInteraction::SetForDummyCharacter()
 {
@@ -173,6 +193,7 @@ void ABaseInteraction::Detach()
 void ABaseInteraction::InitParticleSystem(FString Path)
 {
     // 파티클 컴포넌트 초기화
+    ParticleComp->SetupAttachment(RootComponent);
     ParticleComp->SetRelativeLocationAndRotation(FVector::ZeroVector, FRotator::ZeroRotator);
     ParticleComp->bAutoActivate = false;
     ParticleComp->SecondsBeforeInactive = 0.f;

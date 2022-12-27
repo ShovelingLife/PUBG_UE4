@@ -36,6 +36,7 @@ using enum EMeleeWeaponType;
 
 protected: 
     float mCurrentTime = 0.f;
+    bool mbWidgetInitialized;
 
 public:
     UPROPERTY(VisibleAnywhere, Category = Mesh)     
@@ -53,8 +54,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = Collider)
     UBoxComponent* ColliderComp = nullptr;
 
-    UPROPERTY(VisibleAnywhere, Category = Interaction)
-    UInteractionComponent* InteractionComp = nullptr;
+    UPROPERTY(VisibleAnywhere, Category = Widget)
+        UWidgetComponent* WidgetComp;
 
     FString ObjectGroupType = "";
 
@@ -100,6 +101,8 @@ protected:
     void InitSkeletalMesh(FString Path);
 
     void InitCollider();
+
+    void InitWidget();
 
     /**
       * \brief 파티클 시스템 초기화

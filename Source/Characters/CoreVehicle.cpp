@@ -32,8 +32,8 @@ void ACoreVehicle::BeginPlay()
     Super::BeginPlay();
     
     // 상호작용 UI 업데이트
-    if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        p_customGameInst->DeleSetInteractionWidgetComp.ExecuteIfBound(InteractionWidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));
+    // if (auto p_customGameInst = UCustomGameInstance::GetInst())
+    // DECLARE_DELEGATE_RetVal_TwoParams    p_customGameInst->DeleSetInteractionWidgetComp.ExecuteIfBound(InteractionWidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));
 }
 
 void ACoreVehicle::Tick(float DeltaTime)
