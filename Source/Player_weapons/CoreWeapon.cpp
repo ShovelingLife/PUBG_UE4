@@ -109,11 +109,11 @@ void ACoreWeapon::Init(EGunType Type)
 {
     ItemIdx = (int)Type;
     WeaponData = ADataTableManager::GetWeaponData(ItemIdx);
-    WeaponData.BulletCount = WeaponData.BulletLimitCount;
     WeaponType = Type;
     ObjectType = WeaponData.Type;
     ObjectGroupType = WeaponData.GroupType;
     mNextShootTime = (ObjectGroupType == "ShotGun") ? 0.25f : 0.1f;
+    WeaponData.BulletCount = WeaponData.BulletLimitCount;
 
     // 총기 반동 초기화
     GunRecoilComponent    = CreateDefaultSubobject<UGunRecoilComponent>(TEXT("GunRecoilComp"));

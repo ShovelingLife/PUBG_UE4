@@ -34,12 +34,16 @@ void ABaseInteraction::BeginPlay()
 void ABaseInteraction::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    InitWidget();    
+    InitWidget();
+
+    if (WidgetComp)
+        WidgetComp->SetVisibility(bPlayerNear);
 }
 
 void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+    GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, "Player Touched");
 }
 
 void ABaseInteraction::InitComponents()

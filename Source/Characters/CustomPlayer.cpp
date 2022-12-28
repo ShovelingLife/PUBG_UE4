@@ -250,13 +250,25 @@ void ACustomPlayer::CheckNearObj()
     
     GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
     AActor* p_hittedActor = hitResult.GetActor();
-
+    
     if (!p_hittedActor)
+    {
+        // 습득 가능한 아이템 접근한 후 범위 벗어날 시 
+        if (mpCollidedItem)
+        {
+            mpCollidedItem->bPlayerNear = false;
+            mpCollidedItem = nullptr;
+        }
         return;
-
+    }
     // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
     if (p_hittedActor->IsA<ABaseInteraction>())
+    {
         mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
+
+        if (mpCollidedItem)
+            mpCollidedItem->bPlayerNear = true;
+    }
 }
 
 void ACustomPlayer::CheckNearVehicle()
@@ -269,7 +281,6 @@ void ACustomPlayer::CheckNearVehicle()
     FVector    endPos     = beginPos + forwardVec;
     FHitResult hitResult;
     GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
-
 }
 
 void ACustomPlayer::TryToInteract()
@@ -285,15 +296,22 @@ void ACustomPlayer::TryToInteract()
         if (auto p_soundManager = mpCustomGameInst->pSoundManager)
             p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
 
+        if (mpCollidedItem)
+            mpCollidedItem->bPlayerNear = false;
+
         mpCollidedItem = nullptr;
-        return;
     }
     // 획득 가능한 오브젝트일 시
     else if (mpCollidedItem->IsA<ACoreFarmableItem>())
     {
         // 인벤토리에 추가한 뒤 맵에서 제거
         mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedItem, false);
-        mpCollidedItem->Destroy();
+        
+        if (mpCollidedItem)
+        {
+            mpCollidedItem->bPlayerNear = false;
+            mpCollidedItem->Destroy();
+        }
         mpCollidedItem = nullptr;
     }
 }

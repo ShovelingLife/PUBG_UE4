@@ -62,6 +62,7 @@ public:
     // 위젯 컴포넌트 UI용
     FString ObjectType = "";
     int     ItemIdx = 0;
+    bool bPlayerNear;
 
 public:
     ABaseInteraction();
