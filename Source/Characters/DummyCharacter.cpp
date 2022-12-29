@@ -40,16 +40,16 @@ void ADummyCharacter::Tick(float DeltaTime)
 void ADummyCharacter::InitMeshComp()
 {
     // 메쉬 초기화
-    DummySkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
-    DummySkeletalMeshComp->SetupAttachment(RootComponent);
+    SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
+    SkeletalMeshComp->SetupAttachment(RootComponent);
     static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MANNEQUIN(TEXT("/Game/2_Meshes/UE4_Mannequin/Mesh/SK_Mannequin"));
     
     if (SK_MANNEQUIN.Succeeded())
-        DummySkeletalMeshComp->SetSkeletalMesh(SK_MANNEQUIN.Object);
+        SkeletalMeshComp->SetSkeletalMesh(SK_MANNEQUIN.Object);
 
-    DummySkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, -88.f));
-    DummySkeletalMeshComp->bHiddenInGame = true;
-    DummySkeletalMeshComp->SetOwnerNoSee(true);
+    SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, -88.f));
+    // DummySkeletalMeshComp->bHiddenInGame = true;
+    SkeletalMeshComp->SetOwnerNoSee(true);
 }
 
 void ADummyCharacter::InitAnimInstance()
@@ -58,14 +58,14 @@ void ADummyCharacter::InitAnimInstance()
     static ConstructorHelpers::FClassFinder<UAnimInstance> BP_ANIM(TEXT("/Game/1_Blueprints/Animations/BP_DummyPlayerAnimInstance"));
 
     if (BP_ANIM.Succeeded())
-        DummySkeletalMeshComp->SetAnimInstanceClass(BP_ANIM.Class);
+        SkeletalMeshComp->SetAnimInstanceClass(BP_ANIM.Class);
 }
 
 void ADummyCharacter::InitRenderTarget()
 {
     SceneCaptureComp = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComp"));
     SceneCaptureComp->SetupAttachment(RootComponent);
-    SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
+    SceneCaptureComp->Activate();
 }
 
 void ADummyCharacter::InitWeaponUI()
@@ -84,7 +84,7 @@ void ADummyCharacter::InitWeaponUI()
     {
         p_weapon->SetOwner(this);
         p_weapon->SetForDummyCharacter();
-        p_weapon->AttachToComponent(DummySkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *socketName);
+        p_weapon->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *socketName);
         mArrActorToShow.Add(p_weapon);
     }
 }
@@ -97,4 +97,5 @@ void ADummyCharacter::UpdateWeapon()
         if (auto p_weaponManager = p_player->GetWeaponManager())
             p_weaponManager->SetMeshToPlayerUI(mArrActorToShow);
     }
+    SceneCaptureComp->ShowOnlyActors = mArrActorToShow;
 }

@@ -34,10 +34,14 @@ void UInventoryListUI::NativeConstruct()
     InitButtons();
     GetItemListWidth();
 
-    // 인벤토리에 아이템 추가되는 함수 바인딩
     if (auto p_customGameInst = UCustomGameInstance::GetInst())
+    {
+        // 월드 리스트에 아이템 추가
+        p_customGameInst->DeleUpdateWorldList.BindUFunction(this, "UpdateWorldList");
+        
+        // 인벤토리에 아이템 추가되는 함수 바인딩
         p_customGameInst->DeleSetItemOntoInventory.BindUFunction(this, "UpdateInventoryList");
-
+    }
     pGameInstanceSubsystemUI = UGameplayStatics::GetGameInstance(GetWorld())->GetSubsystem<UGameInstanceSubsystemUI>();
 }
 
@@ -144,22 +148,23 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
     if (p_slot->pDraggedItem == mpSlotObj->pDraggedItem)
         return false;
 
+    p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
+    p_slot->DeleDeleteFromList.ExecuteIfBound();
+
     // 마우스 위치 구하기
     FVector2D mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
-
+    
     // 월드 리스트에 드롭
     if (mousePos.X > 100.f &&
         mousePos.X < 325.f)
     {
-        if (!pGameInstanceSubsystemUI)
-            return false;
+        if (pGameInstanceSubsystemUI)
+        {
+            if (auto p_weaponManager = pGameInstanceSubsystemUI->GetWeaponManager())
+                p_weaponManager->Drop(p_weaponManager->GetWeaponIndex(p_slot->pDraggedItem));
 
-        p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-        p_slot->DeleDeleteFromList.ExecuteIfBound();
-        LV_WorldList->AddItem(p_slot);
-
-        if (auto p_weaponManager = pGameInstanceSubsystemUI->GetWeaponManager())
-            p_weaponManager->Drop(p_weaponManager->GetWeaponIndex(p_slot->pDraggedItem));
+            LV_WorldList->AddItem(p_slot);
+        }        
     }
     // 인벤토리 리스트에 드롭
     else
@@ -167,8 +172,6 @@ bool UInventoryListUI::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
         if (p_dragOperation->bGun)
             return false;
 
-        p_slot->DeleCheckForSlot.BindUFunction(this, "CheckForHoveredItem");
-        p_slot->DeleDeleteFromList.ExecuteIfBound();
         LV_InventoryList->AddItem(p_slot);
     }
     return true;
@@ -188,18 +191,21 @@ void UInventoryListUI::OrderInventory(FString Type)
 {
     // 색상 갱신
     auto whiteColor = Global::WhiteColor, grayColor = Global::GrayColor;
-    TxtOrderAlphabet->SetColorAndOpacity((Type == "Alphabet") ? whiteColor : grayColor);
-    TxtOrderRecent->SetColorAndOpacity((Type == "Recent") ? whiteColor : grayColor);
+    FLinearColor alphabetColor, recentColor;
 
     // 인벤토리를 종류에 따라 정렬
     if (Type == "Alphabet")
     {
-
+        alphabetColor = whiteColor;
+        recentColor = grayColor;
     }
     else if (Type == "Recent")
     {
-
+        recentColor = whiteColor;
+        alphabetColor = grayColor;
     }
+    TxtOrderAlphabet->SetColorAndOpacity(alphabetColor);
+    TxtOrderRecent->SetColorAndOpacity(recentColor);
     /*for (auto  : index)
     {
     }*/
@@ -309,10 +315,10 @@ void UInventoryListUI::CheckForHoveredItem(UItemSlotUI* pSlotObj)
     auto      cachedGeometry = pSlotObj->GetCachedGeometry();
     mpSlotObj = pSlotObj;
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), cachedGeometry, FVector2D::ZeroVector, dummy_vec, movePos);
-    //GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, movePos.ToString());
+    GEngine->AddOnScreenDebugMessage(0, 1.f, FColor::Red, movePos.ToString());
     
     // 리스트 판별 월드 리스트
-    if (movePos.X == 100.f)
+    if (movePos.X <= 160.f)
     {        
         movePos.X = 0.f;
         //movePos.Y = (movePos.Y > 143.9f) ? (movePos.Y + 5.f) : 143.9f;
@@ -353,7 +359,7 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
         !p_tmpSlot)
         return;
 
-    auto itemData = p_tmpSlot->ItemData;
+    auto& itemData = p_tmpSlot->ItemData;
     auto itemName = itemData.Name;
 
     // 현재 아이템이 있는지 확인 및 아이템 개수 갱신
@@ -383,9 +389,10 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
     if (auto p_slot = mapCurrentItems->FindRef(itemName))
     {
         // 기존 아이템 개수 추가 / 차감 후 적용
-        auto& itemCount = p_slot->ItemData.Count;
+        auto tmpItemData = p_slot->ItemData;
+        auto& itemCount = tmpItemData.Count;
         itemCount = (bAdd) ? itemCount + itemData.Count : --itemCount;
-        p_tmpSlot->ItemData = p_slot->ItemData;
+        itemData = tmpItemData;
 
         // 기존 슬롯을 제거
         LV_InventoryList->RemoveItem(p_slot);
@@ -411,6 +418,19 @@ void UInventoryListUI::ChangeItemCount(ABaseInteraction* pObj, bool bAdd /* = tr
     }
 }
 
+void UInventoryListUI::UpdateWorldList(ABaseInteraction* pObj, bool bClear)
+{
+    // 월드 리스트를 비워야할 시
+    if (bClear)
+        LV_WorldList->ClearListItems();
+
+    else
+    {
+        auto p_slot = GetInitializedSlotUI(pObj);
+        LV_WorldList->AddItem(p_slot);
+    }
+}
+
 void UInventoryListUI::UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList /* = false */)
 {
     if (!pObj)
@@ -420,9 +440,8 @@ void UInventoryListUI::UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteF
         DeleteFromList();
 
     // 장착 가능할 경우 바로 장착 / 장착 되어있을 시 교체
-    if (pObj->IsA<ACoreBackpack>())
+    if (ACoreBackpack* backPack = Cast<ACoreBackpack>(pObj))
     {
-        ACoreBackpack* backPack = Cast<ACoreBackpack>(pObj);
         mMaxCapacity = backPack->Data.PropVal;
 
         // 저장할 수 있는 한계치를 변경

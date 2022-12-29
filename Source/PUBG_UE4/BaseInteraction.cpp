@@ -43,7 +43,6 @@ void ABaseInteraction::Tick(float DeltaTime)
 void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
     Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-    GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, "Player Touched");
 }
 
 void ABaseInteraction::InitComponents()
@@ -121,14 +120,16 @@ void ABaseInteraction::InitWidget()
 
 UMeshComponent* ABaseInteraction::GetMeshComp() const
 {
-    if (StaticMeshComp)
-        return StaticMeshComp;
+    // 현재 사용 가능한 메쉬 컴포넌트를 반환
+    UMeshComponent* meshComp = nullptr;
+
+    if      (StaticMeshComp)
+             meshComp = StaticMeshComp;
 
     else if (SkeletalMeshComp)
-        return SkeletalMeshComp;
+             meshComp = SkeletalMeshComp;
 
-    else
-        return nullptr;
+    return meshComp;
 }
 
 void ABaseInteraction::DestroyComponentsForUI() { if (WidgetComp) WidgetComp->DestroyComponent(); }
@@ -150,12 +151,12 @@ void ABaseInteraction::SetForDummyCharacter()
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
-    if (!ColliderComp)
-        return;
-
-    // 컴포넌트에 따라 콜라이더 업데이트
-    ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
-    ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+    if (ColliderComp)
+    {
+        // 컴포넌트에 따라 콜라이더 업데이트
+        ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
+        ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
+    }    
 }
 
 void ABaseInteraction::ChangeMeshSettings(bool bTurned /* = true */)
@@ -176,14 +177,13 @@ void ABaseInteraction::ChangeMeshSettings(bool bTurned /* = true */)
 void ABaseInteraction::AttachToMesh(USceneComponent* RootComp, FString SocketName)
 {
     // 메쉬 가져오기    
-    UMeshComponent* meshComp = GetMeshComp();
-    FAttachmentTransformRules transformRules = FAttachmentTransformRules::SnapToTargetIncludingScale;
+    if (UMeshComponent* meshComp = GetMeshComp())
+    {
+        FAttachmentTransformRules transformRules = FAttachmentTransformRules::SnapToTargetIncludingScale;
 
-    if (!meshComp)
-        return;
-
-    // 메쉬에 따라 설정하기
-    meshComp->AttachToComponent(RootComp, transformRules, *SocketName);
+        // 메쉬에 따라 설정하기
+        meshComp->AttachToComponent(RootComp, transformRules, *SocketName);
+    }   
 }
 
 void ABaseInteraction::Detach()

@@ -20,7 +20,7 @@ private:
 
 public:
 	UPROPERTY(EditAnywhere, Category = Mesh)		 
-	USkeletalMeshComponent*   DummySkeletalMeshComp;
+	USkeletalMeshComponent*   SkeletalMeshComp;
 
     UPROPERTY(EditAnywhere, Category = SceneCapture) 
 	USceneCaptureComponent2D* SceneCaptureComp;

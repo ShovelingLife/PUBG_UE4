@@ -55,7 +55,7 @@ public:
     UBoxComponent* ColliderComp = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Widget)
-        UWidgetComponent* WidgetComp;
+    UWidgetComponent* WidgetComp;
 
     FString ObjectGroupType = "";
 

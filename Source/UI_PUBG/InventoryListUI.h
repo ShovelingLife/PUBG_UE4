@@ -140,7 +140,7 @@ private:
     // 정렬 함수 Type 변수는 종류
     void OrderInventory(FString Type);
 
-    /** * \brief 월드 및 인벤토리 사이즈 박스 넓이 구함 */
+    // 월드 및 인벤토리 사이즈 박스 넓이 구함
     void GetItemListWidth();
 
     UItemSlotUI* GetMatchingItemFromList(FString ItemName) const;
@@ -148,24 +148,35 @@ private:
     UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj);
 
 public:
-    UFUNCTION() void DeleteFromList();
+    UFUNCTION() 
+    void DeleteFromList();
 
     /**
       * \brief 리스트 내 아이템 슬롯에서 선택할 시 호출함 (델리게이트)
       * \param pSlotObj 아이템 슬롯
      */
-    UFUNCTION() void CheckForHoveredItem(UItemSlotUI* pSlotObj);
+    UFUNCTION() 
+    void CheckForHoveredItem(UItemSlotUI* pSlotObj);
 
-    UFUNCTION() void SwapWeaponSlot(UItemSlotUI* pWeaponSlot);
+    UFUNCTION() 
+    void SwapWeaponSlot(UItemSlotUI* pWeaponSlot);
 
-    UFUNCTION() void ChangeItemCount(ABaseInteraction* pObj, bool bAdd = true);
-
-    UFUNCTION() void UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList = false);
+    UFUNCTION() 
+    void ChangeItemCount(ABaseInteraction* pObj, bool bAdd = true);
     
-    UFUNCTION() void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
+    UFUNCTION() 
+    void UpdateWorldList(ABaseInteraction* pObj, bool bClear = false);
+
+    UFUNCTION() 
+    void UpdateInventoryList(ABaseInteraction* pObj, bool bDeleteFromList = false);
+    
+    UFUNCTION() 
+    void SwapInventoryExplosive(ACoreThrowableWeapon* NewExplosive, ACoreThrowableWeapon* OldExplosive);
 
     // 정렬 관련 함수
-    UFUNCTION() void OrderAlphabetically();
+    UFUNCTION() 
+    void OrderAlphabetically();
 
-    UFUNCTION() void OrderRecently();
+    UFUNCTION() 
+    void OrderRecently();
 };

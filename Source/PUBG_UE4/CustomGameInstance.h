@@ -29,6 +29,7 @@ DECLARE_DELEGATE_OneParam(FDeleDeleteInventoryItem, FString)
 DECLARE_DELEGATE_OneParam(FDeleSetFadingTxt, FString)
 DECLARE_DELEGATE_OneParam(FDeleSetExplosiveUI, ACoreThrowableWeapon*)
 DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
+DECLARE_DELEGATE_TwoParams(FDeleUpdateWorldList, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
 DECLARE_DELEGATE_RetVal_TwoParams(bool, FDeleSetInteractionWidgetComp, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
@@ -57,6 +58,7 @@ public:
     FDeleSetFadingTxt             DeleSetFadingTxt;
     FDeleSetExplosiveUI           DeleSetExplosiveUI;
     FDeleGetBulletCount           DeleGetBulletCount;
+    FDeleUpdateWorldList          DeleUpdateWorldList;
     FDeleSetItemOntoInventory     DeleSetItemOntoInventory;
     FDeleSetInteractionWidgetComp DeleSetInteractionWidgetComp;
     FDeleRunEffectAnim            DeleRunEffectAnim;

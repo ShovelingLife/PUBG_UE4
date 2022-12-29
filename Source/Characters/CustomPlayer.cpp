@@ -243,31 +243,43 @@ void ACustomPlayer::CheckIfMoving()
 
 void ACustomPlayer::CheckNearObj()
 {
+    // 거리 구하기
     FVector    direction = GetActorForwardVector() * 100;
     FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
     FVector    endPos    = beginPos + direction;
-    FHitResult hitResult;
     
+    // 충돌체 구하기
+    FHitResult hitResult;
     GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
     AActor* p_hittedActor = hitResult.GetActor();
-    
-    if (!p_hittedActor)
-    {
-        // 습득 가능한 아이템 접근한 후 범위 벗어날 시 
-        if (mpCollidedItem)
-        {
-            mpCollidedItem->bPlayerNear = false;
-            mpCollidedItem = nullptr;
-        }
-        return;
-    }
+
     // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
-    if (p_hittedActor->IsA<ABaseInteraction>())
+    if (!mpCollidedItem &&
+        p_hittedActor)
     {
         mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
 
         if (mpCollidedItem)
-            mpCollidedItem->bPlayerNear = true;
+        {
+            auto& bPlayerNear = mpCollidedItem->bPlayerNear;
+
+            // 월드 리스트에 추가
+            if (!bPlayerNear &&
+                mpCustomGameInst)
+                mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(mpCollidedItem, false);
+
+            bPlayerNear = true;
+        }
+    }
+    // 습득 가능한 아이템 접근한 후 범위 벗어날 시 
+    if (mpCollidedItem &&
+        !p_hittedActor)
+    {
+        mpCollidedItem->bPlayerNear = false;
+        mpCollidedItem = nullptr;
+
+        if (mpCustomGameInst)
+            mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
     }
 }
 
@@ -314,6 +326,8 @@ void ACustomPlayer::TryToInteract()
         }
         mpCollidedItem = nullptr;
     }
+    if (mpCustomGameInst)
+        mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
 }
 
 void ACustomPlayer::CustomJump()
