@@ -71,6 +71,8 @@ void ADummyCharacter::InitRenderTarget()
 void ADummyCharacter::InitWeaponUI()
 {
     auto p_world = GetWorld();
+    auto tmpThrowable = p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
+    tmpThrowable->DestroyComponentsForUI();
 
     TArray<TPair<ABaseInteraction*, FString>> arrWeapons
     {
@@ -78,13 +80,13 @@ void ADummyCharacter::InitWeaponUI()
         { p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "SecondGunSock" },
         { p_world->SpawnActor<ACoreWeapon>(ACoreWeapon::StaticClass()), "HandGunSock" },
         { p_world->SpawnActor<ACoreMeleeWeapon>(ACoreMeleeWeapon::StaticClass()), "MeleeSock" },
-        { p_world->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass()), "" }
+        { tmpThrowable, "" }
     };
     for (auto& [p_weapon, socketName] : arrWeapons)
     {
-        p_weapon->SetOwner(this);
         p_weapon->SetForDummyCharacter();
         p_weapon->AttachToComponent(SkeletalMeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, *socketName);
+        p_weapon->SetOwner(this);
         mArrActorToShow.Add(p_weapon);
     }
 }

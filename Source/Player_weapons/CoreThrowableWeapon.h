@@ -62,17 +62,6 @@ public:
         return *this;
     }
 
-public:
-    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
-
-    UFUNCTION() void BeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-    UFUNCTION() void EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-    virtual void BeginDestroy() override;
-
-    virtual void ClickEvent() final;
-
 protected:
     virtual void BeginPlay() override;
 
@@ -80,6 +69,19 @@ protected:
 
     /** \brief 파티클 시스템 생성 */
     virtual void InitParticleSystem(FString Path = "") override;
+
+public:
+    virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
+    UFUNCTION() 
+    void BeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+    UFUNCTION() 
+    void EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+    virtual void BeginDestroy() override;
+
+    virtual void ClickEvent() final;
 
 protected:
     // ------- 초기화 함수 모음 -------
@@ -107,4 +109,6 @@ public:
     void Setup(ACoreThrowableWeapon* OtherWeapon);
 
     void Throw(FVector Velocity);
+
+    void DestroyComponentsForUI();
 };

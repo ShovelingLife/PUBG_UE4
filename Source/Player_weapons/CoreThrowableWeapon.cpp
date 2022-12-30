@@ -33,46 +33,6 @@ ACoreThrowableWeapon::ACoreThrowableWeapon(EThrowableWeaponType Type) : ACoreThr
     this->InitParticleSystem();
 }
 
-void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
-{
-    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-
-    /*if (ProjectileMovementComp)
-        ProjectileMovementComp->Deactivate();*/
-}
-
-UFUNCTION() void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-    // 플레이어가 접촉 시 화상 효과를 줌 (오직 Molotov만)
-    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-    {
-        if (auto p_customGameInst = UCustomGameInstance::GetInst())
-            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
-    }
-}
-
-UFUNCTION() void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-    // 
-    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-    {
-        if (auto p_customGameInst = UCustomGameInstance::GetInst())
-        {
-            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
-            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
-        }
-    }
-}
-
-void ACoreThrowableWeapon::BeginDestroy()
-{
-    Super::BeginDestroy();
-    GrenadeEndPos = FVector::ZeroVector;
-    
-    /*if (auto gameInst = UCustomGameInstance::GetInst())
-        gameInst->DeleKillUI_Anim.ExecuteIfBound();*/
-}
-
 void ACoreThrowableWeapon::BeginPlay()
 {
     Super::BeginPlay();
@@ -105,6 +65,46 @@ void ACoreThrowableWeapon::InitParticleSystem(FString Path)
 
     if (PARTICLE.Succeeded())
         Particle = PARTICLE.Object;
+}
+
+void ACoreThrowableWeapon::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+    Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+
+    /*if (ProjectileMovementComp)
+        ProjectileMovementComp->Deactivate();*/
+}
+
+void ACoreThrowableWeapon::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    // 플레이어가 접촉 시 화상 효과를 줌 (오직 Molotov만)
+    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+    {
+        if (auto p_customGameInst = UCustomGameInstance::GetInst())
+            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::BURNED);
+    }
+}
+
+void ACoreThrowableWeapon::EndOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    // 
+    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+    {
+        if (auto p_customGameInst = UCustomGameInstance::GetInst())
+        {
+            p_customGameInst->DeleSetPlayerOtherState.ExecuteIfBound(EPlayerOtherState::NONE);
+            p_customGameInst->DeleKillUI_Anim.ExecuteIfBound();
+        }
+    }
+}
+
+void ACoreThrowableWeapon::BeginDestroy()
+{
+    Super::BeginDestroy();
+    GrenadeEndPos = FVector::ZeroVector;
+
+    /*if (auto gameInst = UCustomGameInstance::GetInst())
+        gameInst->DeleKillUI_Anim.ExecuteIfBound();*/
 }
 
 void ACoreThrowableWeapon::ClickEvent()
@@ -293,9 +293,7 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 else
                 {
                     if (SphereComp)
-                    {
                         SphereComp->SetGenerateOverlapEvents(true);
-                    }
                 }
             }
             else
@@ -306,4 +304,21 @@ void ACoreThrowableWeapon::Throw(FVector Velocity)
                 Destroy();
             }   
         }), (WeaponType == MOLOTOV) ? 0.5f : 3.5f, false);
+}
+
+void ACoreThrowableWeapon::DestroyComponentsForUI()
+{
+    if (SphereComp)
+        SphereComp->DestroyComponent();
+
+    if (ProjectileMovementComp)
+        ProjectileMovementComp->DestroyComponent();
+
+    if (GrenadeParticleComp)
+        GrenadeParticleComp->DestroyComponent();
+
+    if (RadialForceComp)
+        RadialForceComp->DestroyComponent();
+
+    SetForDummyCharacter();
 }

@@ -132,21 +132,28 @@ UMeshComponent* ABaseInteraction::GetMeshComp() const
     return meshComp;
 }
 
-void ABaseInteraction::DestroyComponentsForUI() { if (WidgetComp) WidgetComp->DestroyComponent(); }
+void ABaseInteraction::DestroyComponentsForUI() 
+{ 
+    if (StaticMeshComp)
+        StaticMeshComp->DestroyComponent();
+
+    if (ColliderComp)
+        ColliderComp->DestroyComponent();
+
+    if (ParticleComp)
+        ParticleComp->DestroyComponent();
+
+    if (WidgetComp)
+        WidgetComp->DestroyComponent();
+}
 
 void ABaseInteraction::SetForDummyCharacter()
 {
-    // 메쉬 판별해내기
-    UMeshComponent* meshComp = GetMeshComp();
-
-    if (!meshComp)
-        return;
-
     // 메쉬 설정 변경
     DestroyComponentsForUI();
-    SetRootComponent(meshComp);
-    meshComp->SetOwnerNoSee(true);
-    meshComp->SetVisibility(true);
+    SetRootComponent(SkeletalMeshComp);
+    SkeletalMeshComp->SetOwnerNoSee(true);
+    SkeletalMeshComp->SetVisibility(true);
 }
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
