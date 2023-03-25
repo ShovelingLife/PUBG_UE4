@@ -70,9 +70,7 @@ void ACustomPlayer::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     CheckIfMoving();
-    CheckNearVehicle();
     CheckNearObj();
-    TryToInteract();
     UpdateHealth();
 }
 
@@ -187,20 +185,24 @@ void ACustomPlayer::CheckIfMoving()
             CurrentState = CROUCH_WALK;
             break;
 
-        case PRONING: CurrentState = PRONING_WALK; break;
-        case AIM:     CurrentState = AIM_WALK;     break;
+        case PRONING: 
+            CurrentState = PRONING_WALK; 
+            break;
+
+        case AIM:     
+            CurrentState = AIM_WALK;    
+            break;
 
         default:
-            // 뛰면서 점프후 착지
             if (characterMovementComp->IsFalling())
-                CurrentState = (mSprintMultiplier > 1.f) ? SPRINT_JUMP : JUMP;
+                CurrentState = (mSprintMultiplier > 1.f) ? SPRINT_JUMP : JUMP; // 뛴/걸은 후 점프 상태
 
+#pragma region 뛰는 상태
             else // 지면에 닿고있음
             {
                 if (CurrentState == SPRINT_JUMP)
                     CurrentState = SPRINT;
 
-                // 뛰고있음
                 else if (CurrentState == SPRINT)
                 {
                     if (CurrentOxygen < 0)
@@ -215,6 +217,7 @@ void ACustomPlayer::CheckIfMoving()
                         characterMovementComp->MaxWalkSpeed *= mSprintMultiplier;
                     }
                 }
+#pragma endregion
                 // 
                 else if (CurrentState == IDLE ||
                     CurrentState == JUMP)
@@ -243,91 +246,83 @@ void ACustomPlayer::CheckIfMoving()
 
 void ACustomPlayer::CheckNearObj()
 {
-    // 거리 구하기
-    FVector    direction = GetActorForwardVector() * 100;
-    FVector    beginPos  = GetMesh()->GetSocketLocation("DetectObjectRaySock");
-    FVector    endPos    = beginPos + direction;
-    
-    // 충돌체 구하기
-    FHitResult hitResult;
-    GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
-    AActor* p_hittedActor = hitResult.GetActor();
-
-    // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
-    if (!mpCollidedItem &&
-        p_hittedActor)
+#pragma region 아이템 오브젝트 (레이캐스트 시작 지점 : 플레이어 발 끝)
+    if (mpCustomGameInst)
     {
-        mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
+        // 거리 구하기
+        FVector direction = GetActorForwardVector() * 100;
+        FVector beginPos = GetMesh()->GetSocketLocation("DetectObjectRaySock");
+        FVector endPos = beginPos + direction;
 
-        if (mpCollidedItem)
+        // 충돌체 구하기
+        FHitResult hitResult;
+        GetWorld()->LineTraceSingleByProfile(hitResult, beginPos, endPos, "Object");
+        AActor* p_hittedActor = hitResult.GetActor();
+
+        // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
+        if (p_hittedActor &&
+            p_hittedActor->IsA<ABaseInteraction>())
         {
-            auto& bPlayerNear = mpCollidedItem->bPlayerNear;
-
             // 월드 리스트에 추가
-            if (!bPlayerNear &&
-                mpCustomGameInst)
-                mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(mpCollidedItem, false);
-
-            bPlayerNear = true;
+            mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
+            mpCollidedItem->bPlayerNear = true;
+            mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(mpCollidedItem, false);
+        
+            // F키 눌렀을 시
+            if (mbInteracting)
+                TryToInteract();
+        }
+        // 습득 가능한 아이템 접근한 후 범위 벗어날 시
+        else
+        {
+            if (mpCollidedItem)
+            {
+                mpCollidedItem->bPlayerNear = false;
+                mpCollidedItem = nullptr;
+                mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
+            }
         }
     }
-    // 습득 가능한 아이템 접근한 후 범위 벗어날 시 
-    if (mpCollidedItem &&
-        !p_hittedActor)
+#pragma endregion
+#pragma region 차량 오브젝트 (레이캐스트 시작 지점 : 플레이어 상체)
+    if (!bInVehicle)
     {
-        mpCollidedItem->bPlayerNear = false;
-        mpCollidedItem = nullptr;
+        FVector    beginPos = GetActorLocation();
+        FVector    forwardVec = GetActorForwardVector() * 50;
+        FVector    endPos = beginPos + forwardVec;
+        FHitResult hitResult;
+        GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
+        AActor* p_hittedActor = hitResult.GetActor();
 
-        if (mpCustomGameInst)
-            mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
+        if (p_hittedActor)
+        {
+            mpVehicle = Cast<ACoreVehicle>(p_hittedActor);
+            mpVehicle->bPlayerNear ;
+        }
     }
-}
-
-void ACustomPlayer::CheckNearVehicle()
-{
-    if (bInVehicle)
-        return;
-
-    FVector    beginPos   = GetActorLocation();
-    FVector    forwardVec = GetActorForwardVector() * 50;
-    FVector    endPos     = beginPos + forwardVec;
-    FHitResult hitResult;
-    GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
+#pragma endregion
 }
 
 void ACustomPlayer::TryToInteract()
 {
-    if (!mpCustomGameInst ||
-        !mpCollidedItem   ||
-        !mbInteracting)
-        return;
+    mpCollidedItem->bPlayerNear = false;
+    mpCollidedItem = nullptr;
 
     // 충돌된 오브젝트가 무기일 시
     if (mpWeaponManager->TryToEquip(mpCollidedItem))
     {
+        // 사운드 재생
         if (auto p_soundManager = mpCustomGameInst->pSoundManager)
-            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);
-
-        if (mpCollidedItem)
-            mpCollidedItem->bPlayerNear = false;
-
-        mpCollidedItem = nullptr;
+            p_soundManager->PlayPlayerSound(AudioComp, EPlayerSoundType::WEAPON_EQUIP);        
     }
     // 획득 가능한 오브젝트일 시
     else if (mpCollidedItem->IsA<ACoreFarmableItem>())
     {
         // 인벤토리에 추가한 뒤 맵에서 제거
         mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedItem, false);
-        
-        if (mpCollidedItem)
-        {
-            mpCollidedItem->bPlayerNear = false;
-            mpCollidedItem->Destroy();
-        }
-        mpCollidedItem = nullptr;
+        mpCollidedItem->Destroy();
     }
-    if (mpCustomGameInst)
-        mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
+    mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
 }
 
 void ACustomPlayer::CustomJump()
@@ -369,7 +364,9 @@ void ACustomPlayer::Proning()
     // 숙이고 있는지 체크
     switch (CurrentState)
     {
-    case IDLE: case CROUCH: case CROUCH_WALK:
+    case IDLE: 
+    case CROUCH: 
+    case CROUCH_WALK:
 
         if (CurrentState != IDLE)
             UnCrouch();
@@ -377,9 +374,14 @@ void ACustomPlayer::Proning()
         CurrentState = PRONING; 
         break;
 
-    case PRONING: case PRONING_WALK: CurrentState = IDLE; break;
+    case PRONING: 
+    case PRONING_WALK: 
+        CurrentState = IDLE; 
+        break;
 
-    case AIM:  CurrentState = PRONING_AIM; break;
+    case AIM:  
+        CurrentState = PRONING_AIM; 
+        break;
 
     default: return;
     }

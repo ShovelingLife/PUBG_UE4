@@ -3,15 +3,16 @@
 #include "PUBG_UE4/DataTableManager.h"
 #include "Kismet/GameplayStatics.h"
 
+// 가방 오브젝트 초기화
 ACoreBackpack::ACoreBackpack(EBackpackType BackpackType) : Super()
 {
     Data = ADataTableManager::GetUtilityData((int)BackpackType);
 
     // 메쉬 레벨 순 2 > 4 > 7 
-    FString meshPath = "/Game/Backpacks_Bags/Meshes/SM_Backpack_0";
+    FString meshPath    = "/Game/2_Meshes/Backpacks_Bags/Meshes/SM_Backpack_0";
     FString backpackStr = "Backpack";
-    float newZ = 0.f;
-    int idx = 0;
+    float   newZ = 0.f;
+    int     idx  = 0;
 
     switch (BackpackType)
     {
@@ -19,9 +20,9 @@ ACoreBackpack::ACoreBackpack(EBackpackType BackpackType) : Super()
     case EBackpackType::SECOND: backpackStr += "LV2"; newZ = 25.f; idx = 4; break;
     case EBackpackType::THIRD:  backpackStr += "LV3"; newZ = 29.f; idx = 7; break;
     }
-    meshPath += FString::FromInt(idx);
-    InitStaticMesh(meshPath);
+    InitStaticMesh(meshPath + FString::FromInt(idx));
     ObjectType = backpackStr;
+
     // 디폴트 z축 20
     FVector newPos = StaticMeshComp->GetRelativeLocation();
     newPos.Z += newZ;

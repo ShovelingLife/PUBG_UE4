@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "GunRecoilComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetStringLibrary.h"
@@ -40,17 +37,17 @@ void UGunRecoilComponent::RecoilStart()
         RecoilStartRot = PCRef->GetControlRotation();
        
         // 반동 효과 주기위한 (10초 후)
-        GetWorld()->GetTimerManager().SetTimer(FireTimer, this, &UGunRecoilComponent::RecoilTimerFunction, 10.0f, false);
+        GetWorld()->GetTimerManager().SetTimer(FireTimerHandle, this, &UGunRecoilComponent::RecoilTimer, 10.0f, false);
 
         bFiring = bRecoil = true;
         bRecoilRecovery = false;
     }
 }
 
-void UGunRecoilComponent::RecoilTimerFunction()
+void UGunRecoilComponent::RecoilTimer()
 {
     bRecoil = false;
-    GetWorld()->GetTimerManager().PauseTimer(FireTimer);
+    GetWorld()->GetTimerManager().PauseTimer(FireTimerHandle);
 }
 
 void UGunRecoilComponent::RecoveryStart()
@@ -58,7 +55,7 @@ void UGunRecoilComponent::RecoveryStart()
     if (PCRef->GetControlRotation().Pitch > RecoilStartRot.Pitch)
     {
         bRecoilRecovery = true;
-        GetWorld()->GetTimerManager().SetTimer(RecoveryTimer, this, &UGunRecoilComponent::RecoveryTimerFunction, RecoveryTime, false);
+        GetWorld()->GetTimerManager().SetTimer(RecoveryTimerHandle, this, &UGunRecoilComponent::RecoveryTimer, RecoveryTime, false);
     }
 }
 
@@ -69,7 +66,7 @@ void UGunRecoilComponent::RecoilTick(float DeltaTime)
 
     if (bRecoil)
     {
-        recoiltime = GetWorld()->GetTimerManager().GetTimerElapsed(FireTimer);
+        recoiltime = GetWorld()->GetTimerManager().GetTimerElapsed(FireTimerHandle);
         RecoilVec = RecoilCurve->GetVectorValue(recoiltime);
         Del = FRotator(RecoilVec.Y, RecoilVec.Z, 0.f);
         PlayerDeltaRot = PCRef->GetControlRotation() - RecoilStartRot - RecoilDeltaRot;
@@ -80,7 +77,7 @@ void UGunRecoilComponent::RecoilTick(float DeltaTime)
         if (!bFiring &&
             recoiltime > FireRate)
         {
-            GetWorld()->GetTimerManager().ClearTimer(FireTimer);
+            GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
             RecoveryStart();
             bFiring = false;
             bRecoil = false;
@@ -98,6 +95,6 @@ void UGunRecoilComponent::RecoilTick(float DeltaTime)
             RecoilDeltaRot = RecoilDeltaRot + (pcRot - tmpRot);
         }
         else
-            RecoveryTimer.Invalidate();
+            RecoveryTimerHandle.Invalidate();
     }
 }

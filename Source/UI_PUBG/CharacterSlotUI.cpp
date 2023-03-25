@@ -72,27 +72,7 @@ bool UCharacterSlotUI::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
                 pGameInstanceSubsystemUI->DeleVerifyAttachmentSlot.ExecuteIfBound(nullptr);
         }
     }
-    // 캐릭터 UI 창 드래그 시 회전
-    if (mCharacterUIClickPos != FVector2D::ZeroVector)
-    {
-        auto currentMousePos  = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());        
-        auto p_dummyCharacter = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->pDummyCharacter;
-        
-        if (p_dummyCharacter)
-        {
-            FVector2D trackPos       = mCharacterUIClickPos - currentMousePos;
-            float     rotationValInZ = (trackPos.X - trackPos.Y + 140.f) * 0.1;
-            
-            // 회전 제한 속도 설정
-            if (rotationValInZ > 5.f)
-                rotationValInZ = 5.f;
-
-            if (rotationValInZ < -5.f)
-                rotationValInZ = -5.f;
-
-            p_dummyCharacter->SkeletalMeshComp->AddWorldRotation(FRotator::MakeFromEuler(FVector(0.f, 0.f, rotationValInZ)));
-        }      
-    }
+    RotateDummyCharacterUI();
     return true;
 }
 
@@ -151,4 +131,29 @@ void UCharacterSlotUI::UpdateHighlightImg()
     //        p_canvasSlot->SetPosition(movePos);
     //}
     //HighlightImg->SetVisibility((tmpBorder) ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+}
+
+void UCharacterSlotUI::RotateDummyCharacterUI()
+{
+    // 캐릭터 UI 창 드래그 시 회전
+    if (mCharacterUIClickPos != FVector2D::ZeroVector)
+    {
+        auto currentMousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
+        auto p_dummyCharacter = Cast<ACustomPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->pDummyCharacter;
+
+        if (p_dummyCharacter)
+        {
+            FVector2D trackPos = mCharacterUIClickPos - currentMousePos;
+            float     rotationValInZ = (trackPos.X - trackPos.Y + 140.f) * 0.1;
+
+            // 회전 제한 속도 설정
+            if (rotationValInZ > 5.f)
+                rotationValInZ = 5.f;
+
+            if (rotationValInZ < -5.f)
+                rotationValInZ = -5.f;
+
+            p_dummyCharacter->SkeletalMeshComp->AddWorldRotation(FRotator::MakeFromEuler(FVector(0.f, 0.f, rotationValInZ)));
+        }
+    }
 }

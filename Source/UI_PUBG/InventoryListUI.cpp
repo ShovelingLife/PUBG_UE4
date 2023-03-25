@@ -48,6 +48,7 @@ void UInventoryListUI::NativeConstruct()
 void UInventoryListUI::NativeTick(const FGeometry& InGeometry, float DeltaTime)
 {
     Super::NativeTick(InGeometry, DeltaTime);
+
     auto total = (mMaxCapacity / CurCapacity) * 0.1f;
     auto percent = (total > 1.f) ? (mMaxCapacity / CurCapacity) * 0.01f : total;
     // 갱신

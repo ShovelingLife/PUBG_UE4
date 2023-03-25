@@ -31,7 +31,8 @@ using enum ESeatType;
     GENERATED_BODY()
 
 protected:
-    // ------- 차량 관련 컴포넌트들 -------
+#pragma region 차량 관련 컴포넌트들
+
     UPROPERTY(VisibleAnywhere, Category = Property) 
     UInstaDeformComponent* InstaDeformComp = nullptr;
 
@@ -41,8 +42,10 @@ protected:
     UPROPERTY(VisibleAnywhere, Category = Camera) 
     UCameraComponent* CameraComp = nullptr;
 
+#pragma endregion
 
-    // ------- brief 문짝 위치 컴포넌트들 -------
+#pragma region 문짝 위치 컴포넌트들
+
     UPROPERTY(EditAnywhere, Category = DoorPos) 
     USceneComponent* FirstDoorPosComp;
 
@@ -55,8 +58,10 @@ protected:
     UPROPERTY(EditAnywhere, Category = DoorPos) 
     USceneComponent* FourthDoorPosComp;
 
+#pragma endregion
 
-    // ------- 좌석 위치 컴포넌트들 -------
+#pragma region 좌석 위치 컴포넌트들
+
     UPROPERTY(EditAnywhere, Category = SeatPos) 
     USceneComponent* FirstSeatPosComp;
 
@@ -69,15 +74,20 @@ protected:
     UPROPERTY(EditAnywhere, Category = SeatPos) 
     USceneComponent* FourthSeatPosComp;
 
+#pragma endregion
 
-    // ------- 기타 변수들 -------
+#pragma region 기타 변수들
+
     UPROPERTY(VisibleAnywhere,Category = SeatPos)  
     TMap<ESeatType, FVector> MapSeatPos;
 
     UPROPERTY(VisibleAnywhere, Category = DoorPos) 
     TMap<ESeatType, FVector> MapDoorPos;
 
-    // ------- 차량 좌석 위치 변수 -------
+#pragma endregion
+
+#pragma region 차량 좌석 위치 변수
+
     const FString  mkWheelPath = "/Game/1_Blueprints/Vehicles/Wheel/";
     TMap<ESeatType, bool> mMapEmptySeat;
     ACustomPlayer* mpPlayer;
@@ -86,9 +96,11 @@ protected:
     int            mCurrentPlayerCount = 0;
     bool           mbPlayerInFirstSeat = false;
 
+#pragma endregion
+
 public:
     UPROPERTY(VisibleAnywhere, Category = Widget_component) UWidgetComponent* InteractionWidgetComp;
-    bool bCollided = false;
+    bool bPlayerNear = false;
 
 public:
     ACoreVehicle();
@@ -101,88 +113,74 @@ protected:
     virtual void SetupPlayerInputComponent(class UInputComponent*) override;
 
 protected:
-    /**
-     * \brief 차량 종류에 따라 초기화
-     * \param _vehicle_type_index 차량 종류
-     */
+    
+#pragma region 초기화 함수들
+
+    // 차량 종류에 따라 초기화
     void Init(EVehicleType VehicleTypeIndex);
 
-    /** 차량에 필요한 컴포넌트 초기화 해주는 함수 */
+    // 차량에 필요한 컴포넌트 초기화 해주는 함수
     void InitCarPosComp();
 
-    /** \brief 자동차 문짝 및 좌석 위치 초기화 */
+    // 자동차 문짝 및 좌석 위치 초기화
     void InitCarPosData();
 
-    /** \brief 자동차 문짝 및 좌석 위치 갱신 */
+    // 자동차 문짝 및 좌석 위치 갱신
     void UpdateCarPosData();
 
-    /** \brief 카메라 컴포넌트 초기화 */
+    // 카메라 컴포넌트 초기화
     void InitCamera();
 
-    /** \brief 차량 메시 초기화 */
+    // 차량 메시 초기화
     void InitSkeletalMesh();
 
-    /** \brief 차량 바퀴 컴포넌트 초기화 */
-    void InitWheeledComp();
+    // 차량 바퀴 컴포넌트 초기화
+	void InitWheeledComp();
 
-// 차량 속성 관련 함수
+#pragma endregion
+
+#pragma region 차량 속성 관련 함수
 protected:
-    /** \brief 플레이어가 차량에서 나감 */
+    // 플레이어가 차량에서 나감
     void PlayerExit();
 
-    /**
-     * \brief 가속
-     * \param _value 가속 값
-     */
+    // 가속
     void Accelerate(float Value);
 
-    /**
-     * \brief 브레이크
-     * \param _value 브레이크 값
-     */
+    // 브레이크
     void Brake(float Value);
 
-    /**
-     * \brief 회전
-     * \param _value 회전 값
-     */
+    // 회전
     void Handling(float Value);
 
-    /**
-     * \brief 카메라를 위 아래로 회전
-     * \param _value 회전 값
-     */
+    // 카메라를 위 아래로 회전
     void LookUp(float Value);
 
-    /**
-     * \brief 카메라를 좌우로 회전
-     * \param _value 회전 값
-     */
+    // 카메라를 좌우로 회전
     void Turn(float Value);
 
-    /** \brief 어느 문 통해 들어갔는지 확인 */
+    // 어느 문 통해 들어갔는지 확인
     void CheckForDoorPos();
 
-    /** \brief 플레이어를 좌석에 배치 */
+    // 플레이어를 좌석에 배치
     void SetPlayerIntoSeat();
 
-    /**
-     * \brief 차 안에서 플레이어의 위치를 업데이트 시킴
-     * \param _seat_type 좌석 종류
-     */
+    // 차 안에서 플레이어의 위치를 업데이트 시킴
     void UpdatePlayerSeatLocation(ESeatType SeatType);
 
-    /** \brief 첫번째 좌석으로 이동 */
+    // 첫번째 좌석으로 이동
     void ChangeToFirstSeat() { UpdatePlayerSeatLocation(FIRST); }
 
-    /** \brief 두번째 좌석으로 이동 */
+    // 두번째 좌석으로 이동
     void ChangeToSecondSeat() { UpdatePlayerSeatLocation(SECOND); }
 
-    /** \brief 세번째 좌석으로 이동 */
+    // 세번째 좌석으로 이동
     void ChangeToThirdSeat() { UpdatePlayerSeatLocation(THIRD); }
 
-    /** \brief 네번째 좌석으로 이동 */
+    // 네번째 좌석으로 이동
     void ChangeToFourthSeat() { UpdatePlayerSeatLocation(FOURTH); }
+
+#pragma endregion
     
 public:
     /**

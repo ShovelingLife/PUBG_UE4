@@ -41,11 +41,14 @@ void ACoreVehicle::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
     UpdateCarPosData();
 
-    if (mpPlayer)
+    if (mpPlayer)   
         mbPlayerInFirstSeat = (mpPlayer->CurrentSeatType == FIRST);
 
     if (InteractionWidgetComp)
-        InteractionWidgetComp->SetVisibility(bCollided);
+    {
+        InteractionWidgetComp->SetVisibility(bPlayerNear);
+        GetMesh()->SetRenderCustomDepth(bPlayerNear);
+    }
 }
 
 void ACoreVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComp)
@@ -251,20 +254,16 @@ void ACoreVehicle::Turn(float Value)
 void ACoreVehicle::CheckForDoorPos()
 {
     ESeatType seatType = NONE;
-    float     arrVecDistance[4]{ 0.f };
-    auto maxSeater = mVehicleData.MaxSeater;
+    FVector   playerPos = mpPlayer->GetActorLocation();
 
     // 벡터 확인
-    for (int i = 0; i < maxSeater; i++)
-    {
-        FVector playerPos  = mpPlayer->GetActorLocation();
-        FVector carDoorPos = MapDoorPos[(ESeatType)i];
-        arrVecDistance[i]  = FVector::Distance(playerPos.GetAbs(), carDoorPos.GetAbs());
-    }
-    auto distance1 = arrVecDistance[0], distance2 = arrVecDistance[1], distance3 = arrVecDistance[2], distance4 = arrVecDistance[3];
+    auto distance1 = FVector::Distance(playerPos.GetAbs(), MapDoorPos[FIRST].GetAbs()), 
+         distance2 = FVector::Distance(playerPos.GetAbs(), MapDoorPos[SECOND].GetAbs()), 
+         distance3 = FVector::Distance(playerPos.GetAbs(), MapDoorPos[THIRD].GetAbs()), 
+         distance4 = FVector::Distance(playerPos.GetAbs(), MapDoorPos[FOURTH].GetAbs());
 
     // 문짝이 2개일 시
-    if (maxSeater == 2)
+    if (mVehicleData.MaxSeater == 2)
         seatType = (distance1 < distance2) ? FIRST : SECOND;
 
     // 문짝이 4개일 시
@@ -303,17 +302,21 @@ void ACoreVehicle::CheckForDoorPos()
 
 void ACoreVehicle::SetPlayerIntoSeat()
 {
-    auto p_playerController = UGameplayStatics::GetPlayerController(this, 0);
-    auto p_playerCollider   = mpPlayer->GetCapsuleComponent();
+    auto p_playerCollider = mpPlayer->GetCapsuleComponent();
+    auto seatType = mpPlayer->CurrentSeatType;
+
+    // 플레이어가 첫번째 좌석에 지정됐을 시 차량을 빙의
+    if (seatType == FIRST)
+        mpPlayer->GetController()->Possess(this);
 
     // 플레이어 세팅
     mpPlayer->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-    mpPlayer->SetActorLocation(MapSeatPos[mpPlayer->CurrentSeatType]);
+    mpPlayer->SetActorLocation(MapSeatPos[seatType]);
 
     // 플레이어 콜라이더 세팅
     p_playerCollider->SetMobility(EComponentMobility::Static);
     p_playerCollider->SetCollisionProfileName("OverlapAll");
-    p_playerController->Possess(this);
+
     mCurrentPlayerCount++;
 }
 
@@ -338,18 +341,18 @@ void ACoreVehicle::UpdatePlayerSeatLocation(ESeatType SeatType)
 
 bool ACoreVehicle::IsSeatAvailable(ACustomPlayer* pPlayer)
 {
-    if (mCurrentPlayerCount < mVehicleData.MaxSeater - 1)
-    {
-        mpPlayer = pPlayer;
+    if (!pPlayer ||
+        mCurrentPlayerCount >= mVehicleData.MaxSeater)
+        return false;
 
-        // 빈 좌석 확인 후 위치 가져오기
-        CheckForDoorPos();
+    mpPlayer = pPlayer;
 
-        if (!mMapEmptySeat[pPlayer->CurrentSeatType])
-            return false;
+    // 빈 좌석 확인 후 위치 가져오기
+    CheckForDoorPos();
 
-        SetPlayerIntoSeat();
-        return true;
-    }
-    return false;
+    if (!mMapEmptySeat[pPlayer->CurrentSeatType])
+        return false;
+
+    SetPlayerIntoSeat();
+    return true;
 }

@@ -42,20 +42,24 @@ private:
     UPROPERTY() 
     UCustomGameInstance* mpCustomGameInst = nullptr;
 
-    // 플레이어가 사용하는 변수
+#pragma region 플레이어가 사용하는 변수
     UPROPERTY() 
     AWeaponManager* mpWeaponManager = nullptr;
 
     UPROPERTY() 
-    ABaseInteraction* mpCollidedItem = nullptr;
+    ABaseInteraction* mpCollidedItem = nullptr; // 임시 변수
+
+    UPROPERTY()
+    ACoreVehicle* mpVehicle = nullptr; // 임시 변수
 
     UPROPERTY(VisibleAnywhere, Category = Audio)    
     UAudioComponent* AudioComp    = nullptr;
 
     UPROPERTY(VisibleAnywhere, Category = Particle) 
     UParticleSystemComponent* ParticleComp = nullptr;
+#pragma endregion
 
-    /** \brief 이동 관련 변수 */
+#pragma region 이동 관련 변수
     FVector mDirectionUpDown    = FVector::ZeroVector;
     FVector mDirectionLeftRight = FVector::ZeroVector;
     float   mSprintTime         = 0.f;
@@ -64,6 +68,7 @@ private:
     bool    mbMoving            = false;
     bool    mbInteracting       = false;
     bool    mbInventoryOpened = false;
+#pragma endregion
 
 // 플레이어 컴포넌트 및 상태 변수
 public:
@@ -93,7 +98,7 @@ public:
 
     // 에임 관련
 
-    // 플레이어 상태 관련 변수
+#pragma region 플레이어 상태 관련 변수
     EPlayerState CurrentState;
     EPlayerOtherState CurrentOtherState = EPlayerOtherState::NONE;
     const float  kMaxHealth           = 100.f;
@@ -104,7 +109,8 @@ public:
 
     UPROPERTY(EditAnywhere) float Zval;
     FTimerHandle AimTimerHandle;
-    
+#pragma endregion
+
     // 차량 관련 변수
     ESeatType CurrentSeatType = ESeatType::NONE;
     bool bInVehicle = false;
@@ -119,7 +125,7 @@ private:
 
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-// 초기화 함수들
+#pragma region 초기화 함수들
 private:
     // 플레이어에 대한 정보 갱신
     void InitPlayerSettings();
@@ -138,16 +144,14 @@ private:
 
     // 파티클 시스템 초기화
     void InitParticleComp();
+#pragma endregion
 
 private:
     // 플레이어 움직임 감지
     void CheckIfMoving();
 
-    // 충돌한 오브젝트 확인 (아이템) (레이캐스트 : 플레이어 발 밑)
+    // 충돌한 오브젝트 확인 (아이템, 차량 등)
     void CheckNearObj();
-
-    // 근처에 차량이 있는지 감지 (레이캐스트 : 플레이어 상체)
-    void CheckNearVehicle();
 
     // 상호 작용 중일 시 (무기 줍기/차량 탑승)
     void TryToInteract();
@@ -198,8 +202,7 @@ private:
 
     void UpdateHealth();
 
-    // ------- 무기 관련 -------
-
+#pragma region 무기 관련 
     // 사격
     void BeginShooting();
 
@@ -249,6 +252,7 @@ private:
     UFUNCTION()
     // 조준선을 원위치 시킴
     void ZoomOut();
+#pragma endregion
 
 public:
     UFUNCTION() 

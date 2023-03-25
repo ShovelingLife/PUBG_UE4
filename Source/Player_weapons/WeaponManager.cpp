@@ -157,6 +157,9 @@ void AWeaponManager::PredictGrenadePath()
 
 void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName, bool bCheck /* = true */)
 {
+    if (!pWeapon)
+        return;
+
     // 총기일 때만 인벤토리 총알과 연동 용도
     if (auto p_gun = Cast<ACoreWeapon>(pWeapon))
         p_gun->bInInventory = true;
@@ -202,21 +205,16 @@ void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName,
 
         if (pThrowable)
             CurrentWeaponType = THROWABLE;
-    }
-    if (pWeapon)
-    {
-        auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
-        pWeapon->ChangeMeshSettings(false);
-        pWeapon->GetMeshComp()->SetSimulatePhysics(false);
-        pWeapon->AttachToMesh(playerMesh, SocketName);
-    }
+    }    
+    auto playerMesh = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetMesh();
+    pWeapon->ChangeMeshSettings(false);
+    pWeapon->GetMeshComp()->SetSimulatePhysics(false);
+    pWeapon->AttachToMesh(playerMesh, SocketName);
     // pWeapon->SkeletalMeshComp->AttachToComponent(, FAttachmentTransformRules::SnapToTargetIncludingScale, *SocketName);
 }
 
 void AWeaponManager::Detach(ABaseInteraction* pWeapon)
 {
-    auto playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-
     if (pWeapon)
         pWeapon->Detach();
 }

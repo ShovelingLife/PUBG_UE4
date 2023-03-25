@@ -92,4 +92,6 @@ protected:
 
 private:
     void UpdateHighlightImg();
+
+    void RotateDummyCharacterUI();
 };

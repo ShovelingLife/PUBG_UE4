@@ -8,7 +8,7 @@ void ACustomPlayerController::BeginPlay()
     Super::BeginPlay();
 
     // 탭 키로 UI 내비게이션 비활성화
-    if(IsLocalController())
+    if (IsLocalController())
     {
         TSharedRef<FNavigationConfig> p_navigation = MakeShared<FNavigationConfig>();
         p_navigation->bKeyNavigation    = false;

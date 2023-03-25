@@ -52,7 +52,7 @@ void UNotificationUI::UpdateNotificationText(FString Msg)
 	}
 }	
 
-UFUNCTION() void UNotificationUI::DeleteNotificationTextUI(UNotificationTextUI* pNotificationTextUI)
+void UNotificationUI::DeleteNotificationTextUI(UNotificationTextUI* pNotificationTextUI)
 {
 	// 애니메이션이 끝났을 시 강제로 삭제
 	mQueueNotificationText.Pop();

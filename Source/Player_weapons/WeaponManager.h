@@ -114,7 +114,8 @@ private:
 
     void InitGrenadePath();
 
-    UFUNCTION() void PredictGrenadePath();
+    UFUNCTION() 
+	void PredictGrenadePath();
 
     /**
      * \brief 무기를 플레이어 메시에 부착
@@ -128,7 +129,7 @@ private:
     void Detach(ABaseInteraction* pWeapon);
 
 public:
-	/** \brief 발사 */
+	// 발사
 	void ClickEvent();
 
 	void ThrowGrenade();
@@ -164,7 +165,7 @@ public:
 	// 반환값 = -1 에러 / 0 성공 / 1 근접 또는 투척 무기
 	int Swap(ABaseInteraction* pCurrentWeapon, ABaseInteraction* pNewWeapon = nullptr, EWeaponType WeaponType = NONE);
 
-	/** \brief 착용 중인 무기를 체크함 */
+	// 착용 중인 무기를 체크함
 	void ChangeShootMode();
 
 	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);

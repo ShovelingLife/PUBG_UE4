@@ -37,7 +37,10 @@ void ABaseInteraction::Tick(float DeltaTime)
     InitWidget();
 
     if (WidgetComp)
+    {
         WidgetComp->SetVisibility(bPlayerNear);
+        GetMeshComp()->SetRenderCustomDepth(bPlayerNear);
+    }
 }
 
 void ABaseInteraction::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -99,6 +102,7 @@ void ABaseInteraction::InitCollider()
     ColliderComp->SetSimulatePhysics(false);
 }
 
+// 상호작용 텍스트 초기화
 void ABaseInteraction::InitWidget()
 {
     if (!mbWidgetInitialized)
@@ -106,7 +110,6 @@ void ABaseInteraction::InitWidget()
         // 상호작용 텍스트 == ""일 시
         if (!ObjectType.IsEmpty())
         {
-            // 상호작용 텍스트 초기화
             if (auto p_customGameInst = UCustomGameInstance::GetInst())
             {
                 auto event = p_customGameInst->DeleSetInteractionWidgetComp;
@@ -118,18 +121,16 @@ void ABaseInteraction::InitWidget()
     }
 }
 
+// 현재 사용 가능한 메쉬 컴포넌트를 반환
 UMeshComponent* ABaseInteraction::GetMeshComp() const
 {
-    // 현재 사용 가능한 메쉬 컴포넌트를 반환
-    UMeshComponent* meshComp = nullptr;
+    if (StaticMeshComp)
+       return StaticMeshComp;
 
-    if      (StaticMeshComp)
-             meshComp = StaticMeshComp;
+    if (SkeletalMeshComp)
+        return SkeletalMeshComp;
 
-    else if (SkeletalMeshComp)
-             meshComp = SkeletalMeshComp;
-
-    return meshComp;
+    return nullptr;
 }
 
 void ABaseInteraction::DestroyComponentsForUI() 
@@ -158,9 +159,9 @@ void ABaseInteraction::SetForDummyCharacter()
 
 void ABaseInteraction::ChangeCollisionSettings(bool bTurned /* = true */)
 {
+    // 컴포넌트에 따라 콜라이더 업데이트
     if (ColliderComp)
     {
-        // 컴포넌트에 따라 콜라이더 업데이트
         ColliderComp->SetCollisionProfileName(bTurned ? "Object" : "NoCollision");
         ColliderComp->CanCharacterStepUpOn = bTurned ? ECanBeCharacterBase::ECB_Yes : ECanBeCharacterBase::ECB_No;
     }    
