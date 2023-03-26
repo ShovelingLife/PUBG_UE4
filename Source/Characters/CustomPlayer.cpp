@@ -169,6 +169,13 @@ void ACustomPlayer::InitParticleComp()
 
 }
 
+void ACustomPlayer::SetCollidedItemNull()
+{
+    mpCollidedItem->bPlayerNear = false;
+    mpCollidedItem = nullptr;
+    mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
+}
+
 void ACustomPlayer::CheckIfMoving()
 {
     auto characterMovementComp = GetCharacterMovement();    
@@ -260,27 +267,26 @@ void ACustomPlayer::CheckNearObj()
         AActor* p_hittedActor = hitResult.GetActor();
 
         // 충돌한 오브젝트가 상호작용 가능한 오브젝트일 시
-        if (p_hittedActor &&
-            p_hittedActor->IsA<ABaseInteraction>())
+        if (!mpCollidedItem)
         {
             // 월드 리스트에 추가
-            mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
-            mpCollidedItem->bPlayerNear = true;
-            mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(mpCollidedItem, false);
-        
-            // F키 눌렀을 시
-            if (mbInteracting)
-                TryToInteract();
+            if (p_hittedActor &&
+                p_hittedActor->IsA<ABaseInteraction>())
+            {
+                mpCollidedItem = Cast<ABaseInteraction>(p_hittedActor);
+                mpCollidedItem->bPlayerNear = true;
+                mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(mpCollidedItem, false);
+            }            
         }
         // 습득 가능한 아이템 접근한 후 범위 벗어날 시
         else
         {
-            if (mpCollidedItem)
-            {
-                mpCollidedItem->bPlayerNear = false;
-                mpCollidedItem = nullptr;
-                mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
-            }
+            // F키 눌렀을 시
+            if (mbInteracting)
+                TryToInteract();
+            
+            if (!p_hittedActor)
+                SetCollidedItemNull();
         }
     }
 #pragma endregion
@@ -294,10 +300,35 @@ void ACustomPlayer::CheckNearObj()
         GetWorld()->LineTraceSingleByObjectType(hitResult, beginPos, endPos, FCollisionObjectQueryParams(ECC_Vehicle));
         AActor* p_hittedActor = hitResult.GetActor();
 
-        if (p_hittedActor)
+        if (!mpVehicle)
         {
-            mpVehicle = Cast<ACoreVehicle>(p_hittedActor);
-            mpVehicle->bPlayerNear ;
+            if (p_hittedActor &&
+                p_hittedActor->IsA<ACoreVehicle>())
+            {
+                mpVehicle = Cast<ACoreVehicle>(p_hittedActor);
+                mpVehicle->bPlayerNear = true;
+            }
+        }
+        else
+        {
+            // F키 눌렀을 시
+            if (mbInteracting &&
+                mpVehicle->IsSeatAvailable(this))
+                bInVehicle = true;
+
+            if (!p_hittedActor)
+            {
+                mpVehicle->bPlayerNear = false;
+                mpVehicle = nullptr;
+            }
+        }
+    }
+    else
+    {
+        if (mpVehicle)
+        {
+            mpVehicle->bPlayerNear = false;
+            mpVehicle = nullptr;
         }
     }
 #pragma endregion
@@ -305,9 +336,6 @@ void ACustomPlayer::CheckNearObj()
 
 void ACustomPlayer::TryToInteract()
 {
-    mpCollidedItem->bPlayerNear = false;
-    mpCollidedItem = nullptr;
-
     // 충돌된 오브젝트가 무기일 시
     if (mpWeaponManager->TryToEquip(mpCollidedItem))
     {
@@ -322,7 +350,7 @@ void ACustomPlayer::TryToInteract()
         mpCustomGameInst->DeleSetItemOntoInventory.ExecuteIfBound(mpCollidedItem, false);
         mpCollidedItem->Destroy();
     }
-    mpCustomGameInst->DeleUpdateWorldList.ExecuteIfBound(nullptr, true);
+    SetCollidedItemNull();
 }
 
 void ACustomPlayer::CustomJump()

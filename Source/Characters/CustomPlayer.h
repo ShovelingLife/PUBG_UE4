@@ -15,12 +15,14 @@
 #include "GameFramework/Character.h"
 #include "CustomPlayer.generated.h"
 
-/** \brief 델리게이트 모음 (인벤토리 열기/닫기) */
+// 델리게이트 모음 (인벤토리 열기/닫기)
 DECLARE_DELEGATE(FDeleOpenInventory)
 DECLARE_DELEGATE(FDeleCloseInventory)
 
+#pragma region 클래스 전방선언
 class ABaseInteraction;
 class ACoreWeapon;
+class ACoreVehicle;
 class ADummyCharacter;
 class AWeaponManager;
 class UCustomGameInstance;
@@ -29,6 +31,7 @@ class UAudioComponent;
 class UCameraComponent;
 class UParticleSystemComponent;
 class USpringArmComponent;
+#pragma endregion
 
 UCLASS()
 class CHARACTERS_API ACustomPlayer : public ACharacter
@@ -42,7 +45,7 @@ private:
     UPROPERTY() 
     UCustomGameInstance* mpCustomGameInst = nullptr;
 
-#pragma region 플레이어가 사용하는 변수
+#pragma region 플레이어가 사용하는 변수 및 컴포넌트들
     UPROPERTY() 
     AWeaponManager* mpWeaponManager = nullptr;
 
@@ -70,7 +73,7 @@ private:
     bool    mbInventoryOpened = false;
 #pragma endregion
 
-// 플레이어 컴포넌트 및 상태 변수
+#pragma region 플레이어 카메라 컴포넌트들
 public:
     // ------- FPS 카메라 -------
     UPROPERTY(VisibleAnywhere, Category = CameraVar) 
@@ -86,7 +89,9 @@ public:
     UPROPERTY(VisibleAnywhere, Category = CameraVar) 
     UCameraComponent* TPS_CameraComp = nullptr;
 
-    // ------- 인벤토리 캐릭터 UI 관련 -------
+#pragma endregion
+
+#pragma region 인벤토리 캐릭터 UI 관련
     UPROPERTY(EditAnywhere)
     TSubclassOf<ADummyCharacter> BP_DummyCharacter;
 
@@ -96,7 +101,7 @@ public:
     FDeleOpenInventory  DeleOpenInventory;
     FDeleCloseInventory DeleCloseInventory;
 
-    // 에임 관련
+#pragma endregion
 
 #pragma region 플레이어 상태 관련 변수
     EPlayerState CurrentState;
@@ -145,6 +150,8 @@ private:
     // 파티클 시스템 초기화
     void InitParticleComp();
 #pragma endregion
+
+    void SetCollidedItemNull();
 
 private:
     // 플레이어 움직임 감지

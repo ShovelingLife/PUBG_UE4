@@ -12,7 +12,7 @@ UCustomGameInstance::UCustomGameInstance()
 
 void UCustomGameInstance::OnStart()
 {
-    UCustomGameInstance::inst = this;
+    inst = this;
 
     if (auto p_world = GetWorld())
         pSoundManager = p_world->SpawnActor<ASoundManager>(ASoundManager::StaticClass());

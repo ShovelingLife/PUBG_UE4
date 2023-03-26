@@ -99,7 +99,9 @@ protected:
 #pragma endregion
 
 public:
-    UPROPERTY(VisibleAnywhere, Category = Widget_component) UWidgetComponent* InteractionWidgetComp;
+    UPROPERTY(VisibleAnywhere, Category = WidgetComp) 
+    UWidgetComponent* WidgetComp;
+    
     bool bPlayerNear = false;
 
 public:

@@ -111,12 +111,7 @@ void ABaseInteraction::InitWidget()
         if (!ObjectType.IsEmpty())
         {
             if (auto p_customGameInst = UCustomGameInstance::GetInst())
-            {
-                auto event = p_customGameInst->DeleSetInteractionWidgetComp;
-
-                if (event.IsBound())
-                    mbWidgetInitialized = event.Execute(WidgetComp, FString::Printf(TEXT("%s PickUp "), *ObjectType));
-            }
+                mbWidgetInitialized = p_customGameInst->DeleSetInteractionText.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s PickUp "), *ObjectType));
         }
     }
 }

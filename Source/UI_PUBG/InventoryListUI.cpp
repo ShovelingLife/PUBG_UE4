@@ -182,8 +182,10 @@ void UInventoryListUI::InitButtons()
 {
     BtnOrderAlphabet->SetClickMethod(EButtonClickMethod::MouseDown);
     BtnOrderAlphabet->OnClicked.AddDynamic(this, &UInventoryListUI::OrderAlphabetically);
+    
     BtnOrderRecent->SetClickMethod(EButtonClickMethod::MouseDown);
     BtnOrderRecent->OnClicked.AddDynamic(this, &UInventoryListUI::OrderRecently);
+    
     TxtOrderAlphabet->SetColorAndOpacity(Global::WhiteColor);
     TxtOrderRecent->SetColorAndOpacity(Global::GrayColor);
 }

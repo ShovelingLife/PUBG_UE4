@@ -97,7 +97,9 @@ void AWeaponManager::PredictGrenadePath()
         return;
 
     mbThrowingGrenade = true;
-    // 투척류 예측 경로 데이터 설정
+    
+#pragma region 투척류 예측 경로 데이터 설정
+
     FVector socketPos = p_player->GetMesh()->GetSocketLocation("GrenadeThrowSock");
     FVector launchVelocity = UKismetMathLibrary::GetForwardVector(p_player->GetActorRotation()) * GrenadeDirection * 1500.f;
     FPredictProjectilePathParams predictParams(50.f, socketPos, launchVelocity, 2.f, EObjectTypeQuery::ObjectTypeQuery1);
@@ -108,6 +110,8 @@ void AWeaponManager::PredictGrenadePath()
     UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, result);
     mGrenadeVelocity = predictParams.LaunchVelocity;
     
+#pragma endregion
+
     // 경로 지정
     for (int i = 0; i < result.PathData.Num(); i++)
         SplineComp->AddSplinePointAtIndex(result.PathData[i].Location, i, ESplineCoordinateSpace::World);
@@ -119,19 +123,27 @@ void AWeaponManager::PredictGrenadePath()
         // 따라서 StaticClass()으로 해줌으로서 엑터 오브젝트라는걸 명시해야됨.
         if (auto splineMeshComp = NewObject<USplineMeshComponent>(GetWorld(), USplineMeshComponent::StaticClass()))
         {
+#pragma region 초기화
+
             splineMeshComp->SetMobility(EComponentMobility::Movable);
             splineMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             splineMeshComp->AttachToComponent(SplineComp, FAttachmentTransformRules::KeepRelativeTransform);
             splineMeshComp->RegisterComponentWithWorld(GetWorld());
 
-            // 위치 설정
+#pragma endregion
+
+#pragma region 위치 설정
+
             //splineMeshComp->SetRelativeTransform(FTransform::Identity);
             FVector startPos, startTangent, endPos, endTangent;
             SplineComp->GetLocationAndTangentAtSplinePoint(i, startPos, startTangent, ESplineCoordinateSpace::World);
             SplineComp->GetLocationAndTangentAtSplinePoint(i + 1, endPos, endTangent, ESplineCoordinateSpace::World);
             splineMeshComp->SetStartAndEnd(startPos, startTangent, endPos, endTangent);
 
-            // 비쥬얼 설정
+#pragma endregion
+
+#pragma region 비쥬얼 설정
+            
             splineMeshComp->SetForwardAxis(ESplineMeshAxis::Z);
             splineMeshComp->SetStartScale(FVector2D(0.02f));
             splineMeshComp->SetEndScale(FVector2D(0.02f));
@@ -141,9 +153,11 @@ void AWeaponManager::PredictGrenadePath()
             splineMeshComp->SetMaterial(0, PathMat);
             splineMeshComp->SetVisibility(true);
             arrSplineMeshComp.Add(splineMeshComp);
+
+#pragma endregion
         }
     }
-    // 도착 지점에 생성 및 설정
+#pragma region 도착 지점에 생성 및 설정
     if (GrenadeEndPoint)
     {
         auto endPos = result.LastTraceDestination.Location;
@@ -153,6 +167,7 @@ void AWeaponManager::PredictGrenadePath()
         if (pThrowable)
             pThrowable->GrenadeEndPos = endPos;
     }
+#pragma endregion
 }
 
 void AWeaponManager::AttachWeapon(ABaseInteraction* pWeapon, FString SocketName, bool bCheck /* = true */)
@@ -219,10 +234,45 @@ void AWeaponManager::Detach(ABaseInteraction* pWeapon)
         pWeapon->Detach();
 }
 
+ABaseInteraction* AWeaponManager::GetWeaponByIndex(EWeaponType WeaponType) const
+{
+    if (WeaponType == NONE)
+        return nullptr;
+
+    // 원소 인덱스에 따라 현재 무기를 가져옴
+    return mArrWeapon[static_cast<int>(WeaponType)];
+}
+
+EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
+{
+    for (int i = 1; i < mArrWeapon.Num(); i++)
+    {
+        if (pWeapon == mArrWeapon[i])
+            return (EWeaponType)(i + 1);
+    }
+    return NONE;
+}
+
+ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)); }
+
+int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const { return IsValid(pWeapon) ? pWeapon->ItemIdx : 0; }
+
 void AWeaponManager::ClickEvent()
 {
     if (ABaseInteraction* p_obj = GetWeaponByIndex(CurrentWeaponType))
         p_obj->ClickEvent();
+}
+
+void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
+{
+    if (!pGrenade)
+        return;
+
+    // 오브젝트 생성 후 투척류로 지정
+    pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
+    pThrowable->Setup(pGrenade);
+    AttachWeapon(pThrowable, "GrenadeSock");
+    GetWorld()->GetGameInstance<UCustomGameInstance>()->DeleSetExplosiveUI.ExecuteIfBound(pThrowable);
 }
 
 void AWeaponManager::ThrowGrenade()
@@ -270,7 +320,8 @@ bool AWeaponManager::ScrollSelect(FString Pos)
     int direction = (int)CurrentWeaponType;        
     EWeaponType changeType = NONE;
 
-    // 스크롤을 위 아래로 향하는지 판별
+#pragma region 스크롤 아래로
+
     if (Pos == "Down")
     {
         if (direction == (int)FIRST)
@@ -287,6 +338,10 @@ bool AWeaponManager::ScrollSelect(FString Pos)
         if (changeType == NONE)
             changeType = THROWABLE;
     }
+#pragma endregion
+
+#pragma region 스크롤 위로
+
     else if (Pos == "Up")
     {
         for (int i = direction + 1; i < 6; i++)
@@ -300,6 +355,7 @@ bool AWeaponManager::ScrollSelect(FString Pos)
         if (changeType == NONE)
             changeType = FIRST;
     }
+#pragma endregion
     return Swap(changeType, true);
 } 
 
@@ -478,41 +534,6 @@ void AWeaponManager::ChangeShootMode()
         p_gun->ChangeShootMode();
 }
 
-void AWeaponManager::CreateExplosive(ACoreThrowableWeapon* pGrenade /* = nullptr */)
-{
-    if (!pGrenade)
-        return;
-    
-    // 오브젝트 생성 후 투척류로 지정
-    pThrowable = GetWorld()->SpawnActor<ACoreThrowableWeapon>(ACoreThrowableWeapon::StaticClass());
-    pThrowable->Setup(pGrenade);
-    AttachWeapon(pThrowable, "GrenadeSock");
-    GetWorld()->GetGameInstance<UCustomGameInstance>()->DeleSetExplosiveUI.ExecuteIfBound(pThrowable);
-}
-
-ABaseInteraction* AWeaponManager::GetWeaponByIndex(EWeaponType WeaponType) const
-{
-    if (WeaponType == NONE)
-        return nullptr;
-
-    // 원소 인덱스에 따라 현재 무기를 가져옴
-    return mArrWeapon[static_cast<int>(WeaponType)];
-}
-
-EWeaponType AWeaponManager::GetWeaponIndex(ABaseInteraction* pWeapon) const
-{
-    for (int i = 1; i < mArrWeapon.Num(); i++)
-    {
-        if (pWeapon == mArrWeapon[i])
-            return (EWeaponType)(i + 1);
-    }
-    return NONE;
-}
-
-ACoreWeapon* AWeaponManager::GetCurrentGun() const { return Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)); }
-
-int AWeaponManager::GetWeaponType(ABaseInteraction* pWeapon) const { return IsValid(pWeapon) ? pWeapon->ItemIdx : 0; }
-
 void AWeaponManager::Drop(EWeaponType WeaponType)
 {
     // 무기를 맵에다 드롭
@@ -570,28 +591,28 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
     }
     case PISTOL:    
     {
-        if      (Cast<ACoreWeapon>(pWeapon) == pPistol)
-                 return true;
+        if (Cast<ACoreWeapon>(pWeapon) == pPistol)
+            return true;
 
-        else if (pWeapon->IsGroupType("Handgun"))
-                 return false;
+        if (pWeapon->IsGroupType("Handgun"))
+            return false;
     }
     case MELEE:     
     {
-        if      (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee)
-                 return true;
+        if (Cast<ACoreMeleeWeapon>(pWeapon) == pMelee)
+            return true;
 
-        else if (pWeapon->IsGroupType("Melee"))
-                 return false;
+        if (pWeapon->IsGroupType("Melee"))
+            return false;
     }
     case THROWABLE: 
     {
-        if      (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable)
-                 return true;
+        if (Cast<ACoreThrowableWeapon>(pWeapon) == pThrowable)
+            return true;
 
-        else if (pWeapon->IsGroupType("Explosive") ||
-                 pWeapon->IsGroupType("Grenade"))
-                 return false;
+        if (pWeapon->IsGroupType("Explosive") ||
+            pWeapon->IsGroupType("Grenade"))
+            return false;
     }
     }
     return true;
@@ -599,8 +620,6 @@ bool AWeaponManager::IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponTy
 
 bool AWeaponManager::IsFiring()
 {
-    if (auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType)))
-        return p_gun->bShooting;
-
-    return false;
+    auto p_gun = Cast<ACoreWeapon>(GetWeaponByIndex(CurrentWeaponType));
+    return p_gun != nullptr ? p_gun->bShooting : false;
 }

@@ -17,6 +17,7 @@
 
 DECLARE_DELEGATE(FDeleAim)
 
+#pragma region 클래스 전방 선언
 class ABaseInteraction;
 class ACoreAttachment;
 class ACoreWeapon;
@@ -29,6 +30,7 @@ class USplineComponent;
 class USplineMeshComponent;
 class UStaticMesh;
 class UMaterial;
+#pragma endregion
 
 UCLASS()
 class PLAYER_WEAPONS_API AWeaponManager : public AActor
@@ -51,7 +53,8 @@ private:
     bool  mbThrowingGrenade = false;
 
 public:
-// ------- 현재 착용 중인 무기 -------
+#pragma region 현재 착용 중인 무기
+
 	UPROPERTY() 
     ACoreWeapon* pFirstGun = nullptr;
 
@@ -71,7 +74,9 @@ public:
 
     EWeaponType CurrentWeaponType = NONE;
 
-// ------- 투척류 관련 -------
+#pragma endregion
+
+#pragma region 투척류 관련 변수
 
     UPROPERTY(EditAnywhere, Category = GrenadeVariable) 
 	TArray<USplineMeshComponent*> arrSplineMeshComp;
@@ -97,7 +102,7 @@ public:
     float GrenadeDirection;
 	float GrenadeSpeed = 0.f;
 
-	bool bAiming = false;
+#pragma endregion
 
 public:	
 	AWeaponManager();
@@ -129,8 +134,26 @@ private:
     void Detach(ABaseInteraction* pWeapon);
 
 public:
+#pragma region 게터/세터
+
+	ABaseInteraction* GetWeaponByIndex(EWeaponType WeaponType) const;
+
+	// 무기의 인덱스를 구함
+	EWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
+
+	ACoreWeapon* GetCurrentGun() const;
+
+	// 무기의 종류를 구함
+	int GetWeaponType(ABaseInteraction* pWeapon) const;
+
+#pragma endregion
+
 	// 발사
 	void ClickEvent();
+
+#pragma region 투척류 관련 함수
+
+	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);
 
 	void ThrowGrenade();
 
@@ -138,6 +161,9 @@ public:
 
 	void UpdateGrenadePath();
 
+#pragma endregion
+
+#pragma region 총기 관련 함수
 	/**
 	 * \brief 마우스 휠 통해 무기 교체
 	 * \param Pos 현재 착용 중인 무기의 위치
@@ -168,7 +194,7 @@ public:
 	// 착용 중인 무기를 체크함
 	void ChangeShootMode();
 
-	void CreateExplosive(ACoreThrowableWeapon* pGrenade = nullptr);
+#pragma endregion
 
 	// ------- 부착 관련 함수 -------
 
@@ -177,17 +203,8 @@ public:
      * \param WeaponType 무기 종류
      * \return 현재 착용 중인 무기
      */
-    ABaseInteraction* GetWeaponByIndex(EWeaponType WeaponType) const;
 
-    // 무기의 인덱스를 구함
-    EWeaponType GetWeaponIndex(ABaseInteraction* pWeapon) const;
-
-	ACoreWeapon* GetCurrentGun() const;
-
-	// 무기의 종류를 구함
-	int GetWeaponType(ABaseInteraction* pWeapon) const;
-
-	// ------- UI 관련 함수 -------
+#pragma region UI 관련 함수
 
 	/**
 	 * \brief 무기를 맵에다가 버림
@@ -204,4 +221,6 @@ public:
     bool IsWrongType(ABaseInteraction* pWeapon, EWeaponType WeaponType, bool bFromWeaponSlot);
 
 	bool IsFiring();
+
+#pragma endregion
 };

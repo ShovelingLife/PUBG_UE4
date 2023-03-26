@@ -14,6 +14,7 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryListUI.generated.h"
 
+#pragma region 클래스 전방 선언
 class UButton;
 class UImage;
 class UListView;
@@ -25,6 +26,7 @@ class ABaseInteraction;
 class ACoreThrowableWeapon;
 class UItemSlotUI;
 class UGameInstanceSubsystemUI;
+#pragma endregion
 
 UCLASS()
 class UI_PUBG_API UInventoryListUI : public UUserWidget
@@ -92,6 +94,8 @@ protected:
 
     virtual void NativeTick(const FGeometry&, float) override;
 
+#pragma region 마우스 관련 이벤트
+
     /**
       * \brief 리스트에 마우스 클릭 시 슬롯 정보 가져옴
       * \param InGeometry UI 정보 
@@ -133,6 +137,8 @@ protected:
      */
     virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InMouseEvent, class UDragDropOperation* Operation) override;
 
+#pragma endregion
+
 private:
     // 버튼들을 초기화
     void InitButtons();
@@ -147,6 +153,7 @@ private:
 
     UItemSlotUI* GetInitializedSlotUI(ABaseInteraction* pObj);
 
+#pragma region UFUNCTION 타입 블프 연동 용도
 public:
     UFUNCTION() 
     void DeleteFromList();
@@ -179,4 +186,6 @@ public:
 
     UFUNCTION() 
     void OrderRecently();
+
+#pragma endregion
 };

@@ -32,8 +32,8 @@ void ACoreVehicle::BeginPlay()
     Super::BeginPlay();
     
     // 상호작용 UI 업데이트
-    // if (auto p_customGameInst = UCustomGameInstance::GetInst())
-    // DECLARE_DELEGATE_RetVal_TwoParams    p_customGameInst->DeleSetInteractionWidgetComp.ExecuteIfBound(InteractionWidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));
+    if (auto p_customGameInst = UCustomGameInstance::GetInst())
+        p_customGameInst->DeleSetInteractionText.ExecuteIfBound(WidgetComp, FString::Printf(TEXT("%s 탑승하기"), *mVehicleData.Type));    
 }
 
 void ACoreVehicle::Tick(float DeltaTime)
@@ -44,9 +44,9 @@ void ACoreVehicle::Tick(float DeltaTime)
     if (mpPlayer)   
         mbPlayerInFirstSeat = (mpPlayer->CurrentSeatType == FIRST);
 
-    if (InteractionWidgetComp)
+    if (WidgetComp)
     {
-        InteractionWidgetComp->SetVisibility(bPlayerNear);
+        WidgetComp->SetVisibility(bPlayerNear);
         GetMesh()->SetRenderCustomDepth(bPlayerNear);
     }
 }
@@ -171,8 +171,8 @@ void ACoreVehicle::InitSkeletalMesh()
         GetMesh()->SetAnimInstanceClass(animInst.Class);
 
     // 위젯 컴포넌트 초기화
-    InteractionWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidget"));
-    InteractionWidgetComp->SetupAttachment(RootComponent);
+    WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidget"));
+    WidgetComp->SetupAttachment(RootComponent);
 }
 
 void ACoreVehicle::InitWheeledComp()
@@ -350,7 +350,10 @@ bool ACoreVehicle::IsSeatAvailable(ACustomPlayer* pPlayer)
     // 빈 좌석 확인 후 위치 가져오기
     CheckForDoorPos();
 
-    if (!mMapEmptySeat[pPlayer->CurrentSeatType])
+    auto seatType = pPlayer->CurrentSeatType;
+
+    if (seatType == NONE ||
+        !mMapEmptySeat[seatType])
         return false;
 
     SetPlayerIntoSeat();

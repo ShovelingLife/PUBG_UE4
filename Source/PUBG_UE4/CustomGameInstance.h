@@ -31,7 +31,7 @@ DECLARE_DELEGATE_OneParam(FDeleSetExplosiveUI, ACoreThrowableWeapon*)
 DECLARE_DELEGATE_RetVal_OneParam(int, FDeleGetBulletCount, FString)
 DECLARE_DELEGATE_TwoParams(FDeleUpdateWorldList, ABaseInteraction*, bool)
 DECLARE_DELEGATE_TwoParams(FDeleSetItemOntoInventory, ABaseInteraction*, bool)
-DECLARE_DELEGATE_RetVal_TwoParams(bool, FDeleSetInteractionWidgetComp, UWidgetComponent*, FString)
+DECLARE_DELEGATE_TwoParams(FDeleSetInteractionText, UWidgetComponent*, FString)
 DECLARE_DELEGATE_ThreeParams(FDeleRunEffectAnim, float, float, EPlayerStateAnimType)
 
 // 무기 관련 델리게이트
@@ -48,8 +48,10 @@ private:
     static UCustomGameInstance* inst;
 
 public:
-    /** \brief 전역 변수 */
-    UPROPERTY() ASoundManager* pSoundManager;
+    // 전역 변수
+    UPROPERTY() 
+    ASoundManager* pSoundManager;
+
     FDeleKillUI_Anim DeleKillUI_Anim;
     FDeleSetPlayerOtherState      DeleSetPlayerOtherState;
     FDeleDealPlayerDmg            DeleDealPlayerDmg;
@@ -60,7 +62,7 @@ public:
     FDeleGetBulletCount           DeleGetBulletCount;
     FDeleUpdateWorldList          DeleUpdateWorldList;
     FDeleSetItemOntoInventory     DeleSetItemOntoInventory;
-    FDeleSetInteractionWidgetComp DeleSetInteractionWidgetComp;
+    FDeleSetInteractionText       DeleSetInteractionText;
     FDeleRunEffectAnim            DeleRunEffectAnim;
 
     FDelePredictGrenadePath DelePredictGrenadePath;

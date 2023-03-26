@@ -10,18 +10,18 @@ ACoreBackpack::ACoreBackpack(EBackpackType BackpackType) : Super()
 
     // 메쉬 레벨 순 2 > 4 > 7 
     FString meshPath    = "/Game/2_Meshes/Backpacks_Bags/Meshes/SM_Backpack_0";
-    FString backpackStr = "Backpack";
+    FString levelStr;
     float   newZ = 0.f;
     int     idx  = 0;
 
     switch (BackpackType)
     {
-    case EBackpackType::FIRST:  backpackStr += "LV1"; newZ = 20.f; idx = 2; break;
-    case EBackpackType::SECOND: backpackStr += "LV2"; newZ = 25.f; idx = 4; break;
-    case EBackpackType::THIRD:  backpackStr += "LV3"; newZ = 29.f; idx = 7; break;
+    case EBackpackType::FIRST:  levelStr = "LV1"; newZ = 20.f; idx = 2; break;
+    case EBackpackType::SECOND: levelStr = "LV2"; newZ = 25.f; idx = 4; break;
+    case EBackpackType::THIRD:  levelStr = "LV3"; newZ = 29.f; idx = 7; break;
     }
     InitStaticMesh(meshPath + FString::FromInt(idx));
-    ObjectType = backpackStr;
+    ObjectType = "Backpack" + levelStr;
 
     // 디폴트 z축 20
     FVector newPos = StaticMeshComp->GetRelativeLocation();
